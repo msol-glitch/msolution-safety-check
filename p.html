@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHwAAABQBAMAAAApXgzAAAAAMFBMVEUNTqEAAADy9v4Fq+3K6vtbo9iOs9hr0fes0ezo+f4HdsXb7Perq/1ch7uk3vq30e5amtN2AAAAEHRSTlP+AAz++v7n/vdZ/58D+wR86zJ2egAABMdJREFUeNqVmF1oHFUUgL+5u9P8tdmZiraNpvkRtBGSJgQFRbEB0YjYptRQlTaJQqEaQja21diCbgtqraAtQrUIWi2lP9g2ESlVkeahL4olwZ+HPpRsajUBxZnNNJrsZjM+7HSz3b27e2despNzvjn3nnPPuederWHLHiTPM5exF9+MXysofTh4AX2f/S6BxkByLKUk+qQ0XxPNeBtJACwA9gIkA4QB+LJNnJbSzNai8JwS+SSH8kPliz9FOI/OMlPBepeYGpNLGirtorT+pDgwtU36gWTdSBF42fYz3cJ6/tLOtyXCRPvGwvSS4992m4LQ1OXjEYn457vyjf5fADr7rWFLEBt1/zwpUTrjFPZ8UzK5AYHbopmxHolfaqOFR38jAALAKu3MlTrtLQXpKzYejrtDIt9TlfqryXH3Yhq3HUnwxDYjpSfHNdK4KDmYK48PjwBoKw25dYBg6ufIaonCvS0Aod7qcF4HeCnz6GGJ7BMDYGK6gP883DogkQX7DdBWjBfHxbQs8sMjUF5xtDjuGh2SyD9RB/pOiuO4U7LIG16JKopbH8oi/6bBxMsquJgckkX+qGb0KA3eeEsWeW1pWRgV17my2vjRlmm9WQHXYvY+WUXZYe6iOK6VWyFNMsl4bOIvBXwh0VZ5SrYxTEbHUHFdw7XuO2TLvmlICT8ScXfLxBGUcKExLVm38e/V8PiAqJUtEEMNZ3O5+6pEfqwwHkyX9QoC+H7S1ks+r749z/KOKlh3xm7Ycj0tomCd5+KGfIH+FlLBG3XpZgEnpllXHE8e0pwOmUqzkvXEwfkSWZR1V8XzsOLa+CMSjUDYVsLPGaasx9sYU7Ouf2EMSyLfYKvhzpj9oCTn19ao4XRQU51brwYUrQOx3MkvuCjizSzclhP5bUmUrYvJnLK86pI67hr3Zy+a0LhSvqee8YHsdNvrqlvHnMmafPwsPvClOZPv8IM7F7Oy5qVKfMydF5ZkOT7oxzp/B27ZlfS1F33hwclbGsSAhi/cDW3NfP2lp9kXjtab+XbW8GedeCAzVN9EfeJMZhjUN7g+8ZnRDOvaB7X4iju0Zfxr0w+WkvWMAf+jL5ovi6ptkf9l5vzitzbU4MO6AeCeq12sc2obtLkdoGw+Nfl0j6RjK+ETvQCJVwyAqnSP1FWIXjwKVae6+XjdBABf3fTdlaqbqkaeo5AAKn5/L9W9baoZNWCmu8+b+viMV4Nk9W5NnYf/UdXqxenjFguwNnlT12wAzbSkVwFNJghCdl2Vl1bO0y1azKByLjX6rnkA17VMWbu8Z7nlGoKYefi7dL5cmg3ZOBdSn1t5DCBW+tmLP0nwsq7Tph0cferOlRn5tmz3McduuxtAb+kBXLPvjLS5cyKd24+w/Hz26cs069YAUGuapsk9nqD0scdBf20X0Np61NMVq6qyLh3uM41YoAO4sgBo9Q/lD33ipOjLrkaN/V7Ov34dwC50ljkv3pcdjq2tgJWK9lCBa58fxUx2P7LlEDT2wpKN6wB36AHZ1YcHhYMlz+qzEWAQKB0sHaxYf9bl+oqrTnA9AD1z7dWzEXCCYXGVxBBbZ6G+fj+Dkb1Nn2qm9s6td10Rwwb2MxdJ1bmxdm/2B296QZzavDoKMPfG//8aX018voz2AAAAAElFTkSuQmCC">
+<title>현장 점검 | ㈜엠솔루션</title>
+<style>
+  :root{--navy:#1B3A6B;--navy-d:#0F172A;--bg:#F1F5F9;--line:#E2E8F0;--sub:#64748B;--ok:#1D4ED8;--ok-bg:#DBEAFE;--bad:#C2410C;--bad-bg:#FFF1E8;--na:#475569;--na-bg:#E2E8F0}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{margin:0;background:var(--bg);color:#0F172A;font-family:"Malgun Gothic","맑은 고딕","Apple SD Gothic Neo",system-ui,sans-serif;font-size:16px;line-height:1.45}
+  header{background:linear-gradient(135deg,var(--navy-d),var(--navy));color:#fff;padding:16px 16px 18px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700}
+  .brand img{width:44px;height:30px;object-fit:contain}
+  .brand small{display:block;font-weight:400;opacity:.75;font-size:12px}
+  h1{margin:12px 0 2px;font-size:20px}
+  .doc{font-size:12px;opacity:.7}
+  .team{display:inline-block;margin-top:10px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);padding:5px 12px;border-radius:999px;font-weight:700}
+  main{max-width:600px;margin:0 auto;padding:14px 16px 140px}
+  .menu{display:grid;gap:12px;margin-top:6px}
+  .menu button{font:inherit;text-align:left;background:#fff;border:2px solid var(--line);border-radius:14px;padding:18px 16px;cursor:pointer}
+  .menu b{display:block;font-size:19px;color:var(--navy)}
+  .menu span{color:var(--sub);font-size:13px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 12px 4px;margin-bottom:12px}
+  .card h2{margin:2px 0 6px;font-size:16px;display:flex;justify-content:space-between;align-items:center}
+  .cnt{font-size:12px;color:var(--sub);font-weight:400}
+  .it{border-top:1px solid var(--line);padding:7px 0}
+  .it:first-of-type{border-top:0}
+  .q{display:flex;gap:10px;align-items:center;cursor:pointer;user-select:none}
+  .q .t{flex:1;font-size:15px;line-height:1.35}
+  .mk{flex:none;width:34px;height:34px;border-radius:9px;border:2px solid #94A3B8;background:#fff;font:inherit;font-size:19px;font-weight:900;display:grid;place-items:center;color:transparent}
+  .s-O .mk{background:var(--ok);border-color:var(--ok);color:#fff}
+  .s-X .mk{background:var(--bad);border-color:var(--bad);color:#fff}
+  .s-NA .mk{background:var(--na-bg);border-color:var(--na);color:var(--na)}
+  .s-X .t{color:var(--bad);font-weight:700}
+  .s-NA .t{color:var(--sub);text-decoration:line-through}
+  .law{flex:none;border:1px solid #BFDBFE;background:#EFF6FF;color:var(--ok);font:inherit;font-size:12px;font-weight:700;border-radius:999px;padding:3px 9px;cursor:pointer}
+  .gall{font:inherit;font-size:12px;font-weight:700;border:1px solid var(--ok);color:var(--ok);background:#fff;border-radius:999px;padding:3px 10px;cursor:pointer}
+  .legend{font-size:12px;color:var(--sub);background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 10px;margin-bottom:12px}
+  .legend b.o{color:var(--ok)} .legend b.x{color:var(--bad)} .legend b.n{color:var(--na)}
+  .barbtns{display:grid;grid-template-columns:1fr 2fr;gap:8px}
+  .allok{font:inherit;font-weight:700;font-size:15px;border:2px solid var(--ok);color:var(--ok);background:#fff;border-radius:12px;cursor:pointer}
+  .note{display:none;margin-top:8px}
+  input[type=text],textarea{width:100%;font:inherit;padding:11px;border:1px solid #CBD5E1;border-radius:10px;background:#fff}
+  textarea{min-height:64px;resize:vertical}
+  .note textarea{border-color:var(--bad);background:#FFFBF8}
+  .etc{margin:4px 0 10px}
+  .who{display:grid;gap:8px}
+  .who button{font:inherit;text-align:left;padding:12px;border:1px solid #CBD5E1;border-radius:10px;background:#fff;cursor:pointer}
+  .who button.on{border:2px solid var(--navy);background:#EFF6FF}
+  .who small{color:var(--sub)}
+  canvas{width:100%;height:150px;border:2px dashed #94A3B8;border-radius:10px;background:#fff;touch-action:none;display:block}
+  .row{display:flex;justify-content:space-between;align-items:center;margin-top:6px;font-size:13px;color:var(--sub)}
+  .lnk{font:inherit;font-size:13px;background:none;border:0;color:var(--ok);text-decoration:underline;cursor:pointer;padding:0}
+  .signed{display:none;align-items:center;gap:10px;padding:8px;border:1px solid var(--line);border-radius:10px}
+  .signed img{height:56px;background:#fff}
+  .bar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);padding:10px 16px calc(12px + env(safe-area-inset-bottom))}
+  .bar .in{max-width:600px;margin:0 auto}
+  .prog{font-size:13px;color:var(--sub);margin-bottom:6px}
+  .submit{width:100%;font:inherit;font-weight:700;font-size:17px;color:#fff;background:var(--navy);border:0;border-radius:12px;padding:14px;cursor:pointer}
+  .submit:disabled{background:#94A3B8}
+  .msg{font-size:13px;color:var(--bad);margin:0 0 6px}
+  .done{display:none;text-align:center;padding:48px 20px}
+  .done .ic{width:72px;height:72px;border-radius:50%;background:var(--ok-bg);color:var(--ok);display:grid;place-items:center;margin:0 auto 16px}
+  .done p{color:var(--sub);margin:4px 0}
+  .done button{margin-top:18px}
+  .back{font:inherit;font-size:14px;background:none;border:0;color:#fff;opacity:.85;padding:0;margin-top:8px;cursor:pointer;text-decoration:underline}
+  dialog{border:0;border-radius:16px;padding:0;max-width:440px;width:calc(100% - 32px)}
+  dialog::backdrop{background:rgba(15,23,42,.55)}
+  .dh{background:var(--navy);color:#fff;padding:14px 16px;font-weight:700}
+  .db{padding:14px 16px}
+  .db .lw{background:#EFF6FF;border-left:4px solid var(--ok);padding:10px 12px;border-radius:6px;font-weight:700;color:var(--navy);margin-bottom:10px}
+  .db p{margin:6px 0;font-size:14px}
+  .db small{color:var(--sub);font-size:12px}
+  .df{padding:0 16px 16px}
+  .df button{width:100%;font:inherit;font-weight:700;padding:12px;border:0;border-radius:10px;background:var(--navy);color:#fff}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHwAAABQBAMAAAApXgzAAAAAMFBMVEUNTqEAAADy9v4Fq+3K6vtbo9iOs9hr0fes0ezo+f4HdsXb7Perq/1ch7uk3vq30e5amtN2AAAAEHRSTlP+AAz++v7n/vdZ/58D+wR86zJ2egAABMdJREFUeNqVmF1oHFUUgL+5u9P8tdmZiraNpvkRtBGSJgQFRbEB0YjYptRQlTaJQqEaQja21diCbgtqraAtQrUIWi2lP9g2ESlVkeahL4olwZ+HPpRsajUBxZnNNJrsZjM+7HSz3b27e2despNzvjn3nnPPuederWHLHiTPM5exF9+MXysofTh4AX2f/S6BxkByLKUk+qQ0XxPNeBtJACwA9gIkA4QB+LJNnJbSzNai8JwS+SSH8kPliz9FOI/OMlPBepeYGpNLGirtorT+pDgwtU36gWTdSBF42fYz3cJ6/tLOtyXCRPvGwvSS4992m4LQ1OXjEYn457vyjf5fADr7rWFLEBt1/zwpUTrjFPZ8UzK5AYHbopmxHolfaqOFR38jAALAKu3MlTrtLQXpKzYejrtDIt9TlfqryXH3Yhq3HUnwxDYjpSfHNdK4KDmYK48PjwBoKw25dYBg6ufIaonCvS0Aod7qcF4HeCnz6GGJ7BMDYGK6gP883DogkQX7DdBWjBfHxbQs8sMjUF5xtDjuGh2SyD9RB/pOiuO4U7LIG16JKopbH8oi/6bBxMsquJgckkX+qGb0KA3eeEsWeW1pWRgV17my2vjRlmm9WQHXYvY+WUXZYe6iOK6VWyFNMsl4bOIvBXwh0VZ5SrYxTEbHUHFdw7XuO2TLvmlICT8ScXfLxBGUcKExLVm38e/V8PiAqJUtEEMNZ3O5+6pEfqwwHkyX9QoC+H7S1ks+r749z/KOKlh3xm7Ycj0tomCd5+KGfIH+FlLBG3XpZgEnpllXHE8e0pwOmUqzkvXEwfkSWZR1V8XzsOLa+CMSjUDYVsLPGaasx9sYU7Ouf2EMSyLfYKvhzpj9oCTn19ao4XRQU51brwYUrQOx3MkvuCjizSzclhP5bUmUrYvJnLK86pI67hr3Zy+a0LhSvqee8YHsdNvrqlvHnMmafPwsPvClOZPv8IM7F7Oy5qVKfMydF5ZkOT7oxzp/B27ZlfS1F33hwclbGsSAhi/cDW3NfP2lp9kXjtab+XbW8GedeCAzVN9EfeJMZhjUN7g+8ZnRDOvaB7X4iju0Zfxr0w+WkvWMAf+jL5ovi6ptkf9l5vzitzbU4MO6AeCeq12sc2obtLkdoGw+Nfl0j6RjK+ETvQCJVwyAqnSP1FWIXjwKVae6+XjdBABf3fTdlaqbqkaeo5AAKn5/L9W9baoZNWCmu8+b+viMV4Nk9W5NnYf/UdXqxenjFguwNnlT12wAzbSkVwFNJghCdl2Vl1bO0y1azKByLjX6rnkA17VMWbu8Z7nlGoKYefi7dL5cmg3ZOBdSn1t5DCBW+tmLP0nwsq7Tph0cferOlRn5tmz3McduuxtAb+kBXLPvjLS5cyKd24+w/Hz26cs069YAUGuapsk9nqD0scdBf20X0Np61NMVq6qyLh3uM41YoAO4sgBo9Q/lD33ipOjLrkaN/V7Ov34dwC50ljkv3pcdjq2tgJWK9lCBa58fxUx2P7LlEDT2wpKN6wB36AHZ1YcHhYMlz+qzEWAQKB0sHaxYf9bl+oqrTnA9AD1z7dWzEXCCYXGVxBBbZ6G+fj+Dkb1Nn2qm9s6td10Rwwb2MxdJ1bmxdm/2B296QZzavDoKMPfG//8aX018voz2AAAAAElFTkSuQmCC" alt="㈜엠솔루션 로고"><div>㈜엠솔루션<small>안전보건팀</small></div></div>
+  <h1 id="title">현장 점검</h1>
+  <div class="doc" id="docno">점검 종류를 선택하세요</div>
+  <div class="team" id="teamBadge">팀 선택 필요</div><br>
+  <button class="back" id="backBtn" style="display:none">← 점검 종류 다시 선택</button>
+</header>
+
+<main id="main">
+  <section id="menu" class="menu">
+    <button data-type="patrol"><b>중대재해예방 순회점검</b><span>안전관리자 · 안전보건관리책임자 일일 순회 · 법적 근거 포함</span></button>
+    <button data-type="5s"><b>3정5행 점검</b><span>자재·제품 관리, 작업장 정리정돈, 품질, 안전</span></button>
+  </section>
+  <section id="form" style="display:none">
+    <div class="card" id="whoCard"><h2>점검자</h2><div id="who"></div></div>
+    <div id="sections"></div>
+    <div class="card" id="signCard" style="display:none">
+      <h2>점검자 서명 <span class="cnt">하루 1회 · 같은 날은 자동 재사용</span></h2>
+      <div class="signed" id="signed"><img id="signedImg" alt="오늘 서명"><div><b>오늘 서명 사용</b><br><button class="lnk" id="resign">다시 서명하기</button></div></div>
+      <div id="padWrap"><canvas id="pad"></canvas><div class="row"><span>손가락으로 서명해 주세요</span><button class="lnk" id="clearPad">지우기</button></div></div>
+      <div style="height:8px"></div>
+    </div>
+  </section>
+</main>
+
+<section class="done" id="done">
+  <div class="ic"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+  <h2>제출 완료</h2>
+  <p id="doneInfo"></p>
+  <p id="doneBad"></p>
+  <button class="submit" id="again">다른 점검 하기</button>
+</section>
+
+<div class="bar" id="bar" style="display:none"><div class="in">
+  <div class="prog" id="prog"></div>
+  <p class="msg" id="msg"></p>
+  <div class="barbtns"><button class="allok" id="allOk">남은 항목<br>모두 양호</button><button class="submit" id="submit">제출</button></div>
+</div></div>
+
+<dialog id="lawDlg"><div class="dh" id="lawTitle"></div><div class="db"><div class="lw" id="lawRef"></div><p id="lawPoint"></p><small>※ 조문 원문은 국가법령정보센터(law.go.kr)에서 확인할 수 있습니다.</small></div><div class="df"><button id="lawClose">닫기</button></div></dialog>
+
+<script>
+const ENDPOINT = 'https://script.google.com/macros/s/AKfycbyk3NwZ25Kdqh1wdc2jvldoyZyuHNU3ebPPFxOh4UYn6TvLj6Fi_ZGpWgEz3b5yf0na/exec';
+const API_KEY = 'MS-SF-DUST-2026';
+const TEAMS = { 1: ['조립1팀', 'KA4 · SV1 · CE/CT'], 2: ['조립2팀', 'GN7 · SP3k'], 3: ['조립3팀', '밀링스코어링 · SP3k PAB융착'], 4: ['도장팀', '도장라인'] };
+const LAW = '산업안전보건법', RULE = '산업안전보건기준에 관한 규칙';
+const PATROL = [
+  ['작업장 일반', [
+    ['w1', '안전보건표지 부착 여부', `${LAW} 제37조 (안전보건표지의 설치·부착)`, '위험 장소·설비에 필요한 표지가 보이는 위치에 훼손 없이 붙어 있는지'],
+    ['w2', '이동통로 정리정돈 상태 (방해물, 바닥상태 등)', `${RULE} 제22조 (통로의 설치)`, '통로에 적치물이 없고, 바닥에 기름·물·걸림 요소가 없는지'],
+    ['w3', '근로자 보호구 착용 여부', `${RULE} 제33조 (보호구의 관리)`, '작업에 맞는 보호구를 지급·착용하고 상태가 양호한지'],
+    ['w4', '작업장 조도 상태', `${RULE} 제8조 (조도)`, '작업면이 충분히 밝은지, 고장 난 조명이 없는지'],
+    ['w5', 'MSDS 게시 상태', `${LAW} 제114조 (물질안전보건자료의 게시 및 교육)`, '취급 화학물질의 MSDS가 작업장에 게시·비치되어 있는지'],
+    ['w6', '위험기계기구 방호장치 설치 여부', `${LAW} 제80조 (유해하거나 위험한 기계·기구에 대한 방호조치)`, '방호장치가 해체·무력화되지 않고 정상 작동하는지'],
+    ['w7', '적재물 고단적재 (3단 초과) 상태', `${RULE} 제393조 (화물의 적재)`, '3단을 넘게 쌓거나 기울어진 적재물이 없는지'],
+    ['w8', '추락 위험장소 안전상태 여부', `${RULE} 제42조 (추락의 방지)`, '개구부·고소 작업 장소에 난간·덮개 등이 있는지']
+  ]],
+  ['전기', [
+    ['e1', '누전차단기 설치 및 노후배선 여부', `${RULE} 제304조 (누전차단기에 의한 감전방지)`, '누전차단기가 설치·작동하고 피복 손상 배선이 없는지'],
+    ['e2', '분전함 관리 상태', `${RULE} 제301조 (전기 기계·기구 등의 충전부 방호)`, '분전함 문이 닫혀 있고, 앞에 적치물이 없고, 경고 표지가 있는지']
+  ]],
+  ['소방', [
+    ['f1', '소화기구 설치 및 매월 점검 실시 여부', `${RULE} 제243조 (소화설비)`, '소화기가 정위치에 있고 압력 정상, 월 점검표가 기록되어 있는지'],
+    ['f2', '피난안내도 설치 및 비상통로 관리 여부', `${RULE} 제18조 (비상구 등의 유지)`, '피난안내도가 게시되고 비상구·비상통로가 막혀 있지 않은지'],
+    ['f3', '소화전 관리 상태', `${RULE} 제243조 (소화설비)`, '소화전 앞에 적치물이 없고 함 내부 장비가 갖춰져 있는지']
+  ]],
+  ['산업용 로봇', [
+    ['r1', '작업안전수칙 준수 여부', `${LAW} 제38조 (안전조치) · ${RULE} 제222조 (산업용 로봇의 교시 등 작업)`, '로봇 작업 안전수칙이 게시되고 작업자가 지키는지'],
+    ['r2', '비정형 작업 시 LOTO 절차 진행 여부', `${LAW} 제38조 (안전조치) · ${RULE} 제222조 (산업용 로봇의 교시 등 작업)`, '정비·이물 제거 등 비정형 작업 때 전원 차단·잠금·표지를 하는지'],
+    ['r3', '방호장치 점검 유무 (시업 전 오작동 확인 후 작업)', `${RULE} 제223조 (운전 중 위험 방지)`, '작업 시작 전 방책·센서·비상정지 작동을 확인했는지'],
+    ['r4', '로봇 작동 시 작업공간 내 불필요 인원 출입통제 여부', `${RULE} 제223조 (운전 중 위험 방지)`, '로봇 작동 범위에 불필요한 사람이 들어가지 않도록 통제하는지']
+  ]],
+  ['지게차', [
+    ['k1', '지게차 속도 준수 여부', `${RULE} 제98조 (제한속도의 지정 등) — 법적준수 항목표 추가 반영, 조문 재확인 대상`, '구내 제한속도를 지키는지, 속도 표지가 있는지'],
+    ['k2', '지게차 작업자 안전벨트 착용 준수 여부', `${RULE} 제183조 (좌석 안전띠의 착용 등)`, '운전자가 안전벨트를 착용하는지'],
+    ['k3', '지게차 시동키 관리 준수 여부', `${RULE} 제99조 (운전위치 이탈 시의 조치)`, '운전석을 떠날 때 시동키를 빼서 관리하는지']
+  ]]
+];
+const FIVE = [
+  ['A. 3정 – 자재·제품 관리', [
+    ['a1', '정품: 해당 차종 부품만 있음 (이종품 혼입 없음)'], ['a2', '정량: 지정 수량·적재 단수 준수'],
+    ['a3', '정위치: 지정 구역·표시선 안에 보관'], ['a4', '식별표: 부품·완제품 식별표(품번·LOT) 부착'],
+    ['a5', '선입선출: 먼저 들어온 자재부터 사용']]],
+  ['B. 5행 – 작업장 관리', [
+    ['b1', '정리: 불필요한 물건·폐자재 없음'], ['b2', '정돈: 공구·지그·게이지 지정 위치'],
+    ['b3', '청소: 작업대·설비·바닥 분진·이물 없음'], ['b4', '청결: 제품 닿는 면(작업대·지그·트레이) 오염 없음'],
+    ['b5', '습관화: 작업표준서·한도견본 최신본 게시']]],
+  ['C. 품질 관리', [
+    ['c1', '부적합품 격리: 적색 박스·지정 구역 분리 및 표시'], ['c2', '검사구·게이지 상태 양호, 교정 라벨 유효'],
+    ['c3', '납품 용기: PLT·트레이 청결, 제품 손상 없이 적재']]],
+  ['D. 안전', [
+    ['d1', '통로 확보: 통로·비상구·소화기 앞 적치물 없음'], ['d2', '소화기 정위치, 압력 게이지 정상'],
+    ['d3', '전기: 배선 정리, 멀티탭 문어발 연결 없음'], ['d4', '바닥: 기름·물 미끄럼, 걸림 요소 없음'],
+    ['d5', '보호구: 작업자 보호구 착용'], ['d6', '방호장치: 설비 안전커버·비상정지 정상'],
+    ['d7', '화학물질: 용기 라벨 부착, MSDS 게시']]]
+];
+const DOCNO = { patrol: '중대재해예방 일일 점검 체크리스트 · 문서번호 MS-SF-05', '5s': '3정5행 점검표 · 문서번호 MS-SF-06' };
+const INSPECTORS = [['이성희 과장', '안전관리자'], ['이민희 대표', '안전보건관리책임자']];
+
+const $ = id => document.getElementById(id);
+const store = { get: k => { try { return localStorage.getItem(k); } catch (e) { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} } };
+const today = () => new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Seoul' });
+
+let team = parseInt(new URLSearchParams(location.search).get('t'), 10);
+if (!TEAMS[team]) team = 0;
+let type = null, inspector = '', answers = {}, padDirty = false;
+
+function showTeam() {
+  $('teamBadge').textContent = team ? `${TEAMS[team][0]} · ${TEAMS[team][1]}` : '팀 선택 필요';
+}
+if (!team) {
+  $('menu').insertAdjacentHTML('afterbegin', `<div class="card"><h2>팀 선택</h2><div class="who">${Object.entries(TEAMS).map(([k, v]) => `<button data-team="${k}"><b>${v[0]}</b> <small>${v[1]}</small></button>`).join('')}</div></div>`);
+  document.querySelectorAll('[data-team]').forEach(b => b.onclick = () => {
+    team = +b.dataset.team; showTeam();
+    document.querySelectorAll('[data-team]').forEach(x => x.classList.toggle('on', x === b));
+  });
+}
+showTeam();
+
+document.querySelectorAll('[data-type]').forEach(b => b.onclick = () => {
+  if (!team) { alertMsg('먼저 팀을 선택해 주세요.'); return; }
+  open(b.dataset.type);
+});
+$('backBtn').onclick = () => { if (Object.keys(answers).length && !confirm('입력한 내용이 사라집니다. 돌아갈까요?')) return; reset(); };
+$('again').onclick = () => { $('done').style.display = 'none'; $('main').style.display = ''; reset(); };
+
+function alertMsg(t) { const m = document.createElement('div'); m.className = 'card'; m.style.color = 'var(--bad)'; m.textContent = t; $('menu').prepend(m); setTimeout(() => m.remove(), 2500); }
+
+function reset() {
+  type = null; answers = {};
+  $('form').style.display = 'none'; $('bar').style.display = 'none'; $('menu').style.display = '';
+  $('backBtn').style.display = 'none'; $('title').textContent = '현장 점검'; $('docno').textContent = '점검 종류를 선택하세요';
+  scrollTo(0, 0);
+}
+
+function open(t) {
+  type = t; answers = {};
+  $('menu').style.display = 'none'; $('form').style.display = ''; $('bar').style.display = ''; $('backBtn').style.display = '';
+  $('title').textContent = t === 'patrol' ? '중대재해예방 순회점검' : '3정5행 점검';
+  $('docno').textContent = DOCNO[t];
+  // 점검자
+  if (t === 'patrol') {
+    const last = store.get('ms_patrol_who') || '';
+    $('who').innerHTML = `<div class="who">${INSPECTORS.map(([n, r]) => `<button data-who="${n}"><b>${n}</b> <small>${r}</small></button>`).join('')}<input type="text" id="whoEtc" maxlength="20" placeholder="그 외 점검자 이름 직접 입력"></div>`;
+    document.querySelectorAll('[data-who]').forEach(b => b.onclick = () => setWho(b.dataset.who));
+    $('whoEtc').oninput = e => setWho(e.target.value.trim(), true);
+    if (last) { if (INSPECTORS.some(i => i[0] === last)) setWho(last); else { $('whoEtc').value = last; setWho(last, true); } }
+  } else {
+    $('who').innerHTML = `<input type="text" id="whoName" maxlength="20" placeholder="점검자 이름" value="${(store.get('ms_5s_who') || '').replace(/"/g, '')}">`;
+    inspector = $('whoName').value.trim();
+    $('whoName').oninput = e => { inspector = e.target.value.trim(); updateSign(); };
+  }
+  // 항목
+  const groups = t === 'patrol' ? PATROL : FIVE;
+  $('sections').innerHTML = `<div class="legend">항목을 누를 때마다 <b class="o">✓ 양호</b> → <b class="x">✗ 불량</b> → <b class="n">– 해당없음</b> 순서로 바뀝니다. 이상 없으면 <b class="o">[모두 양호]</b> 후 문제 있는 항목만 바꾸세요.</div>` +
+    groups.map(([g, items], gi) => `
+    <div class="card"><h2>${g} <span><span class="cnt" id="cnt${gi}">0/${items.length}</span> <button class="gall" data-gall="${gi}">모두 양호</button></span></h2>
+      ${items.map(it => `<div class="it" data-id="${it[0]}" data-g="${gi}">
+        <div class="q"><span class="mk"></span><div class="t">${it[1]}</div>${it[2] ? `<button class="law" data-law="${it[0]}">근거</button>` : ''}</div>
+        <div class="note"><textarea maxlength="200" placeholder="불량 내용을 적어주세요 (필수)"></textarea></div>
+      </div>`).join('')}
+      ${t === 'patrol' ? `<div class="etc"><input type="text" maxlength="150" data-etc="${g}" placeholder="기타 (있을 때만)"></div>` : ''}
+    </div>`).join('');
+  const MARK = { O: '✓', X: '✗', NA: '–' }, NEXT = { '': 'O', O: 'X', X: 'NA', NA: 'O' };
+  const setState = (el, v) => {
+    el.classList.remove('s-O', 's-X', 's-NA'); if (v) el.classList.add('s-' + v);
+    el.querySelector('.mk').textContent = MARK[v] || '';
+    if (v) answers[el.dataset.id] = v; else delete answers[el.dataset.id];
+    el.querySelector('.note').style.display = v === 'X' ? 'block' : 'none';
+  };
+  window.__setState = setState;
+  document.querySelectorAll('.it').forEach(el => {
+    el.querySelector('.q').onclick = e => { if (e.target.closest('.law')) return; setState(el, NEXT[answers[el.dataset.id] || '']); updateProg(); };
+  });
+  document.querySelectorAll('[data-gall]').forEach(b => b.onclick = () => {
+    document.querySelectorAll(`.it[data-g="${b.dataset.gall}"]`).forEach(el => { if (!answers[el.dataset.id]) setState(el, 'O'); });
+    updateProg();
+  });
+  document.querySelectorAll('[data-law]').forEach(b => b.onclick = () => showLaw(b.dataset.law));
+  $('signCard').style.display = t === 'patrol' ? '' : 'none';
+  if (t === 'patrol') { initPad(); updateSign(); }
+  updateProg(); scrollTo(0, 0);
+}
+
+function setWho(n, fromInput) {
+  inspector = n;
+  document.querySelectorAll('[data-who]').forEach(b => b.classList.toggle('on', b.dataset.who === n));
+  if (!fromInput && $('whoEtc')) $('whoEtc').value = '';
+  updateSign();
+}
+
+function allItems() { return (type === 'patrol' ? PATROL : FIVE).flatMap(([g, items], gi) => items.map(it => ({ g, gi, id: it[0], label: it[1] }))); }
+function updateProg() {
+  const items = allItems();
+  const done = items.filter(i => answers[i.id]).length;
+  const bad = items.filter(i => answers[i.id] === 'X').length;
+  $('prog').textContent = `${done} / ${items.length} 항목 체크${bad ? ` · 불량 ${bad}건` : ''}`;
+  (type === 'patrol' ? PATROL : FIVE).forEach(([g, its], gi) => { const c = $('cnt' + gi); if (c) c.textContent = its.filter(i => answers[i[0]]).length + '/' + its.length; });
+}
+
+function showLaw(id) {
+  for (const [g, items] of PATROL) for (const it of items) if (it[0] === id) {
+    $('lawTitle').textContent = `${g} · ${it[1]}`; $('lawRef').textContent = it[2]; $('lawPoint').textContent = '점검 포인트: ' + it[3];
+  }
+  $('lawDlg').showModal();
+}
+$('lawClose').onclick = () => $('lawDlg').close();
+$('allOk').onclick = () => { document.querySelectorAll('.it').forEach(el => { if (!answers[el.dataset.id]) window.__setState(el, 'O'); }); updateProg(); };
+
+// ---------- 서명 ----------
+let ctx, drawing = false;
+function initPad() {
+  const c = $('pad'), r = c.getBoundingClientRect(), ratio = Math.max(window.devicePixelRatio || 1, 1);
+  c.width = r.width * ratio; c.height = r.height * ratio;
+  ctx = c.getContext('2d'); ctx.scale(ratio, ratio);
+  ctx.lineWidth = 2.6; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = '#0F172A';
+  padDirty = false;
+  const pos = e => { const b = c.getBoundingClientRect(); return [e.clientX - b.left, e.clientY - b.top]; };
+  c.onpointerdown = e => { drawing = true; c.setPointerCapture(e.pointerId); ctx.beginPath(); ctx.moveTo(...pos(e)); };
+  c.onpointermove = e => { if (!drawing) return; ctx.lineTo(...pos(e)); ctx.stroke(); padDirty = true; };
+  c.onpointerup = c.onpointercancel = () => { drawing = false; };
+}
+$('clearPad').onclick = () => { const c = $('pad'); ctx.clearRect(0, 0, c.width, c.height); padDirty = false; };
+$('resign').onclick = () => { $('signed').style.display = 'none'; $('padWrap').style.display = ''; initPad(); savedSign = null; };
+let savedSign = null;
+function signKey() { return `ms_sign_${today()}_${inspector}`; }
+function updateSign() {
+  if (type !== 'patrol') return;
+  savedSign = inspector ? store.get(signKey()) : null;
+  $('signed').style.display = savedSign ? 'flex' : 'none';
+  $('padWrap').style.display = savedSign ? 'none' : '';
+  if (savedSign) $('signedImg').src = savedSign;
+}
+function exportSign() {
+  const c = $('pad'), w = 360, h = Math.round(w * c.height / c.width), o = document.createElement('canvas');
+  o.width = w; o.height = h; const x = o.getContext('2d');
+  x.fillStyle = '#fff'; x.fillRect(0, 0, w, h); x.drawImage(c, 0, 0, w, h);
+  return o.toDataURL('image/png');
+}
+
+// ---------- 제출 ----------
+$('submit').onclick = async () => {
+  const msg = $('msg'); msg.textContent = '';
+  if (!inspector) return msg.textContent = '점검자를 선택하거나 이름을 입력해 주세요.';
+  const items = allItems();
+  const miss = items.filter(i => !answers[i.id]);
+  if (miss.length) { document.querySelector(`[data-id="${miss[0].id}"]`).scrollIntoView({ behavior: 'smooth', block: 'center' }); return msg.textContent = `체크하지 않은 항목이 ${miss.length}개 있습니다.`; }
+  const rows = items.map(i => {
+    const el = document.querySelector(`[data-id="${i.id}"]`);
+    return { g: i.g, id: i.id, label: i.label, r: answers[i.id], note: answers[i.id] === 'X' ? el.querySelector('textarea').value.trim() : '' };
+  });
+  const noNote = rows.find(r => r.r === 'X' && !r.note);
+  if (noNote) { document.querySelector(`[data-id="${noNote.id}"] textarea`).focus(); return msg.textContent = '불량 항목은 내용을 꼭 적어주세요.'; }
+  let sign = '';
+  if (type === 'patrol') {
+    sign = savedSign || (padDirty ? exportSign() : '');
+    if (!sign) { $('signCard').scrollIntoView({ behavior: 'smooth' }); return msg.textContent = '서명해 주세요.'; }
+  }
+  const etc = {}; document.querySelectorAll('[data-etc]').forEach(e => { if (e.value.trim()) etc[e.dataset.etc] = e.value.trim(); });
+  const btn = $('submit'); btn.disabled = true; btn.textContent = '저장 중…';
+  try {
+    const res = await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ key: API_KEY, type, team, inspector, items: rows, etc, sign }) });
+    const out = await res.json();
+    if (!out.ok) throw new Error(out.error || '저장 실패');
+    if (type === 'patrol') { store.set('ms_patrol_who', inspector); if (!savedSign) store.set(signKey(), sign); } else store.set('ms_5s_who', inspector);
+    const bad = rows.filter(r => r.r === 'X').length;
+    $('main').style.display = 'none'; $('bar').style.display = 'none';
+    $('doneInfo').textContent = `${TEAMS[team][0]} · ${type === 'patrol' ? '순회점검' : '3정5행'} · ${inspector} · ${out.time}`;
+    $('doneBad').textContent = bad ? `불량 ${bad}건이 조치 목록에 등록되었습니다.` : '불량 없음';
+    $('done').style.display = 'block'; scrollTo(0, 0);
+  } catch (e) {
+    msg.textContent = '저장되지 않았습니다. 인터넷 연결을 확인하고 다시 눌러주세요. (' + e.message + ')';
+  } finally { btn.disabled = false; btn.textContent = '제출'; }
+};
+</script>
+</body>
+</html>

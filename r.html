@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHwAAABQBAMAAAApXgzAAAAAMFBMVEUNTqEAAADy9v4Fq+3K6vtbo9iOs9hr0fes0ezo+f4HdsXb7Perq/1ch7uk3vq30e5amtN2AAAAEHRSTlP+AAz++v7n/vdZ/58D+wR86zJ2egAABMdJREFUeNqVmF1oHFUUgL+5u9P8tdmZiraNpvkRtBGSJgQFRbEB0YjYptRQlTaJQqEaQja21diCbgtqraAtQrUIWi2lP9g2ESlVkeahL4olwZ+HPpRsajUBxZnNNJrsZjM+7HSz3b27e2despNzvjn3nnPPuederWHLHiTPM5exF9+MXysofTh4AX2f/S6BxkByLKUk+qQ0XxPNeBtJACwA9gIkA4QB+LJNnJbSzNai8JwS+SSH8kPliz9FOI/OMlPBepeYGpNLGirtorT+pDgwtU36gWTdSBF42fYz3cJ6/tLOtyXCRPvGwvSS4992m4LQ1OXjEYn457vyjf5fADr7rWFLEBt1/zwpUTrjFPZ8UzK5AYHbopmxHolfaqOFR38jAALAKu3MlTrtLQXpKzYejrtDIt9TlfqryXH3Yhq3HUnwxDYjpSfHNdK4KDmYK48PjwBoKw25dYBg6ufIaonCvS0Aod7qcF4HeCnz6GGJ7BMDYGK6gP883DogkQX7DdBWjBfHxbQs8sMjUF5xtDjuGh2SyD9RB/pOiuO4U7LIG16JKopbH8oi/6bBxMsquJgckkX+qGb0KA3eeEsWeW1pWRgV17my2vjRlmm9WQHXYvY+WUXZYe6iOK6VWyFNMsl4bOIvBXwh0VZ5SrYxTEbHUHFdw7XuO2TLvmlICT8ScXfLxBGUcKExLVm38e/V8PiAqJUtEEMNZ3O5+6pEfqwwHkyX9QoC+H7S1ks+r749z/KOKlh3xm7Ycj0tomCd5+KGfIH+FlLBG3XpZgEnpllXHE8e0pwOmUqzkvXEwfkSWZR1V8XzsOLa+CMSjUDYVsLPGaasx9sYU7Ouf2EMSyLfYKvhzpj9oCTn19ao4XRQU51brwYUrQOx3MkvuCjizSzclhP5bUmUrYvJnLK86pI67hr3Zy+a0LhSvqee8YHsdNvrqlvHnMmafPwsPvClOZPv8IM7F7Oy5qVKfMydF5ZkOT7oxzp/B27ZlfS1F33hwclbGsSAhi/cDW3NfP2lp9kXjtab+XbW8GedeCAzVN9EfeJMZhjUN7g+8ZnRDOvaB7X4iju0Zfxr0w+WkvWMAf+jL5ovi6ptkf9l5vzitzbU4MO6AeCeq12sc2obtLkdoGw+Nfl0j6RjK+ETvQCJVwyAqnSP1FWIXjwKVae6+XjdBABf3fTdlaqbqkaeo5AAKn5/L9W9baoZNWCmu8+b+viMV4Nk9W5NnYf/UdXqxenjFguwNnlT12wAzbSkVwFNJghCdl2Vl1bO0y1azKByLjX6rnkA17VMWbu8Z7nlGoKYefi7dL5cmg3ZOBdSn1t5DCBW+tmLP0nwsq7Tph0cferOlRn5tmz3McduuxtAb+kBXLPvjLS5cyKd24+w/Hz26cs069YAUGuapsk9nqD0scdBf20X0Np61NMVq6qyLh3uM41YoAO4sgBo9Q/lD33ipOjLrkaN/V7Ov34dwC50ljkv3pcdjq2tgJWK9lCBa58fxUx2P7LlEDT2wpKN6wB36AHZ1YcHhYMlz+qzEWAQKB0sHaxYf9bl+oqrTnA9AD1z7dWzEXCCYXGVxBBbZ6G+fj+Dkb1Nn2qm9s6td10Rwwb2MxdJ1bmxdm/2B296QZzavDoKMPfG//8aX018voz2AAAAAElFTkSuQmCC">
+<title>점검 기록 보기 | ㈜엠솔루션</title>
+<style>
+  @page{size:A4;margin:12mm}
+  :root{--navy:#1B3A6B;--line:#CBD5E1;--sub:#64748B;--ok:#1D4ED8;--bad:#C2410C}
+  body{margin:0;background:#F1F5F9;color:#0F172A;font-family:"Malgun Gothic","맑은 고딕",system-ui,sans-serif;font-size:14px}
+  .tool{max-width:820px;margin:16px auto;background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:14px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .tool label{font-size:13px;color:var(--sub)}
+  .tool input,.tool select{font:inherit;padding:8px;border:1px solid var(--line);border-radius:8px}
+  .tool button{font:inherit;font-weight:700;padding:9px 14px;border:0;border-radius:8px;background:var(--navy);color:#fff;cursor:pointer}
+  .tool .ghost{background:#E2E8F0;color:#0F172A}
+  #msg{width:100%;color:var(--bad);font-size:13px;margin:0}
+  .sheet{max-width:820px;margin:0 auto 16px;background:#fff;border:1px solid #E2E8F0;padding:18px 20px;page-break-after:always}
+  .hd{display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid var(--navy);padding-bottom:8px}
+  .hd img{height:30px} .hd .r{text-align:right;font-size:12px;color:var(--sub)}
+  h2{margin:10px 0 8px;font-size:19px;text-align:center}
+  table{width:100%;border-collapse:collapse;font-size:12.5px}
+  th,td{border:1px solid var(--line);padding:5px 6px;vertical-align:middle}
+  th{background:#1E293B;color:#fff}
+  .meta th{background:#F1F5F9;color:#0F172A;width:16%}
+  .c{text-align:center} .g{background:#F8FAFC;font-weight:700;text-align:center;width:13%}
+  .O{color:var(--ok);font-weight:700} .X{color:var(--bad);font-weight:700;background:#FFF1E8} .NA{color:var(--sub)}
+  .sign img{height:52px}
+  .foot{margin-top:8px;font-size:11px;color:var(--sub)}
+  .empty{max-width:820px;margin:20px auto;text-align:center;color:var(--sub)}
+  @media print{body{background:#fff}.tool{display:none}.sheet{border:0;margin:0;padding:0}}
+</style>
+</head>
+<body>
+<div class="tool">
+  <label>날짜 <input type="date" id="date"></label>
+  <label>종류 <select id="type"><option value="patrol">중대재해예방 순회점검</option><option value="5s">3정5행 점검</option></select></label>
+  <label>관리자 PIN <input type="password" id="pin" inputmode="numeric" maxlength="8" size="6"></label>
+  <button id="load">불러오기</button>
+  <button class="ghost" id="print">인쇄</button>
+  <p id="msg"></p>
+</div>
+<div id="out"></div>
+<script>
+const ENDPOINT = 'https://script.google.com/macros/s/AKfycbyk3NwZ25Kdqh1wdc2jvldoyZyuHNU3ebPPFxOh4UYn6TvLj6Fi_ZGpWgEz3b5yf0na/exec';
+const LOGO = 'data:image/png;base64,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';
+const TEAMS = { 1: '조립1팀', 2: '조립2팀', 3: '조립3팀', 4: '도장팀' };
+const R = { O: '양호', X: '불량', NA: '해당없음' };
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+$('date').value = new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Seoul' });
+try { $('pin').value = sessionStorage.getItem('ms_pin') || ''; } catch (e) {}
+$('print').onclick = () => print();
+$('load').onclick = async () => {
+  const msg = $('msg'); msg.textContent = '불러오는 중…'; $('out').innerHTML = '';
+  try {
+    const u = `${ENDPOINT}?action=report&date=${encodeURIComponent($('date').value)}&type=${$('type').value}&pin=${encodeURIComponent($('pin').value)}`;
+    const d = await (await fetch(u)).json();
+    if (!d.ok) throw new Error(d.error || '불러오기 실패');
+    try { sessionStorage.setItem('ms_pin', $('pin').value); } catch (e) {}
+    msg.textContent = d.records.length ? `${d.records.length}건` : '';
+    if (!d.records.length) { $('out').innerHTML = '<p class="empty">해당 날짜에 기록이 없습니다.</p>'; return; }
+    $('out').innerHTML = d.records.map(r => sheet(r, d.type, d.docno)).join('');
+  } catch (e) { msg.textContent = e.message; }
+};
+function sheet(r, type, docno) {
+  const groups = [];
+  r.items.forEach(it => { let g = groups.find(x => x.g === it.g); if (!g) groups.push(g = { g: it.g, items: [] }); g.items.push(it); });
+  const body = groups.map(g => g.items.map((it, i) => `<tr>${i === 0 ? `<td class="g" rowspan="${g.items.length + (r.etc && r.etc[g.g] ? 1 : 0)}">${esc(g.g)}</td>` : ''}
+    <td>${esc(it.label)}</td><td class="c ${it.r}">${R[it.r] || ''}</td><td>${esc(it.note)}</td></tr>`).join('') +
+    (r.etc && r.etc[g.g] ? `<tr><td>기타</td><td class="c">-</td><td>${esc(r.etc[g.g])}</td></tr>` : '')).join('');
+  const title = type === 'patrol' ? '중대재해예방 일일 점검 체크리스트' : '3정5행 점검표';
+  return `<div class="sheet">
+    <div class="hd"><img src="${LOGO}" alt="㈜엠솔루션"><div class="r">안전보건팀<br>${esc(docno)}</div></div>
+    <h2>${title}</h2>
+    <table class="meta"><tr><th>사업장명</th><td>㈜엠솔루션</td><th>점검 구역</th><td>${esc(TEAMS[r.team] || r.team)}</td></tr>
+      <tr><th>점검 일시</th><td>${esc(r.time)}</td><th>점검자</th><td>${esc(r.inspector)}${r.sign ? `<div class="sign"><img src="${r.sign}" alt="서명"></div>` : ''}</td></tr></table>
+    <div style="height:8px"></div>
+    <table><tr><th>구분</th><th>점검사항</th><th style="width:10%">결과</th><th style="width:30%">비고 (불량 내용)</th></tr>${body}</table>
+    <div class="foot">※ 본 문서는 QR 전자 점검기록(제출 시각 서버 자동 기록, 점검자 전자서명)을 출력한 것이며 원본은 회사 구글 시트에 보관됨 · 출력일시 ${new Date().toLocaleString('ko-KR')}</div>
+  </div>`;
+}
+</script>
+</body>
+</html>
