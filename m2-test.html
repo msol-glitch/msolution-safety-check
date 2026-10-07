@@ -170,6 +170,31 @@
   @media (max-width:1100px){.g3{grid-template-columns:1fr 1fr}.g4{grid-template-columns:1fr 1fr}}
   @media (max-width:900px){.app{display:block}.rail{position:static;height:auto}.g2,.g3,.gpos,.g4{grid-template-columns:1fr}}
   .cv{display:flex;flex-direction:column;min-height:0}
+  .hl{display:grid;grid-template-columns:minmax(0,1fr) clamp(330px,27vw,460px);gap:12px}
+  .hcol,.hside{display:flex;flex-direction:column;gap:12px;min-width:0}
+  .poscard{background:linear-gradient(150deg,#14213A,#1E3A6B);color:#E8EDF6;border:0}
+  .poscard .ph{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;margin-bottom:8px}
+  .poscard .pl{width:100%;font-size:10.5px;letter-spacing:.16em;color:#F2B27A;font-weight:800}
+  .poscard h2{margin:0;font-size:19px;color:#fff;font-weight:900}
+  .poscard .ph small{color:#9DABC4;font-size:11.5px;margin-left:auto}
+  .poscard .hb>span{color:#C7D2E4}.poscard .hb em{color:#fff}.poscard .hbt b{color:#fff}
+  .poscard .clock{background:rgba(255,255,255,.08)}
+  .aicard{border:2px dashed #0F9F8F;background:linear-gradient(180deg,#F0FBF9,#fff 40%)}
+  .aih{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+  .aih h2{margin:0;font-size:15px}
+  .aitag{background:#0F9F8F;color:#fff;font-weight:900;font-size:11px;border-radius:6px;padding:2px 7px;letter-spacing:.08em}
+  .led{width:11px;height:11px;border-radius:50%;background:#94A3B8;margin-left:auto}
+  .led.on{background:#22C55E;box-shadow:0 0 0 3px rgba(34,197,94,.25),0 0 10px #22C55E;animation:blink 1.1s ease-in-out infinite}
+  #aiState{font-size:12px;color:#0F766E}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+  @media (prefers-reduced-motion:reduce){.led.on{animation:none}}
+  @media (max-width:1300px){.hl{grid-template-columns:1fr}}
+  @media (max-width:1700px){.hb{grid-template-columns:118px 1fr}.hb em{width:44px}
+    .cv table th,.cv table td{font-size:11px;padding:3px 3px;white-space:nowrap}
+    .pr{grid-template-columns:78px 1fr 84px!important}.pr .n{font-size:11.5px}
+    .card h2{font-size:13px}.card h2 small{font-size:11px}
+    #todayTbl th:nth-child(2),#todayTbl th:nth-child(3),#todayTbl td:nth-child(2),#todayTbl td:nth-child(3){display:none}
+    .hbt i{max-width:58%}}
   .hbars{display:flex;flex-direction:column;gap:8px;flex:1;justify-content:space-around;min-height:0}
   .hb{display:grid;grid-template-columns:150px 1fr;align-items:center;gap:10px;font-size:12.5px}
   .hb>span{color:var(--sub);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -179,13 +204,17 @@
   .hbt b{font-size:12px;white-space:nowrap}
   .cv table th,.cv table td{padding:5px 6px;font-size:12px}
   /* 한 화면 모드: PC(가로 1200·세로 700 이상) 처음 화면은 스크롤 없이 */
-  @media (min-width:1200px) and (min-height:700px){
+  @media (min-width:1300px) and (min-height:700px){
     body.dash{overflow:hidden}
     body.dash .app{height:100vh}
     body.dash main{height:100vh;display:flex;flex-direction:column;padding:14px 18px;overflow:hidden}
     body.dash .topline{margin-bottom:10px}
     body.dash .topline h1{font-size:19px}
-    body.dash #home{flex:1;min-height:0;display:flex;flex-direction:column;gap:10px}
+    body.dash #home{flex:1;min-height:0;display:flex;flex-direction:column}
+    body.dash .hl{flex:1;min-height:0;gap:10px}
+    body.dash .hcol,body.dash .hside{min-height:0;gap:10px}
+    body.dash .hside .card{flex:1 1 0}
+    body.dash .hside .poscard{flex:1.05 1 0}
     body.dash .g4,body.dash .g3,body.dash .gpos{margin:0}
     body.dash .rw{flex:1;min-height:0}
     body.dash .ck{padding:9px 14px}
@@ -204,13 +233,58 @@
     .nav a{padding:7px 10px}
     .nav .grp{margin:6px 6px 2px}
   }
-  @media (min-width:1200px) and (max-height:900px){.ceo ul{display:none}
+  @media (min-width:1300px) and (max-height:900px){.ceo ul{display:none}
     body.dash .pr .who,body.dash .ck .d,body.dash .cv .note{display:none}
     body.dash .ck .v{font-size:21px}
     body.dash .cv table th,body.dash .cv table td{padding:3px 6px}
     body.dash .tl div:nth-child(n+3){display:none}
     body.dash .pr{grid-template-columns:90px 1fr 92px}}
-  @media print{.rail,.testbar,.topline{display:none!important}.app{display:block}main{padding:0}body{background:#fff}}
+  /* 월간 체크시트 (규칙 ①, 2026-10-04 확정) */
+  @page land{size:A4 landscape;margin:7mm}
+  @page land3{size:A3 landscape;margin:10mm}
+  .msheet.a3{page:land3;font-size:12px}
+  .msheet.a3 .mh h2{font-size:22px}.msheet.a3 .mh .m{font-size:13px}.msheet.a3 .mh img{height:32px}
+  .msheet.a3 .appr th,.msheet.a3 .appr td{width:24mm;font-size:12px}.msheet.a3 .appr td{height:18mm}
+  .msheet.a3 .mt th,.msheet.a3 .mt td{font-size:12px;height:8mm}
+  .msheet.a3 .mt sup{font-size:8px}
+  .msheet.a3 .mt tr.nm td{height:24mm}.msheet.a3 .mt tr.nm td span{font-size:11px}
+  .msheet.a3 .mt tr.sg td{height:22mm}.msheet.a3 .mt tr.sg img{width:20mm;height:7mm}
+  .msheet.a3 .act th,.msheet.a3 .act td{font-size:11.5px;padding:3px 5px}
+  .msheet.a3 .mf{font-size:11px}
+  .msheet{page:land;background:#fff;border:1px solid var(--line);padding:10px 12px;margin-top:14px;font-size:9px}
+  .msheet .mh{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid var(--brand);padding-bottom:4px;margin-bottom:5px}
+  .msheet .mh img{height:22px}
+  .msheet .mh h2{margin:2px 0 0;font-size:15px}
+  .msheet .mh .m{font-size:10px;color:var(--sub)}
+  .msheet .appr{border-collapse:collapse;width:auto}
+  .msheet .appr th,.msheet .appr td{border:1px solid #64748B;width:17mm;text-align:center;padding:1px;font-size:9px;background:#fff;color:var(--ink)}
+  .msheet .appr th{background:#F1F5F9}
+  .msheet .appr td{height:13mm}
+  .msheet table.mt{table-layout:fixed;width:100%;border-collapse:collapse}
+  .msheet .mt th,.msheet .mt td{border:1px solid #94A3B8;padding:0;text-align:center;font-size:8.5px;height:5.4mm;line-height:1.1;overflow:hidden}
+  .msheet .mt th{background:#1E293B;color:#fff;font-weight:700}
+  .msheet .mt th.we,.msheet .mt td.we{background:#E5E7EB;color:#475569}
+  .msheet .mt td.lb{text-align:left;padding:0 3px;white-space:nowrap;text-overflow:ellipsis}
+  .msheet .mt td.gp{background:#F1F5F9;font-weight:700;writing-mode:vertical-rl;letter-spacing:1px}
+  .msheet .mt td.x{color:#B42318;font-weight:800}
+  .msheet .mt td.o{color:#1D4ED8}
+  .msheet .mt sup{font-size:6px}
+  .msheet .mt tr.nm td{height:17mm;vertical-align:top}
+  .msheet .mt tr.nm td span{writing-mode:vertical-rl;font-size:8px}
+  .msheet .mt tr.sg td{height:15mm;position:relative}
+  .msheet .mt tr.sg img{position:absolute;left:50%;top:50%;width:14mm;height:5mm;object-fit:contain;transform:translate(-50%,-50%) rotate(-90deg)}
+  .msheet .mt tr.ex td{background:#F8FAFC;font-weight:700}
+  .msheet .act{margin-top:5px}
+  .msheet .act th,.msheet .act td{border:1px solid #94A3B8;font-size:8.5px;padding:2px 3px}
+  .msheet .act th{background:#334155;color:#fff}
+  .msheet .mf{margin-top:4px;font-size:8px;color:var(--sub);display:flex;justify-content:space-between}
+  .msheet .p2{break-before:page}
+  @media print{body.p-tbm main>*:not(#tbmView),body.p-tbm #tbmView>*:not(#tbmDocs),body.p-tbm .rail{display:none!important}body.p-tbm .app,body.p-tbm main{display:block;padding:0;background:none}
+    .tbmdoc{page-break-after:always}}
+  @media print{body.p-month main>*:not(#folder),body.p-month #folder>*:not(#monthly),body.p-month .rail{display:none!important}body.p-month main,body.p-month .app{padding:0;margin:0;display:block}body:not(.p-month) #monthly{display:none}
+    .msheet{border:0;margin:0;padding:0;break-after:page}.msheet:last-child{break-after:auto}
+    .msheet .mt th,.msheet .mt .we,.msheet .act th,.msheet .gp{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+  @media print{.rail,.testbar,.topline{display:none!important}.app{display:block;background:none!important;min-height:0}main{padding:0}body{background:#fff}}
 </style>
 </head>
 <body>
@@ -233,34 +307,39 @@
   </div>
 
   <div id="home" class="hide">
-    <div class="g4" id="kpis"></div>
-    <div class="g3 rw">
-      <div class="card"><h2>오늘 해야 할 일 <small id="progNote"></small></h2><div class="prog" id="prog"></div></div>
-      <div class="card"><h2>이번 달 불량 Top 5 <small>순회 + 3정5행 · 건</small></h2><div class="cv" id="top5"><div class="wait">불러오는 중…</div></div></div>
-      <div class="card"><h2>오늘 점검 현황 <small>팀별</small></h2><div class="cv" id="todayTbl"></div></div>
+   <div class="hl">
+    <div class="hcol">
+     <div class="g4" id="kpis"></div>
+     <div class="g3 rw">
+      <div class="card"><h2>① 오늘 해야 할 일 <small id="progNote"></small></h2><div class="prog" id="prog"></div></div>
+      <div class="card"><h2>② 오늘 점검 현황 <small>팀별</small></h2><div class="cv" id="todayTbl"></div></div>
+      <div class="card"><h2>③ 이번 달 개선 필요 Top 5 <small>순회 + 3정5행 · 건</small></h2><div class="cv" id="top5"><div class="wait">불러오는 중…</div></div></div>
+     </div>
+     <div class="g3 rw">
+      <div class="card"><h2>④ 주간 점검 실시율 <small>최근 8주 · %</small></h2><div class="cv" id="weekly"><div class="wait">불러오는 중…</div></div></div>
+      <div class="card"><h2>⑤ 조치 완료 기간 <small>팀별 평균 일수</small></h2><div class="cv" id="lead"><div class="wait">불러오는 중…</div></div></div>
+      <div class="card"><h2>⑥ 라인별 TBM 누적 시간 <small>하반기 · 기준 12시간</small></h2><div class="cv" id="tbmChart"><div class="wait">불러오는 중…</div></div></div>
+     </div>
     </div>
-    <div class="g3 rw">
-      <div class="card"><h2>주간 점검 실시율 <small>최근 8주 · %</small></h2><div class="cv" id="weekly"><div class="wait">불러오는 중…</div></div></div>
-      <div class="card"><h2>조치 완료 기간 <small>팀별 평균 일수</small></h2><div class="cv" id="lead"><div class="wait">불러오는 중…</div></div></div>
-      <div class="card"><h2>라인별 TBM 누적 시간 <small>하반기 · 기준 12시간</small></h2><div class="cv"><div class="wait">TBM 기능(v6) 연결 후 표시됩니다</div></div></div>
-    </div>
-    <div class="gpos rw">
-      <div class="card">
-        <h2>업계 대비 우리 위치 <small title="업종 평균 재해율은 고용노동부 산업재해 현황(업종·규모별)을 연 1회 반영 예정. 점검 실시율 = 평일 기준 팀별 순회점검·3정5행 실시 비율(휴무일 미반영).">제조업 · 50인 미만 ⓘ</small></h2>
-        <div class="cv" id="pos"><div class="wait">불러오는 중…</div></div>
-        <div class="clock">
-          <div><span class="live"></span><b id="clk">--</b></div>
-          <div class="up">데이터 갱신 <b id="upd">--:--:--</b> · 5분마다 자동 · 다음 <b id="nxt">5:00</b></div>
-        </div>
+    <div class="hside">
+     <div class="card poscard">
+      <div class="ph"><span class="pl">SAFETY POSITION</span><h2>업계 대비 우리의 안전 현위치</h2><small title="업종 평균 재해율은 고용노동부 산업재해 현황(업종·규모별)을 연 1회 반영 예정. 점검 실시율 = 평일 기준 팀별 순회점검·3정5행 실시 비율(휴무일 미반영).">제조업 · 50인 미만 ⓘ</small></div>
+      <div class="cv" id="pos"><div class="wait">불러오는 중…</div></div>
+      <div class="clock">
+        <div><span class="live"></span><b id="clk">--</b></div>
+        <div class="up">갱신 <b id="upd">--:--:--</b> · 5분 자동 · 다음 <b id="nxt">5:00</b></div>
       </div>
-      <div class="card">
-        <h2>데이터 학습 현황 <small>누적 기록 · 발견 패턴</small></h2>
-        <div class="cv" id="learn"><div class="wait">불러오는 중…</div></div>
-      </div>
+     </div>
+     <div class="card aicard">
+      <div class="aih"><span class="aitag">AI</span><h2>데이터 학습 현황</h2><span class="led" id="aiLed"></span><b id="aiState">대기</b></div>
+      <div class="cv" id="learn"><div class="wait">불러오는 중…</div></div>
+     </div>
     </div>
+   </div>
   </div>
 
   <div id="actionsView" class="hide"></div>
+  <div id="tbmView" class="hide"></div>
   <div id="soonView" class="hide"></div>
 
   <div id="folder" class="hide">
@@ -274,11 +353,13 @@
       <button class="btn ghost" data-print="list">목록 인쇄</button>
       <button class="btn ghost" data-print="detail">상세 인쇄</button>
       <button class="btn orange" data-print="all">전체 인쇄</button>
+      <button class="btn" id="mbtn" style="background:#0F9F8F">월간 체크시트</button>
     </div>
     <p class="err" id="err"></p>
     <div class="sum" id="sum"></div>
     <div id="listDoc"></div>
     <div id="details"></div>
+    <div id="monthly"></div>
   </div>
 </main>
 </div>
@@ -288,7 +369,7 @@ const ENDPOINT = 'https://script.google.com/macros/s/AKfycbyk3NwZ25Kdqh1wdc2jvld
 const LOGO = 'data:image/png;base64,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';
 const BASE = location.href.replace(/[^/]*([?#].*)?$/, '');
 const TEAMS = ['조립1팀', '조립2팀', '조립3팀', '도장팀'];
-const R = { O: '양호', X: '불량', NA: '해당없음', '-': '미체크' };
+const R = { O: '양호', X: '개선 필요', NA: '해당없음', '-': '미체크' };
 const ICON = {
   dust: '<path d="M4 20h16M6 20V9l6-5 6 5v11M9 13h6M9 16h6"/>',
   patrol: '<path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/>',
@@ -319,12 +400,13 @@ const CEO = {
   name: '이 민 희'
 };
 const NO_ACCIDENT_SINCE = '';      // 무재해 기준일 (예: '2025-08-22'), 비어 있으면 '기준일 입력 필요'
+const DUST_CYCLE = 30;          // 집진기 청소 주기(일) — 2026-10-07 대표 지시: 월 1회(30일)
 const HEADCOUNT = '직접인원 27명 · 4개 팀 9개 라인';
 const NAV = [
   { grp: '자주 쓰는 점검' },
   { key: '5s', name: '3정5행 점검', ic: ICON['5s'] },
   { key: 'patrol', name: '순회점검', ic: ICON.patrol },
-  { key: 'tbm', name: 'TBM', ic: '<circle cx="8" cy="9" r="3"/><circle cx="16" cy="9" r="3"/><path d="M3 20c0-3 2.5-5 5-5s5 2 5 5M11 20c0-3 2.5-5 5-5s5 2 5 5"/>', soon: 'v6' },
+  { key: 'tbm', name: 'TBM', ic: '<circle cx="8" cy="9" r="3"/><circle cx="16" cy="9" r="3"/><path d="M3 20c0-3 2.5-5 5-5s5 2 5 5M11 20c0-3 2.5-5 5-5s5 2 5 5"/>' },
   { key: 'dust', name: '집진기 청소', ic: ICON.dust },
   { key: 'actions', name: '조치관리', ic: '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 0 0 5.4-5.4l-2.4 2.4-2.6-.4-.4-2.6z"/>' },
   { grp: '대표자 전용 · 별도 PIN' },
@@ -361,7 +443,7 @@ async function start() {
   loadAnalytics();
 }
 function showLock(msg) {
-  ['home', 'folder', 'actionsView', 'soonView'].forEach(id => $(id).classList.add('hide'));
+  ['home', 'folder', 'actionsView', 'soonView', 'tbmView'].forEach(id => $(id).classList.add('hide'));
   $('lock').classList.remove('hide'); $('lockErr').textContent = msg || ''; $('pin').focus();
 }
 $('enter').onclick = () => { PIN = $('pin').value.trim(); start(); };
@@ -371,9 +453,10 @@ window.onhashchange = () => SUM && route();
 function route() {
   const key = location.hash.slice(1);
   document.body.classList.remove('dash');
-  ['home', 'folder', 'actionsView', 'soonView'].forEach(id => $(id).classList.add('hide'));
+  ['home', 'folder', 'actionsView', 'soonView', 'tbmView'].forEach(id => $(id).classList.add('hide'));
   renderNav(key);
   if (['dust', 'patrol', '5s'].indexOf(key) >= 0) { $('pageTitle').textContent = (FOLDERS.find(f => f.key === key) || {}).name; return openFolder(key); }
+  if (key === 'tbm') { $('pageTitle').textContent = 'TBM (작업 전 안전회의)'; return renderTbm(); }
   if (key === 'actions') { $('pageTitle').textContent = '조치관리'; return renderActions(); }
   const n = NAV.find(x => x.key === key && (x.soon || x.off));
   if (n) { $('pageTitle').textContent = n.name; return renderSoon(n); }
@@ -387,7 +470,7 @@ function todayState() {
   const T = SUM.types, PR = SUM.patrolRoles || {};
   const patrol = TEAMS.filter(t => PR[t] && (PR[t]['안전관리자'] || PR[t]['안전보건관리책임자']));
   const fives = TEAMS.filter(t => T['5s'].todayTeams.indexOf(t) >= 0);
-  const dust = SUM.equipments.map(eq => { const d = daysSince(T.dust.lastBy[eq]); return { eq, d, ok: d != null && d < SUM.cycle }; });
+  const dust = SUM.equipments.map(eq => { const d = daysSince(T.dust.lastBy[eq]); return { eq, d, ok: d != null && d < DUST_CYCLE }; });
   return { patrol, fives, dust };
 }
 
@@ -398,6 +481,7 @@ function renderNav(cur) {
     if (k === '5s') return `<span class="bd ${s.fives.length === n ? 'ok' : 'w'}">${s.fives.length}/${n}</span>`;
     if (k === 'patrol') return `<span class="bd ${s.patrol.length === n ? 'ok' : 'w'}">${s.patrol.length}/${n}</span>`;
     if (k === 'dust') return s.dust.every(x => x.ok) ? '<span class="bd ok">정상</span>' : '<span class="bd w">청소 필요</span>';
+    if (k === 'tbm') { const t = tbmToday(); return t == null ? '<span class="bd n">연결 전</span>' : `<span class="bd ${t.size === 9 ? 'ok' : 'w'}">${t.size}/9</span>`; }
     if (k === 'actions') return SUM.open ? `<span class="bd w">진행 ${SUM.open}</span>` : '<span class="bd ok">0</span>';
     return '';
   };
@@ -411,11 +495,11 @@ function renderNav(cur) {
 function renderHome() {
   const now = kstNow(), s = todayState(), n = TEAMS.length, T = SUM.types;
   $('today').textContent = `${now.getFullYear()}년 ${now.getMonth() + 1}월 ${now.getDate()}일 (${WD[now.getDay()]}) · ${HEADCOUNT}`;
-  const done = s.patrol.length + s.fives.length + s.dust.filter(x => x.ok).length, all = n * 2 + s.dust.length;
+  const tt = tbmToday(), done = s.patrol.length + s.fives.length + s.dust.filter(x => x.ok).length + (tt ? tt.size : 0), all = n * 2 + s.dust.length + (tt ? 9 : 0);
   const pct = all ? Math.round(done / all * 100) : 0;
   const nad = NO_ACCIDENT_SINCE ? dayDiff(NO_ACCIDENT_SINCE, dstr(now)) : null;
   $('kpis').innerHTML = `
-    <div class="card ck"><div class="k">오늘 필수 업무 진척</div><div class="v">${pct}<small> %</small></div><div class="d">${num(done)} / ${num(all)}건 완료 · TBM은 v6 연결 후 포함</div></div>
+    <div class="card ck"><div class="k">오늘 필수 업무 진척</div><div class="v">${pct}<small> %</small></div><div class="d">${num(done)} / ${num(all)}건 완료${tt ? ' · TBM 포함' : ' · TBM은 서버 연결 후 포함'}</div></div>
     <div class="card ck"><div class="k">조치 진행</div><div class="v">${num(SUM.open)}<small> 건</small></div><div class="d">순회점검 ${num(SUM.openBy.patrol)}건 · 3정5행 ${num(SUM.openBy['5s'])}건</div></div>
     <div class="card ck"><div class="k">이번 달 점검 기록</div><div class="v">${num(T.patrol.month + T['5s'].month + T.dust.month)}<small> 건</small></div><div class="d">순회 ${num(T.patrol.month)} · 3정5행 ${num(T['5s'].month)} · 집진기 ${num(T.dust.month)}</div></div>
     <div class="card ck"><div class="k">무재해</div><div class="v">${nad == null ? '-' : num(nad)}<small> 일</small></div><div class="d">${NO_ACCIDENT_SINCE ? NO_ACCIDENT_SINCE + '부터' : '기준일 입력 필요'}</div></div>`;
@@ -425,16 +509,16 @@ function renderHome() {
   $('prog').innerHTML =
     bar('순회점검', '관리감독자·대표 중 1명 이상', s.patrol.length, n, `${s.patrol.length} / ${n}팀`) +
     bar('3정5행', '팀별', s.fives.length, n, `${s.fives.length} / ${n}팀`) +
-    bar('TBM', '라인별 · v6 연결 예정', 0, 9, '준비 중', 1) +
-    bar('집진기 청소', `주기 ${SUM.cycle}일`, s.dust.filter(x => x.ok).length, s.dust.length, s.dust.map(x => `${x.eq} ${x.d == null ? '기록없음' : x.ok ? 'D-' + (SUM.cycle - x.d) : '초과'}`).join(' · ')) +
-    bar('조치 진행', '미완료 불량', AN ? AN.acts.filter(a => a.status !== '미조치').length : 0, AN ? AN.acts.length : 0, dueToday == null ? '…' : `진행 ${dueToday}건`);
+    (tbmToday() == null ? bar('TBM', '라인별 · 서버 연결 전', 0, 9, '연결 전', 1) : bar('TBM', `라인별 · 오늘 ${num(tbmTodayMin())}분`, tbmToday().size, 9, `${tbmToday().size} / 9라인`)) +
+    bar('집진기 청소', `주기 ${DUST_CYCLE}일`, s.dust.filter(x => x.ok).length, s.dust.length, s.dust.map(x => `${x.eq} ${x.d == null ? '기록없음' : x.ok ? 'D-' + (DUST_CYCLE - x.d) : '초과'}`).join(' · ')) +
+    bar('조치 진행', '미완료 개선 건', AN ? AN.acts.filter(a => a.status !== '미조치').length : 0, AN ? AN.acts.length : 0, dueToday == null ? '…' : `진행 ${dueToday}건`);
   const PR = SUM.patrolRoles || {};
   const cell = v => v ? `<td class="c" style="color:var(--ok);font-weight:700">✔ ${esc(v)}</td>` : `<td class="c" style="color:var(--sub)">-</td>`;
   $('todayTbl').innerHTML = `<table><thead><tr><th>팀</th><th>관리자</th><th>책임자</th><th>순회</th><th>3정5행</th></tr></thead><tbody>
     ${TEAMS.map(t => { const x = PR[t] || {}, ok = x['안전관리자'] || x['안전보건관리책임자'], f = T['5s'].todayTeams.indexOf(t) >= 0;
       return `<tr><td class="c"><b>${t}</b></td>${cell(x['안전관리자'])}${cell(x['안전보건관리책임자'])}<td class="c" style="font-weight:700;color:${ok ? 'var(--ok)' : 'var(--bad)'}">${ok ? '실시' : '미실시'}</td><td class="c" style="font-weight:700;color:${f ? 'var(--ok)' : 'var(--bad)'}">${f ? '실시' : '미실시'}</td></tr>`; }).join('')}
     </tbody><tfoot><tr><td class="c">합계</td><td class="c">${TEAMS.filter(t => PR[t] && PR[t]['안전관리자']).length} / ${n}팀</td><td class="c">${TEAMS.filter(t => PR[t] && PR[t]['안전보건관리책임자']).length} / ${n}팀</td><td class="c">${s.patrol.length} / ${n}팀</td><td class="c">${s.fives.length} / ${n}팀</td></tr></tfoot></table>`;
-  if (AN) renderCharts();
+  if (AN) { renderCharts(); renderTbmChart(); }
 }
 
 /* ===== 분석 데이터: 최근 8주 + 지난달 1일부터 (읽기 전용) ===== */
@@ -450,9 +534,13 @@ async function loadAnalytics() {
     const acts = recs.flatMap(r => (r.actions || []).map(a => ({ ...a, found: r.time.slice(0, 10), area: r.area, kind: r.kind })))
       .filter(a => { const k = a.kind + a.found + a.area + a.label + a.note; return seen[k] ? false : (seen[k] = 1); });
     AN = { from, to, recs, acts, w8: dstr(w8) };
+    const hs = to.slice(5, 7) <= '06' ? to.slice(0, 4) + '-01-01' : to.slice(0, 4) + '-07-01';
+    try { AN.tbm = (await api(`action=tbm&from=${hs}&to=${to}`)).records; AN.tbmFrom = hs; } catch (e) { AN.tbm = null; }
   } catch (e) { AN = { err: e.message }; }
   if (!$('home').classList.contains('hide')) renderHome();
   if (!$('actionsView').classList.contains('hide')) renderActions();
+  if (!$('tbmView').classList.contains('hide')) renderTbm();
+  renderNav(location.hash.slice(1));
 }
 
 function workdays(a, b) { const out = []; const d = new Date(a + 'T00:00:00'), e = new Date(b + 'T00:00:00'); for (; d <= e; d.setDate(d.getDate() + 1)) if (d.getDay() % 6) out.push(dstr(d)); return out; }
@@ -476,7 +564,7 @@ function renderCharts() {
   }));
   const repLabels = new Set(Object.keys(rep).filter(k => rep[k] >= 3).map(k => k.split('|')[1]));
   const top = Object.entries(cnt).sort((a, b) => b[1] - a[1]).slice(0, 5);
-  if (!top.length) $('top5').innerHTML = emptyMsg('이번 달 불량 기록이 없습니다');
+  if (!top.length) $('top5').innerHTML = emptyMsg('이번 달 개선 필요 기록이 없습니다');
   else {
     const mx = top[0][1];
     $('top5').innerHTML = `<div class="hbars">${top.map(([l, v]) => `<div class="hb"><span title="${esc(l)}">${esc(l)}</span><div class="hbt"><i style="width:${Math.max(4, Math.round(v / mx * 100))}%;background:${repLabels.has(l) ? 'var(--s2)' : 'var(--s1)'}"></i><b>${num(v)}${repLabels.has(l) ? ' · 반복' : ''}</b></div></div>`).join('')}</div>
@@ -530,6 +618,10 @@ function renderCharts() {
     acc += AN.recs.filter(r => { const d = r.time.slice(0, 10); return d >= dstr(m) && d <= dstr(e); }).length; cum.push(acc); });
   const tips = patterns(rep, s28);
   const mxc = Math.max(1, acc);
+  const d7 = new Date(today + 'T00:00:00'); d7.setDate(d7.getDate() - 6);
+  const recent = AN.recs.filter(r => r.time.slice(0, 10) >= dstr(d7)).length;
+  $('aiLed').className = 'led' + (recent ? ' on' : '');
+  $('aiState').textContent = recent ? `학습 중 · 최근 7일 ${num(recent)}건 반영` : '대기 · 최근 7일 새 기록 없음';
   $('learn').innerHTML = acc ? `<svg viewBox="0 0 440 120" width="100%" role="img" aria-label="누적 기록 수">
       <g class="gl"><line x1="34" y1="14" x2="430" y2="14"/><line x1="34" y1="100" x2="430" y2="100" stroke="var(--line)"/></g>
       <g class="ax"><text x="0" y="18">${num(mxc)}</text><text x="20" y="104">0</text>${weeks.map((w, i) => i % 2 === 0 || i === 7 ? `<text x="${34 + i * 54}" y="116">${w.lab}</text>` : '').join('')}</g>
@@ -537,7 +629,7 @@ function renderCharts() {
       <text class="lbl" x="${44 + 7 * 54 - 50}" y="30">${num(acc)}건</text></svg>
       <div class="lgd"><span><i style="background:var(--s1)"></i>최근 8주 누적 점검 기록 (순회·3정5행)</span></div>
       <div class="tl">${tips.length ? tips.map(t => `<div><span>${t[0]}</span>${esc(t[1])}</div>`).join('') : '<div><span>-</span>아직 반복 패턴이 발견되지 않았습니다 (기록이 쌓일수록 정확해집니다)</div>'}</div>
-      <div class="note">규칙·통계 기반 제안이며, 판단과 반영은 관리감독자·대표가 합니다.</div>`
+      <div class="note">AI 영역: 쌓인 기록을 규칙·통계로 자동 분석한 제안이며, 판단과 반영은 관리감독자·대표가 합니다.</div>`
     : emptyMsg('기록이 쌓이면 학습 그래프가 표시됩니다');
 }
 
@@ -548,7 +640,7 @@ function patterns(rep, s28) {
   const wd = {}; let tot = 0;
   AN.recs.filter(r => r.time.slice(0, 10) >= s28).forEach(r => (r.items || []).forEach(it => { if (it.r === 'X') { const d = new Date(r.time.slice(0, 10) + 'T00:00:00').getDay(); wd[d] = (wd[d] || 0) + 1; tot++; } }));
   const top = Object.entries(wd).sort((a, b) => b[1] - a[1])[0];
-  if (top && tot >= 5 && top[1] / tot >= 0.4) out.push(['요일', `불량의 ${Math.round(top[1] / tot * 100)}%가 ${WD[top[0]]}요일에 집중 → ${WD[top[0]]}요일 TBM 주제 배치 제안`]);
+  if (top && tot >= 5 && top[1] / tot >= 0.4) out.push(['요일', `개선 필요 건의 ${Math.round(top[1] / tot * 100)}%가 ${WD[top[0]]}요일에 집중 → ${WD[top[0]]}요일 TBM 주제 배치 제안`]);
   const late = AN.acts.filter(a => a.status === '미조치' && dayDiff(a.found, AN.to) >= 7);
   if (late.length) out.push(['지연', `7일 넘은 조치 진행 ${late.length}건 (가장 오래된 것 ${late.map(a => a.found).sort()[0]})`]);
   return out;
@@ -565,7 +657,7 @@ function renderActions() {
     <div>조회 기간<strong style="font-size:14px">${AN.from} ~ ${AN.to}</strong></div><div>원본<strong style="font-size:14px"><a href="${esc(SUM.sheets.hub)}" target="_blank" rel="noopener">조치관리 시트</a></strong></div></div>
     ${rows.length ? `<table><thead><tr><th style="width:11%">발견일</th><th style="width:9%">구분</th><th style="width:9%">팀</th><th>항목 · 내용</th><th>조치 내용</th><th style="width:9%">조치자</th><th style="width:11%">완료일</th><th style="width:9%">상태</th></tr></thead>
     <tbody>${rows.map(a => `<tr><td class="c">${esc(a.found)}</td><td class="c">${a.kind === 'patrol' ? '순회점검' : '3정5행'}</td><td class="c">${esc(a.area)}</td><td>${esc(a.label)}${a.note ? ' — ' + esc(a.note) : ''}</td><td>${esc(a.action)}</td><td class="c">${esc(a.by)}</td><td class="c">${esc(a.date)}</td>
-      <td class="c"><span class="pill ${a.status === '미조치' ? 'open' : 'done'}">${a.status === '미조치' ? '조치 진행' : esc(a.status)}</span></td></tr>`).join('')}</tbody>
+      <td class="c"><span class="pill ${a.status === '미조치' ? 'open' : 'done'}">${a.status === '미조치' ? '조치 진행' : esc(a.status === '미조치' ? '조치 진행' : a.status)}</span></td></tr>`).join('')}</tbody>
     <tfoot><tr><td colspan="7" class="c">합계</td><td class="c">${num(rows.length)}건</td></tr></tfoot></table>` : '<div class="doc"><p class="empty">조치 대상이 없습니다.</p></div>'}
     <p class="note">조치 입력·완료 처리는 지금처럼 원본 시트에서 합니다. (화면에서 바로 처리하는 기능은 다음 단계)</p>`;
 }
@@ -578,6 +670,112 @@ function renderSoon(n) {
     ceo3: ['반기 이행점검', '대표자 전용. 항목별 확인·조치 지시·전자서명·잠금·출력. v7에서 제작합니다.'],
     ppe: ['보호구 지급', '준비 중입니다.'], plt: ['PLT 관리대장', '준비 중입니다. (구매마감팀 소관 여부 확인 필요)'] }[n.key] || [n.name, '준비 중입니다.'];
   v.innerHTML = `<div class="panel"><h2>${n.lock ? '🔒 ' : ''}${esc(msg[0])}</h2><p>${esc(msg[1])}</p><a class="btn" href="#" style="text-decoration:none;display:inline-block;margin-top:8px">처음 화면으로</a></div>`;
+}
+
+
+
+/* ===== TBM (v6) ===== */
+const TBM_LN = { KA4: ['조립1팀', 'KA4 G/BOX'], CE1: ['조립1팀', 'CE1/CT1 G/BOX'], SV1G: ['조립1팀', 'SV1 G/BOX'], SV1U: ['조립1팀', 'SV1 UPR'],
+  GN7: ['조립2팀', 'GN7 G/BOX'], SP3G: ['조립2팀', 'SP3k G/BOX'], MIL: ['조립3팀', '밀링스코어링'], PAB: ['조립3팀', 'SP3k PAB 융착'], PNT: ['도장팀', '도장'] };
+function tbmToday() { if (!AN || !AN.tbm) return null; const t = AN.to; return new Set(AN.tbm.filter(r => r.time.slice(0, 10) === t).map(r => r.line)); }
+function tbmTodayMin() { const t = AN.to; return AN.tbm.filter(r => r.time.slice(0, 10) === t).reduce((a, r) => a + Number(r.minutes || 0), 0); }
+function renderTbmChart() {
+  const el = $('tbmChart'); if (!el) return;
+  if (!AN || AN.err) return;
+  if (!AN.tbm) { el.innerHTML = emptyMsg('서버에 TBM 저장 기능 연결 후 표시됩니다'); return; }
+  const h = {}; AN.tbm.forEach(r => h[r.line] = (h[r.line] || 0) + Number(r.minutes || 0) / 60);
+  el.innerHTML = `<div class="hbars">${Object.keys(TBM_LN).map(k => { const v = h[k] || 0;
+    return `<div class="hb"><span>${k}</span><div class="hbt"><i style="width:${Math.max(2, Math.min(100, v / 12 * 100))}%;background:${v >= 12 ? 'var(--s3)' : 'var(--s1)'}"></i><b>${v.toFixed(1)}h</b></div></div>`; }).join('')}</div>
+    <div class="note">${AN.tbmFrom} 이후 라인 누적 · 12시간 = 반기 정기교육 기준 (결근자는 개인별로 차감 필요)</div>`;
+}
+function renderTbm() {
+  const v = $('tbmView'); v.classList.remove('hide');
+  if (!AN) { v.innerHTML = emptyMsg('불러오는 중…'); return; }
+  if (!AN.tbm) { v.innerHTML = `<div class="panel"><h2>TBM 기록</h2><p>현장 QR에서 TBM을 제출하면 여기 쌓입니다. 지금은 저장 서버(Apps Script)에 TBM 기능이 연결되기 전입니다.</p></div>`; return; }
+  const ym = (v.dataset.ym || AN.to.slice(0, 7));
+  const rs = AN.tbm.filter(r => r.time.slice(0, 7) === ym).sort((a, b) => a.time.localeCompare(b.time));
+  const months = [...new Set(AN.tbm.map(r => r.time.slice(0, 7)).concat([AN.to.slice(0, 7)]))].sort().reverse();
+  const tot = rs.reduce((a, r) => a + Number(r.minutes || 0), 0);
+  v.innerHTML = `<div class="tool"><label>월 <select id="tbmYm">${months.map(m => `<option ${m === ym ? 'selected' : ''}>${m}</option>`).join('')}</select></label><span class="sp"></span>
+    <button class="btn" id="tbmPrint" style="background:#0F9F8F">월간 TBM 일지 인쇄 (라인별)</button></div>
+    <div class="sum"><div>TBM 실시<strong>${num(rs.length)}회</strong></div><div>총 진행 시간<strong>${num(tot)}분</strong></div><div>평균<strong>${rs.length ? (tot / rs.length).toFixed(1) : 0}분</strong></div><div>라인<strong>${new Set(rs.map(r => r.line)).size} / 9</strong></div></div>
+    ${rs.length ? `<table><thead><tr><th style="width:12%">기록번호</th><th style="width:12%">일시</th><th style="width:10%">라인</th><th>주제</th><th style="width:7%">시간</th><th style="width:8%">참석/결근</th><th style="width:9%">진행자</th><th>의견</th></tr></thead>
+    <tbody>${rs.map(r => `<tr><td class="c">${esc(r.recNo)}</td><td class="c">${esc(r.time)}</td><td class="c">${esc((TBM_LN[r.line] || [, r.line])[1])}</td><td>${esc(r.topicText)}</td><td class="c">${num(r.minutes)}분</td><td class="c">${num(r.attend)} / ${num(r.absent)}</td><td class="c">${esc(r.leader)}</td><td>${esc(r.opinion)}</td></tr>`).join('')}</tbody>
+    <tfoot><tr><td colspan="4" class="c">합계 ${num(rs.length)}회</td><td class="c">${num(tot)}분</td><td colspan="3"></td></tr></tfoot></table>` : '<div class="doc"><p class="empty">이 달 TBM 기록이 없습니다.</p></div>'}
+    <div id="tbmDocs"></div>`;
+  $('tbmYm').onchange = e => { v.dataset.ym = e.target.value; renderTbm(); };
+  $('tbmPrint').onclick = () => { $('tbmDocs').innerHTML = Object.keys(TBM_LN).filter(k => rs.some(r => r.line === k)).map(k => tbmDoc(k, ym, rs.filter(r => r.line === k))).join('') || ''; if (!$('tbmDocs').innerHTML) return; document.body.className = 'p-tbm'; print(); };
+}
+function tbmDoc(k, ym, rs) {
+  const tot = rs.reduce((a, r) => a + Number(r.minutes || 0), 0);
+  return `<div class="doc tbmdoc">${`<div class="hd"><img src="${LOGO}" alt="㈜엠솔루션"><div class="r">안전보건팀<br>문서번호 MS-SF-07</div></div>`}
+    <h2>TBM(작업 전 안전회의) 일지 · ${esc(TBM_LN[k][0])} ${esc(TBM_LN[k][1])} · ${ym.replace('-', '년 ')}월</h2>
+    <table class="meta"><tr><th>사업장명</th><td>㈜엠솔루션</td><th>구분</th><td>위험성평가 결과 공유 (작업 전 안전교육)</td></tr></table><div style="height:6px"></div>
+    <table><thead><tr><th style="width:9%">일자</th><th style="width:11%">시간</th><th>오늘의 안전 주제 (위험성평가 자동 3개)</th><th style="width:9%">참석/결근</th><th style="width:12%">결근자</th><th style="width:11%">진행자</th><th style="width:11%">서명</th></tr></thead>
+    <tbody>${rs.map(r => `<tr><td class="c">${r.time.slice(5, 10)}</td><td class="c">${esc(r.start)}~${esc(r.end)}<br>${num(r.minutes)}분</td><td>${esc(r.topicText)}<div style="font-size:10px;color:var(--sub)">${esc(r.recNo)}</div></td><td class="c">${num(r.attend)} / ${num(r.absent)}</td><td class="c">${esc(r.absentNames)}</td><td class="c">${esc(r.leader)}</td><td class="c sign">${r.sign ? `<img src="${r.sign}" alt="서명" style="height:30px">` : ''}</td></tr>`).join('')}</tbody>
+    <tfoot><tr><td colspan="2" class="c">합계 ${num(rs.length)}회</td><td>총 ${num(tot)}분 (${(tot / 60).toFixed(1)}시간)</td><td colspan="4"></td></tr></tfoot></table>
+    <h3 style="font-size:13px;margin:10px 0 4px">근로자 확인 (월 1회 · 친필)</h3>
+    <table><thead><tr><th style="width:22%">이름</th><th>확인 문구</th><th style="width:20%">서명</th></tr></thead><tbody>
+    ${Array.from({ length: 6 }, () => '<tr><td style="height:9mm"></td><td style="font-size:11px">위 기간 TBM에 참석하여 안전 주제(위험성평가 결과)를 공유받았습니다.</td><td></td></tr>').join('')}</tbody></table>
+    <div class="foot">※ 시스템 기록(시작·종료 시각 서버 자동 기록, 진행자 전자서명) 요약본 · 참석자 개인 서명은 작업일보 TBM란 원본 · 출력일시 ${new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })}</div></div>`;
+}
+
+/* ===== 월간 체크시트 (규칙 ① v3) ===== */
+$('mbtn').onclick = async () => {
+  if (CUR === 'dust') return $('err').textContent = '월간 체크시트는 순회점검·3정5행만 지원합니다.';
+  const ym = ($('from').value || ymd(new Date())).slice(0, 7), [Y, M] = ym.split('-').map(Number), last = new Date(Y, M, 0).getDate();
+  $('err').textContent = `${ym} 월간 체크시트 만드는 중…`;
+  try {
+    const d = await api(`action=report&type=${CUR}&from=${ym}-01&to=${ym}-${p2(last)}&area=${encodeURIComponent($('area').value)}`);
+    const teams = $('area').value ? [$('area').value] : TEAMS;
+    $('monthly').innerHTML = teams.map(t => monthSheet(d, t, Y, M, last)).join('');
+    $('err').textContent = '';
+    document.body.className = 'p-month'; print();
+  } catch (e) { $('err').textContent = e.message; }
+};
+function monthSheet(d, team, Y, M, last) {
+  const a3 = d.type === '5s';   // 3정5행 = A3 가로 (2026-10-07 대표 지시), 순회점검 = A4 가로
+  const rs = d.records.filter(r => r.area === team).sort((a, b) => a.time.localeCompare(b.time));
+  const day = r => +r.time.slice(8, 10);
+  // 항목(구분 순서 유지) + 신설/종료일
+  const items = [], seen = {};
+  rs.forEach(r => (r.items || []).forEach(it => { const k = it.id || it.label;
+    if (!seen[k]) { seen[k] = { k, g: it.g, label: it.label, first: day(r), lastD: day(r) }; items.push(seen[k]); } else seen[k].lastD = day(r); }));
+  const groups = []; items.forEach(x => { let g = groups.find(y => y.g === x.g); if (!g) groups.push(g = { g: x.g, rows: [] }); g.rows.push(x); });
+  const fd = rs.length ? day(rs[0]) : 1, ld = rs.length ? day(rs[rs.length - 1]) : last;
+  // 조치 번호 (발견 순)
+  const acts = []; rs.forEach(r => (r.actions || []).forEach(a => acts.push({ ...a, found: r.time.slice(0, 10), d: day(r), no: acts.length + 1 })));
+  // 날짜별 결과
+  const cell = {}, cnt = {}, who = {};
+  rs.forEach(r => { const dd = day(r); cnt[dd] = (cnt[dd] || 0) + 1; (who[dd] = who[dd] || []).push(r);
+    (r.items || []).forEach(it => { const k = (it.id || it.label) + '|' + dd, prev = cell[k];
+      cell[k] = prev === 'X' ? 'X' : it.r === 'X' ? 'X' : prev === 'O' ? 'O' : it.r; }); });
+  const days = Array.from({ length: last }, (_, i) => i + 1), wd = dd => new Date(Y, M - 1, dd).getDay();
+  const we = dd => (wd(dd) % 6 === 0 ? 'we' : '');
+  const mark = (x, dd) => { const v = cell[x.k + '|' + dd]; if (!v) return `<td class="${we(dd)}"></td>`;
+    if (v === 'X') { const nos = acts.filter(a => a.d === dd && (a.label === x.label)).map(a => a.no); return `<td class="x ${we(dd)}">×${nos.length ? `<sup>${nos.join(',')}</sup>` : ''}</td>`; }
+    return `<td class="${v === 'O' ? 'o' : ''} ${we(dd)}">${v === 'O' ? '○' : '-'}</td>`; };
+  const tag = x => (x.first > fd ? ` <small>(${M}/${x.first} 신설)</small>` : '') + (x.lastD < ld ? ` <small>(${M}/${x.lastD}까지)</small>` : '');
+  const body = groups.map(g => g.rows.map((x, i) => `<tr>${i === 0 ? `<td class="gp" rowspan="${g.rows.length}">${esc(g.g)}</td>` : ''}<td class="lb" title="${esc(x.label)}">${esc(x.label)}${tag(x)}</td>${days.map(dd => mark(x, dd)).join('')}</tr>`).join('')).join('');
+  const multi = days.some(dd => cnt[dd] > 1);
+  const name = dd => { const w = who[dd]; return w ? `<span>${esc(w[0].inspector)}${w.length > 1 ? ` 외 ${w.length - 1}` : ''}</span>` : ''; };
+  const sgn = dd => { const w = who[dd]; return w && w[0].sign ? `<img src="${w[0].sign}" alt="서명">` : ''; };
+  const head = `<div class="mh"><div><img src="${LOGO}" alt="㈜엠솔루션"><h2>${esc(d.name)} 월간 체크시트 · ${team}</h2><div class="m">${Y}년 ${M}월 · ${esc(d.docno)} · ○ 양호 × 개선 필요(숫자=조치 No) - 해당없음 · 빈칸 = 미기록(휴무는 관리감독자 수기 표기)</div></div>
+    <table class="appr"><tr><th>담당</th><th>검토</th><th>승인</th></tr><tr><td></td><td></td><td></td></tr><tr><td style="height:auto"></td><td style="height:auto">이성희</td><td style="height:auto">이민희</td></tr></table></div>`;
+  const grid = `<table class="mt"><colgroup><col style="width:${a3 ? 8 : 5}mm"><col style="width:${a3 ? 80 : 52}mm">${days.map(() => '<col>').join('')}</colgroup>
+    <thead><tr><th colspan="2">점검 항목 \\ 일자</th>${days.map(dd => `<th class="${we(dd)}">${dd}<br>${WD[wd(dd)]}</th>`).join('')}</tr></thead>
+    <tbody>${body || `<tr><td colspan="${last + 2}" style="height:20mm">이 달 기록이 없습니다</td></tr>`}
+    ${multi ? `<tr class="ex"><td colspan="2">점검 횟수 (2회 이상)</td>${days.map(dd => `<td class="${we(dd)}">${cnt[dd] > 1 ? cnt[dd] : ''}</td>`).join('')}</tr>` : ''}
+    <tr class="nm"><td colspan="2" style="vertical-align:middle">점검자</td>${days.map(dd => `<td class="${we(dd)}">${name(dd)}</td>`).join('')}</tr>
+    <tr class="sg"><td colspan="2">전자서명</td>${days.map(dd => `<td class="${we(dd)}">${sgn(dd)}</td>`).join('')}</tr></tbody></table>`;
+  const nItems = items.length + (multi ? 1 : 0);
+  const actTbl = acts.length ? `<table class="act"><thead><tr><th style="width:4%">No</th><th style="width:9%">발견일</th><th style="width:20%">항목</th><th>개선 필요 내용</th><th>조치</th><th style="width:8%">조치자</th><th style="width:9%">완료일</th><th style="width:8%">상태</th></tr></thead>
+    <tbody>${acts.map(a => `<tr><td class="c">${a.no}</td><td class="c">${a.found}</td><td>${esc(a.label)}</td><td>${esc(a.note)}</td><td>${esc(a.action)}</td><td class="c">${esc(a.by)}</td><td class="c">${esc(a.date)}</td><td class="c">${a.status === '미조치' ? '조치 진행' : esc(a.status === '미조치' ? '조치 진행' : a.status)}</td></tr>`).join('')}</tbody></table>` : '';
+  // 1쪽 실측: 항목+조치 행이 많으면 조치 이력을 2쪽으로
+  const split = acts.length && (nItems + acts.length > (a3 ? 34 : 30));
+  const foot = `<div class="mf"><span>※ 시스템 기록 요약본이며, 원본은 시스템 상세 기록(전자서명 포함)입니다.</span><span>출력일시 ${new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })}</span></div>`;
+  const cls = a3 ? 'msheet a3' : 'msheet';
+  return `<div class="${cls}">${head}${grid}${split ? foot + `</div><div class="${cls}">${head}<b style="font-size:11px">조치 이력 (${team} · ${Y}년 ${M}월)</b>${actTbl}` : actTbl}${foot}</div>`;
 }
 
 /* ===== 시계(초 단위) + 5분 자동 갱신 ===== */
@@ -641,25 +839,25 @@ function render() {
   const open = acts.filter(a => a.status === '미조치').length;
   const people = new Set(rs.map(r => r.inspector)).size;
   $('sum').innerHTML = `<div>조회 건수<strong>${num(rs.length)}건</strong></div>
-    <div class="${bad ? 'red' : ''}">${dust ? '이상 있음' : '불량 항목'}<strong>${num(bad)}건</strong></div>
-    <div class="${open ? 'red' : ''}">${dust ? '관리감독자 확인' : '미조치'}<strong>${dust ? num(rs.filter(r => r.confirm).length) + '건' : num(open) + '건'}</strong></div>
+    <div class="${bad ? 'red' : ''}">${dust ? '이상 있음' : '개선 필요 항목'}<strong>${num(bad)}건</strong></div>
+    <div class="${open ? 'red' : ''}">${dust ? '관리감독자 확인' : '조치 진행'}<strong>${dust ? num(rs.filter(r => r.confirm).length) + '건' : num(open) + '건'}</strong></div>
     <div>점검자<strong>${num(people)}명</strong></div>`;
   if (!rs.length) { $('listDoc').innerHTML = '<div class="doc"><p class="empty">해당 기간에 기록이 없습니다.</p></div>'; return; }
 
   const head = dust
     ? '<th style="width:5%">No</th><th style="width:15%">점검일시</th><th>설비</th><th>작업자</th><th style="width:9%">체크</th><th>특이사항·메모</th><th style="width:15%">관리감독자 확인</th>'
-    : '<th style="width:5%">No</th><th style="width:15%">점검일시</th><th style="width:9%">팀</th><th style="width:13%">점검자</th><th style="width:6%">양호</th><th style="width:6%">불량</th><th>불량 내용</th><th style="width:10%">조치</th>';
+    : '<th style="width:5%">No</th><th style="width:15%">점검일시</th><th style="width:9%">팀</th><th style="width:13%">점검자</th><th style="width:6%">양호</th><th style="width:7%">개선 필요</th><th>개선 필요 내용</th><th style="width:10%">조치</th>';
   const body = rs.map((r, i) => {
     if (dust) return `<tr class="row-link" data-i="${i}"><td class="c">${i + 1}</td><td class="c">${esc(r.time)}</td><td class="c">${esc(r.area)}</td><td class="c">${esc(r.inspector)}</td>
       <td class="c">${r.ok}/${r.total}</td><td class="${r.bad ? 'X' : ''}">${r.bad ? '이상 있음 · ' : ''}${esc(r.memo)}</td><td class="c">${esc(r.confirm || '-')}</td></tr>`;
     const a = r.actions || [], o = a.filter(x => x.status === '미조치').length;
     return `<tr class="row-link" data-i="${i}"><td class="c">${i + 1}</td><td class="c">${esc(r.time)}</td><td class="c">${esc(r.area)}</td><td class="c">${esc(r.inspector)}${r.role && r.role !== '기타' ? `<div style="font-size:11px;color:var(--sub)">${esc(r.role)}</div>` : ''}</td>
       <td class="n">${num(r.ok)}</td><td class="n ${r.bad ? 'X' : ''}">${num(r.bad)}</td><td>${esc(r.badText)}</td>
-      <td class="c">${a.length ? (o ? `<span class="pill open">미조치 ${o}</span>` : '<span class="pill done">완료</span>') : '-'}</td></tr>`;
+      <td class="c">${a.length ? (o ? `<span class="pill open">조치 진행 ${o}</span>` : '<span class="pill done">완료</span>') : '-'}</td></tr>`;
   }).join('');
   const foot = dust
     ? `<tr><td colspan="4" class="c">합계 ${num(rs.length)}건</td><td class="c">평균 ${(rs.reduce((s, r) => s + r.ok, 0) / rs.length).toFixed(1)}</td><td>이상 있음 ${num(bad)}건</td><td class="c">확인 ${num(rs.filter(r => r.confirm).length)}건</td></tr>`
-    : `<tr><td colspan="4" class="c">합계 ${num(rs.length)}건</td><td class="n">${num(rs.reduce((s, r) => s + Number(r.ok || 0), 0))}</td><td class="n">${num(bad)}</td><td>조치 대상 ${num(acts.length)}건</td><td class="c">미조치 ${num(open)}</td></tr>`;
+    : `<tr><td colspan="4" class="c">합계 ${num(rs.length)}건</td><td class="n">${num(rs.reduce((s, r) => s + Number(r.ok || 0), 0))}</td><td class="n">${num(bad)}</td><td>조치 대상 ${num(acts.length)}건</td><td class="c">조치 진행 ${num(open)}</td></tr>`;
   $('listDoc').innerHTML = `<div class="doc">${docHead()}
     <h2>${esc(DATA.name)} 기록 대장</h2>
     <table class="meta"><tr><th>사업장명</th><td>㈜엠솔루션</td><th>조회 기간</th><td>${periodText()}</td></tr>
@@ -679,10 +877,10 @@ function render() {
 function actionTable(rs) {
   const rows = rs.flatMap(r => (r.actions || []).map(a => ({ ...a, time: r.time, area: r.area })));
   if (!rows.length) return '';
-  return `<h3 style="margin:14px 0 6px;font-size:14px">불량 조치 이력</h3>
-    <table><thead><tr><th style="width:15%">발견일시</th><th style="width:9%">팀</th><th>항목 · 불량 내용</th><th>조치 내용</th><th style="width:9%">조치자</th><th style="width:11%">완료일</th><th style="width:8%">상태</th></tr></thead>
+  return `<h3 style="margin:14px 0 6px;font-size:14px">개선 조치 이력</h3>
+    <table><thead><tr><th style="width:15%">발견일시</th><th style="width:9%">팀</th><th>항목 · 개선 필요 내용</th><th>조치 내용</th><th style="width:9%">조치자</th><th style="width:11%">완료일</th><th style="width:8%">상태</th></tr></thead>
     <tbody>${rows.map(a => `<tr><td class="c">${esc(a.time)}</td><td class="c">${esc(a.area)}</td><td>${esc(a.label)} — ${esc(a.note)}</td><td>${esc(a.action)}</td><td class="c">${esc(a.by)}</td><td class="c">${esc(a.date)}</td>
-      <td class="c"><span class="pill ${a.status === '완료' ? 'done' : 'open'}">${esc(a.status)}</span></td></tr>`).join('')}</tbody></table>`;
+      <td class="c"><span class="pill ${a.status === '완료' ? 'done' : 'open'}">${esc(a.status === '미조치' ? '조치 진행' : a.status)}</span></td></tr>`).join('')}</tbody></table>`;
 }
 
 function docHead() { return `<div class="hd"><img src="${LOGO}" alt="㈜엠솔루션"><div class="r">안전보건팀<br>${esc(DATA.docno)}</div></div>`; }
@@ -717,8 +915,8 @@ function detailMerged(grp) {
       (extra ? `<tr><td>기타</td>${grp.map(() => '<td class="c">-</td>').join('')}<td>${esc(etc)}</td></tr>` : '');
   }).join('');
   const seen = {}, acts = grp.flatMap(r => r.actions || []).filter(a => { const k = a.label + '|' + a.note; return seen[k] ? false : (seen[k] = 1); });
-  const actTable = acts.length ? `<div style="height:8px"></div><table><tr><th>불량 항목</th><th>조치 내용</th><th style="width:12%">조치자</th><th style="width:13%">완료일</th><th style="width:9%">상태</th></tr>
-    ${acts.map(a => `<tr><td>${esc(a.label)}</td><td>${esc(a.action)}</td><td class="c">${esc(a.by)}</td><td class="c">${esc(a.date)}</td><td class="c">${esc(a.status)}</td></tr>`).join('')}</table>` : '';
+  const actTable = acts.length ? `<div style="height:8px"></div><table><tr><th>개선 필요 항목</th><th>조치 내용</th><th style="width:12%">조치자</th><th style="width:13%">완료일</th><th style="width:9%">상태</th></tr>
+    ${acts.map(a => `<tr><td>${esc(a.label)}</td><td>${esc(a.action)}</td><td class="c">${esc(a.by)}</td><td class="c">${esc(a.date)}</td><td class="c">${esc(a.status === '미조치' ? '조치 진행' : a.status)}</td></tr>`).join('')}</table>` : '';
   const w = Math.max(7, Math.floor(30 / grp.length));
   return `<div class="doc">${docHead()}
     <h2>중대재해예방 일일 점검 체크리스트</h2>
@@ -726,7 +924,7 @@ function detailMerged(grp) {
       <tr><th>점검 일자</th><td colspan="3">${esc(grp[0].time.slice(0, 10))}</td></tr>
       <tr>${grp.map(r => `<th>${esc(r.role && r.role !== '기타' ? r.role : '점검자')}</th><td>${esc(r.inspector)} · ${esc(r.time.slice(11))}${r.sign ? `<div class="sign"><img src="${r.sign}" alt="서명"></div>` : ''}</td>`).join('')}</tr></table>
     <div style="height:8px"></div>
-    <table><tr><th>구분</th><th>점검사항</th>${head.map(h => `<th style="width:${w}%">${esc(h)}</th>`).join('')}<th style="width:26%">비고 (불량 내용)</th></tr>${body}</table>
+    <table><tr><th>구분</th><th>점검사항</th>${head.map(h => `<th style="width:${w}%">${esc(h)}</th>`).join('')}<th style="width:26%">비고 (개선 필요 내용)</th></tr>${body}</table>
     ${actTable}${docFoot()}</div>`;
 }
 
@@ -742,14 +940,14 @@ function detail(r) {
   const dust = DATA.type === 'dust';
   const extraRows = dust ? `<tr><th>특이사항</th><td class="${r.bad ? 'X' : ''}">${r.bad ? '이상 있음' : '없음'}</td><th>관리감독자 확인</th><td>${esc(r.confirm || '-')}</td></tr>
     ${r.memo ? `<tr><th>메모</th><td colspan="3">${esc(r.memo)}</td></tr>` : ''}` : '';
-  const acts = (r.actions || []).length ? `<div style="height:8px"></div><table><tr><th>불량 항목</th><th>조치 내용</th><th style="width:12%">조치자</th><th style="width:13%">완료일</th><th style="width:9%">상태</th></tr>
-    ${r.actions.map(a => `<tr><td>${esc(a.label)}</td><td>${esc(a.action)}</td><td class="c">${esc(a.by)}</td><td class="c">${esc(a.date)}</td><td class="c">${esc(a.status)}</td></tr>`).join('')}</table>` : '';
+  const acts = (r.actions || []).length ? `<div style="height:8px"></div><table><tr><th>개선 필요 항목</th><th>조치 내용</th><th style="width:12%">조치자</th><th style="width:13%">완료일</th><th style="width:9%">상태</th></tr>
+    ${r.actions.map(a => `<tr><td>${esc(a.label)}</td><td>${esc(a.action)}</td><td class="c">${esc(a.by)}</td><td class="c">${esc(a.date)}</td><td class="c">${esc(a.status === '미조치' ? '조치 진행' : a.status)}</td></tr>`).join('')}</table>` : '';
   return `<div class="doc">${docHead()}
     <h2>${DATA.type === 'patrol' ? '중대재해예방 일일 점검 체크리스트' : esc(DATA.name) + '표'}</h2>
     <table class="meta"><tr><th>사업장명</th><td>㈜엠솔루션</td><th>${dust ? '설비' : '점검 구역'}</th><td>${esc(r.area)}</td></tr>
       <tr><th>점검 일시</th><td>${esc(r.time)}</td><th>${dust ? '작업자' : '점검자'}</th><td>${esc(r.inspector)}${r.role && r.role !== '기타' ? ` (${esc(r.role)})` : ''}${r.sign ? `<div class="sign"><img src="${r.sign}" alt="서명"></div>` : ''}</td></tr>${extraRows}</table>
     <div style="height:8px"></div>
-    <table><tr><th>구분</th><th>점검사항</th><th style="width:10%">결과</th><th style="width:30%">비고 (불량 내용)</th></tr>${body}</table>
+    <table><tr><th>구분</th><th>점검사항</th><th style="width:10%">결과</th><th style="width:30%">비고 (개선 필요 내용)</th></tr>${body}</table>
     ${acts}${docFoot()}</div>`;
 }
 
