@@ -170,6 +170,7 @@
   @media (max-width:1100px){.g3{grid-template-columns:1fr 1fr}.g4{grid-template-columns:1fr 1fr}}
   @media (max-width:900px){.app{display:block}.rail{position:static;height:auto}.g2,.g3,.gpos,.g4{grid-template-columns:1fr}}
   .cv{display:flex;flex-direction:column;min-height:0}
+  .bk{font-size:12px;font-weight:700;border-radius:999px;padding:4px 10px;background:#EEF2F7;color:var(--sub)}.bk.ok{background:#E2F3E8;color:#1D7A43}.bk.warn{background:#FDF0D8;color:#A86200}
   .hl{display:grid;grid-template-columns:minmax(0,1fr) clamp(330px,27vw,460px);gap:12px}
   .hcol,.hside{display:flex;flex-direction:column;gap:12px;min-width:0}
   .poscard{background:linear-gradient(150deg,#14213A,#1E3A6B);color:#E8EDF6;border:0}
@@ -279,6 +280,7 @@
   .msheet .act th{background:#334155;color:#fff}
   .msheet .mf{margin-top:4px;font-size:8px;color:var(--sub);display:flex;justify-content:space-between}
   .msheet .p2{break-before:page}
+  @media print{body.p-notice main>*:not(#noticeView),body.p-notice .rail,body.p-notice #noticeView .g2,body.p-notice #nPrint{display:none!important}body.p-notice .app,body.p-notice main{display:block;padding:0;background:none}}
   @media print{body.p-tbm main>*:not(#tbmView),body.p-tbm #tbmView>*:not(#tbmDocs),body.p-tbm .rail{display:none!important}body.p-tbm .app,body.p-tbm main{display:block;padding:0;background:none}
     .tbmdoc{page-break-after:always}}
   @media print{body.p-month main>*:not(#folder),body.p-month #folder>*:not(#monthly),body.p-month .rail{display:none!important}body.p-month main,body.p-month .app{padding:0;margin:0;display:block}body:not(.p-month) #monthly{display:none}
@@ -297,7 +299,7 @@
   <div class="tiny" id="railLinks"></div>
 </aside>
 <main>
-  <div class="topline"><div><h1 id="pageTitle">오늘의 안전경영 현황</h1><p id="today"></p></div><span class="testbar">시험본 · 기록 읽기 전용 (운영 m.html 그대로)</span></div>
+  <div class="topline"><div><h1 id="pageTitle">오늘의 안전경영 현황</h1><p id="today"></p></div><span><span class="bk" id="bkInfo" title="매일 새벽 2시 드라이브 사본 · 매주 월요일 엑셀 메일">백업 확인 중…</span> <button class="btn ghost sm" id="bkPc">💾 PC에 백업 받기</button> <span class="testbar">시험본</span></span></div>
 
   <div class="lock hide" id="lock">
     <b>관리자 PIN</b>
@@ -340,6 +342,7 @@
 
   <div id="actionsView" class="hide"></div>
   <div id="tbmView" class="hide"></div>
+  <div id="noticeView" class="hide"></div>
   <div id="soonView" class="hide"></div>
 
   <div id="folder" class="hide">
@@ -408,6 +411,7 @@ const NAV = [
   { key: 'patrol', name: '순회점검', ic: ICON.patrol },
   { key: 'tbm', name: 'TBM', ic: '<circle cx="8" cy="9" r="3"/><circle cx="16" cy="9" r="3"/><path d="M3 20c0-3 2.5-5 5-5s5 2 5 5M11 20c0-3 2.5-5 5-5s5 2 5 5"/>' },
   { key: 'dust', name: '집진기 청소', ic: ICON.dust },
+  { key: 'notice', name: '전달사항·발도장', ic: '<path d="M4 10v4h3l5 4V6L7 10z"/><path d="M16 9a4 4 0 010 6M18.5 6.5a8 8 0 010 11"/>' },
   { key: 'actions', name: '조치관리', ic: '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 0 0 5.4-5.4l-2.4 2.4-2.6-.4-.4-2.6z"/>' },
   { grp: '대표자 전용 · 별도 PIN' },
   { key: 'ceo1', name: '안전보건 관리 현황', ic: '<path d="M5 4h14v16H5z"/><path d="M9 8h6M9 12h6M9 16h3"/>', lock: 1, soon: 'v7' },
@@ -443,7 +447,7 @@ async function start() {
   loadAnalytics();
 }
 function showLock(msg) {
-  ['home', 'folder', 'actionsView', 'soonView', 'tbmView'].forEach(id => $(id).classList.add('hide'));
+  ['home', 'folder', 'actionsView', 'soonView', 'tbmView', 'noticeView'].forEach(id => $(id).classList.add('hide'));
   $('lock').classList.remove('hide'); $('lockErr').textContent = msg || ''; $('pin').focus();
 }
 $('enter').onclick = () => { PIN = $('pin').value.trim(); start(); };
@@ -453,9 +457,10 @@ window.onhashchange = () => SUM && route();
 function route() {
   const key = location.hash.slice(1);
   document.body.classList.remove('dash');
-  ['home', 'folder', 'actionsView', 'soonView', 'tbmView'].forEach(id => $(id).classList.add('hide'));
+  ['home', 'folder', 'actionsView', 'soonView', 'tbmView', 'noticeView'].forEach(id => $(id).classList.add('hide'));
   renderNav(key);
   if (['dust', 'patrol', '5s'].indexOf(key) >= 0) { $('pageTitle').textContent = (FOLDERS.find(f => f.key === key) || {}).name; return openFolder(key); }
+  if (key === 'notice') { $('pageTitle').textContent = '전달사항·발도장'; return renderNotice(); }
   if (key === 'tbm') { $('pageTitle').textContent = 'TBM (작업 전 안전회의)'; return renderTbm(); }
   if (key === 'actions') { $('pageTitle').textContent = '조치관리'; return renderActions(); }
   const n = NAV.find(x => x.key === key && (x.soon || x.off));
@@ -488,7 +493,7 @@ function renderNav(cur) {
   $('nav').innerHTML = `<a href="#" class="${cur ? '' : 'on'}"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9H3z"/><path d="M9 20v-6h6v6"/></svg>처음 화면<span></span></a>` +
     NAV.map(x => x.grp ? `<div class="grp">${x.grp}</div>` :
     `<a href="#${x.key}" class="${x.key === cur ? 'on' : ''} ${x.off ? 'soon' : ''}"><svg viewBox="0 0 24 24">${x.ic}</svg>${x.name}${x.lock ? '<span class="bd n">🔒</span>' : x.soon ? `<span class="bd n">${x.soon}</span>` : badge(x.key) || '<span></span>'}</a>`).join('');
-  if (SUM) $('railLinks').innerHTML = [['QR 라벨 (팀별)', 'l.html'], ['QR 라벨 (집진기)', 'qr.html'], ['원본 시트 · 점검', SUM.sheets.hub], ['원본 시트 · 집진기', SUM.sheets.dust]]
+  if (SUM) $('railLinks').innerHTML = [['📖 사용 설명서', 'guide.html#pc'], ['QR 라벨 (팀별)', 'l.html'], ['QR 라벨 (집진기)', 'qr.html'], ['원본 시트 · 점검', SUM.sheets.hub], ['원본 시트 · 집진기', SUM.sheets.dust]]
     .map(([t, u]) => `<a href="${esc(u)}" target="_blank" rel="noopener">${t}</a>`).join(' · ');
 }
 
@@ -536,6 +541,8 @@ async function loadAnalytics() {
     AN = { from, to, recs, acts, w8: dstr(w8) };
     const hs = to.slice(5, 7) <= '06' ? to.slice(0, 4) + '-01-01' : to.slice(0, 4) + '-07-01';
     try { AN.tbm = (await api(`action=tbm&from=${hs}&to=${to}`)).records; AN.tbmFrom = hs; } catch (e) { AN.tbm = null; }
+    try { const b = (await api('action=backupinfo')).logs[0]; $('bkInfo').innerHTML = b ? `${b.err ? '⚠' : '✔'} 마지막 백업 ${esc(b.time.slice(5))}` : '⚠ 백업 기록 없음'; $('bkInfo').className = 'bk ' + (b && !b.err ? 'ok' : 'warn'); }
+    catch (e) { $('bkInfo').textContent = '백업 설정 전'; $('bkInfo').className = 'bk warn'; }
   } catch (e) { AN = { err: e.message }; }
   if (!$('home').classList.contains('hide')) renderHome();
   if (!$('actionsView').classList.contains('hide')) renderActions();
@@ -673,6 +680,69 @@ function renderSoon(n) {
 }
 
 
+
+
+
+/* ===== PC 백업 (엑셀 1개 파일로 전체 기록 내려받기, 서명 이미지는 제외) ===== */
+$('bkPc').onclick = async () => {
+  const b = $('bkPc'); b.disabled = true; b.textContent = '백업 만드는 중…';
+  try {
+    if (!window.XLSX) await new Promise((ok, no) => { const s = document.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js'; s.onload = ok; s.onerror = no; document.head.appendChild(s); });
+    const to = dstr(kstNow()), from = '2025-01-01';
+    const [pa, fs, du] = await Promise.all(['patrol', '5s', 'dust'].map(t => api(`action=report&type=${t}&from=${from}&to=${to}`)));
+    let tb = []; try { tb = (await api(`action=tbm&from=${from}&to=${to}`)).records; } catch (e) {}
+    const rec = rs => rs.map(r => ({ 일시: r.time, 구역: r.area, 점검자: r.inspector, 양호: r.ok, 개선필요: r.bad, 해당없음: r.na, 개선필요내용: r.badText,
+      서명: r.sign ? '있음' : '', 항목상세: (r.items || []).map(i => `${i.label}:${i.r}${i.note ? '(' + i.note + ')' : ''}`).join(' / ') }));
+    const acts = [...pa.records.map(r => ['순회점검', r]), ...fs.records.map(r => ['3정5행', r])].flatMap(([k, r]) => (r.actions || []).map(a =>
+      ({ 구분: k, 발견일시: r.time, 팀: r.area, 항목: a.label, 내용: a.note, 조치: a.action, 조치자: a.by, 완료일: a.date, 상태: a.status })));
+    const wb = XLSX.utils.book_new(), add = (n, rows) => XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(rows.length ? rows : [{ 기록: '없음' }]), n);
+    add('순회점검', rec(pa.records)); add('3정5행', rec(fs.records));
+    add('집진기', du.records.map(r => ({ 일시: r.time, 설비: r.area, 작업자: r.inspector, 체크: r.ok + '/' + r.total, 이상: r.bad ? '이상 있음' : '', 메모: r.memo, 확인: r.confirm })));
+    add('조치관리', acts);
+    add('TBM', tb.map(r => ({ 기록번호: r.recNo, 시작기록: r.time, 팀: r.team, 라인: r.line, 시작: r.start, 종료: r.end, 분: r.minutes, 참석: r.attend, 결근: r.absent, 결근자: r.absentNames, 주제: r.topicText, 진행자: r.leader, 의견: r.opinion, 시작방식: r.mode, 서명: r.sign ? '있음' : '' })));
+    XLSX.writeFile(wb, `엠솔루션_안전보건_전체백업_${to}.xlsx`);
+    b.textContent = '✔ 내려받기 완료';
+  } catch (e) { b.textContent = '실패: ' + (e.message || '네트워크'); }
+  setTimeout(() => { b.disabled = false; b.textContent = '💾 PC에 백업 받기'; }, 4000);
+};
+
+/* ===== 전달사항(공지) + 발도장(QR 방문·확인) ===== */
+const API_KEY = 'MS-SF-DUST-2026';
+async function renderNotice() {
+  const v = $('noticeView'); v.classList.remove('hide');
+  v.innerHTML = `<div class="g2" style="grid-template-columns:1fr 1.2fr">
+    <div class="card"><h2>새 전달사항 <small>직원 QR 화면 맨 위에 표시</small></h2>
+      <input id="nTitle" maxlength="60" placeholder="제목 (예: 이번 주 지게차 동선 변경)" style="width:100%;font:inherit;padding:9px;border:1px solid var(--line2);border-radius:8px">
+      <textarea id="nBody" maxlength="1000" placeholder="내용 (줄바꿈 가능)" style="width:100%;font:inherit;padding:9px;border:1px solid var(--line2);border-radius:8px;min-height:110px;margin-top:8px"></textarea>
+      <label style="display:block;margin-top:8px;font-size:13px;color:var(--sub)">게시 종료일 (비우면 내릴 때까지) <input type="date" id="nUntil" style="font:inherit;padding:6px;border:1px solid var(--line2);border-radius:8px"></label>
+      <button class="btn" id="nSave" style="margin-top:10px">등록</button> <span class="err" id="nMsg"></span>
+      <p class="note">직원이 [확인했습니다]를 누르면 팀별 확인 수가 쌓입니다(이름 없이 기기 단위). 안전보건 전달 증빙으로 출력할 수 있습니다.</p></div>
+    <div class="card"><h2>QR 발도장 <small>최근 14일 · 팀별 방문 기기 수</small></h2><div id="vTbl"><div class="wait">불러오는 중…</div></div></div></div>
+    <div class="card" style="margin-top:12px"><h2>전달사항 목록 · 팀별 확인 <button class="btn ghost sm" id="nPrint">확인 현황 인쇄</button></h2><div id="nList"><div class="wait">불러오는 중…</div></div></div>`;
+  $('nSave').onclick = async () => {
+    const m = $('nMsg'); m.textContent = '등록 중…';
+    try { const o = await (await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ key: API_KEY, type: 'notice', pin: PIN, title: $('nTitle').value.trim(), body: $('nBody').value.trim(), until: $('nUntil').value }) })).json();
+      if (!o.ok) throw new Error(o.error); m.textContent = '등록됨'; renderNotice(); } catch (e) { m.textContent = e.message; } };
+  $('nPrint').onclick = () => { document.body.className = 'p-notice'; print(); };
+  const to = dstr(kstNow()), f = new Date(kstNow()); f.setDate(f.getDate() - 13);
+  try {
+    const d = await api(`action=visits&from=${dstr(f)}&to=${to}`);
+    const days = d.byDay;
+    $('vTbl').innerHTML = days.length ? `<table><thead><tr><th>날짜</th>${TEAMS.map(t => `<th>${t}</th>`).join('')}<th>합계</th></tr></thead><tbody>
+      ${days.slice().reverse().map(x => { const tot = TEAMS.reduce((a, t) => a + (x.teams[t] || 0), 0);
+        return `<tr><td class="c">${x.d.slice(5)}${x.d === to ? ' (오늘)' : ''}</td>${TEAMS.map(t => `<td class="c" style="${x.teams[t] ? 'color:var(--ok);font-weight:700' : 'color:var(--sub)'}">${x.teams[t] ? '👣 ' + x.teams[t] : '-'}</td>`).join('')}<td class="c">${tot}</td></tr>`; }).join('')}</tbody></table>`
+      : emptyMsg('아직 QR 방문 기록이 없습니다');
+    $('nList').innerHTML = d.notices.length ? `<table><thead><tr><th style="width:10%">등록</th><th>제목 · 내용</th><th style="width:9%">게시</th>${TEAMS.map(t => `<th style="width:8%">${t}</th>`).join('')}<th style="width:7%"></th></tr></thead><tbody>
+      ${d.notices.map(n => `<tr><td class="c">${esc(n.time.slice(5, 16))}</td><td><b>${esc(n.title)}</b>${n.body ? `<div style="font-size:12px;color:var(--sub);white-space:pre-wrap">${esc(n.body)}</div>` : ''}</td>
+        <td class="c">${n.on ? (n.until ? '~' + n.until.slice(5) : '게시 중') : '내림'}</td>${TEAMS.map(t => `<td class="c">${n.acks[t] || 0}</td>`).join('')}
+        <td class="c">${n.on ? `<button class="btn ghost sm" data-off="${esc(n.id)}">내리기</button>` : ''}</td></tr>`).join('')}</tbody></table>
+      <div class="foot" style="font-size:11px;color:var(--sub);margin-top:6px">확인 수 = 직원이 QR 화면에서 [확인했습니다]를 누른 기기 수(팀별) · 출력일시 ${new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })}</div>`
+      : emptyMsg('등록된 전달사항이 없습니다');
+    document.querySelectorAll('[data-off]').forEach(b => b.onclick = async () => { b.disabled = true;
+      const o = await (await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ key: API_KEY, type: 'notice', pin: PIN, off: b.dataset.off }) })).json();
+      if (o.ok) renderNotice(); else { b.disabled = false; b.textContent = o.error; } });
+  } catch (e) { $('vTbl').innerHTML = emptyMsg('서버 연결 전: ' + esc(e.message)); $('nList').innerHTML = ''; }
+}
 
 /* ===== TBM (v6) ===== */
 const TBM_LN = { KA4: ['조립1팀', 'KA4 G/BOX'], CE1: ['조립1팀', 'CE1/CT1 G/BOX'], SV1G: ['조립1팀', 'SV1 G/BOX'], SV1U: ['조립1팀', 'SV1 UPR'],

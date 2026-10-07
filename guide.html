@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>사용 설명서 | ㈜엠솔루션 안전보건 QR</title>
+<style>
+  @page{size:A4;margin:12mm}
+  :root{--navy:#1B3A6B;--ink:#0F172A;--sub:#64748B;--line:#E2E8F0;--bg:#F1F5F9;--or:#EA580C;--ok:#1D4ED8}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Malgun Gothic","맑은 고딕","Apple SD Gothic Neo",system-ui,sans-serif;font-size:16px;line-height:1.6}
+  header{background:linear-gradient(135deg,#0F172A,var(--navy));color:#fff;padding:16px 16px 14px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700}
+  .brand img{width:44px;height:30px;object-fit:contain;background:#fff;border-radius:6px;padding:2px}
+  .brand small{display:block;font-weight:400;opacity:.75;font-size:12px}
+  h1{margin:10px 0 2px;font-size:21px}
+  header p{margin:0;font-size:13px;opacity:.8}
+  nav{position:sticky;top:0;z-index:2;background:#fff;border-bottom:1px solid var(--line);display:flex;gap:6px;padding:8px 12px;overflow-x:auto}
+  nav button{flex:none;font:inherit;font-size:14px;font-weight:700;border:1px solid #CBD5E1;background:#fff;border-radius:999px;padding:7px 14px;cursor:pointer}
+  nav button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+  main{max-width:760px;margin:0 auto;padding:14px 16px 40px}
+  section{display:none}section.on{display:block}
+  .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:12px}
+  h2{font-size:18px;margin:0 0 8px;color:var(--navy)}
+  h3{font-size:16px;margin:12px 0 6px}
+  ol,ul{margin:4px 0;padding-left:22px}li{margin:4px 0}
+  .tag{display:inline-block;font-size:12px;font-weight:800;border-radius:6px;padding:1px 8px;margin-right:4px;vertical-align:2px}
+  .t-all{background:#DBEAFE;color:var(--ok)}.t-mgr{background:#FFEDD5;color:#C2410C}.t-pc{background:#E2E8F0;color:#334155}
+  .btn{display:inline-block;background:var(--navy);color:#fff;border-radius:8px;padding:1px 8px;font-size:14px;font-weight:700;white-space:nowrap}
+  .btn.or{background:var(--or)}
+  .tip{background:#FFF7ED;border-left:4px solid var(--or);padding:8px 12px;border-radius:6px;font-size:14px;margin:8px 0}
+  .ok{background:#EFF6FF;border-left:4px solid var(--ok);padding:8px 12px;border-radius:6px;font-size:14px;margin:8px 0}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th,td{border:1px solid #CBD5E1;padding:6px 8px;vertical-align:top;text-align:left}
+  th{background:#1E293B;color:#fff}
+  .foot{font-size:12px;color:var(--sub);text-align:center;margin-top:16px}
+  .print{font:inherit;font-size:14px;font-weight:700;border:1px solid var(--navy);color:var(--navy);background:#fff;border-radius:8px;padding:6px 12px;cursor:pointer;float:right}
+  @media print{body{background:#fff}nav,.print{display:none}header{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .card{break-inside:avoid;border-color:#94A3B8}th{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHwAAABQBAMAAAApXgzAAAAAMFBMVEUNTqEAAADy9v4Fq+3K6vtbo9iOs9hr0fes0ezo+f4HdsXb7Perq/1ch7uk3vq30e5amtN2AAAAEHRSTlP+AAz++v7n/vdZ/58D+wR86zJ2egAABMdJREFUeNqVmF1oHFUUgL+5u9P8tdmZiraNpvkRtBGSJgQFRbEB0YjYptRQlTaJQqEaQja21diCbgtqraAtQrUIWi2lP9g2ESlVkeahL4olwZ+HPpRsajUBxZnNNJrsZjM+7HSz3b27e2despNzvjn3nnPPuederWHLHiTPM5exF9+MXysofTh4AX2f/S6BxkByLKUk+qQ0XxPNeBtJACwA9gIkA4QB+LJNnJbSzNai8JwS+SSH8kPliz9FOI/OMlPBepeYGpNLGirtorT+pDgwtU36gWTdSBF42fYz3cJ6/tLOtyXCRPvGwvSS4992m4LQ1OXjEYn457vyjf5fADr7rWFLEBt1/zwpUTrjFPZ8UzK5AYHbopmxHolfaqOFR38jAALAKu3MlTrtLQXpKzYejrtDIt9TlfqryXH3Yhq3HUnwxDYjpSfHNdK4KDmYK48PjwBoKw25dYBg6ufIaonCvS0Aod7qcF4HeCnz6GGJ7BMDYGK6gP883DogkQX7DdBWjBfHxbQs8sMjUF5xtDjuGh2SyD9RB/pOiuO4U7LIG16JKopbH8oi/6bBxMsquJgckkX+qGb0KA3eeEsWeW1pWRgV17my2vjRlmm9WQHXYvY+WUXZYe6iOK6VWyFNMsl4bOIvBXwh0VZ5SrYxTEbHUHFdw7XuO2TLvmlICT8ScXfLxBGUcKExLVm38e/V8PiAqJUtEEMNZ3O5+6pEfqwwHkyX9QoC+H7S1ks+r749z/KOKlh3xm7Ycj0tomCd5+KGfIH+FlLBG3XpZgEnpllXHE8e0pwOmUqzkvXEwfkSWZR1V8XzsOLa+CMSjUDYVsLPGaasx9sYU7Ouf2EMSyLfYKvhzpj9oCTn19ao4XRQU51brwYUrQOx3MkvuCjizSzclhP5bUmUrYvJnLK86pI67hr3Zy+a0LhSvqee8YHsdNvrqlvHnMmafPwsPvClOZPv8IM7F7Oy5qVKfMydF5ZkOT7oxzp/B27ZlfS1F33hwclbGsSAhi/cDW3NfP2lp9kXjtab+XbW8GedeCAzVN9EfeJMZhjUN7g+8ZnRDOvaB7X4iju0Zfxr0w+WkvWMAf+jL5ovi6ptkf9l5vzitzbU4MO6AeCeq12sc2obtLkdoGw+Nfl0j6RjK+ETvQCJVwyAqnSP1FWIXjwKVae6+XjdBABf3fTdlaqbqkaeo5AAKn5/L9W9baoZNWCmu8+b+viMV4Nk9W5NnYf/UdXqxenjFguwNnlT12wAzbSkVwFNJghCdl2Vl1bO0y1azKByLjX6rnkA17VMWbu8Z7nlGoKYefi7dL5cmg3ZOBdSn1t5DCBW+tmLP0nwsq7Tph0cferOlRn5tmz3McduuxtAb+kBXLPvjLS5cyKd24+w/Hz26cs069YAUGuapsk9nqD0scdBf20X0Np61NMVq6qyLh3uM41YoAO4sgBo9Q/lD33ipOjLrkaN/V7Ov34dwC50ljkv3pcdjq2tgJWK9lCBa58fxUx2P7LlEDT2wpKN6wB36AHZ1YcHhYMlz+qzEWAQKB0sHaxYf9bl+oqrTnA9AD1z7dWzEXCCYXGVxBBbZ6G+fj+Dkb1Nn2qm9s6td10Rwwb2MxdJ1bmxdm/2B296QZzavDoKMPfG//8aX018voz2AAAAAElFTkSuQmCC" alt="㈜엠솔루션"><div>㈜엠솔루션<small>안전보건팀</small></div></div>
+  <h1>안전보건 QR 사용 설명서</h1>
+  <p>팀 QR 하나로 보기 · 점검 · TBM · 전달사항 확인까지</p>
+</header>
+<nav id="tabs">
+  <button data-s="all" class="on">직원 (누구나)</button>
+  <button data-s="mgr">관리자 폰</button>
+  <button data-s="tbm">TBM 하는 법</button>
+  <button data-s="pc">사무실 PC</button>
+  <button data-s="faq">자주 묻는 것</button>
+</nav>
+<main>
+
+<section id="s-all" class="on">
+  <div class="card"><button class="print" onclick="print()">이 쪽 인쇄</button>
+    <h2><span class="tag t-all">누구나</span>QR을 찍으면 보이는 것</h2>
+    <ol>
+      <li><b>📢 대표 전달사항</b> — 제목을 누르면 <b>자세히 보기</b>. 언어 버튼(中文 · Tiếng Việt · ខ្មែរ · Indonesia · Русский)으로 번역을 볼 수 있습니다. 다 읽으면 <span class="btn or">확인했습니다</span>를 누르세요.</li>
+      <li><b>오늘 우리 팀 안전 현황</b> — 순회점검 · 3정5행 · TBM을 했는지 보입니다.</li>
+      <li><b>오늘의 TBM 안전 주제 3개</b> — 라인별로 나옵니다. <b>크게·외국어</b>를 누르면 큰 글씨와 내 나라 말로 볼 수 있습니다.</li>
+      <li><b>최근 14일 추이 그래프</b> — 파란 실선 = 종합 실시율, 주황 점선 = TBM 실시율.</li>
+    </ol>
+    <div class="ok">QR을 찍으면 <b>팀과 시각만</b> 기록됩니다(발도장). <b>이름은 저장되지 않습니다.</b></div>
+    <div class="tip">QR은 <b>휴대폰 기본 카메라</b>로 찍어 주세요.</div>
+  </div>
+  <div class="card">
+    <h2>QR · 팀 번호</h2>
+    <table><tr><th>팀</th><th>번호</th><th>라인</th></tr>
+      <tr><td>조립1팀</td><td>1</td><td>KA4 · CE1/CT1 · SV1 G/BOX · SV1 UPR</td></tr>
+      <tr><td>조립2팀</td><td>2</td><td>GN7 · SP3k G/BOX</td></tr>
+      <tr><td>조립3팀</td><td>3</td><td>밀링스코어링 · SP3k PAB 융착</td></tr>
+      <tr><td>도장팀</td><td>4</td><td>도장</td></tr></table>
+  </div>
+</section>
+
+<section id="s-mgr">
+  <div class="card"><button class="print" onclick="print()">이 쪽 인쇄</button>
+    <h2><span class="tag t-mgr">관리자</span>처음 1번: 관리자 폰 등록</h2>
+    <ol>
+      <li>팀 QR을 찍고 화면 아래 <b>관리자 메뉴 🔒</b>로 내려갑니다.</li>
+      <li>관리자 번호를 넣고 <span class="btn">이 휴대폰을 관리자 폰으로 등록</span>을 누릅니다.</li>
+      <li><b>순회점검 · TBM · 3정5행</b> 버튼이 나타납니다. 한 번 등록하면 4개 팀 QR 모두 관리자로 인식됩니다.</li>
+    </ol>
+    <div class="tip">관리자 번호는 다른 사람에게 알려주지 마세요. 폰을 바꾸거나 잃어버리면 화면 맨 아래 <b>등록 해제</b> 후 대표에게 알려 주세요.</div>
+  </div>
+  <div class="card">
+    <h2>순회점검</h2>
+    <ol>
+      <li><span class="btn">순회점검</span> → 점검자 선택</li>
+      <li>항목을 누를 때마다 <b>✓ 양호 → ✗ 개선 필요 → – 해당없음</b> 순서로 바뀝니다. 이상 없으면 <b>모두 양호</b>.</li>
+      <li><b>개선 필요</b>는 내용을 꼭 적습니다. (조치관리에 자동 등록)</li>
+      <li>서명(하루 1번, 같은 날은 자동 사용) → <span class="btn">제출</span></li>
+    </ol>
+    <div class="ok">각 팀 현장에서 제출해 주세요. 순회 실시는 이성희 과장 · 대표 중 1명 이상이면 됩니다. <b>근거</b> 버튼을 누르면 법 조항을 볼 수 있습니다.</div>
+  </div>
+  <div class="card">
+    <h2>3정5행</h2>
+    <ol>
+      <li><span class="btn">3정5행 점검</span> → 점검자 이름 입력</li>
+      <li>항목 체크 (방법은 순회점검과 같음)</li>
+      <li><b>서명 필수</b> → <span class="btn">제출</span></li>
+    </ol>
+  </div>
+</section>
+
+<section id="s-tbm">
+  <div class="card"><button class="print" onclick="print()">이 쪽 인쇄</button>
+    <h2><span class="tag t-mgr">관리자</span>TBM (작업 전 안전회의) — 시작 → 마치기</h2>
+    <h3>① 모일 때</h3>
+    <ol><li>QR → <span class="btn or">TBM</span> → 라인 선택 → <span class="btn or">▶ TBM 시작</span></li>
+      <li>시작 시각이 서버에 기록됩니다. <b>화면을 닫아도 됩니다.</b></li></ol>
+    <h3>② 진행 (권장 10분)</h3>
+    <ol><li>오늘의 주제 3개를 읽어 줍니다. (위험성평가에서 자동 선택)</li>
+      <li>외국인 직원에게는 <span class="btn">크게 보여주기</span> → 언어 버튼을 눌러 보여 줍니다.</li></ol>
+    <h3>③ 끝나면</h3>
+    <ol><li>QR → TBM 다시 들어가면 <b>"진행 중"</b>이 보입니다.</li>
+      <li>참석 인원 · 결근 인원(이름) · 의견 · 진행자 · <b>실제 끝난 시각</b> 입력 → 서명 → <span class="btn">TBM 마치기 · 제출</span></li>
+      <li>나온 <b>기록번호(TBM-월일-라인-숫자)와 시간</b>을 <b>작업일보 TBM란</b>에 적고, 직원들은 작업일보에 친필 서명합니다.</li></ol>
+    <div class="tip"><b>시작을 깜빡했으면</b> "시작을 못 눌렀어요"에서 실제 시작 시각과 사유를 넣으세요. 기록에 '수기'로 표시됩니다.</div>
+    <div class="ok">시간은 <b>실제 시간 그대로</b> 기록됩니다(10분으로 맞춰 적지 않습니다). 같은 라인은 하루 1번입니다. 다른 관리자 폰으로 마쳐도 됩니다.</div>
+  </div>
+</section>
+
+<section id="s-pc">
+  <div class="card"><button class="print" onclick="print()">이 쪽 인쇄</button>
+    <h2><span class="tag t-pc">사무실</span>메인 화면 (PC · 관리자 PIN)</h2>
+    <table><tr><th style="width:28%">메뉴</th><th>하는 일</th></tr>
+      <tr><td>처음 화면</td><td>오늘 할 일 진척 · 점검 현황 · 개선 필요 Top 5 · 실시율 추이 · 업계 대비 안전 현위치 · AI 데이터 학습. 5분마다 자동 새로고침</td></tr>
+      <tr><td>3정5행 · 순회점검</td><td>기간 조회 → 목록/상세/전체 인쇄 · <b>월간 체크시트</b> (3정5행 A3 가로, 순회 A4 가로)</td></tr>
+      <tr><td>TBM</td><td>월별 목록 · <b>라인별 월간 TBM 일지</b> 인쇄(근로자 친필 확인란 포함)</td></tr>
+      <tr><td>집진기 청소</td><td>청소 기록 조회·인쇄 · 30일 넘으면 '청소 필요'</td></tr>
+      <tr><td>전달사항·발도장</td><td>전달사항 등록(자동 번역) · 팀별 확인 수 · 확인 현황 인쇄 · 내리기 · 최근 14일 QR 발도장</td></tr>
+      <tr><td>조치관리</td><td>개선 필요 건 목록(진행 중 먼저). 조치 입력은 원본 시트에서</td></tr>
+      <tr><td>맨 위 버튼</td><td>✔ 마지막 백업 확인 · 💾 PC에 백업 받기(엑셀 1개)</td></tr></table>
+  </div>
+  <div class="card">
+    <h2>자동으로 되는 것 · 정기적으로 할 일</h2>
+    <table><tr><th style="width:28%">언제</th><th>내용</th></tr>
+      <tr><td>매일 새벽 2시</td><td>자동 백업(구글 드라이브 사본)</td></tr>
+      <tr><td>매주 월요일</td><td>엑셀 백업 메일 자동 발송</td></tr>
+      <tr><td>매일 (대표)</td><td>처음 화면 진척률 · ✔ 백업 표시 확인</td></tr>
+      <tr><td>매월 초 (대표)</td><td>월간 체크시트 · TBM 일지 인쇄 → 결재 서명 · PC 백업을 외장하드에 복사</td></tr></table>
+  </div>
+</section>
+
+<section id="s-faq">
+  <div class="card">
+    <h2>자주 묻는 것</h2>
+    <h3>Q. 관리자 메뉴가 안 보여요</h3><p>관리자 폰으로 등록해야 보입니다. 다른 앱(카카오톡 등)으로 QR을 찍으면 다시 등록해야 할 수 있어요. 기본 카메라로 찍으세요.</p>
+    <h3>Q. 제출이 안 돼요</h3><p>인터넷 연결을 확인하고 다시 누르세요. 그래도 안 되면 화면을 캡처해서 대표에게 보내 주세요.</p>
+    <h3>Q. 번역이 이상해요</h3><p>자동 번역입니다. 정확한 내용은 한국어 원문이 기준입니다. 이상한 표현은 반장에게 알려 주세요.</p>
+    <h3>Q. 내 이름이 기록되나요?</h3><p>QR 보기·확인은 <b>이름 없이</b> 팀과 시각만 남습니다. 점검·TBM은 <b>관리자(진행자) 이름과 서명</b>만 남습니다.</p>
+    <h3>Q. 잘못 제출했어요</h3><p>제출한 기록은 고칠 수 없습니다. 바로 다시 제출하고, 사유를 대표에게 알려 주세요.</p>
+  </div>
+</section>
+
+<p class="foot">㈜엠솔루션 안전보건팀 · 안전보건 QR 사용 설명서 · 2026-10 시험 운영판</p>
+</main>
+<script>
+document.querySelectorAll('#tabs button').forEach(b => b.onclick = () => {
+  document.querySelectorAll('#tabs button').forEach(x => x.classList.toggle('on', x === b));
+  document.querySelectorAll('section').forEach(s => s.classList.toggle('on', s.id === 's-' + b.dataset.s));
+  scrollTo(0, 0);
+});
+const h = location.hash.slice(1); if (h) { const b = document.querySelector(`#tabs [data-s="${h}"]`); if (b) b.click(); }
+</script>
+</body>
+</html>

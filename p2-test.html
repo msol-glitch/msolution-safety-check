@@ -112,6 +112,18 @@
   .tb i{display:block;width:100%;background:var(--ok)}
   .td{display:flex;flex-direction:column;gap:1px;margin:2px 0}.td span{font-size:9px;border-radius:3px;background:#EEF2F7;color:#94A3B8}
   .td span.on{background:var(--ok);color:#fff}
+  .ntc{background:#FFF7ED;border:2px solid #EA580C;border-radius:14px;padding:12px 14px;margin-bottom:12px}
+  .menu .ntc .nh{font-size:12.5px;font-weight:800;color:#C2410C;display:flex;justify-content:space-between}.ntc .nh span{color:#9A3412;font-weight:400}
+  .menu .ntc b.nt{display:block;font-size:18px;color:#0F172A;margin:4px 0}
+  .ntc .nb{font-size:15.5px;line-height:1.6;margin:8px 0}
+  .menu .ntc button.nopen{background:none;border:0;padding:4px 0;text-align:left;display:flex;justify-content:space-between;align-items:center;gap:8px;font-weight:400}
+  .menu .ntc button.nopen span{flex:none;font-size:13px;color:#C2410C;font-weight:700}
+  .ntc .nl{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
+  .menu .ntc .nl button{width:auto;padding:6px 12px;border:1px solid #FDBA74;background:#fff;color:#9A3412;font-size:13px;border-radius:999px}
+  .menu .ntc .nl button.on{background:#EA580C;color:#fff;border-color:#EA580C}
+  .ntc .nko{font-size:11.5px;color:#9A3412;margin-bottom:8px}
+  .menu .ntc button{width:100%;font:inherit;font-weight:800;border-radius:10px;padding:11px;text-align:center}
+  .menu .ntc button.ack{background:#EA580C;color:#fff;border:0}.menu .ntc button.ackd{background:#fff;color:var(--ok);border:1px solid var(--ok)}
   #mgrLock input{font-size:20px;letter-spacing:6px;text-align:center}
   .menu .card b{display:inline;font-size:inherit;color:inherit}.menu .plh b{font-size:16px;color:var(--navy)}
   .menu .card button.lnk{border:0;background:none;padding:0;font-size:13px;color:var(--ok);font-weight:400}
@@ -133,6 +145,7 @@
 
 <main id="main">
   <section id="menu" class="menu">
+    <div id="pubNotice"></div>
     <div class="card" id="pubCard"><h2>오늘 우리 팀 안전 현황 <span class="cnt">누구나 보기</span></h2><div id="pubToday" style="margin-bottom:6px"></div>
       <div class="cnt" style="margin-bottom:2px">오늘의 TBM 안전 주제 (위험성평가 자동 선택)</div><div id="pubTopics"></div><div id="pubTrend"></div><div style="height:6px"></div></div>
     <div class="card" id="mgrLock"><h2>관리자 메뉴 🔒</h2><div class="cnt" style="margin-bottom:8px">TBM·점검 등록은 관리자 폰에서만 할 수 있습니다. 처음 한 번 관리자 번호를 넣으면 이 휴대폰이 등록됩니다.</div>
@@ -142,7 +155,8 @@
     <button data-type="patrol"><b>중대재해예방 순회점검</b><span>안전관리자 · 안전보건관리책임자 일일 순회 · 법적 근거 포함</span></button>
     <button data-type="tbm" style="border-color:#EA580C;background:#FFF7ED"><b>TBM (작업 전 안전회의)</b><span>시작 누르고 → 끝나면 마치기 · 오늘의 안전 주제 3개 · 외국어 지원</span></button>
     <button data-type="5s"><b>3정5행 점검</b><span>자재·제품 관리, 작업장 정리정돈, 품질, 안전</span></button>
-    <div id="mgrOff" class="cnt" style="text-align:center">관리자 폰으로 등록됨 · <button class="lnk" id="mgrOffBtn">등록 해제</button></div>
+    <div class="cnt" style="text-align:center;margin:4px 0 10px"><a href="guide.html" style="font-weight:700;color:var(--navy)">📖 사용 설명서 보기</a></div>
+  <div id="mgrOff" class="cnt" style="text-align:center">관리자 폰으로 등록됨 · <button class="lnk" id="mgrOffBtn">등록 해제</button></div>
   </section>
   <section id="form" style="display:none">
     <div class="card" id="whoCard"><h2>점검자</h2><div id="who"></div></div>
@@ -874,6 +888,31 @@ async function tbmSubmit() {
 
 /* ===== 누구나 보는 현장 현황 + 관리자 폰 잠금 (v6-2) ===== */
 let FIELD_PIN = store.get('ms_field_pin') || '';
+let DEV = store.get('ms_dev'); if (!DEV) { DEV = (Math.random().toString(36).slice(2) + Date.now().toString(36)).slice(0, 16).replace(/[^a-z0-9]/g, 'x'); store.set('ms_dev', DEV); }
+function visit(kind, nid) {   // 발도장: 팀·시각·무작위 기기번호만 (이름 없음)
+  const k = kind === 'ack' ? 'ms_ack_' + nid : `ms_visit_${team}_${today()}`;
+  if (store.get(k)) return Promise.resolve();
+  return fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ key: API_KEY, type: 'visit', team, dev: DEV, kind, nid }) })
+    .then(r => r.json()).then(o => { if (o.ok) store.set(k, '1'); }).catch(() => {});
+}
+const NLANG = {};
+function teamLangs() { return [...new Set(teamLines().flatMap(k => TBM_LINE[k].lang))]; }
+function noticeRender(ns) {
+  const el = $('pubNotice'); if (!ns || !ns.length) { el.innerHTML = ''; return; }
+  const langs = ['ko'].concat(teamLangs());
+  el.innerHTML = ns.map(n => { const done = store.get('ms_ack_' + n.id), l = NLANG[n.id] || 'ko', open = NLANG[n.id + '_o'];
+    const tx = l === 'ko' || !n.tr || !n.tr[l] || !n.tr[l][0] ? [n.title, n.body] : n.tr[l];
+    return `<div class="ntc"><div class="nh">📢 대표 전달사항 <span>${esc(n.time.slice(5, 10))}</span></div>
+      <button class="nopen" data-open="${esc(n.id)}"><b class="nt">${esc(tx[0])}</b><span>${open ? '접기 ▲' : '자세히 보기 ▼'}</span></button>
+      ${open ? `<div class="nl">${langs.filter(x => x === 'ko' || (n.tr && n.tr[x] && n.tr[x][0])).map(x => `<button data-nl="${esc(n.id)}|${x}" class="${x === l ? 'on' : ''}">${LANG[x]}</button>`).join('')}</div>
+        ${tx[1] ? `<div class="nb">${esc(tx[1]).replace(/\n/g, '<br>')}</div>` : ''}
+        ${l !== 'ko' ? '<div class="nko">자동 번역입니다. 정확한 내용은 한국어 원문을 기준으로 합니다.</div>' : ''}` : ''}
+      <button class="${done ? 'ackd' : 'ack'}" data-ack="${esc(n.id)}" ${done ? 'disabled' : ''}>${done ? '✔ 확인 완료' : '확인했습니다'}</button></div>`; }).join('');
+  document.querySelectorAll('[data-open]').forEach(b => b.onclick = () => { const k = b.dataset.open + '_o'; NLANG[k] = !NLANG[k]; noticeRender(ns); });
+  document.querySelectorAll('[data-nl]').forEach(b => b.onclick = () => { const [id, x] = b.dataset.nl.split('|'); NLANG[id] = x; noticeRender(ns); });
+  document.querySelectorAll('[data-ack]').forEach(b => b.onclick = async () => { b.disabled = true; b.textContent = '저장 중…'; await visit('ack', b.dataset.ack);
+    if (store.get('ms_ack_' + b.dataset.ack)) { b.className = 'ackd'; b.textContent = '✔ 확인 완료'; } else { b.disabled = false; b.textContent = '다시 눌러 주세요'; } });
+}
 function teamLines() { return Object.keys(TBM_LINE).filter(k => TBM_LINE[k].team === team); }
 function pubRender(st) {
   if (!team) { $('pubCard').style.display = 'none'; return; }
@@ -888,14 +927,27 @@ function pubRender(st) {
   if (!st) { $('pubTrend').innerHTML = '<div class="cnt">최근 기록 추이는 서버 연결 후 표시됩니다.</div>'; return; }
   const nL = teamLines().length, last = st.days[st.days.length - 1];
   $('pubToday').innerHTML = `<span class="pill ${last.patrol ? 'ok' : ''}">순회점검 ${last.patrol ? '실시' : '전'}</span> <span class="pill ${last.fives ? 'ok' : ''}">3정5행 ${last.fives ? '실시' : '전'}</span> <span class="pill ${done.size === nL ? 'ok' : ''}">TBM ${done.size}/${nL}라인</span>`;
-  $('pubTrend').innerHTML = `<div class="tr">${st.days.map(x => { const h = Math.round(Math.min(1, x.tbm / nL) * 100), wd = new Date(x.d + 'T00:00:00').getDay();
-    return `<div class="tc ${wd === 0 ? 'sun' : ''}"><div class="tb"><i style="height:${h}%"></i></div><div class="td"><span class="${x.patrol ? 'on' : ''}">순</span><span class="${x.fives ? 'on' : ''}">정</span></div><small>${+x.d.slice(8)}</small></div>`; }).join('')}</div>
-    <div class="cnt">최근 14일 · 막대 = TBM 실시 라인 비율 · <b style="color:var(--ok)">순</b> 순회점검 <b style="color:var(--ok)">정</b> 3정5행 실시일</div>`;
+  const D = st.days.filter(x => new Date(x.d + 'T00:00:00').getDay() !== 0), W = 320, H = 130, L = 26, R = 8, T = 12, B = 22, n = D.length;
+  const X = i => L + i * (W - L - R) / (n - 1), Y = v => T + (1 - v / 100) * (H - T - B);
+  const tot = D.map(x => Math.round(((Math.min(1, x.tbm / nL)) + x.patrol + x.fives) / 3 * 100));
+  const tbmR = D.map(x => Math.round(Math.min(1, x.tbm / nL) * 100));
+  const path = a => a.map((v, i) => (i ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(v).toFixed(1)).join(' ');
+  $('pubTrend').innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="최근 14일 실시율 추이" style="display:block;margin-top:6px">
+    ${[0, 50, 100].map(v => `<line x1="${L}" x2="${W - R}" y1="${Y(v)}" y2="${Y(v)}" stroke="#E2E8F0"/><text x="${L - 4}" y="${Y(v) + 3}" text-anchor="end" font-size="9" fill="#94A3B8">${v}</text>`).join('')}
+    <path d="${path(tot)} L${X(n - 1)} ${Y(0)} L${X(0)} ${Y(0)}Z" fill="#1D4ED8" opacity=".08"/>
+    <path d="${path(tbmR)}" fill="none" stroke="#EA580C" stroke-width="1.6" stroke-dasharray="4 3"/>
+    <path d="${path(tot)}" fill="none" stroke="#1D4ED8" stroke-width="2.2"/>
+    ${tot.map((v, i) => `<circle cx="${X(i)}" cy="${Y(v)}" r="${i === n - 1 ? 4 : 2.4}" fill="#1D4ED8" stroke="#fff" stroke-width="1"/>`).join('')}
+    <text x="${X(n - 1)}" y="${Y(tot[n - 1]) - 8}" text-anchor="end" font-size="11" font-weight="700" fill="#1D4ED8">${tot[n - 1]}%</text>
+    ${D.map((x, i) => (i % 2 === 1 || i === n - 1) ? `<text x="${X(i)}" y="${H - 6}" text-anchor="middle" font-size="9" fill="${new Date(x.d + 'T00:00:00').getDay() === 0 ? '#CBD5E1' : '#64748B'}">${+x.d.slice(8)}</text>` : '').join('')}
+  </svg>
+  <div class="cnt"><b style="color:#1D4ED8">━ 종합 실시율</b> (순회·3정5행·TBM 평균) · <b style="color:#EA580C">┅ TBM 실시율</b> · 최근 14일(일요일 제외)</div>`;
 }
 async function pubLoad() {
   pubRender(null);
   if (!team) return;
-  try { const st = await (await fetch(`${ENDPOINT}?action=status&team=${team}`)).json(); if (st.ok) pubRender(st); } catch (e) {}
+  visit('view');
+  try { const st = await (await fetch(`${ENDPOINT}?action=status&team=${team}`)).json(); if (st.ok) { pubRender(st); noticeRender(st.notices); } } catch (e) {}
 }
 function mgrRender() {
   const on = !!FIELD_PIN;
