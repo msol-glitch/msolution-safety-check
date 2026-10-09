@@ -326,7 +326,7 @@
     </div>
     <div class="hside">
      <div class="card poscard">
-      <div class="ph"><span class="pl">SAFETY POSITION</span><h2>업계 대비 우리의 안전 현위치</h2><small title="업종 평균 재해율은 고용노동부 산업재해 현황(업종·규모별)을 연 1회 반영 예정. 점검 실시율 = 운영 시작일부터 평일 기준(휴무일 미반영) — 순회·3정5행은 팀별, TBM은 라인별.">제조업 · 50인 미만 ⓘ</small></div>
+      <div class="ph"><span class="pl">SAFETY POSITION</span><h2>업계 대비 우리의 안전 현위치</h2><small title="업종 평균 재해율은 고용노동부 산업재해 현황(업종·규모별)을 연 1회 반영 예정. 점검 실시율 = 운영 시작일부터 평일 기준(휴무일 미반영) — 순회·3정5행은 팀별, TBM은 라인별(비가동 라인 제외).">제조업 · 50인 미만 ⓘ</small></div>
       <div class="cv" id="pos"><div class="wait">불러오는 중…</div></div>
       <div class="clock">
         <div><span class="live"></span><b id="clk">--</b></div>
@@ -490,7 +490,7 @@ function renderNav(cur) {
     if (k === '5s') return `<span class="bd ${s.fives.length === n ? 'ok' : 'w'}">${s.fives.length}/${n}</span>`;
     if (k === 'patrol') return `<span class="bd ${s.patrol.length === n ? 'ok' : 'w'}">${s.patrol.length}/${n}</span>`;
     if (k === 'dust') return s.dust.every(x => x.ok) ? '<span class="bd ok">정상</span>' : '<span class="bd w">청소 필요</span>';
-    if (k === 'tbm') { const t = tbmToday(); return t == null ? '<span class="bd n">연결 전</span>' : `<span class="bd ${t.size === 9 ? 'ok' : 'w'}">${t.size}/9</span>`; }
+    if (k === 'tbm') { const t = tbmToday(); return t == null ? '<span class="bd n">연결 전</span>' : `<span class="bd ${t.size >= tbmOnN(AN.to) ? 'ok' : 'w'}">${t.size}/${tbmOnN(AN.to)}</span>`; }
     if (k === 'actions') return SUM.open ? `<span class="bd w">진행 ${SUM.open}</span>` : '<span class="bd ok">0</span>';
     return '';
   };
@@ -504,7 +504,7 @@ function renderNav(cur) {
 function renderHome() {
   const now = kstNow(), s = todayState(), n = TEAMS.length, T = SUM.types;
   $('today').textContent = `${now.getFullYear()}년 ${now.getMonth() + 1}월 ${now.getDate()}일 (${WD[now.getDay()]}) · ${HEADCOUNT}`;
-  const tt = tbmToday(), done = s.patrol.length + s.fives.length + s.dust.filter(x => x.ok).length + (tt ? tt.size : 0), all = n * 2 + s.dust.length + (tt ? 9 : 0);
+  const tt = tbmToday(), done = s.patrol.length + s.fives.length + s.dust.filter(x => x.ok).length + (tt ? tt.size : 0), all = n * 2 + s.dust.length + (tt ? tbmOnN(AN.to) : 0);
   const pct = all ? Math.round(done / all * 100) : 0;
   const nad = NO_ACCIDENT_SINCE ? dayDiff(NO_ACCIDENT_SINCE, dstr(now)) : null;
   $('kpis').innerHTML = `
@@ -518,7 +518,7 @@ function renderHome() {
   $('prog').innerHTML =
     bar('순회점검', '관리감독자·대표 중 1명 이상', s.patrol.length, n, `${s.patrol.length} / ${n}팀`) +
     bar('3정5행', '팀별', s.fives.length, n, `${s.fives.length} / ${n}팀`) +
-    (tbmToday() == null ? bar('TBM', '라인별 · 서버 연결 전', 0, 9, '연결 전', 1) : bar('TBM', `라인별 · 오늘 ${num(tbmTodayMin())}분`, tbmToday().size, 9, `${tbmToday().size} / 9라인`)) +
+    (tbmToday() == null ? bar('TBM', '라인별 · 서버 연결 전', 0, 9, '연결 전', 1) : bar('TBM', `라인별 · 오늘 ${num(tbmTodayMin())}분${tbmOffN(AN.to) ? ' · 비가동 ' + tbmOffN(AN.to) : ''}`, tbmToday().size, tbmOnN(AN.to), `${tbmToday().size} / ${tbmOnN(AN.to)}라인`)) +
     bar('집진기 청소', `주기 ${DUST_CYCLE}일`, s.dust.filter(x => x.ok).length, s.dust.length, s.dust.map(x => `${x.eq} ${x.d == null ? '기록없음' : x.ok ? 'D-' + (DUST_CYCLE - x.d) : '초과'}`).join(' · ')) +
     bar('조치 진행', '미완료 개선 건', AN ? AN.acts.filter(a => a.status !== '미조치').length : 0, AN ? AN.acts.length : 0, dueToday == null ? '…' : `진행 ${dueToday}건`);
   const PR = SUM.patrolRoles || {};
@@ -544,7 +544,7 @@ async function loadAnalytics() {
       .filter(a => { const k = a.kind + a.found + a.area + a.label + a.note; return seen[k] ? false : (seen[k] = 1); });
     AN = { from, to, recs, acts, w8: dstr(w8) };
     const hs = to.slice(5, 7) <= '06' ? to.slice(0, 4) + '-01-01' : to.slice(0, 4) + '-07-01';
-    try { AN.tbm = (await api(`action=tbm&from=${hs}&to=${to}`)).records; AN.tbmFrom = hs; } catch (e) { AN.tbm = null; }
+    try { const tr = await api(`action=tbm&from=${hs}&to=${to}`); AN.tbm = tr.records; AN.tbmOff = tr.off || []; AN.tbmFrom = hs; } catch (e) { AN.tbm = null; }
     try { const b = (await api('action=backupinfo')).logs[0]; $('bkInfo').innerHTML = b ? `${b.err ? '⚠' : '✔'} 마지막 백업 ${esc(b.time.slice(5))}` : '⚠ 백업 기록 없음'; $('bkInfo').className = 'bk ' + (b && !b.err ? 'ok' : 'warn'); }
     catch (e) { $('bkInfo').textContent = '백업 설정 전'; $('bkInfo').className = 'bk warn'; }
   } catch (e) { AN = { err: e.message }; }
@@ -620,7 +620,7 @@ function renderCharts() {
   const opsDays = today >= OPS_START ? workdays(OPS_START, today) : [];
   const rk = kind => { if (!opsDays.length) return null; const set = new Set(AN.recs.filter(r => r.kind === kind).map(r => r.time.slice(0, 10) + '|' + r.area));
     let h = 0; opsDays.forEach(d => TEAMS.forEach(t => { if (set.has(d + '|' + t)) h++; })); return Math.round(h / (opsDays.length * TEAMS.length) * 100); };
-  const rTbm = (!opsDays.length || !AN.tbm) ? null : Math.round(new Set(AN.tbm.filter(r => opsDays.includes(r.time.slice(0, 10))).map(r => r.time.slice(0, 10) + '|' + r.line)).size / (opsDays.length * TBM_LINES_N) * 100);
+  const rTbm = (!opsDays.length || !AN.tbm) ? null : Math.round(new Set(AN.tbm.filter(r => opsDays.includes(r.time.slice(0, 10))).map(r => r.time.slice(0, 10) + '|' + r.line)).size / Math.max(1, opsDays.reduce((a, d) => a + tbmOnN(d), 0)) * 100);
   const rp = rk('patrol'), r5 = rk('5s');
   const sc = v => Math.max(2, Math.round(v / 1.2 * 78));   // 재해율 막대: 1.2% = 최대폭
   const row = (g, k, w, col, txt) => `<div class="hb"><span><em>${g}</em>${k}</span><div class="hbt">${w == null ? '' : `<i style="width:${Math.max(2, w)}%;background:${col}"></i>`}<b>${txt}</b></div></div>`;
@@ -763,6 +763,8 @@ async function renderNotice() {
 const TBM_LN = { KA4: ['조립1팀', 'KA4 G/BOX'], CE1: ['조립1팀', 'CE1/CT1 G/BOX'], SV1G: ['조립1팀', 'SV1 G/BOX'], SV1U: ['조립1팀', 'SV1 UPR'],
   GN7: ['조립2팀', 'GN7 G/BOX'], SP3G: ['조립2팀', 'SP3k G/BOX'], MIL: ['조립3팀', '밀링스코어링'], PAB: ['조립3팀', 'SP3k PAB 융착'], PNT: ['도장팀', '도장'] };
 function tbmToday() { if (!AN || !AN.tbm) return null; const t = AN.to; return new Set(AN.tbm.filter(r => r.time.slice(0, 10) === t).map(r => r.line)); }
+function tbmOffN(d) { return AN && AN.tbmOff ? new Set(AN.tbmOff.filter(x => x.date === d).map(x => x.line)).size : 0; }   // 그날 비가동 라인 수
+function tbmOnN(d) { return Math.max(0, TBM_LINES_N - tbmOffN(d)); }
 function tbmTodayMin() { const t = AN.to; return AN.tbm.filter(r => r.time.slice(0, 10) === t).reduce((a, r) => a + Number(r.minutes || 0), 0); }
 function renderTbmChart() {
   const el = $('tbmChart'); if (!el) return;

@@ -100,6 +100,25 @@
   .run{font-size:15px}.run .dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:#22C55E;margin-right:6px;animation:bl 1s infinite}
   @keyframes bl{50%{opacity:.25}}
   .recno{font-size:26px;font-weight:900;color:var(--navy);letter-spacing:.03em;margin:6px 0 10px}
+  .tguide{position:sticky;top:0;z-index:20;background:#EA580C;color:#fff;font-weight:800;font-size:17px;line-height:1.35;padding:12px 14px;border-radius:12px;margin-bottom:10px;box-shadow:0 4px 12px rgba(234,88,12,.35)}
+  .tguide.ok{background:#16A34A;box-shadow:none}.tguide .ar{display:inline-block;animation:bl 1s infinite}
+  .tl2{border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px;background:#fff;transition:opacity .2s}
+  .tl2.next{border:3px solid #EA580C;animation:nx 1.2s infinite}
+  @keyframes nx{50%{box-shadow:0 0 0 6px rgba(234,88,12,.22)}}
+  .tl2.run{border:3px solid #16A34A;background:#F0FDF4}
+  .tl2.dim{opacity:.5}.tl2.pm{border:2px dashed #F59E0B}
+  .tl2.done{background:#F8FAFC;color:var(--sub)}.tl2.off{background:#F1F5F9;color:#94A3B8}
+  .tl2 .ln{font-weight:800;font-size:16px;display:flex;justify-content:space-between;align-items:baseline}.tl2 .ln small{font-weight:400;color:var(--sub);font-size:12px}
+  .tl2 .ls{font-size:13.5px;margin:4px 0}.tl2 .nxt{color:#EA580C}.tl2 .rec{font-size:15px;font-weight:800;color:var(--navy)}
+  .tl2 .dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:#22C55E;margin-right:6px;animation:bl 1s infinite}
+  .tl2 .lb{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+  .go{display:block;width:100%;font:inherit;font-size:18px;font-weight:900;border:0;border-radius:12px;padding:15px;background:#64748B;color:#fff;cursor:pointer}
+  .go.hot{background:#EA580C;animation:nx 1.2s infinite}.go.g{background:#16A34A}.go.off{background:#E2E8F0;color:#64748B}
+  #tbmFoot .go{margin:4px 0 6px}
+  .tl2 .sm{font:inherit;font-size:13.5px;border:1px solid #CBD5E1;background:#fff;border-radius:999px;padding:7px 14px;color:var(--sub);cursor:pointer}
+  .tl2 .sm.why{border-color:#94A3B8;color:#334155;font-weight:700}
+  .stp{display:flex;align-items:center;gap:8px;margin:6px 0}.stp button{width:42px;height:42px;font-size:22px;border-radius:10px;border:1px solid #CBD5E1;background:#fff}.stp b{min-width:28px;text-align:center;font-size:20px}
+  .opin{width:100%;font:inherit;font-size:15px;padding:9px;border:1px solid #CBD5E1;border-radius:10px;margin:4px 0}
 
   .pl{border-top:1px solid var(--line);padding:8px 0}.pl:first-child{border-top:0}
   .plh{display:flex;align-items:center;gap:8px}.plh .lnk{margin-left:auto}
@@ -185,25 +204,16 @@
   </section>
 
   <section id="tbmForm" style="display:none">
-    <div class="card"><h2>라인 선택</h2><div class="chips" id="tbmLines"></div><div class="cnt" id="tbmHead"></div><div style="height:6px"></div></div>
-    <div class="card"><div class="tbmhd"><h2 style="margin:0">오늘의 안전 주제 3개</h2><button class="big" id="tbmBigBtn">크게 보여주기</button></div>
-      <div class="cnt" style="margin:4px 0 6px">2026 위험성평가에서 위험도 순으로 매일 자동 선택 · 같은 날·같은 라인은 누가 열어도 같은 주제</div>
+    <div class="tguide" id="tbmGuide"></div>
+    <div class="card" id="tbmWho"><h2>진행자 (관리감독자)</h2><input type="text" id="tbmLeader" maxlength="20" placeholder="진행자 이름"><div style="height:8px"></div><div id="tbmSignSlot"></div></div>
+    <div class="cnt" id="tbmWhoDone" style="margin:0 2px 8px"></div>
+    <div class="card"><h2>라인 진행 <span class="cnt">교육시간 = 라인별 실제 시간 (이동 제외)</span></h2><div id="tbmLines"></div><p class="msg" id="tbmMsg"></p></div>
+    <div id="tbmFoot"></div>
+    <div class="card"><div class="tbmhd"><h2 style="margin:0">오늘의 팀 주제 3개</h2><button class="big" id="tbmBigBtn">크게 보여주기</button></div>
+      <div class="cnt" style="margin:4px 0 6px">위험성평가에서 위험도 순으로 매일 자동 선택 · 팀의 모든 라인 같은 주제</div>
       <div class="chips" id="tbmLang"></div><div id="tbmCards"></div>
       <div class="cnt" style="margin:2px 0 8px">외국어 문구는 번역 초안입니다. 이상한 표현은 반장에게 알려 주세요.</div></div>
-    <div class="card"><h2>진행 상태</h2><div id="tbmState"></div></div>
-    <div id="tbmFinish">
-    <div class="card"><h2>실제 끝난 시각</h2><input type="time" id="tbmEnd" style="width:100%;font:inherit;font-size:20px;padding:9px;border:1px solid #CBD5E1;border-radius:10px">
-      <div class="cnt" style="margin:6px 0 8px">지금 마치면 그대로 두고, 나중에 입력하면 실제 끝난 시각으로 고쳐 주세요. 입력한 시각과 별도로 '마치기 누른 시각'도 서버에 남습니다.</div></div>
-    <div class="card"><h2>참석</h2>
-      <div class="num"><label>참석 인원<input type="number" id="tbmAttend" min="0" max="99" inputmode="numeric"></label><label>결근·지각 인원<input type="number" id="tbmAbsent" min="0" max="99" inputmode="numeric"></label></div>
-      <div style="height:8px"></div><input type="text" id="tbmAbsentNames" maxlength="100" placeholder="결근·지각자 이름 (있을 때만)">
-      <div class="cnt" style="margin:6px 0 8px">참석자 개인 서명은 작업일보 TBM란에 받습니다.</div></div>
-    <div class="card"><h2>작업자 의견 <span class="cnt">선택</span></h2><textarea id="tbmOpinion" maxlength="200" placeholder="예: 2번 라인 바닥 미끄러움"></textarea><div style="height:8px"></div></div>
-    <div class="card"><h2>진행자 (관리감독자)</h2><input type="text" id="tbmLeader" maxlength="20" placeholder="진행자 이름"><div style="height:8px"></div></div>
-    <div id="tbmSignSlot"></div>
-    <p class="msg" id="tbmMsg"></p>
-    <button class="submit" id="tbmSubmit">TBM 마치기 · 제출</button>
-    </div>
+    <div class="cnt" style="margin:8px 2px">참석자 개인 서명은 작업일보에 받습니다. 쉬는 라인은 [비가동], 오후에 도는 라인은 [오후 가동] → 가동 직전 다시 QR.</div>
   </section>
 </main>
 
@@ -767,7 +777,11 @@ const TBM_TOPICS = [
   ru:['Сообщайте об опасности через QR','Пройдя мимо опасности, допускаете аварию','Увидели опасность — сообщите через QR (за принятые — сертификат)']}
 ];
 
-/* ===== TBM (작업 전 안전회의) — v6 시험본 ===== */
+/* ===== TBM (작업 전 안전회의) — v6-4 팀 진행 =====
+ * 팀 시작 1회 → 라인 도착 [교육 시작] → [완료] → 다음 라인 → [팀 TBM 마치기]
+ * 직원 교육시간 = 라인별 실제 교육시간(이동 제외), 진행자 전체시간(이동 포함)은 따로 기록
+ * 라인 상태: 대기 / 교육 중 / 완료 / 비가동(사유) / 오후 가동(대기)
+ * 화면 원칙: 지금 할 일 1개만 강조, 나머지 흐리게 */
 const TBM_LINE = {
   KA4: { team: 1, name: 'KA4 G/BOX', proc: ['IN','P1','P2','VW','QC','CM'], lang: ['zh','vi'], head: 4 },
   CE1: { team: 1, name: 'CE1/CT1 G/BOX', proc: ['IN','P1','P2','VW','QC','CM'], lang: ['km'], head: 2 },
@@ -778,20 +792,21 @@ const TBM_LINE = {
   MIL: { team: 3, name: '밀링스코어링', proc: ['IN','RB','VW','CM'], lang: [], head: 2 },
   PAB: { team: 3, name: 'SP3k PAB 융착', proc: ['IN','RB','VW','CM'], lang: ['km'], head: 3 },
   PNT: { team: 4, name: '도장', proc: ['IN','CM'], lang: ['ru'], head: 3 }
-};
+};   // 순서 = 팀 동선 순서
 const TBM_LEADER = { 1: '조찬형', 2: '강연식', 3: '이성희', 4: '조찬형' };
 const LANG = { ko: '한국어', zh: '中文', vi: 'Tiếng Việt', km: 'ខ្មែរ', in: 'Indonesia', ru: 'Русский' };
 const LBL = { ko: ['위험', '대책'], zh: ['危险', '对策'], vi: ['Nguy cơ', 'Biện pháp'], km: ['គ្រោះថ្នាក់', 'វិធានការ'], in: ['Bahaya', 'Tindakan'], ru: ['Опасность', 'Меры'] };
+const OFF_WHY = ['휴무', '물량 없음', '설비 점검', '기타'];
 let tbm = null;
 
-/* 오늘의 주제 3개: 위험성(가능성×중대성) 가중 순환 — 날짜·라인이 같으면 누가 열어도 같은 주제 */
-function tbmTopics(line, ds) {
-  const L = TBM_LINE[line], credit = {}, ep = new Date('2026-10-01T00:00:00'), end = new Date(ds + 'T00:00:00');
+/* 오늘의 주제 3개: 위험성(가능성×중대성) 가중 순환 — 같은 날·같은 공정 묶음이면 누가 열어도 같은 주제 */
+function tbmTopicsP(procs, ds) {
+  const credit = {}, ep = new Date('2026-10-01T00:00:00'), end = new Date(ds + 'T00:00:00');
   let pick = [];
   for (let d = new Date(ep); d <= end; d.setDate(d.getDate() + 1)) {
     if (d.getDay() === 0) continue;
     const mo = d.getMonth() + 1;
-    const cand = TBM_TOPICS.filter(t => t.proc.some(p => L.proc.indexOf(p) >= 0) && (!t.m || t.m.indexOf(mo) >= 0));
+    const cand = TBM_TOPICS.filter(t => t.proc.some(p => procs.indexOf(p) >= 0) && (!t.m || t.m.indexOf(mo) >= 0));
     const tot = cand.reduce((s, t) => s + t.w, 0);
     cand.forEach(t => credit[t.id] = (credit[t.id] || 0) + t.w);
     pick = [];
@@ -802,80 +817,118 @@ function tbmTopics(line, ds) {
   }
   return pick.sort((a, b) => b.w - a.w);
 }
+function tbmTopics(line, ds) { return tbmTopicsP(TBM_LINE[line].proc, ds); }
+function tLines(t) { return Object.keys(TBM_LINE).filter(k => TBM_LINE[k].team === (t || team)); }
+function tbmTopicsTeam(ds, t) { return tbmTopicsP([...new Set(tLines(t).flatMap(k => TBM_LINE[k].proc))], ds); }
+function tLangs(t) { return ['ko'].concat([...new Set(tLines(t).flatMap(k => TBM_LINE[k].lang))]); }
 
-function sessKey(line) { return `ms_tbm_s_${line}_${today()}`; }
-function getSess(line) { try { return JSON.parse(store.get(sessKey(line)) || 'null'); } catch (e) { return null; } }
-function setSess(line, v) { store.set(sessKey(line), JSON.stringify(v)); }
-async function tbmSync() {   // 다른 폰에서 시작한 TBM도 이어서 마칠 수 있게 서버 상태 반영
+/* 팀 진행 상태 (기기 저장 + 서버 상태로 보정) */
+function teamKey() { return `ms_tbm_t_${team}_${today()}`; }
+function curT() {
+  let T = null; try { T = JSON.parse(store.get(teamKey()) || 'null'); } catch (e) {}
+  if (!T) T = { started: 0, finished: 0, leader: '', lines: {} };
+  tLines().forEach(k => { if (!T.lines[k]) T.lines[k] = { st: 'wait', att: TBM_LINE[k].head }; });
+  return T;
+}
+function setT(T) { store.set(teamKey(), JSON.stringify(T)); }
+async function tbmSync() {   // 다른 폰에서 진행한 라인도 반영
   try {
     const st = await (await fetch(`${ENDPOINT}?action=status&team=${team}`)).json();
     if (!st.ok) return;
-    st.tbmToday.forEach(x => { const cur = getSess(x.line);
-      if (x.status === '진행중' && (!cur || cur.status !== '완료')) setSess(x.line, { sid: x.sid, start: x.start, status: '진행중' });
-      if (x.status === '완료') setSess(x.line, { ...(cur || {}), status: '완료' }); });
-    if (type === 'tbm') tbmRender();
+    const T = curT();
+    (st.tbmToday || []).forEach(x => { const L = T.lines[x.line]; if (!L) return;
+      if (x.rec && String(x.rec).indexOf('-T') > 0) T.tno = x.rec;
+      if (x.status === '완료' && L.st !== 'done') { T.lines[x.line] = { ...L, st: 'done', min: x.min, rec: x.rec || L.rec || x.sid }; if (!T.started) T.started = x.start; }
+      if (x.status === '진행중' && L.st !== 'run' && L.st !== 'done') { T.lines[x.line] = { ...L, st: 'run', sid: x.sid, start: x.start }; if (!T.started) T.started = x.start; } });
+    (st.tbmOff || []).forEach(x => { const L = T.lines[x.line]; if (L && L.st !== 'off') T.lines[x.line] = { ...L, st: 'off', why: x.why }; });
+    setT(T); if (type === 'tbm') tbmRender();
   } catch (e) {}
 }
+
 function tbmOpen() {
   type = 'tbm'; answers = {};
   $('menu').style.display = 'none'; $('form').style.display = 'none'; $('bar').style.display = 'none';
   $('backBtn').style.display = ''; $('title').textContent = 'TBM (작업 전 안전회의)';
   $('docno').textContent = 'TBM 일지 · 문서번호 MS-SF-07 · 위험성평가 결과 공유';
-  const lines = Object.keys(TBM_LINE).filter(k => TBM_LINE[k].team === team);
-  tbm = { line: store.get('ms_tbm_line_' + team) || lines[0], lang: 'ko' };
-  if (lines.indexOf(tbm.line) < 0) tbm.line = lines[0];
+  tbm = { lang: 'ko', topics: tbmTopicsTeam(today()), langs: tLangs(), busy: false };
   $('tbmForm').style.display = '';
-  $('tbmLines').innerHTML = lines.map(k => `<button data-line="${k}">${TBM_LINE[k].name}</button>`).join('');
-  document.querySelectorAll('[data-line]').forEach(b => b.onclick = () => { tbm.line = b.dataset.line; tbm.lang = 'ko'; store.set('ms_tbm_line_' + team, tbm.line); tbmRender(); });
   $('tbmLeader').value = store.get('ms_tbm_leader_' + team) || TBM_LEADER[team];
   $('signCard').style.display = ''; $('tbmSignSlot').appendChild($('signCard'));
-  inspector = $('tbmLeader').value.trim(); initPad(); updateSign();
-  $('tbmLeader').oninput = e => { inspector = e.target.value.trim(); updateSign(); };
+  inspector = $('tbmLeader').value.trim(); initPad(); tbmSignShow();
+  $('tbmLeader').oninput = e => { inspector = e.target.value.trim(); tbmSignShow(); };
   tbmRender(); tbmTick(); tbmSync(); scrollTo(0, 0);
 }
-async function tbmStart(manual) {
-  const m = $('tbmStartMsg'); m.textContent = '시작 기록 중…';
-  const body = { key: API_KEY, type: 'tbmstart', team, line: tbm.line, fieldPin: FIELD_PIN };
-  if (manual) { body.manualStart = $('tbmManualTime').value; body.reason = $('tbmManualWhy').value; if (!body.manualStart) return m.textContent = '시작 시각을 넣어 주세요.'; }
-  try {
-    const out = await (await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify(body) })).json();
-    if (!out.ok) throw new Error(out.error || '시작 기록 실패');
-    setSess(tbm.line, { sid: out.sid, start: out.start, status: '진행중' }); m.textContent = ''; tbmRender();
-  } catch (e) { m.textContent = '시작이 기록되지 않았습니다. (' + e.message + ')'; }
+function tbmSignShow() {   // 같은 날 같은 진행자는 저장된 서명 재사용
+  const s = inspector ? store.get(signKey()) : null;
+  savedSign = s || null;
+  $('signed').style.display = s ? 'flex' : 'none'; $('padWrap').style.display = s ? 'none' : '';
+  if (s) $('signedImg').src = s;
 }
 const hhmm = t => { const d = new Date(t); return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'); };
-function tbmState() {
-  const S = getSess(tbm.line), el = $('tbmState');
-  $('tbmFinish').style.display = S && S.status === '진행중' ? '' : 'none';
-  if (!S) {
-    el.innerHTML = `<button class="submit" id="tbmStartBtn" style="background:#EA580C">▶ TBM 시작 (지금 시각 기록)</button>
-      <div class="cnt" style="margin:8px 0 4px">시작만 누르고 화면을 닫아도 됩니다. TBM이 끝나면 다시 QR을 찍어 '마치기'를 하세요.</div>
-      <details style="font-size:14px;margin-bottom:8px"><summary>시작을 못 눌렀어요 (시작 시각 직접 입력)</summary>
-        <div class="num" style="margin-top:8px"><label>실제 시작 시각<input type="time" id="tbmManualTime"></label>
-        <label>사유<select id="tbmManualWhy" style="width:100%;font:inherit;padding:9px;border:1px solid #CBD5E1;border-radius:10px"><option>깜빡함</option><option>휴대폰·통신 문제</option><option>기타</option></select></label></div>
-        <div style="height:8px"></div><button class="big" id="tbmManualBtn">입력한 시각으로 시작 기록</button>
-        <div class="cnt" style="margin-top:4px">수기 입력은 기록에 '수기'와 사유가 함께 남습니다.</div></details>
-      <p class="msg" id="tbmStartMsg"></p>`;
-    $('tbmStartBtn').onclick = () => tbmStart(false); $('tbmManualBtn').onclick = () => tbmStart(true);
-  } else if (S.status === '진행중') {
-    el.innerHTML = `<div class="run"><span class="dot"></span><b>진행 중</b> · 시작 ${hhmm(S.start)} · <span id="tbmElapsed"></span></div>
-      <div class="cnt" style="margin:6px 0 8px">화면을 닫아도 기록은 유지됩니다. 끝나면 아래를 채우고 '마치기'. (권장 10분, 실제 시간 그대로 기록)</div><p class="msg" id="tbmStartMsg"></p>`;
-    const now = new Date(), e = $('tbmEnd'); if (!e.value) e.value = hhmm(now);
-  } else {
-    el.innerHTML = `<div class="run" style="color:var(--ok)"><b>✔ 오늘 이 라인 TBM 완료</b>${S.recNo ? ' · ' + esc(S.recNo) : ''}</div><div style="height:8px"></div>`;
-  }
+const minsOf = (start, now) => { const e = new Date(now); e.setSeconds(0, 0); return Math.floor((e - start) / 60000); };   // 서버와 같은 계산(분 단위 내림)
+
+function tbmNext(T) {   // 지금 할 일 1개
+  const ks = tLines(), run = ks.find(k => T.lines[k].st === 'run');
+  if (run) return { kind: 'run', line: run };
+  if (!T.started) return { kind: 'start' };
+  if (!T.finished) { const w = ks.find(k => T.lines[k].st === 'wait'); return w ? { kind: 'line', line: w } : { kind: 'finish' }; }
+  const p = ks.find(k => T.lines[k].st === 'pm' || T.lines[k].st === 'wait');
+  return p ? { kind: 'line', line: p, pm: true } : { kind: 'end' };
 }
 function tbmRender() {
-  const L = TBM_LINE[tbm.line];
-  document.querySelectorAll('[data-line]').forEach(b => b.classList.toggle('on', b.dataset.line === tbm.line));
-  tbm.topics = tbmTopics(tbm.line, today());
-  const langs = ['ko'].concat(L.lang);
-  $('tbmLang').innerHTML = langs.map(l => `<button data-lang="${l}" class="${l === tbm.lang ? 'on' : ''}">${LANG[l]}</button>`).join('');
+  const T = curT(), nx = tbmNext(T), ks = tLines();
+  // 주제 (팀 공통)
+  $('tbmLang').innerHTML = tbm.langs.map(l => `<button data-lang="${l}" class="${l === tbm.lang ? 'on' : ''}">${LANG[l]}</button>`).join('');
   document.querySelectorAll('[data-lang]').forEach(b => b.onclick = () => { tbm.lang = b.dataset.lang; tbmRender(); });
   $('tbmCards').innerHTML = tbm.topics.map((t, i) => tbmCard(t, i, tbm.lang)).join('');
-  $('tbmAttend').value = L.head; $('tbmAbsent').value = 0;
-  $('tbmHead').textContent = `${L.name} · 기본 인원 ${L.head}명`;
-  $('tbmEnd').value = ''; tbm.warned = false; tbmState();
+  // 안내 띠: 지금 할 일 1개
+  const N = k => TBM_LINE[k].name;
+  const guide = { start: '① 진행자 이름·서명 확인 → [팀 TBM 시작]', run: `${nx.line ? N(nx.line) : ''} 교육 중 · 끝나면 [완료]`,
+    line: nx.pm ? `오후 가동 라인: ${nx.line ? N(nx.line) : ''} → [교육 시작]` : `${nx.line ? N(nx.line) : ''} 라인으로 이동 → [교육 시작]`,
+    finish: '모든 라인 처리 완료 → [팀 TBM 마치기]', end: '✔ 오늘 팀 TBM 완료' + (T.tno ? ' · ' + T.tno : '') }[nx.kind];
+  $('tbmGuide').className = 'tguide' + (nx.kind === 'end' ? ' ok' : '');
+  $('tbmGuide').innerHTML = `<span class="ar">▶</span> ${esc(guide)}`;
+  // 진행자·서명: 시작 전에만 펼침
+  $('tbmWho').style.display = T.started ? 'none' : '';
+  $('tbmWhoDone').style.display = T.started ? '' : 'none';
+  $('tbmWhoDone').textContent = T.started ? `${T.tno ? '기록번호 ' + T.tno + ' · ' : ''}진행자 ${T.leader} · 팀 시작 ${hhmm(T.started)}${T.finished ? ' · 팀 마치기 ' + hhmm(T.finished) : ''}` : '';
+  // 라인 목록
+  $('tbmLines').innerHTML = ks.map(k => tbmRow(k, T.lines[k], T, nx)).join('');
+  // 아래 큰 버튼 (시작 / 마치기)
+  const foot = $('tbmFoot');
+  if (nx.kind === 'start') foot.innerHTML = `<button class="go hot" id="tbmTeamStart">▶ 팀 TBM 시작</button>`;
+  else if (!T.finished) foot.innerHTML = `<button class="go ${nx.kind === 'finish' ? 'hot' : 'off'}" id="tbmTeamEnd">■ 팀 TBM 마치기</button>`;
+  else foot.innerHTML = '';
+  if ($('tbmTeamStart')) $('tbmTeamStart').onclick = tbmTeamStart;
+  if ($('tbmTeamEnd')) $('tbmTeamEnd').onclick = tbmTeamEnd;
+  document.querySelectorAll('[data-bigt]').forEach(b => b.onclick = tbmBig);
+  document.querySelectorAll('[data-go]').forEach(b => b.onclick = () => tbmLineStart(b.dataset.go));
+  document.querySelectorAll('[data-done]').forEach(b => b.onclick = () => tbmLineDone(b.dataset.done));
+  document.querySelectorAll('[data-off]').forEach(b => b.onclick = () => { tbm.offOpen = tbm.offOpen === b.dataset.off ? null : b.dataset.off; tbmRender(); });
+  document.querySelectorAll('[data-why]').forEach(b => b.onclick = () => { const [k, w] = b.dataset.why.split('|'); tbmLineOff(k, w); });
+  document.querySelectorAll('[data-pm]').forEach(b => b.onclick = () => { const T2 = curT(); T2.lines[b.dataset.pm].st = 'pm'; setT(T2); tbmRender(); });
+  document.querySelectorAll('[data-att]').forEach(b => b.onclick = () => { const [k, v] = b.dataset.att.split('|'); const T2 = curT(); T2.lines[k].att = Math.max(0, Math.min(99, (T2.lines[k].att || 0) + Number(v))); setT(T2); tbmRender(); });
+  document.querySelectorAll('[data-op]').forEach(i => i.oninput = () => { const T2 = curT(); T2.lines[i.dataset.op].op = i.value.slice(0, 200); setT(T2); });
+}
+function tbmRow(k, L, T, nx) {
+  const Ln = TBM_LINE[k], isNext = (nx.kind === 'line' && nx.line === k), canAct = T.started && !tbm.busy;
+  const offBox = tbm.offOpen === k ? `<div class="lb">${OFF_WHY.map(w => `<button class="sm why" data-why="${k}|${w}">${w}</button>`).join('')}</div>` : '';
+  const head = `<div class="ln"><span>${esc(Ln.name)}</span><small>${Ln.head}명</small></div>`;
+  if (L.st === 'run') {
+    return `<div class="tl2 run">${head}<div class="ls"><span class="dot"></span>교육 중 · 시작 ${hhmm(L.start)} · <b id="tbmEl">경과 ${minsOf(L.start, Date.now())}분</b></div>
+      <div class="stp"><span>참석</span><button data-att="${k}|-1">−</button><b>${L.att}</b><button data-att="${k}|1">+</button><span class="cnt">명 (기본 ${Ln.head}명)</span></div>
+      <input class="opin" data-op="${k}" maxlength="200" placeholder="근로자 의견 (있을 때만) 예: 바닥 미끄러움" value="${esc(L.op || '')}">
+      <div class="lb"><button class="sm" data-bigt="1">📖 주제 3개 크게 보기</button></div>
+      <div class="lb"><button class="go g" data-done="${k}">✔ ${esc(Ln.name)} 교육 완료</button></div></div>`;
+  }
+  if (L.st === 'done') return `<div class="tl2 done">${head}<div class="ls">✔ 완료 ${L.start ? hhmm(L.start) + ' · ' : ''}${L.min != null ? L.min + '분' : ''} · 참석 ${L.att != null ? L.att : '-'}명</div></div>`;
+  if (L.st === 'off') return `<div class="tl2 off">${head}<div class="ls">비가동 · ${esc(L.why || '')} (TBM 대상 제외)</div></div>`;
+  const pm = L.st === 'pm';
+  const cls = 'tl2' + (isNext ? ' next' : '') + (pm && !isNext ? ' pm' : '') + (!isNext && T.started ? ' dim' : '') + (!T.started ? ' dim' : '');
+  const btns = !canAct ? '' : `<div class="lb">
+      <button class="go ${isNext ? 'hot' : 'off'}" data-go="${k}">▶ 교육 시작</button>
+      <button class="sm" data-off="${k}">비가동</button>${pm || T.finished ? '' : `<button class="sm" data-pm="${k}">오후 가동</button>`}</div>${offBox}`;
+  return `<div class="${cls}">${head}<div class="ls">${pm ? '오후 가동 대기' : '대기'}${isNext ? ' · <b class="nxt">다음 순서</b>' : ''}</div>${btns}</div>`;
 }
 function tbmCard(t, i, l) {
   const x = t[l] || t.ko, lb = LBL[l] || LBL.ko;
@@ -886,46 +939,88 @@ function tbmCard(t, i, l) {
 }
 function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
 function tbmBig() {
-  const langs = ['ko'].concat(TBM_LINE[tbm.line].lang);
+  const langs = tbm.langs || ['ko'];
   $('bigBody').innerHTML = `<div class="blang">${langs.map(l => `<button data-big="${l}" class="${l === tbm.lang ? 'on' : ''}">${LANG[l]}</button>`).join('')}</div>` +
     tbm.topics.map((t, i) => tbmCard(t, i, tbm.lang)).join('');
-  document.querySelectorAll('[data-big]').forEach(b => b.onclick = () => { tbm.lang = b.dataset.big; tbmBig(); tbmRender(); });
+  document.querySelectorAll('[data-big]').forEach(b => b.onclick = () => { tbm.lang = b.dataset.big; tbmBig(); if (type === 'tbm') tbmRender(); });
   if (!$('bigDlg').open) $('bigDlg').showModal();
 }
 function tbmTick() {
   if (!tbm || type !== 'tbm') return;
-  const S = getSess(tbm.line), el = $('tbmElapsed');
-  if (S && S.status === '진행중' && el) { const m = Math.floor((Date.now() - S.start) / 60000); el.textContent = `경과 ${m}분`; el.style.color = m >= 10 ? 'var(--ok)' : 'var(--bad)'; }
+  const T = curT(), k = tLines().find(x => T.lines[x].st === 'run'), el = $('tbmEl');
+  if (k && el) el.textContent = `경과 ${minsOf(T.lines[k].start, Date.now())}분`;
   setTimeout(tbmTick, 1000);
 }
-async function tbmSubmit() {
-  const msg = $('tbmMsg'); msg.textContent = '';
+const tmsg = t => { $('tbmMsg').textContent = t || ''; if (t) $('tbmMsg').scrollIntoView({ behavior: 'smooth', block: 'center' }); };
+const post = async body => { const o = await (await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ key: API_KEY, team, fieldPin: FIELD_PIN, ...body }) })).json(); if (!o.ok) throw new Error(o.error || '저장 실패'); return o; };
+function tbmSignNow() { return savedSign || (padDirty ? exportSign() : ''); }
+
+function tbmTeamStart() {
   const leader = $('tbmLeader').value.trim();
-  if (!leader) return msg.textContent = '진행자 이름을 입력해 주세요.';
-  const sign = savedSign || (padDirty ? exportSign() : '');
-  if (!sign) { $('signCard').scrollIntoView({ behavior: 'smooth' }); return msg.textContent = '진행자 서명을 해 주세요.'; }
-  const S = getSess(tbm.line); if (!S || S.status !== '진행중') return msg.textContent = '먼저 TBM 시작을 눌러 주세요.';
-  const endV = $('tbmEnd').value; if (!endV) return msg.textContent = '실제 끝난 시각을 넣어 주세요.';
-  const st = new Date(S.start), en = new Date(st); en.setHours(+endV.slice(0, 2), +endV.slice(3, 5), 0, 0);
-  const mins = Math.floor((en - st) / 60000);
-  if (mins < 1 || en > new Date(Date.now() + 60000)) return msg.textContent = '끝난 시각을 확인해 주세요 (시작 이후 ~ 지금).';
-  if (mins > 60) return msg.textContent = '진행 시간이 60분을 넘습니다. 끝난 시각을 확인해 주세요.';
-  if (mins < 5 && !tbm.warned) { tbm.warned = true; return msg.textContent = `${mins}분입니다. 실제 시간 그대로 기록되며, 짧으면 반기 교육시간이 적게 쌓입니다. 맞으면 한 번 더 누르세요.`; }
-  const btn = $('tbmSubmit'); btn.disabled = true; btn.dataset.busy = 1; btn.textContent = '저장 중…';
-  const body = { key: API_KEY, type: 'tbm', team, line: tbm.line, sid: S.sid, end: endV, leader,
-    attend: +$('tbmAttend').value || 0, absent: +$('tbmAbsent').value || 0, absentNames: $('tbmAbsentNames').value.trim(),
-    opinion: $('tbmOpinion').value.trim(), fieldPin: FIELD_PIN, topics: tbm.topics.map(t => t.id), topicText: tbm.topics.map(t => t.ko[0]).join(' / '), sign };
+  if (!leader) return tmsg('진행자 이름을 입력해 주세요.');
+  const sign = tbmSignNow();
+  if (!sign) { $('signCard').scrollIntoView({ behavior: 'smooth' }); return tmsg('진행자 서명을 해 주세요.'); }
+  store.set('ms_tbm_leader_' + team, leader); if (!savedSign) store.set(signKey(), sign);
+  const T = curT(); T.started = Date.now(); T.leader = leader; setT(T);
+  tbm.sign = sign; tmsg(''); tbmRender(); scrollTo(0, 0);
+}
+async function tbmLineStart(k) {
+  if (tbm.busy) return;
+  const T = curT(), run = tLines().find(x => T.lines[x].st === 'run' && x !== k);
+  if (run) { const ok = await tbmLineDone(run, true); if (!ok) return; }   // 완료를 깜빡하고 다음 라인 시작 → 앞 라인 자동 완료
+  tbm.busy = true; tmsg(''); tbmRender();
   try {
-    const out = await (await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify(body) })).json();
-    if (!out.ok) throw new Error(out.error || '저장 실패');
-    setSess(tbm.line, { ...S, status: '완료', recNo: out.recNo }); store.set('ms_tbm_line_' + team, tbm.line); store.set('ms_tbm_leader_' + team, leader); if (!savedSign) store.set(signKey(), sign);
-    $('tbmForm').style.display = 'none'; $('main').style.display = 'none';
-    $('doneInfo').innerHTML = `<div class="recno">${esc(out.recNo)}</div>작업일보 TBM란에 이 번호와 시간(${out.minutes}분)을 적어 주세요.<br>${esc(TBM_LINE[tbm.line].name)} · 진행자 ${esc(leader)} · 시작 ${esc(out.time)}`;
-    $('doneBad').textContent = '';
-    $('done').style.display = 'block'; type = null; scrollTo(0, 0);
-  } catch (e) {
-    msg.textContent = '저장되지 않았습니다. (' + e.message + ') 서버에 TBM 기능이 아직 연결되지 않았을 수 있습니다.';
-  } finally { delete btn.dataset.busy; btn.disabled = false; btn.textContent = 'TBM 마치기 · 제출'; }
+    const o = await post({ type: 'tbmstart', line: k, teamMode: 1 });   // 팀 하나에 기록번호 1개
+    const T2 = curT(); T2.lines[k] = { ...T2.lines[k], st: 'run', sid: o.sid, start: o.start }; T2.tno = o.sid; setT(T2);
+  } catch (e) { tmsg(`${TBM_LINE[k].name} 시작이 기록되지 않았습니다. (${e.message})`); }
+  tbm.busy = false; tbmRender();
+}
+async function tbmLineDone(k, auto) {
+  if (tbm.busy) return false;
+  const T = curT(), L = T.lines[k], now = Date.now();
+  const m = minsOf(L.start, now);
+  if (m < 1) { tmsg(`${TBM_LINE[k].name}: 1분 이상 진행한 뒤 완료해 주세요. (실제 시간 그대로 기록)`); return false; }
+  if (m > 60) { tmsg(`${TBM_LINE[k].name}: 60분이 넘었습니다. 관리자에게 수정 요청해 주세요.`); return false; }
+  const sign = tbm.sign || tbmSignNow() || (T.leader && store.get(`ms_sign_${today()}_${T.leader}`)) || '';
+  if (!sign) { tmsg('진행자 서명이 없습니다. 뒤로 갔다가 다시 들어와 서명해 주세요.'); return false; }
+  tbm.busy = true; tbmRender();
+  try {
+    const o = await post({ type: 'tbm', line: k, sid: L.sid, end: hhmm(now), leader: T.leader || $('tbmLeader').value.trim(),
+      attend: L.att, absent: Math.max(0, TBM_LINE[k].head - L.att), absentNames: '', opinion: (L.op || '').trim(),
+      topics: tbm.topics.map(t => t.id), topicText: tbm.topics.map(t => t.ko[0]).join(' / '), sign });
+    const T2 = curT(); T2.lines[k] = { ...T2.lines[k], st: 'done', min: o.minutes, rec: o.recNo }; T2.tno = o.recNo; setT(T2);
+    tmsg(auto ? `${TBM_LINE[k].name}은 자동 완료했습니다 (${o.minutes}분).` : '');
+    tbm.busy = false; tbmRender(); return true;
+  } catch (e) { tmsg(`${TBM_LINE[k].name} 완료가 저장되지 않았습니다. (${e.message})`); tbm.busy = false; tbmRender(); return false; }
+}
+async function tbmLineOff(k, why) {
+  if (tbm.busy) return;
+  tbm.busy = true; tbm.offOpen = null; tbmRender();
+  try {
+    await post({ type: 'tbmoff', line: k, reason: why, leader: curT().leader || $('tbmLeader').value.trim() });
+    const T = curT(); T.lines[k] = { ...T.lines[k], st: 'off', why }; setT(T); tmsg('');
+  } catch (e) { tmsg(`${TBM_LINE[k].name} 비가동이 저장되지 않았습니다. (${e.message})`); }
+  tbm.busy = false; tbmRender();
+}
+async function tbmTeamEnd() {
+  const T = curT(), ks = tLines();
+  if (ks.some(k => T.lines[k].st === 'run')) return tmsg('교육 중인 라인을 먼저 [완료]해 주세요.');
+  const left = ks.filter(k => T.lines[k].st === 'wait');
+  if (left.length && !tbm.endWarned) { tbm.endWarned = true; return tmsg(`아직 처리 안 한 라인: ${left.map(k => TBM_LINE[k].name).join(', ')} — 그대로 마치면 오늘 '미실시'로 남습니다. 맞으면 한 번 더 누르세요.`); }
+  tbm.busy = true;
+  try { await post({ type: 'tbmteam', start: T.started, leader: T.leader, lines: ks.map(k => ({ line: k, st: T.lines[k].st, min: T.lines[k].min || 0 })) }); } catch (e) {}
+  const T2 = curT(); T2.finished = Date.now(); setT(T2); tbm.busy = false;
+  tbmDone(T2);
+}
+function tbmDone(T) {
+  const ks = tLines(), done = ks.filter(k => T.lines[k].st === 'done'), pm = ks.filter(k => T.lines[k].st === 'pm');
+  $('tbmForm').style.display = 'none'; $('main').style.display = 'none';
+  $('doneInfo').innerHTML = `${T.tno ? `<div class="recno">${esc(T.tno)}</div>` : ''}<div style="text-align:left;font-size:15px;line-height:1.7">${ks.map(k => { const L = T.lines[k];
+      return `<div><b>${esc(TBM_LINE[k].name)}</b> · ${L.st === 'done' ? `✔ ${L.min}분 (참석 ${L.att}명)` : L.st === 'off' ? '비가동(' + esc(L.why) + ')' : L.st === 'pm' ? '오후 가동 대기' : '미실시'}</div>`; }).join('')}</div>
+    <div style="margin-top:10px">팀 모든 라인 작업일보 TBM란에 <b>위 번호 하나</b>와 <b>그 라인 시간</b>을 적어 주세요.<br>진행자 ${esc(T.leader)} · 팀 시작 ${hhmm(T.started)} · 마치기 ${hhmm(T.finished)} (이동 포함 ${Math.round((T.finished - T.started) / 60000)}분)</div>
+    ${pm.length ? `<div style="margin-top:8px;color:#B45309;font-weight:700">오후 가동 라인(${pm.map(k => esc(TBM_LINE[k].name)).join(', ')})은 가동 직전에 QR → TBM에서 [교육 시작]</div>` : ''}`;
+  $('doneBad').textContent = '';
+  $('done').style.display = 'block'; type = null; scrollTo(0, 0);
 }
 
 /* ===== 누구나 보는 현장 현황 + 관리자 폰 잠금 (v6-2) ===== */
@@ -955,24 +1050,25 @@ function noticeRender(ns) {
   document.querySelectorAll('[data-ack]').forEach(b => b.onclick = async () => { b.disabled = true; b.textContent = '저장 중…'; await visit('ack', b.dataset.ack);
     if (store.get('ms_ack_' + b.dataset.ack)) { b.className = 'ackd'; b.textContent = '✔ 확인 완료'; } else { b.disabled = false; b.textContent = '다시 눌러 주세요'; } });
 }
-function teamLines() { return Object.keys(TBM_LINE).filter(k => TBM_LINE[k].team === team); }
+function teamLines() { return tLines(); }
 function pubRender(st) {
   if (!team) { $('pubCard').style.display = 'none'; return; }
   $('pubCard').style.display = '';
-  const done = st ? new Set(st.tbmToday.map(x => x.line)) : null;
-  $('pubTopics').innerHTML = teamLines().map(k => {
-    const ts = tbmTopics(k, today()), d = done && done.has(k);
-    return `<div class="pl"><div class="plh"><b>${TBM_LINE[k].name}</b>${done ? `<span class="pill ${d ? 'ok' : ''}">${d ? 'TBM 완료' : 'TBM 전'}</span>` : ''}<button class="lnk" data-pub="${k}">크게·외국어</button></div>
-      <ol>${ts.map(t => `<li>${esc(t.ko[0])}</li>`).join('')}</ol></div>`;
-  }).join('');
-  document.querySelectorAll('[data-pub]').forEach(b => b.onclick = () => { tbm = { line: b.dataset.pub, lang: 'ko', start: Date.now(), topics: tbmTopics(b.dataset.pub, today()) }; tbmBig(); });
+  const done = st ? new Set((st.tbmToday || []).filter(x => x.status === '완료').map(x => x.line)) : null;
+  const off = st ? new Set((st.tbmOff || []).map(x => x.line)) : new Set();
+  const ts = tbmTopicsTeam(today());
+  $('pubTopics').innerHTML = `<div class="pl"><div class="plh"><b>오늘의 팀 주제</b><button class="lnk" id="pubBig">크게·외국어</button></div>
+      <ol>${ts.map(t => `<li>${esc(t.ko[0])}</li>`).join('')}</ol></div>
+    <div class="pl">${teamLines().map(k => `<span class="pill ${done && done.has(k) ? 'ok' : ''}" style="margin:2px 4px 2px 0">${esc(TBM_LINE[k].name)} ${off.has(k) ? '비가동' : done ? (done.has(k) ? 'TBM 완료' : 'TBM 전') : ''}</span>`).join('')}</div>`;
+  $('pubBig').onclick = () => { tbm = { lang: 'ko', topics: ts, langs: tLangs() }; tbmBig(); };
   if (!st) { $('pubTrend').innerHTML = '<div class="cnt">최근 기록 추이는 서버 연결 후 표시됩니다.</div>'; return; }
-  const nL = teamLines().length, last = st.days[st.days.length - 1];
-  $('pubToday').innerHTML = `<span class="pill ${last.patrol ? 'ok' : ''}">순회점검 ${last.patrol ? '실시' : '전'}</span> <span class="pill ${last.fives ? 'ok' : ''}">3정5행 ${last.fives ? '실시' : '전'}</span> <span class="pill ${done.size === nL ? 'ok' : ''}">TBM ${done.size}/${nL}라인</span>`;
+  const nL = teamLines().length, nOn = Math.max(0, nL - off.size), last = st.days[st.days.length - 1];
+  $('pubToday').innerHTML = `<span class="pill ${last.patrol ? 'ok' : ''}">순회점검 ${last.patrol ? '실시' : '전'}</span> <span class="pill ${last.fives ? 'ok' : ''}">3정5행 ${last.fives ? '실시' : '전'}</span> <span class="pill ${nOn && done.size >= nOn ? 'ok' : ''}">TBM ${done.size}/${nOn}라인${off.size ? ` (비가동 ${off.size})` : ''}</span>`;
   const D = st.days.filter(x => new Date(x.d + 'T00:00:00').getDay() !== 0), W = 320, H = 130, L = 26, R = 8, T = 12, B = 22, n = D.length;
   const X = i => L + i * (W - L - R) / (n - 1), Y = v => T + (1 - v / 100) * (H - T - B);
-  const tot = D.map(x => Math.round(((Math.min(1, x.tbm / nL)) + x.patrol + x.fives) / 3 * 100));
-  const tbmR = D.map(x => Math.round(Math.min(1, x.tbm / nL) * 100));
+  const tr = x => { const on = nL - (x.off || 0); return on > 0 ? Math.min(1, x.tbm / on) : 1; };
+  const tot = D.map(x => Math.round((tr(x) + x.patrol + x.fives) / 3 * 100));
+  const tbmR = D.map(x => Math.round(tr(x) * 100));
   const path = a => a.map((v, i) => (i ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(v).toFixed(1)).join(' ');
   $('pubTrend').innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="최근 14일 실시율 추이" style="display:block;margin-top:6px">
     ${[0, 50, 100].map(v => `<line x1="${L}" x2="${W - R}" y1="${Y(v)}" y2="${Y(v)}" stroke="#E2E8F0"/><text x="${L - 4}" y="${Y(v) + 3}" text-anchor="end" font-size="9" fill="#94A3B8">${v}</text>`).join('')}
@@ -1008,7 +1104,7 @@ $('mgrBtn').onclick = async () => {
 $('mgrOffBtn').onclick = () => { FIELD_PIN = ''; try { localStorage.removeItem('ms_field_pin'); } catch (e) {} mgrRender(); };
 mgrRender(); pubLoad();
 
-$('tbmBigBtn').onclick = tbmBig; $('bigClose').onclick = () => $('bigDlg').close(); $('tbmSubmit').onclick = tbmSubmit;
+$('tbmBigBtn').onclick = tbmBig; $('bigClose').onclick = () => $('bigDlg').close();
 </script>
 </body>
 </html>
