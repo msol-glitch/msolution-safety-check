@@ -307,7 +307,7 @@
 </style>
 </head>
 <body>
-<div class="testbar" style="position:fixed;top:6px;right:10px;z-index:99">시험본 · 위험성평가 수시</div>
+<div class="testbar" style="position:fixed;top:6px;right:10px;z-index:99">시험본 · 위험성평가</div>
 
 <div class="app">
 <aside class="rail">
@@ -435,7 +435,7 @@ const NAV = [
   { key: 'dust', name: '집진기 청소', ic: ICON.dust },
   { key: 'notice', name: '전달사항·발도장', ic: '<path d="M4 10v4h3l5 4V6L7 10z"/><path d="M16 9a4 4 0 010 6M18.5 6.5a8 8 0 010 11"/>' },
   { key: 'actions', name: '조치관리', ic: '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 0 0 5.4-5.4l-2.4 2.4-2.6-.4-.4-2.6z"/>' },
-  { key: 'risk', name: '위험성평가 수시', ic: '<path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17v.5"/>' },
+  { key: 'risk', name: '위험성평가', ic: '<path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17v.5"/>' },
   { grp: '대표자 전용 · 별도 PIN' },
   { key: 'ceo1', name: '안전보건 관리 현황', ic: '<path d="M5 4h14v16H5z"/><path d="M9 8h6M9 12h6M9 16h3"/>', lock: 1, soon: 'v7' },
   { key: 'ceo2', name: '증빙 자동매핑', ic: '<path d="M3 7h6l2 2h10v10H3z"/><path d="M12 12v5M9.5 14.5 12 12l2.5 2.5"/>', lock: 1, soon: 'v7' },
@@ -484,7 +484,7 @@ function route() {
   renderNav(key);
   if (['dust', 'patrol', '5s'].indexOf(key) >= 0) { $('pageTitle').textContent = (FOLDERS.find(f => f.key === key) || {}).name; return openFolder(key); }
   if (key === 'notice') { $('pageTitle').textContent = '전달사항·발도장'; return renderNotice(); }
-  if (key === 'risk') { $('pageTitle').textContent = '위험성평가 · 10.수시평가'; return renderRisk(); }
+  if (key === 'risk') { $('pageTitle').textContent = '위험성평가'; return renderRisk(); }
   if (key === 'tbm') { $('pageTitle').textContent = 'TBM (작업 전 안전회의)'; return renderTbm(); }
   if (key === 'actions') { $('pageTitle').textContent = '조치관리'; return renderActions(); }
   const n = NAV.find(x => x.key === key && (x.soon || x.off));
@@ -795,7 +795,13 @@ async function riskPost(body) {
 }
 async function renderRisk() {
   const v = $('riskView'); v.classList.remove('hide');
-  v.innerHTML = `<div class="card noprint"><h2>위험성평가 · 10.수시평가 <small>9.공통사항 다음 시트 · 원본 평가표 뒤에 함께 인쇄해 철하기</small>
+  const Y = kstNow().getFullYear();
+  v.innerHTML = `<div class="card noprint"><h2>정기 위험성평가 (원본) <small>상·하반기 평가표 파일을 끌어다 놓으면 원본 그대로 보관 · 수정 없음</small></h2>
+      <div class="g2" style="grid-template-columns:1fr 1fr;gap:12px">${['상반기', '하반기'].map(h => `<div>
+        <div class="rkPer" data-kind="정기 ${Y} ${h}" style="border:2px dashed var(--line2);border-radius:10px;padding:14px;text-align:center;color:var(--sub);cursor:pointer"><b style="color:var(--ink)">${Y}년 ${h}</b><br>📊 평가표(엑셀·PDF) 끌어다 놓기<input type="file" accept=".xlsx,.xls,.pdf" style="display:none"></div>
+        <div class="rkPerList" data-kind="정기 ${Y} ${h}" style="margin-top:6px"></div></div>`).join('')}</div>
+      <div class="err" id="rkPMsg"></div><p class="note">같은 반기에 새로 올리면 가장 최근 파일이 '현재 적용'으로 표시되고, 앞 파일은 이전본으로 남습니다. 인쇄는 원본 엑셀에서 하고, 아래 10.수시평가를 그 뒤에 철합니다.</p></div>
+    <div class="card noprint" style="margin-top:12px;border-top:4px solid #92D050"><h2>10. 수시평가 <small>9.공통사항 다음 · 순회·TBM·근로자 청취조사에서 발굴 · 원본 평가표 뒤에 함께 인쇄해 철하기</small>
       <span style="float:right"><button class="btn ghost sm" id="rkNew">+ 직접 추가</button> <button class="btn ghost sm" id="rkXlsx">엑셀 받기</button> <button class="btn sm" id="rkPrint">수시평가 인쇄 (A3 가로)</button></span></h2>
       <div id="rkSum" class="note">불러오는 중…</div></div>
     <div class="g2 noprint" style="grid-template-columns:1.15fr 1fr;margin-top:12px">
@@ -809,6 +815,10 @@ async function renderRisk() {
   $('rkPrint').onclick = () => { $('rkSheet').innerHTML = riskSheet(); document.body.className = 'p-risk'; print(); };
   $('rkXlsx').onclick = riskXlsx;
   $('rkNew').onclick = () => riskForm(null);
+  document.querySelectorAll('.rkPer').forEach(z => { const fi2 = z.querySelector('input');
+    z.onclick = e => { if (e.target !== fi2) fi2.click(); }; fi2.onchange = () => { riskUpload(fi2.files, z.dataset.kind, $('rkPMsg')); fi2.value = ''; };
+    z.ondragover = e => { e.preventDefault(); z.style.background = '#F0FDF4'; }; z.ondragleave = () => { z.style.background = ''; };
+    z.ondrop = e => { e.preventDefault(); z.style.background = ''; riskUpload(e.dataTransfer.files, z.dataset.kind, $('rkPMsg')); }; });
   const drop = $('rkDrop'), fi = $('rkFile');
   drop.onclick = () => fi.click(); fi.onchange = () => { riskUpload(fi.files); fi.value = ''; };
   drop.ondragover = e => { e.preventDefault(); drop.style.background = '#EFF6FF'; };
@@ -819,7 +829,7 @@ async function renderRisk() {
 }
 function riskDraw() {
   const R = RISK, rows = R.rows, open = rows.filter(r => r['완료확인'] !== '완료확인').length;
-  $('rkSum').innerHTML = `등록 <b>${num(rows.length)}건</b> · 조치 진행 <b style="color:var(--bad)">${num(open)}건</b> · 후보 <b>${num(R.cand.length)}건</b> · 근거자료 <b>${num(R.files.length)}건</b>`;
+  $('rkSum').innerHTML = `등록 <b>${num(rows.length)}건</b> · 조치 진행 <b style="color:var(--bad)">${num(open)}건</b> · 후보 <b>${num(R.cand.length)}건</b> · 근거자료 <b>${num(R.files.filter(f => !f.kind || f.kind === '근거').length)}건</b>`;
   const tag = s => { const c = /TBM/.test(s) ? ['#EFF6FF', '#1D4ED8'] : /전달/.test(s) ? ['#FFF7ED', '#C2410C'] : ['#FEF2F2', '#B42318'];
     return `<span style="background:${c[0]};color:${c[1]};border-radius:9px;padding:1px 7px;font-size:11px;font-weight:700">${esc(s)}</span>`; };
   $('rkCand').innerHTML = R.cand.length ? R.cand.map((c, i) => `<div style="padding:8px 0;border-bottom:1px solid var(--line);display:flex;gap:8px;align-items:flex-start">
@@ -828,6 +838,9 @@ function riskDraw() {
   document.querySelectorAll('[data-reg]').forEach(b => b.onclick = () => riskForm(RISK.cand[+b.dataset.reg]));
   document.querySelectorAll('[data-skip]').forEach(b => b.onclick = async () => { b.disabled = true;
     try { await riskPost({ type: 'riskskip', ckey: RISK.cand[+b.dataset.skip].key }); renderRisk(); } catch (e) { b.textContent = e.message; } });
+  document.querySelectorAll('.rkPerList').forEach(el => { const fs = R.files.filter(f => f.kind === el.dataset.kind).slice().reverse();
+    el.innerHTML = fs.length ? fs.map((f, i) => `<div style="font-size:13px;padding:3px 0">${i === 0 ? '<span style="background:#C6E0B4;color:#14532D;border-radius:8px;padding:0 6px;font-size:11px;font-weight:700">현재 적용</span>' : '<span style="color:var(--sub);font-size:11px">이전본</span>'} <a href="${esc(f.url)}" target="_blank">${esc(f.name)}</a> <span style="color:var(--sub);font-size:11px">${esc(f.time.slice(0, 10))}</span></div>`).join('') : '<div class="note">아직 등록된 원본이 없습니다</div>'; });
+  R.files = R.files.filter(f => !f.kind || f.kind === '근거');
   $('rkFiles').innerHTML = R.files.length ? `<table><tbody>${R.files.slice().reverse().map(f => `<tr><td class="c" style="width:22%">${esc(f.time.slice(0, 10))}</td><td><a href="${esc(f.url)}" target="_blank">📄 ${esc(f.name)}</a>${f.memo ? `<div style="font-size:11px;color:var(--sub)">${esc(f.memo)}</div>` : ''}</td></tr>`).join('')}</tbody></table>` : emptyMsg('아직 근거자료가 없습니다');
   $('rkList').innerHTML = rows.length ? `<table><thead><tr><th style="width:7%">No</th><th style="width:11%">출처</th><th>유해위험요인</th><th style="width:10%">현재위험성</th><th>감소대책</th><th style="width:9%">담당</th><th style="width:8%">요구일</th><th style="width:15%">완료</th></tr></thead><tbody>
     ${rows.map(r => `<tr><td class="c"><b>${esc(r.No)}</b></td><td class="c" style="font-size:11px">${esc(r['출처'])}<br>${esc(r['출처일자'])}</td><td>${esc(r['유해위험요인'])}</td>
@@ -880,13 +893,13 @@ function riskForm(c) {
   };
 }
 function alertNote(t) { const s = $('rkSum'); if (s) s.insertAdjacentHTML('afterbegin', `<b style="color:var(--ok)">✔ ${esc(t)}</b> · `); }
-async function riskUpload(list) {
-  const m = $('rkFMsg'); const files = [...list]; if (!files.length) return;
+async function riskUpload(list, kind, msgEl) {
+  const m = msgEl || $('rkFMsg'); kind = kind || '근거'; const files = [...list]; if (!files.length) return;
   for (const [i, f] of files.entries()) {
-    if (f.size > 20 * 1024 * 1024) { m.textContent = f.name + ': 20MB 초과'; continue; }
+    if (f.size > 20 * 1024 * 1024) { m.textContent = f.name + ': 20MB 초과 — 나눠서 올려 주세요'; continue; }
     m.textContent = `올리는 중 ${i + 1}/${files.length} · ${f.name}`;
     const data = await new Promise((ok, no) => { const r = new FileReader(); r.onload = () => ok(String(r.result).split(',')[1]); r.onerror = no; r.readAsDataURL(f); });
-    try { await riskPost({ type: 'riskfile', name: f.name, mime: f.type || 'application/pdf', memo: $('rkMemo').value.trim(), data }); }
+    try { await riskPost({ type: 'riskfile', name: f.name, mime: f.type || 'application/pdf', memo: kind === '근거' ? $('rkMemo').value.trim() : '', kind, data }); }
     catch (e) { m.textContent = f.name + ': ' + e.message; return; }
   }
   m.textContent = '보관 완료'; renderRisk();
