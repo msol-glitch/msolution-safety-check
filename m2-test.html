@@ -134,6 +134,11 @@
   .topline h1{margin:0;font-size:22px;font-weight:900}
   .topline p{margin:2px 0 0;color:var(--sub)}
   .card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;min-width:0}
+  /* 폴더별 색 띠 (2026-10-10 대표 확정): 화면 카드 위 색 = 그 문서의 대표 색 */
+  main[data-k="risk"]{--band:#92D050}main[data-k="patrol"]{--band:#1B3A6B}main[data-k="5s"]{--band:#0F766E}main[data-k="tbm"]{--band:#2563EB}
+  main[data-k="dust"]{--band:#EA580C}main[data-k="actions"]{--band:#C2410C}main[data-k="notice"]{--band:#7C3AED}
+  main[data-k] #folder .card,main[data-k] #actionsView .card,main[data-k] #tbmView .card,main[data-k] #noticeView .card,main[data-k] #riskView .card{border-top:4px solid var(--band,var(--line))}
+  @media print{main[data-k] .card{border-top-width:1px!important}}
   .card h2{margin:0 0 10px;font-size:14.5px;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
   .card h2 small{font-weight:500;color:var(--mute);font-size:12px}
   .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:12px}
@@ -307,7 +312,7 @@
 </style>
 </head>
 <body>
-<div class="testbar" style="position:fixed;top:6px;right:10px;z-index:99">시험본 · 위험성평가</div>
+<div class="testbar" style="position:fixed;top:6px;right:10px;z-index:99">시험본 · 위험성평가 · 색 띠</div>
 
 <div class="app">
 <aside class="rail">
@@ -479,6 +484,7 @@ window.onhashchange = () => SUM && route();
 
 function route() {
   const key = location.hash.slice(1);
+  const mk = document.querySelector('main'); if (['risk', 'patrol', '5s', 'tbm', 'dust', 'actions', 'notice'].indexOf(key) >= 0) mk.dataset.k = key; else delete mk.dataset.k;
   document.body.classList.remove('dash');
   ['home', 'folder', 'actionsView', 'soonView', 'tbmView', 'noticeView', 'riskView'].forEach(id => $(id).classList.add('hide'));
   renderNav(key);
@@ -801,7 +807,7 @@ async function renderRisk() {
         <div class="rkPer" data-kind="정기 ${Y} ${h}" style="border:2px dashed var(--line2);border-radius:10px;padding:14px;text-align:center;color:var(--sub);cursor:pointer"><b style="color:var(--ink)">${Y}년 ${h}</b><br>📊 평가표(엑셀·PDF) 끌어다 놓기<input type="file" accept=".xlsx,.xls,.pdf" style="display:none"></div>
         <div class="rkPerList" data-kind="정기 ${Y} ${h}" style="margin-top:6px"></div></div>`).join('')}</div>
       <div class="err" id="rkPMsg"></div><p class="note">같은 반기에 새로 올리면 가장 최근 파일이 '현재 적용'으로 표시되고, 앞 파일은 이전본으로 남습니다. 인쇄는 원본 엑셀에서 하고, 아래 10.수시평가를 그 뒤에 철합니다.</p></div>
-    <div class="card noprint" style="margin-top:12px;border-top:4px solid #92D050"><h2>10. 수시평가 <small>9.공통사항 다음 · 순회·TBM·근로자 청취조사에서 발굴 · 원본 평가표 뒤에 함께 인쇄해 철하기</small>
+    <div class="card noprint" style="margin-top:12px"><h2>10. 수시평가 <small>9.공통사항 다음 · 순회·TBM·근로자 청취조사에서 발굴 · 원본 평가표 뒤에 함께 인쇄해 철하기</small>
       <span style="float:right"><button class="btn ghost sm" id="rkNew">+ 직접 추가</button> <button class="btn ghost sm" id="rkXlsx">엑셀 받기</button> <button class="btn sm" id="rkPrint">수시평가 인쇄 (A3 가로)</button></span></h2>
       <div id="rkSum" class="note">불러오는 중…</div></div>
     <div class="g2 noprint" style="grid-template-columns:1.15fr 1fr;margin-top:12px">
