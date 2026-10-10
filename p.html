@@ -212,6 +212,10 @@
   <section id="form" style="display:none">
     <div class="card" id="whoCard"><h2>점검자</h2><div id="who"></div></div>
     <div id="sections"></div>
+    <div class="card" id="instrCard" style="display:none">
+      <h2>전달·지시사항 <span class="cnt">선택 · 다음 근무일 TBM 화면에 표시</span></h2>
+      <textarea id="instr" maxlength="300" rows="3" placeholder="예: KA4 통로 적재물 오늘 중 정리" style="width:100%;box-sizing:border-box;font:inherit;padding:8px;border:1px solid #CBD5E1;border-radius:8px"></textarea>
+    </div>
     <div class="card" id="signCard" style="display:none">
       <h2>점검자 서명 <span class="cnt">하루 1회 · 같은 날은 자동 재사용</span></h2>
       <div class="signed" id="signed"><img id="signedImg" alt="오늘 서명"><div><b>오늘 서명 사용</b><br><button class="lnk" id="resign">다시 서명하기</button></div></div>
@@ -222,6 +226,7 @@
 
   <section id="tbmForm" style="display:none">
     <div class="tguide" id="tbmGuide"></div>
+    <div class="card" id="tbmInstr" style="display:none;border:2px solid #E8730C;background:#FFF7ED"></div>
     <div class="card" id="tbmWho"><h2>진행자 (관리감독자)</h2><input type="text" id="tbmLeader" maxlength="20" placeholder="진행자 이름"><div style="height:8px"></div><div id="tbmSignSlot"></div></div>
     <div class="cnt" id="tbmWhoDone" style="margin:0 2px 8px"></div>
     <div class="card"><h2 id="tbmBoxH">팀</h2><div id="tbmLines"></div><p class="msg" id="tbmMsg"></p></div>
@@ -393,6 +398,7 @@ function open(t) {
   });
   document.querySelectorAll('[data-law]').forEach(b => b.onclick = () => showLaw(b.dataset.law));
   $('signCard').style.display = '';
+  $('instrCard').style.display = t === 'patrol' ? '' : 'none'; $('instr').value = '';
   initPad(); updateSign();
   updateProg(); scrollTo(0, 0);
 }
@@ -500,7 +506,7 @@ $('submit').onclick = async () => {
   const etc = {}; document.querySelectorAll('[data-etc]').forEach(e => { if (e.value.trim()) etc[e.dataset.etc] = e.value.trim(); });
   const btn = $('submit'); btn.disabled = true; btn.textContent = '저장 중…';
   try {
-    const res = await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ key: API_KEY, type, team, inspector, items: rows, etc, sign, fieldPin: FIELD_PIN }) });
+    const res = await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ key: API_KEY, type, team, inspector, items: rows, etc, sign, instr: type === 'patrol' ? $('instr').value.trim() : '', fieldPin: FIELD_PIN }) });
     const out = await res.json();
     if (!out.ok) throw new Error(out.error || '저장 실패');
     if (type === 'patrol') store.set('ms_patrol_who', inspector); else store.set('ms_5s_who', inspector);
@@ -856,8 +862,16 @@ async function tbmSync() {   // 4개 팀 현황 (다른 폰에서 한 것도 반
       if (x.rec && String(x.rec).indexOf('-T') > 0) T.tno = x.rec;
       if (x.status === '완료' && L.st !== 'done') T.lines[x.line] = { st: 'done', min: x.min }; });
     (st.tbmOff || []).forEach(x => { if (T.lines[x.line] && T.lines[x.line].st !== 'off') T.lines[x.line] = { st: 'off' }; });
+    if (t === 1) instrRender(st.instr || []);
     setT(t, T); } catch (e) {} }));
   if (type === 'tbm') tbmRender();
+}
+function instrRender(list) {   // 순회점검 전달·지시사항 (작성 다음 날 ~ 다음 근무일, 전 팀 공통)
+  const el = $('tbmInstr'); if (!el) return;
+  if (!list.length) { el.style.display = 'none'; return; }
+  el.innerHTML = '<h2 style="margin:0 0 6px;color:#9A3412">📢 순회점검 전달·지시사항 <span class="cnt">진행자가 읽어 주세요</span></h2>' +
+    list.map(x => `<div style="padding:6px 0;border-top:1px dashed #FDBA74"><div class="cnt">${esc(x.date.slice(5).replace('-', '/'))} · ${esc(x.who)}</div><div style="font-size:16px;font-weight:700;line-height:1.4">${esc(x.text)}</div></div>`).join('');
+  el.style.display = '';
 }
 function tbmOpen() {
   type = 'tbm'; answers = {};
