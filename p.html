@@ -158,6 +158,15 @@
   .ntc .nl{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
   .menu .ntc .nl button{width:auto;padding:6px 12px;border:1px solid #FDBA74;background:#fff;color:#9A3412;font-size:13px;border-radius:999px}
   .menu .ntc .nl button.on{background:#EA580C;color:#fff;border-color:#EA580C}
+  /* 전달사항 본문 자동 서식 (2026-10-10 대표 지시: 휴대폰에서 간격 자동 조정) */
+  .ntc .nb{word-break:keep-all;overflow-wrap:anywhere}
+  .nf .nf-h{margin-top:12px;font-weight:800;color:#0F172A}.nf .nf-h:first-child{margin-top:0}
+  .nf .nf-h .nf-n{color:#C2410C;margin-right:2px}
+  .nf .nf-li{position:relative;padding-left:16px;margin-top:4px}
+  .nf .nf-li::before{content:"";position:absolute;left:5px;top:.75em;width:5px;height:5px;border-radius:50%;background:#EA580C}
+  .nf .nf-p{margin-top:6px}.nf .nf-p:first-child{margin-top:0}
+  .nf .nf-gap{height:10px}
+  .nf .nf-sign{margin-top:14px;text-align:right;font-weight:700}
   .ntc .nko{font-size:11.5px;color:#9A3412;margin-bottom:8px}
   .menu .ntc button{width:100%;font:inherit;font-weight:800;border-radius:10px;padding:11px;text-align:center}
   .menu .ntc button.ack{background:#EA580C;color:#fff;border:0}.menu .ntc button.ackd{background:#fff;color:var(--ok);border:1px solid var(--ok)}
@@ -870,7 +879,7 @@ function instrRender(list) {   // 순회점검 전달·지시사항 (작성 다�
   const el = $('tbmInstr'); if (!el) return;
   if (!list.length) { el.style.display = 'none'; return; }
   el.innerHTML = '<h2 style="margin:0 0 6px;color:#9A3412">📢 순회점검 전달·지시사항 <span class="cnt">진행자가 읽어 주세요</span></h2>' +
-    list.map(x => `<div style="padding:6px 0;border-top:1px dashed #FDBA74"><div class="cnt">${esc(x.date.slice(5).replace('-', '/'))} · ${esc(x.who)}</div><div style="font-size:16px;font-weight:700;line-height:1.4">${esc(x.text)}</div></div>`).join('');
+    list.map(x => `<div style="padding:6px 0;border-top:1px dashed #FDBA74"><div class="cnt">${esc(x.date.slice(5).replace('-', '/'))} · ${esc(x.who)}</div><div style="font-size:16px;font-weight:700;line-height:1.5;word-break:keep-all;overflow-wrap:anywhere">${fmtN(x.text)}</div></div>`).join('');
   el.style.display = '';
 }
 function tbmOpen() {
@@ -1014,6 +1023,33 @@ function visit(kind, nid) {   // 발도장: 팀·시각·무작위 기기번호�
   return fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ key: API_KEY, type: 'visit', team, dev: DEV, kind, nid }) })
     .then(r => r.json()).then(o => { if (o.ok) store.set(k, '1'); }).catch(() => {});
 }
+/* 전달사항 본문 자동 서식 (2026-10-10, 관리자 화면 m.html fmtNotice와 같은 규칙)
+ * 줄바꿈 유지 / '1.' 소제목 / '-'·'·' 글머리 / 빈 줄 단락 / ### ** 정리
+ * 줄바꿈 없이 저장된 글은 번호·문장 단위로 자동 분리 */
+function fmtN(raw) {
+  let s = String(raw == null ? '' : raw).replace(/\r\n?/g, '\n').replace(/ /g, ' ').trim();
+  if (!s) return '';
+  const auto = !/\n/.test(s);
+  if (auto) s = s.replace(/([.!?다요])\s+(?=\d{1,2}[.)]\s)/g, '$1\n')
+                 .replace(/(다\.|요\.|오\.|[!?])\s+(?=\S)/g, '$1\n')
+                 .replace(/([a-z)]\.)\s+(?=[A-Z])/g, '$1\n')
+                 .replace(/\s+(?=㈜)/g, '\n');
+  let inSec = false;
+  return '<div class="nf">' + s.split('\n').map(line => {
+    let t = line.trim().replace(/\*\*(.+?)\*\*/g, '$1');
+    if (!t) { inSec = false; return '<div class="nf-gap"></div>'; }
+    if (/^-{3,}$/.test(t)) return '<div class="nf-gap"></div>';
+    let m;
+    if ((m = t.match(/^#{1,6}\s*(.*)$/))) t = m[1];
+    if ((m = t.match(/^(\d{1,2}[.)])\s*(.*)$/)) && !/^\d{1,2}\.\d/.test(t)) { inSec = true;
+      const h = auto && m[2].match(/^(.{2,24}?(?:자제|생활화|지키기|관리|금지|준수|철저|예방|주의|안내|확인|착용|사항|수칙|요령))\s+(.{6,})$/);
+      return h ? `<div class="nf-h"><span class="nf-n">${esc(m[1])}</span> ${esc(h[1])}</div><div class="nf-li">${esc(h[2])}</div>`
+               : `<div class="nf-h"><span class="nf-n">${esc(m[1])}</span> ${esc(m[2])}</div>`; }
+    if ((m = t.match(/^[-·•※▶◦○●]\s*(.*)$/))) return `<div class="nf-li">${esc(m[1])}</div>`;
+    if (/^㈜/.test(t) && t.length < 30) return `<div class="nf-sign">${esc(t)}</div>`;
+    return auto && inSec ? `<div class="nf-li">${esc(t)}</div>` : `<div class="nf-p">${esc(t)}</div>`;
+  }).join('') + '</div>';
+}
 const NLANG = {};
 function teamLangs() { return [...new Set(teamLines().flatMap(k => TBM_LINE[k].lang))]; }
 function noticeRender(ns) {
@@ -1024,7 +1060,7 @@ function noticeRender(ns) {
     return `<div class="ntc"><div class="nh">📢 대표 전달사항 <span>${esc(n.time.slice(5, 10))}</span></div>
       <button class="nopen" data-open="${esc(n.id)}"><b class="nt">${esc(tx[0])}</b><span>${open ? '접기 ▲' : '자세히 보기 ▼'}</span></button>
       ${open ? `<div class="nl">${langs.filter(x => x === 'ko' || (n.tr && n.tr[x] && n.tr[x][0])).map(x => `<button data-nl="${esc(n.id)}|${x}" class="${x === l ? 'on' : ''}">${LANG[x]}</button>`).join('')}</div>
-        ${tx[1] ? `<div class="nb">${esc(tx[1]).replace(/\n/g, '<br>')}</div>` : ''}
+        ${tx[1] ? `<div class="nb">${fmtN(tx[1])}</div>` : ''}
         ${l !== 'ko' ? '<div class="nko">자동 번역입니다. 정확한 내용은 한국어 원문을 기준으로 합니다.</div>' : ''}` : ''}
       <button class="${done ? 'ackd' : 'ack'}" data-ack="${esc(n.id)}" ${done ? 'disabled' : ''}>${done ? '✔ 확인 완료' : '확인했습니다'}</button></div>`; }).join('');
   document.querySelectorAll('[data-open]').forEach(b => b.onclick = () => { const k = b.dataset.open + '_o'; NLANG[k] = !NLANG[k]; noticeRender(ns); });
