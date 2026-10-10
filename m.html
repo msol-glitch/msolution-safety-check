@@ -134,6 +134,11 @@
   .topline h1{margin:0;font-size:22px;font-weight:900}
   .topline p{margin:2px 0 0;color:var(--sub)}
   .card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;min-width:0}
+  /* 폴더별 색 띠 (2026-10-10 대표 확정): 화면 카드 위 색 = 그 문서의 대표 색 */
+  main[data-k="risk"]{--band:#92D050}main[data-k="patrol"]{--band:#1B3A6B}main[data-k="5s"]{--band:#0F766E}main[data-k="tbm"]{--band:#2563EB}
+  main[data-k="dust"]{--band:#EA580C}main[data-k="actions"]{--band:#C2410C}main[data-k="notice"]{--band:#7C3AED}
+  main[data-k] #folder .card,main[data-k] #actionsView .card,main[data-k] #tbmView .card,main[data-k] #noticeView .card,main[data-k] #riskView .card{border-top:4px solid var(--band,var(--line))}
+  @media print{main[data-k] .card{border-top-width:1px!important}}
   .card h2{margin:0 0 10px;font-size:14.5px;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
   .card h2 small{font-weight:500;color:var(--mute);font-size:12px}
   .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:12px}
@@ -288,6 +293,22 @@
     .msheet{border:0;margin:0;padding:0;break-after:page}.msheet:last-child{break-after:auto}
     .msheet .mt th,.msheet .mt .we,.msheet .act th,.msheet .gp{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
   @media print{.rail,.testbar,.topline{display:none!important}.app{display:block;background:none!important;min-height:0}main{padding:0}body{background:#fff}}
+  .rsheet{page:land3;background:#fff;border:1px solid var(--line);padding:10px 12px;margin-top:14px;font-size:10px;color:#000;font-family:"Malgun Gothic","맑은 고딕",sans-serif}
+  .rsheet table.rhd{width:100%;border-collapse:collapse;margin-bottom:0}
+  .rsheet .rhd td.tt{background:#92D050;text-align:center;font-size:19px;font-weight:700;letter-spacing:4px;padding:4px;border:1px solid #000}
+  .rsheet .rhd td.sub{font-size:13px;font-weight:700;padding:3px 4px}
+  .rsheet .rhd td.ap{width:44mm;vertical-align:top;padding:0 0 0 4px}
+  .rsheet .appr{border-collapse:collapse;width:100%}.rsheet .appr th,.rsheet .appr td{border:1px solid #000;text-align:center;font-size:10px;padding:1px;background:#fff}
+  .rsheet .appr th{background:#D9D9D9}.rsheet .appr td{height:12mm}
+  .rsheet table.rt{width:100%;border-collapse:collapse;table-layout:fixed}
+  .rsheet .rt th,.rsheet .rt td{border:1px solid #A6A6A6;padding:3px;font-size:10px;vertical-align:middle;word-break:keep-all;overflow-wrap:anywhere}
+  .rsheet .rt th{background:#595959;color:#fff;font-weight:700;border-color:#7F7F7F}
+  .rsheet .rt td.gb{background:#595959;color:#fff;font-weight:700;text-align:left}
+  .rsheet .rt td.rk{background:#F8CBAD}.rsheet .rt td.af{background:#FFE699}.rsheet .rt td.ok{background:#C6E0B4}
+  .rsheet .mf{margin-top:5px;font-size:9px;color:var(--sub);display:flex;justify-content:space-between}
+  body:not(.p-risk) #rkSheet{display:none}
+  @media print{body.p-risk main>*:not(#riskView),body.p-risk .rail,body.p-risk #riskView>*:not(#rkSheet){display:none!important}body.p-risk .app,body.p-risk main{display:block;padding:0;background:none}
+    .rsheet{border:0;margin:0;padding:0}.rsheet td,.rsheet th{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 </style>
 </head>
 <body>
@@ -344,6 +365,7 @@
   <div id="actionsView" class="hide"></div>
   <div id="tbmView" class="hide"></div>
   <div id="noticeView" class="hide"></div>
+  <div id="riskView" class="hide"></div>
   <div id="soonView" class="hide"></div>
 
   <div id="folder" class="hide">
@@ -417,6 +439,7 @@ const NAV = [
   { key: 'dust', name: '집진기 청소', ic: ICON.dust },
   { key: 'notice', name: '전달사항·발도장', ic: '<path d="M4 10v4h3l5 4V6L7 10z"/><path d="M16 9a4 4 0 010 6M18.5 6.5a8 8 0 010 11"/>' },
   { key: 'actions', name: '조치관리', ic: '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 0 0 5.4-5.4l-2.4 2.4-2.6-.4-.4-2.6z"/>' },
+  { key: 'risk', name: '위험성평가', ic: '<path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17v.5"/>' },
   { grp: '대표자 전용 · 별도 PIN' },
   { key: 'ceo1', name: '안전보건 관리 현황', ic: '<path d="M5 4h14v16H5z"/><path d="M9 8h6M9 12h6M9 16h3"/>', lock: 1, soon: 'v7' },
   { key: 'ceo2', name: '증빙 자동매핑', ic: '<path d="M3 7h6l2 2h10v10H3z"/><path d="M12 12v5M9.5 14.5 12 12l2.5 2.5"/>', lock: 1, soon: 'v7' },
@@ -451,7 +474,7 @@ async function start() {
   loadAnalytics();
 }
 function showLock(msg) {
-  ['home', 'folder', 'actionsView', 'soonView', 'tbmView', 'noticeView'].forEach(id => $(id).classList.add('hide'));
+  ['home', 'folder', 'actionsView', 'soonView', 'tbmView', 'noticeView', 'riskView'].forEach(id => $(id).classList.add('hide'));
   $('lock').classList.remove('hide'); $('lockErr').textContent = msg || ''; $('pin').focus();
 }
 $('enter').onclick = () => { PIN = $('pin').value.trim(); start(); };
@@ -460,11 +483,13 @@ window.onhashchange = () => SUM && route();
 
 function route() {
   const key = location.hash.slice(1);
+  const mk = document.querySelector('main'); if (['risk', 'patrol', '5s', 'tbm', 'dust', 'actions', 'notice'].indexOf(key) >= 0) mk.dataset.k = key; else delete mk.dataset.k;
   document.body.classList.remove('dash');
-  ['home', 'folder', 'actionsView', 'soonView', 'tbmView', 'noticeView'].forEach(id => $(id).classList.add('hide'));
+  ['home', 'folder', 'actionsView', 'soonView', 'tbmView', 'noticeView', 'riskView'].forEach(id => $(id).classList.add('hide'));
   renderNav(key);
   if (['dust', 'patrol', '5s'].indexOf(key) >= 0) { $('pageTitle').textContent = (FOLDERS.find(f => f.key === key) || {}).name; return openFolder(key); }
   if (key === 'notice') { $('pageTitle').textContent = '전달사항·발도장'; return renderNotice(); }
+  if (key === 'risk') { $('pageTitle').textContent = '위험성평가'; return renderRisk(); }
   if (key === 'tbm') { $('pageTitle').textContent = 'TBM (작업 전 안전회의)'; return renderTbm(); }
   if (key === 'actions') { $('pageTitle').textContent = '조치관리'; return renderActions(); }
   const n = NAV.find(x => x.key === key && (x.soon || x.off));
@@ -757,6 +782,158 @@ async function renderNotice() {
       const o = await (await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ key: API_KEY, type: 'notice', pin: PIN, off: b.dataset.off }) })).json();
       if (o.ok) renderNotice(); else { b.disabled = false; b.textContent = o.error; } });
   } catch (e) { $('vTbl').innerHTML = emptyMsg('서버 연결 전: ' + esc(e.message)); $('nList').innerHTML = ''; }
+}
+
+
+/* ===== 위험성평가 수시평가 (2026-10-10 대표 지시) — 9.공통사항 다음 '10.수시평가' =====
+ * 후보(순회 개선필요·전달사항·TBM 근로자 의견) → [등록]/[해당 없음] → 10-1.N 자동 번호
+ * 출력: 원본 위험성평가와 같은 15칸 양식(A3 가로)으로 인쇄해 원본 뒤에 철함 / 엑셀 받기
+ * 근로자 청취조사 PDF는 끌어다 놓기로 드라이브 보관 + 근거자료 목록 */
+const RISK_CAT = ['1.기계적 요인', '2.전기적 요인', '3.화학(물질)적 요인', '4.생물학적 요인', '5.작업특성 요인', '6.작업환경 요인', '7.관리적 요인'];
+const RISK_OWNER = ['이성희 과장', '이민희 대표', '조찬형 대리', '강연식'];
+const riskGrade = s => !s ? '' : (s <= 4 ? '낮음' : s <= 8 ? '보통' : s <= 12 ? '약간높음' : '높음') + ' (' + s + ')';
+const riskTone = s => s >= 13 ? '#B42318' : s >= 9 ? '#C2410C' : s >= 5 ? '#A16207' : '#1D4ED8';
+let RISK = null;
+async function riskPost(body) {
+  const o = await (await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify(Object.assign({ key: API_KEY, pin: PIN }, body)) })).json();
+  if (!o.ok) throw new Error(o.error || '저장 실패'); return o;
+}
+async function renderRisk() {
+  const v = $('riskView'); v.classList.remove('hide');
+  const Y = kstNow().getFullYear();
+  v.innerHTML = `<div class="card noprint"><h2>정기 위험성평가 (원본) <small>상·하반기 평가표 파일을 끌어다 놓으면 원본 그대로 보관 · 수정 없음</small></h2>
+      <div class="g2" style="grid-template-columns:1fr 1fr;gap:12px">${['상반기', '하반기'].map(h => `<div>
+        <div class="rkPer" data-kind="정기 ${Y} ${h}" style="border:2px dashed var(--line2);border-radius:10px;padding:14px;text-align:center;color:var(--sub);cursor:pointer"><b style="color:var(--ink)">${Y}년 ${h}</b><br>📊 평가표(엑셀·PDF) 끌어다 놓기<input type="file" accept=".xlsx,.xls,.pdf" style="display:none"></div>
+        <div class="rkPerList" data-kind="정기 ${Y} ${h}" style="margin-top:6px"></div></div>`).join('')}</div>
+      <div class="err" id="rkPMsg"></div><p class="note">같은 반기에 새로 올리면 가장 최근 파일이 '현재 적용'으로 표시되고, 앞 파일은 이전본으로 남습니다. 인쇄는 원본 엑셀에서 하고, 아래 10.수시평가를 그 뒤에 철합니다.</p></div>
+    <div class="card noprint" style="margin-top:12px"><h2>10. 수시평가 <small>9.공통사항 다음 · 순회·TBM·근로자 청취조사에서 발굴 · 원본 평가표 뒤에 함께 인쇄해 철하기</small>
+      <span style="float:right"><button class="btn ghost sm" id="rkNew">+ 직접 추가</button> <button class="btn ghost sm" id="rkXlsx">엑셀 받기</button> <button class="btn sm" id="rkPrint">수시평가 인쇄 (A3 가로)</button></span></h2>
+      <div id="rkSum" class="note">불러오는 중…</div></div>
+    <div class="g2 noprint" style="grid-template-columns:1.15fr 1fr;margin-top:12px">
+      <div class="card"><h2>수시평가 후보 <small>순회 개선필요 · 전달·지시사항 · TBM 근로자 의견 (최근 120일)</small></h2><div id="rkCand"><div class="wait">불러오는 중…</div></div></div>
+      <div class="card"><h2>근로자 청취조사 · 근거자료 <small>PDF 끌어다 놓기</small></h2>
+        <div id="rkDrop" style="border:2px dashed var(--line2);border-radius:10px;padding:18px;text-align:center;color:var(--sub);cursor:pointer">📄 청취조사 PDF를 여기로 끌어다 놓기<br><small>또는 눌러서 선택 · 파일당 20MB 이하 · 드라이브에 원본 그대로 보관</small><input type="file" id="rkFile" accept="application/pdf,image/*" multiple style="display:none"></div>
+        <input id="rkMemo" maxlength="100" placeholder="설명 (예: 2026 하반기 전직원 청취조사)" style="width:100%;font:inherit;padding:8px;border:1px solid var(--line2);border-radius:8px;margin-top:8px">
+        <div class="err" id="rkFMsg"></div><div id="rkFiles" style="margin-top:8px"></div></div></div>
+    <div class="card noprint" style="margin-top:12px"><h2>등록된 수시평가 <small>10-1.N · 조치 완료 시 [완료] 입력</small></h2><div id="rkList"><div class="wait">불러오는 중…</div></div></div>
+    <div id="rkForm"></div><div id="rkSheet"></div>`;
+  $('rkPrint').onclick = () => { $('rkSheet').innerHTML = riskSheet(); document.body.className = 'p-risk'; print(); };
+  $('rkXlsx').onclick = riskXlsx;
+  $('rkNew').onclick = () => riskForm(null);
+  document.querySelectorAll('.rkPer').forEach(z => { const fi2 = z.querySelector('input');
+    z.onclick = e => { if (e.target !== fi2) fi2.click(); }; fi2.onchange = () => { riskUpload(fi2.files, z.dataset.kind, $('rkPMsg')); fi2.value = ''; };
+    z.ondragover = e => { e.preventDefault(); z.style.background = '#F0FDF4'; }; z.ondragleave = () => { z.style.background = ''; };
+    z.ondrop = e => { e.preventDefault(); z.style.background = ''; riskUpload(e.dataTransfer.files, z.dataset.kind, $('rkPMsg')); }; });
+  const drop = $('rkDrop'), fi = $('rkFile');
+  drop.onclick = () => fi.click(); fi.onchange = () => { riskUpload(fi.files); fi.value = ''; };
+  drop.ondragover = e => { e.preventDefault(); drop.style.background = '#EFF6FF'; };
+  drop.ondragleave = () => { drop.style.background = ''; };
+  drop.ondrop = e => { e.preventDefault(); drop.style.background = ''; riskUpload(e.dataTransfer.files); };
+  try { RISK = await api('action=risklist'); riskDraw(); }
+  catch (e) { $('rkSum').textContent = '서버 연결 전: ' + e.message + ' (서버 새 버전 배포 후 사용)'; $('rkCand').innerHTML = ''; $('rkList').innerHTML = ''; }
+}
+function riskDraw() {
+  const R = RISK, rows = R.rows, open = rows.filter(r => r['완료확인'] !== '완료확인').length;
+  $('rkSum').innerHTML = `등록 <b>${num(rows.length)}건</b> · 조치 진행 <b style="color:var(--bad)">${num(open)}건</b> · 후보 <b>${num(R.cand.length)}건</b> · 근거자료 <b>${num(R.files.filter(f => !f.kind || f.kind === '근거').length)}건</b>`;
+  const tag = s => { const c = /TBM/.test(s) ? ['#EFF6FF', '#1D4ED8'] : /전달/.test(s) ? ['#FFF7ED', '#C2410C'] : ['#FEF2F2', '#B42318'];
+    return `<span style="background:${c[0]};color:${c[1]};border-radius:9px;padding:1px 7px;font-size:11px;font-weight:700">${esc(s)}</span>`; };
+  $('rkCand').innerHTML = R.cand.length ? R.cand.map((c, i) => `<div style="padding:8px 0;border-bottom:1px solid var(--line);display:flex;gap:8px;align-items:flex-start">
+      <div style="flex:1">${tag(c.src)} <span style="font-size:12px;color:var(--sub)">${esc(c.date.slice(5))} · ${esc(c.team)}${c.who ? ' · ' + esc(c.who) : ''}</span><div style="margin-top:3px">${esc(c.text)}</div></div>
+      <button class="btn sm" data-reg="${i}">등록</button><button class="btn ghost sm" data-skip="${i}">해당 없음</button></div>`).join('') : emptyMsg('새 후보가 없습니다');
+  document.querySelectorAll('[data-reg]').forEach(b => b.onclick = () => riskForm(RISK.cand[+b.dataset.reg]));
+  document.querySelectorAll('[data-skip]').forEach(b => b.onclick = async () => { b.disabled = true;
+    try { await riskPost({ type: 'riskskip', ckey: RISK.cand[+b.dataset.skip].key }); renderRisk(); } catch (e) { b.textContent = e.message; } });
+  document.querySelectorAll('.rkPerList').forEach(el => { const fs = R.files.filter(f => f.kind === el.dataset.kind).slice().reverse();
+    el.innerHTML = fs.length ? fs.map((f, i) => `<div style="font-size:13px;padding:3px 0">${i === 0 ? '<span style="background:#C6E0B4;color:#14532D;border-radius:8px;padding:0 6px;font-size:11px;font-weight:700">현재 적용</span>' : '<span style="color:var(--sub);font-size:11px">이전본</span>'} <a href="${esc(f.url)}" target="_blank">${esc(f.name)}</a> <span style="color:var(--sub);font-size:11px">${esc(f.time.slice(0, 10))}</span></div>`).join('') : '<div class="note">아직 등록된 원본이 없습니다</div>'; });
+  R.files = R.files.filter(f => !f.kind || f.kind === '근거');
+  $('rkFiles').innerHTML = R.files.length ? `<table><tbody>${R.files.slice().reverse().map(f => `<tr><td class="c" style="width:22%">${esc(f.time.slice(0, 10))}</td><td><a href="${esc(f.url)}" target="_blank">📄 ${esc(f.name)}</a>${f.memo ? `<div style="font-size:11px;color:var(--sub)">${esc(f.memo)}</div>` : ''}</td></tr>`).join('')}</tbody></table>` : emptyMsg('아직 근거자료가 없습니다');
+  $('rkList').innerHTML = rows.length ? `<table><thead><tr><th style="width:7%">No</th><th style="width:11%">출처</th><th>유해위험요인</th><th style="width:10%">현재위험성</th><th>감소대책</th><th style="width:9%">담당</th><th style="width:8%">요구일</th><th style="width:15%">완료</th></tr></thead><tbody>
+    ${rows.map(r => `<tr><td class="c"><b>${esc(r.No)}</b></td><td class="c" style="font-size:11px">${esc(r['출처'])}<br>${esc(r['출처일자'])}</td><td>${esc(r['유해위험요인'])}</td>
+      <td class="c" style="color:${riskTone(+r['가능성'] * +r['중대성'])};font-weight:700">${esc(r['현재위험성'])}</td><td>${esc(r['감소대책'])}</td><td class="c">${esc(r['담당자'])}</td><td class="c">${esc(r['조치요구일'])}</td>
+      <td class="c">${r['완료확인'] === '완료확인' ? `✔ ${esc(r['조치완료일'])}` : `<input type="date" data-dd="${esc(r.No)}" style="font:inherit;font-size:12px;padding:3px;border:1px solid var(--line2);border-radius:6px"> <button class="btn ghost sm" data-done="${esc(r.No)}">완료</button>`}</td></tr>`).join('')}</tbody></table>` : emptyMsg('아직 등록된 수시평가가 없습니다. 왼쪽 후보에서 [등록]을 누르세요.');
+  document.querySelectorAll('[data-done]').forEach(b => b.onclick = async () => {
+    const dt = (document.querySelector(`[data-dd="${b.dataset.done}"]`) || {}).value; if (!dt) return b.textContent = '날짜 선택';
+    b.disabled = true; try { await riskPost({ type: 'riskdone', no: b.dataset.done, date: dt.slice(2).replace(/-/g, '.'), confirm: true }); renderRisk(); } catch (e) { b.textContent = e.message; } });
+}
+function riskForm(c) {
+  const sc = (id, lbl) => `<div style="margin-top:8px"><div style="font-size:12px;color:var(--sub)">${lbl}</div><div style="display:flex;gap:4px;margin-top:3px" id="${id}">${[1, 2, 3, 4, 5].map(n => `<button type="button" class="btn ghost sm" data-v="${n}" style="min-width:38px">${n}</button>`).join('')}</div></div>`;
+  const inp = (id, lbl, val, ph) => `<label style="display:block;margin-top:8px;font-size:12px;color:var(--sub)">${lbl}<input id="${id}" value="${esc(val || '')}" placeholder="${esc(ph || '')}" style="width:100%;font:inherit;font-size:14px;padding:8px;border:1px solid var(--line2);border-radius:8px;margin-top:3px;color:var(--ink)"></label>`;
+  const txt = (id, lbl, val, ph) => `<label style="display:block;margin-top:8px;font-size:12px;color:var(--sub)">${lbl}<textarea id="${id}" placeholder="${esc(ph || '')}" style="width:100%;font:inherit;font-size:14px;padding:8px;border:1px solid var(--line2);border-radius:8px;margin-top:3px;min-height:54px;color:var(--ink)">${esc(val || '')}</textarea></label>`;
+  const nextNo = '10-1.' + ((RISK ? RISK.rows.length : 0) + 1);
+  $('rkForm').innerHTML = `<div style="position:fixed;inset:0;background:rgba(15,23,42,.45);z-index:50;display:flex;align-items:center;justify-content:center" class="noprint">
+    <div class="card" style="width:min(720px,94vw);max-height:92vh;overflow:auto">
+      <h2>수시평가 등록 <small>${nextNo} · ${c ? esc(c.src) + ' ' + esc(c.date) : '직접 추가'}</small></h2>
+      ${c ? `<div style="background:#F8FAFC;border-radius:8px;padding:8px;font-size:13px">원문: ${esc(c.text)}<div style="font-size:11px;color:var(--sub)">${esc(c.team)}${c.who ? ' · ' + esc(c.who) : ''}</div></div>` : ''}
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 10px">
+        <label style="display:block;margin-top:8px;font-size:12px;color:var(--sub)">분류<select id="fCat" style="width:100%;font:inherit;padding:8px;border:1px solid var(--line2);border-radius:8px;margin-top:3px">${RISK_CAT.map(x => `<option>${x}</option>`).join('')}</select></label>
+        ${inp('fCause', '원인', '', '예: 통로 적재물 방치')}</div>
+      ${txt('fHaz', '유해위험요인 *', c ? c.text : '', '예: 통로 적재물에 걸려 넘어짐')}
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 10px">${inp('fLaw', '관련근거(법규 등)', '', '예: 안전보건규칙 제22조(통로의 설치)')}${inp('fCur', '현재안전보건조치', '', '예: 통로 표시선 있음')}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0 10px;align-items:end">${sc('fL', '가능성 *')}${sc('fS', '중대성 *')}<div style="padding:8px 0;font-size:13px">현재위험성 <b id="fR" style="font-size:16px">-</b></div></div>
+      ${txt('fMea', '감소대책(세부내용)', '', '예: 적재 구역 지정·바닥 표시, 반장 일 1회 확인')}
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0 10px;align-items:end">${sc('fL2', '개선후 가능성')}${sc('fS2', '개선후 중대성')}<div style="padding:8px 0;font-size:13px">개선후 <b id="fR2">-</b></div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0 10px">
+        <label style="display:block;margin-top:8px;font-size:12px;color:var(--sub)">담당자<select id="fOwn" style="width:100%;font:inherit;padding:8px;border:1px solid var(--line2);border-radius:8px;margin-top:3px">${RISK_OWNER.map(x => `<option>${x}</option>`).join('')}</select></label>
+        <label style="display:block;margin-top:8px;font-size:12px;color:var(--sub)">조치요구일<input type="date" id="fDue" style="width:100%;font:inherit;padding:7px;border:1px solid var(--line2);border-radius:8px;margin-top:3px"></label>
+        <label style="display:block;margin-top:8px;font-size:12px;color:var(--sub)">근거자료<select id="fFile" style="width:100%;font:inherit;padding:8px;border:1px solid var(--line2);border-radius:8px;margin-top:3px"><option value="">(없음)</option>${(RISK ? RISK.files : []).map(f => `<option>${esc(f.name)}</option>`).join('')}</select></label></div>
+      <div style="margin-top:12px;display:flex;gap:8px;align-items:center"><button class="btn" id="fSave">위험성평가에 등록</button><button class="btn ghost" id="fCancel">취소</button><span class="err" id="fMsg"></span></div>
+    </div></div>`;
+  const val = {};
+  const pick = (id, cb) => document.querySelectorAll(`#${id} [data-v]`).forEach(b => b.onclick = () => {
+    val[id] = +b.dataset.v; document.querySelectorAll(`#${id} [data-v]`).forEach(x => { const on = x === b; x.style.background = on ? 'var(--brand)' : ''; x.style.color = on ? '#fff' : ''; }); cb(); });
+  const upd = () => { const s = (val.fL || 0) * (val.fS || 0), s2 = (val.fL2 || 0) * (val.fS2 || 0);
+    $('fR').textContent = s ? riskGrade(s) : '-'; $('fR').style.color = s ? riskTone(s) : ''; $('fR2').textContent = s2 ? riskGrade(s2) : '-'; };
+  ['fL', 'fS', 'fL2', 'fS2'].forEach(id => pick(id, upd));
+  $('fCancel').onclick = () => { $('rkForm').innerHTML = ''; };
+  $('fSave').onclick = async () => {
+    const m = $('fMsg'); if (!$('fHaz').value.trim()) return m.textContent = '유해위험요인을 입력해 주세요';
+    if (!val.fL || !val.fS) return m.textContent = '가능성·중대성을 눌러 주세요';
+    $('fSave').disabled = true; m.textContent = '저장 중…';
+    try {
+      const o = await riskPost({ type: 'riskreg', ckey: c ? c.key : '', v: { src: c ? c.src : '직접 추가', srcDate: c ? c.date : dstr(kstNow()), team: c ? c.team : '', cat: $('fCat').value,
+        cause: $('fCause').value.trim(), hazard: $('fHaz').value.trim(), law: $('fLaw').value.trim(), cur: $('fCur').value.trim(), L: val.fL, S: val.fS, L2: val.fL2 || 0, S2: val.fS2 || 0,
+        measure: $('fMea').value.trim(), owner: $('fOwn').value, due: $('fDue').value ? $('fDue').value.slice(2).replace(/-/g, '.') : '', files: $('fFile').value } });
+      $('rkForm').innerHTML = ''; renderRisk(); alertNote(o.no + ' 등록됨');
+    } catch (e) { m.textContent = e.message; $('fSave').disabled = false; }
+  };
+}
+function alertNote(t) { const s = $('rkSum'); if (s) s.insertAdjacentHTML('afterbegin', `<b style="color:var(--ok)">✔ ${esc(t)}</b> · `); }
+async function riskUpload(list, kind, msgEl) {
+  const m = msgEl || $('rkFMsg'); kind = kind || '근거'; const files = [...list]; if (!files.length) return;
+  for (const [i, f] of files.entries()) {
+    if (f.size > 20 * 1024 * 1024) { m.textContent = f.name + ': 20MB 초과 — 나눠서 올려 주세요'; continue; }
+    m.textContent = `올리는 중 ${i + 1}/${files.length} · ${f.name}`;
+    const data = await new Promise((ok, no) => { const r = new FileReader(); r.onload = () => ok(String(r.result).split(',')[1]); r.onerror = no; r.readAsDataURL(f); });
+    try { await riskPost({ type: 'riskfile', name: f.name, mime: f.type || 'application/pdf', memo: kind === '근거' ? $('rkMemo').value.trim() : '', kind, data }); }
+    catch (e) { m.textContent = f.name + ': ' + e.message; return; }
+  }
+  m.textContent = '보관 완료'; renderRisk();
+}
+function riskSheet() {   // 원본 엑셀(9.공통사항) 인쇄 모양에 맞춤: 연두 제목줄 · 회색 머리글 · 위험성 색칸 · 결재(작성/승인)
+  const rows = (RISK && RISK.rows) || [], half = kstNow().getMonth() < 6 ? '상반기' : '하반기', Y = kstNow().getFullYear();
+  const th = ['No', '분류', '원인', '유해위험요인', '관련근거(법규 등)', '현재안전보건조치', '가능성', '중대성', '현재위험성', '감소대책(세부내용)', '개선후위험성', '담당자', '조치요구일', '조치완료일', '완료확인'];
+  const w = [5, 8, 8, 14, 10, 11, 3.5, 3.5, 6, 14, 6, 5.5, 5.5, 5.5, 5];
+  const body = rows.length ? rows.map(r => `<tr><td class="c">${esc(r.No)}<div style="font-size:8px;color:#64748B">${esc(r['출처'])}</div></td><td class="c">${esc(r['분류'])}</td><td class="c">${esc(r['원인'])}</td><td>${esc(r['유해위험요인'])}</td><td>${esc(r['관련근거'])}</td><td>${esc(r['현재안전보건조치'])}</td>
+    <td class="c">${esc(r['가능성'])}</td><td class="c">${esc(r['중대성'])}</td><td class="c rk">${esc(r['현재위험성'])}</td><td style="font-weight:700">${esc(r['감소대책'])}</td><td class="c af">${esc(r['개선후위험성'])}</td><td class="c">${esc(r['담당자'])}</td><td class="c">${esc(r['조치요구일'])}</td><td class="c">${esc(r['조치완료일'])}</td><td class="c ${r['완료확인'] ? 'ok' : ''}">${esc(r['완료확인'])}</td></tr>`).join('')
+    : `<tr><td colspan="15" class="c" style="height:20mm">등록된 수시평가가 없습니다</td></tr>`;
+  const blank = Array.from({ length: Math.max(0, 6 - rows.length) }, () => `<tr>${th.map(() => '<td style="height:9mm"></td>').join('')}</tr>`).join('');
+  const files = (RISK && RISK.files) || [];
+  return `<div class="rsheet"><table class="rhd"><tr><td class="tt">위 험 성 평 가 표 (${Y}년 ${half})</td><td class="ap" rowspan="2"><table class="appr"><tr><th rowspan="2" style="width:7mm">결재</th><th>작성</th><th>승인</th></tr><tr><td></td><td></td></tr></table></td></tr>
+    <tr><td class="sub">공정대분류 : 글로브박스 제조업 &nbsp;&nbsp;&nbsp; 세부분류 : 10 &nbsp; 수시평가 <span style="font-weight:400;font-size:10px;color:#475569">(순회점검·TBM·근로자 청취조사 발굴 · 총 ${rows.length}건)</span></td></tr></table>
+    <table class="rt"><colgroup>${w.map(x => `<col style="width:${x}%">`).join('')}</colgroup><thead><tr>${th.map(h => `<th>${h}</th>`).join('')}</tr></thead>
+    <tbody><tr><td colspan="15" class="gb">▼ ${Y}년 ${half} 수시평가 항목 (9.공통사항에 이어서 누적)</td></tr>${body}${blank}</tbody></table>
+    ${files.length ? `<div style="margin-top:5px;font-size:10px"><b>근거자료(근로자 청취조사 등)</b> · ${files.map(f => `${esc(f.time.slice(0, 10))} ${esc(f.name)}${f.memo ? '(' + esc(f.memo) + ')' : ''}`).join(' / ')} — 원본은 드라이브 보관</div>` : ''}
+    <div class="mf"><span>※ 위험성 = 가능성 × 중대성 (원본 '위험성추정기준'과 동일) · 정기 위험성평가 9.공통사항 다음에 철함 · 다음 정기평가 때 원본에 통합</span><span>출력일시 ${new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })}</span></div></div>`;
+}
+async function riskXlsx() {
+  if (!window.XLSX) await new Promise((ok, no) => { const s = document.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js'; s.onload = ok; s.onerror = no; document.head.appendChild(s); });
+  const rows = (RISK && RISK.rows) || [];
+  const head = ['No', '분류', '원인', '유해위험요인', '관련근거(법규 등)', '현재안전보건조치', '가능성', '중대성', '현재위험성', '감소대책(세부내용)', '개선후위험성', '담당자', '조치요구일', '조치완료일', '완료확인', '출처', '출처일자', '근거파일'];
+  const aoa = [['위 험 성 평 가 표 · 10. 수시평가'], ['공정대분류 : 글로브박스 제조업', '', '', '세부분류 : 10  수시평가', '', '', '총 ' + rows.length + '건'], head,
+    ...rows.map(r => [r.No, r['분류'], r['원인'], r['유해위험요인'], r['관련근거'], r['현재안전보건조치'], r['가능성'], r['중대성'], r['현재위험성'], r['감소대책'], r['개선후위험성'], r['담당자'], r['조치요구일'], r['조치완료일'], r['완료확인'], r['출처'], r['출처일자'], r['근거파일']])];
+  const ws = XLSX.utils.aoa_to_sheet(aoa); ws['!cols'] = [8, 14, 14, 30, 22, 24, 6, 6, 12, 30, 12, 10, 10, 10, 10, 14, 10, 20].map(w => ({ wch: w }));
+  const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, '10.수시평가');
+  XLSX.writeFile(wb, `위험성평가_10.수시평가_${dstr(kstNow())}.xlsx`);
 }
 
 /* ===== TBM (v6) ===== */
