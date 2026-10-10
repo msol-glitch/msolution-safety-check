@@ -310,6 +310,7 @@
     #nList td.noff:empty{display:none}
     .nt{font-size:14.5px;line-height:1.75}
   }
+  @media screen and (max-width:900px){#noticeView .g2{grid-template-columns:1fr!important}}
   @media print{.nt{font-size:11px;line-height:1.55;color:#000}.ntitle{font-size:12px}}
   @media print{body.p-notice main>*:not(#noticeView),body.p-notice .rail,body.p-notice #noticeView .g2,body.p-notice #nPrint{display:none!important}body.p-notice .app,body.p-notice main{display:block;padding:0;background:none}}
   @media print{body.p-tbm main>*:not(#tbmView),body.p-tbm #tbmView>*:not(#tbmDocs),body.p-tbm .rail{display:none!important}body.p-tbm .app,body.p-tbm main{display:block;padding:0;background:none}
@@ -808,7 +809,10 @@ async function renderNotice() {
   v.innerHTML = `<div class="g2" style="grid-template-columns:1fr 1.2fr">
     <div class="card"><h2>새 전달사항 <small>직원 QR 화면 맨 위에 표시</small></h2>
       <input id="nTitle" maxlength="60" placeholder="제목 (예: 이번 주 지게차 동선 변경)" style="width:100%;font:inherit;padding:9px;border:1px solid var(--line2);border-radius:8px">
-      <textarea id="nBody" maxlength="1000" placeholder="내용 (줄바꿈 가능)" style="width:100%;font:inherit;padding:9px;border:1px solid var(--line2);border-radius:8px;min-height:110px;margin-top:8px"></textarea>
+      <textarea id="nBody" maxlength="1000" placeholder="첫 줄: 안내 문장&#10;(빈 줄)&#10;1. 소제목&#10;- 항목&#10;- 항목&#10;(빈 줄)&#10;2. 소제목&#10;- 항목&#10;(빈 줄)&#10;㈜엠솔루션 대표이사" style="width:100%;font:inherit;padding:9px;border:1px solid var(--line2);border-radius:8px;min-height:180px;margin-top:8px;line-height:1.6"></textarea>
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:6px 8px;margin-top:6px;font-size:12px;color:var(--sub);word-break:keep-all">
+        <span>작성 규칙: <b>1.</b> 소제목 · <b>-</b> 항목 · 빈 줄로 단락 구분 → 휴대폰·번역문에 그대로 정리돼 보입니다</span>
+        <span style="white-space:nowrap;margin-left:auto"><button type="button" class="btn ghost sm" id="nTpl">기본 양식 넣기</button> <span id="nCnt">0/1000</span></span></div>
       <label style="display:block;margin-top:8px;font-size:13px;color:var(--sub)">게시 종료일 (비우면 내릴 때까지) <input type="date" id="nUntil" style="font:inherit;padding:6px;border:1px solid var(--line2);border-radius:8px"></label>
       <button class="btn" id="nSave" style="margin-top:10px">등록</button> <span class="err" id="nMsg"></span>
       <p class="note">직원이 [확인했습니다]를 누르면 팀별 확인 수가 쌓입니다(이름 없이 기기 단위). 안전보건 전달 증빙으로 출력할 수 있습니다.</p></div>
@@ -819,6 +823,16 @@ async function renderNotice() {
     try { const o = await (await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ key: API_KEY, type: 'notice', pin: PIN, title: $('nTitle').value.trim(), body: $('nBody').value.trim(), until: $('nUntil').value }) })).json();
       if (!o.ok) throw new Error(o.error); m.textContent = '등록됨'; renderNotice(); } catch (e) { m.textContent = e.message; } };
   $('nPrint').onclick = () => { document.body.className = 'p-notice'; print(); };
+  // 2026-10-10 대표 지시: 공지 작성 규칙 안내 + 기본 양식 넣기 + 글자 수
+  const nb = $('nBody'), cnt = () => { $('nCnt').textContent = nb.value.length + '/1000'; };
+  nb.oninput = cnt;
+  $('nTpl').onclick = () => {
+    if (nb.value.trim() && !confirmTpl()) return;
+    nb.value = '안내 문장을 적어 주세요.\n\n1. 소제목\n- 항목\n- 항목\n\n2. 소제목\n- 항목\n- 항목\n\n㈜엠솔루션 대표이사';
+    cnt(); nb.focus(); nb.setSelectionRange(0, 12);
+  };
+  function confirmTpl() { const b = $('nTpl'); if (b.dataset.ok) { delete b.dataset.ok; b.textContent = '기본 양식 넣기'; return true; }
+    b.dataset.ok = '1'; b.textContent = '한 번 더 누르면 덮어씀'; setTimeout(() => { delete b.dataset.ok; b.textContent = '기본 양식 넣기'; }, 3000); return false; }
   const to = dstr(kstNow()), f = new Date(kstNow()); f.setDate(f.getDate() - 13);
   try {
     const d = await api(`action=visits&from=${dstr(f)}&to=${to}`);
