@@ -288,18 +288,22 @@
     .msheet{border:0;margin:0;padding:0;break-after:page}.msheet:last-child{break-after:auto}
     .msheet .mt th,.msheet .mt .we,.msheet .act th,.msheet .gp{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
   @media print{.rail,.testbar,.topline{display:none!important}.app{display:block;background:none!important;min-height:0}main{padding:0}body{background:#fff}}
-  .rsheet{page:land3;background:#fff;border:1px solid var(--line);padding:10px 12px;margin-top:14px;font-size:10px;color:var(--ink)}
-  .rsheet .mh{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid var(--brand);padding-bottom:4px;margin-bottom:6px}
-  .rsheet .mh img{height:24px}.rsheet .mh h2{margin:2px 0 0;font-size:17px}.rsheet .mh .m{font-size:11px;color:var(--sub)}
-  .rsheet .appr{border-collapse:collapse;width:auto}.rsheet .appr th,.rsheet .appr td{border:1px solid #64748B;width:18mm;text-align:center;padding:1px;font-size:10px;background:#fff}
-  .rsheet .appr th{background:#F1F5F9}.rsheet .appr td{height:14mm}
+  .rsheet{page:land3;background:#fff;border:1px solid var(--line);padding:10px 12px;margin-top:14px;font-size:10px;color:#000;font-family:"Malgun Gothic","맑은 고딕",sans-serif}
+  .rsheet table.rhd{width:100%;border-collapse:collapse;margin-bottom:0}
+  .rsheet .rhd td.tt{background:#92D050;text-align:center;font-size:19px;font-weight:700;letter-spacing:4px;padding:4px;border:1px solid #000}
+  .rsheet .rhd td.sub{font-size:13px;font-weight:700;padding:3px 4px}
+  .rsheet .rhd td.ap{width:44mm;vertical-align:top;padding:0 0 0 4px}
+  .rsheet .appr{border-collapse:collapse;width:100%}.rsheet .appr th,.rsheet .appr td{border:1px solid #000;text-align:center;font-size:10px;padding:1px;background:#fff}
+  .rsheet .appr th{background:#D9D9D9}.rsheet .appr td{height:12mm}
   .rsheet table.rt{width:100%;border-collapse:collapse;table-layout:fixed}
-  .rsheet .rt th,.rsheet .rt td{border:1px solid #94A3B8;padding:3px;font-size:10px;vertical-align:middle;word-break:keep-all;overflow-wrap:anywhere}
-  .rsheet .rt th{background:#1E293B;color:#fff;font-weight:700}
+  .rsheet .rt th,.rsheet .rt td{border:1px solid #A6A6A6;padding:3px;font-size:10px;vertical-align:middle;word-break:keep-all;overflow-wrap:anywhere}
+  .rsheet .rt th{background:#595959;color:#fff;font-weight:700;border-color:#7F7F7F}
+  .rsheet .rt td.gb{background:#595959;color:#fff;font-weight:700;text-align:left}
+  .rsheet .rt td.rk{background:#F8CBAD}.rsheet .rt td.af{background:#FFE699}.rsheet .rt td.ok{background:#C6E0B4}
   .rsheet .mf{margin-top:5px;font-size:9px;color:var(--sub);display:flex;justify-content:space-between}
   body:not(.p-risk) #rkSheet{display:none}
   @media print{body.p-risk main>*:not(#riskView),body.p-risk .rail,body.p-risk #riskView>*:not(#rkSheet){display:none!important}body.p-risk .app,body.p-risk main{display:block;padding:0;background:none}
-    .rsheet{border:0;margin:0;padding:0}.rsheet .rt th,.rsheet .appr th{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+    .rsheet{border:0;margin:0;padding:0}.rsheet td,.rsheet th{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 </style>
 </head>
 <body>
@@ -887,20 +891,21 @@ async function riskUpload(list) {
   }
   m.textContent = '보관 완료'; renderRisk();
 }
-function riskSheet() {
+function riskSheet() {   // 원본 엑셀(9.공통사항) 인쇄 모양에 맞춤: 연두 제목줄 · 회색 머리글 · 위험성 색칸 · 결재(작성/승인)
   const rows = (RISK && RISK.rows) || [], half = kstNow().getMonth() < 6 ? '상반기' : '하반기', Y = kstNow().getFullYear();
   const th = ['No', '분류', '원인', '유해위험요인', '관련근거(법규 등)', '현재안전보건조치', '가능성', '중대성', '현재위험성', '감소대책(세부내용)', '개선후위험성', '담당자', '조치요구일', '조치완료일', '완료확인'];
-  const w = [5, 7, 8, 14, 10, 11, 3.5, 3.5, 6, 14, 6, 6, 5.5, 5.5, 5];
-  const body = rows.length ? rows.map(r => `<tr><td class="c"><b>${esc(r.No)}</b><div style="font-size:8px;color:#64748B">${esc(r['출처'])}</div></td><td>${esc(r['분류'])}</td><td>${esc(r['원인'])}</td><td>${esc(r['유해위험요인'])}</td><td>${esc(r['관련근거'])}</td><td>${esc(r['현재안전보건조치'])}</td>
-    <td class="c">${esc(r['가능성'])}</td><td class="c">${esc(r['중대성'])}</td><td class="c"><b>${esc(r['현재위험성'])}</b></td><td>${esc(r['감소대책'])}</td><td class="c">${esc(r['개선후위험성'])}</td><td class="c">${esc(r['담당자'])}</td><td class="c">${esc(r['조치요구일'])}</td><td class="c">${esc(r['조치완료일'])}</td><td class="c">${esc(r['완료확인'])}</td></tr>`).join('')
+  const w = [5, 8, 8, 14, 10, 11, 3.5, 3.5, 6, 14, 6, 5.5, 5.5, 5.5, 5];
+  const body = rows.length ? rows.map(r => `<tr><td class="c">${esc(r.No)}<div style="font-size:8px;color:#64748B">${esc(r['출처'])}</div></td><td class="c">${esc(r['분류'])}</td><td class="c">${esc(r['원인'])}</td><td>${esc(r['유해위험요인'])}</td><td>${esc(r['관련근거'])}</td><td>${esc(r['현재안전보건조치'])}</td>
+    <td class="c">${esc(r['가능성'])}</td><td class="c">${esc(r['중대성'])}</td><td class="c rk">${esc(r['현재위험성'])}</td><td style="font-weight:700">${esc(r['감소대책'])}</td><td class="c af">${esc(r['개선후위험성'])}</td><td class="c">${esc(r['담당자'])}</td><td class="c">${esc(r['조치요구일'])}</td><td class="c">${esc(r['조치완료일'])}</td><td class="c ${r['완료확인'] ? 'ok' : ''}">${esc(r['완료확인'])}</td></tr>`).join('')
     : `<tr><td colspan="15" class="c" style="height:20mm">등록된 수시평가가 없습니다</td></tr>`;
+  const blank = Array.from({ length: Math.max(0, 6 - rows.length) }, () => `<tr>${th.map(() => '<td style="height:9mm"></td>').join('')}</tr>`).join('');
   const files = (RISK && RISK.files) || [];
-  return `<div class="rsheet"><div class="mh"><div><img src="${LOGO}" alt="㈜엠솔루션"><h2>위 험 성 평 가 표 (${Y}년 ${half}) · 10. 수시평가</h2>
-    <div class="m">공정대분류 : 글로브박스 제조업 · 세부분류 : 10 수시평가 (순회점검·TBM·근로자 청취조사 발굴) · 총 ${rows.length}건 · 위험성 = 가능성 × 중대성 (원본 '위험성추정기준'과 동일)</div></div>
-    <table class="appr"><tr><th>담당</th><th>검토</th><th>승인</th></tr><tr><td></td><td></td><td></td></tr><tr><td style="height:auto"></td><td style="height:auto">이성희</td><td style="height:auto">이민희</td></tr></table></div>
-    <table class="rt"><colgroup>${w.map(x => `<col style="width:${x}%">`).join('')}</colgroup><thead><tr>${th.map(h => `<th>${h}</th>`).join('')}</tr></thead><tbody>${body}</tbody></table>
-    ${files.length ? `<div style="margin-top:6px;font-size:10px"><b>근거자료(근로자 청취조사 등)</b> · ${files.map(f => `${esc(f.time.slice(0, 10))} ${esc(f.name)}${f.memo ? '(' + esc(f.memo) + ')' : ''}`).join(' / ')} — 원본은 드라이브 보관</div>` : ''}
-    <div class="mf"><span>※ 정기 위험성평가(원본) 9.공통사항 다음에 철함 · 다음 정기평가 때 원본에 통합 · 시스템 기록 요약본</span><span>출력일시 ${new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })}</span></div></div>`;
+  return `<div class="rsheet"><table class="rhd"><tr><td class="tt">위 험 성 평 가 표 (${Y}년 ${half})</td><td class="ap" rowspan="2"><table class="appr"><tr><th rowspan="2" style="width:7mm">결재</th><th>작성</th><th>승인</th></tr><tr><td></td><td></td></tr></table></td></tr>
+    <tr><td class="sub">공정대분류 : 글로브박스 제조업 &nbsp;&nbsp;&nbsp; 세부분류 : 10 &nbsp; 수시평가 <span style="font-weight:400;font-size:10px;color:#475569">(순회점검·TBM·근로자 청취조사 발굴 · 총 ${rows.length}건)</span></td></tr></table>
+    <table class="rt"><colgroup>${w.map(x => `<col style="width:${x}%">`).join('')}</colgroup><thead><tr>${th.map(h => `<th>${h}</th>`).join('')}</tr></thead>
+    <tbody><tr><td colspan="15" class="gb">▼ ${Y}년 ${half} 수시평가 항목 (9.공통사항에 이어서 누적)</td></tr>${body}${blank}</tbody></table>
+    ${files.length ? `<div style="margin-top:5px;font-size:10px"><b>근거자료(근로자 청취조사 등)</b> · ${files.map(f => `${esc(f.time.slice(0, 10))} ${esc(f.name)}${f.memo ? '(' + esc(f.memo) + ')' : ''}`).join(' / ')} — 원본은 드라이브 보관</div>` : ''}
+    <div class="mf"><span>※ 위험성 = 가능성 × 중대성 (원본 '위험성추정기준'과 동일) · 정기 위험성평가 9.공통사항 다음에 철함 · 다음 정기평가 때 원본에 통합</span><span>출력일시 ${new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })}</span></div></div>`;
 }
 async function riskXlsx() {
   if (!window.XLSX) await new Promise((ok, no) => { const s = document.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js'; s.onload = ok; s.onerror = no; document.head.appendChild(s); });
