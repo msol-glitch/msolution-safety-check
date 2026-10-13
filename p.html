@@ -1147,5 +1147,211 @@ mgrRender(); pubLoad();
 
 $('tbmBigBtn').onclick = tbmBig; $('bigClose').onclick = () => $('bigDlg').close();
 </script>
+<!-- ===== 엠봇 안전 챗봇 (2026-10-13 대표 지시) =====
+     직원 첫 화면 오른쪽 아래에 상주. 외국인 근로자가 자기 나라 말로 안전수칙을 묻고, 회사 확정 자료로만 답함(비용 없음).
+     서버: type 'bot' (list = 분류별 질문 목록, id = 선택한 질문, q = 직접 입력). 미리보기: 주소 끝에 &bot=MSBOT -->
+<style>
+  #mbotFab{position:fixed;right:8px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:900;width:96px;display:none;flex-direction:column;align-items:center;padding:0;border:0;background:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
+  #mbotFab.on{display:flex}
+  #mbotFab svg{display:block;filter:drop-shadow(0 6px 10px rgba(15,23,42,.18));animation:mbotBob 3s ease-in-out infinite}
+  #mbotFab .tag{margin-top:-4px;font-size:13px;font-weight:800;color:#fff;background:#0F172A;border:2px solid #fff;border-radius:999px;padding:3px 12px;box-shadow:0 4px 10px rgba(15,23,42,.25)}
+  @keyframes mbotBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+  @media (prefers-reduced-motion:reduce){#mbotFab svg{animation:none}}
+  #mbotTip{position:fixed;right:108px;bottom:calc(74px + env(safe-area-inset-bottom));z-index:900;display:none;background:#0F172A;color:#fff;font-size:14px;font-weight:700;line-height:1.45;padding:10px 13px;border-radius:14px 14px 4px 14px;box-shadow:0 6px 18px rgba(15,23,42,.18);max-width:170px;word-break:keep-all}
+  #mbotTip.on{display:block}
+  body.mbot-pad .menu{padding-bottom:140px}
+  #mbotOv{position:fixed;inset:0;z-index:950;background:rgba(15,23,42,.45);display:none}
+  #mbotOv.on{display:block}
+  #mbotSheet{position:fixed;left:0;right:0;bottom:0;height:92vh;max-height:92dvh;z-index:960;background:#fff;border-radius:22px 22px 0 0;display:none;flex-direction:column;box-shadow:0 -10px 30px rgba(15,23,42,.2);max-width:560px;margin:0 auto}
+  #mbotSheet.on{display:flex}
+  #mbotSheet .mh{display:flex;align-items:center;gap:10px;padding:14px 12px 10px 16px;border-bottom:1px solid #F1F5F9}
+  #mbotSheet .av{width:46px;height:46px;border-radius:50%;background:#FFF7ED;border:2px solid #EA580C;display:flex;align-items:center;justify-content:center;flex:none;overflow:hidden}
+  #mbotSheet .tt{display:flex;flex-direction:column;flex:1;min-width:0}
+  #mbotSheet .tt b{font-size:17px;font-weight:800;color:#0F172A}
+  #mbotSheet .tt span{font-size:12px;color:#15803D;font-weight:700}
+  #mbotSheet .x{width:44px;height:44px;border:0;border-radius:50%;background:#F1F5F9;display:flex;align-items:center;justify-content:center;padding:0;cursor:pointer}
+  #mbotSheet .lg{display:flex;gap:6px;padding:10px 16px;border-bottom:1px solid #F1F5F9;overflow-x:auto}
+  #mbotSheet .lg button{flex:none;font:inherit;font-size:13.5px;font-weight:700;min-height:36px;padding:0 14px;border-radius:999px;border:1px solid #FDBA74;background:#fff;color:#9A3412;cursor:pointer}
+  #mbotSheet .lg button.on{background:#EA580C;border-color:#EA580C;color:#fff;font-weight:800}
+  #mbotSheet .pv{background:#FEF3C7;color:#92400E;font-size:12px;font-weight:700;text-align:center;padding:6px}
+  #mbotLog{flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:12px;background:#F8FAFC;-webkit-overflow-scrolling:touch}
+  #mbotLog .me{align-self:flex-end;max-width:80%;background:#1E293B;color:#fff;padding:10px 13px;border-radius:16px 16px 4px 16px;font-size:15px;line-height:1.5;word-break:keep-all;overflow-wrap:anywhere}
+  #mbotLog .bot{align-self:flex-start;max-width:92%;display:flex;flex-direction:column;gap:6px}
+  #mbotLog .bub{background:#fff;border:1px solid #E2E8F0;padding:11px 13px;border-radius:16px 16px 16px 4px;font-size:15px;line-height:1.65;color:#0F172A;word-break:keep-all;overflow-wrap:anywhere;white-space:pre-line}
+  #mbotLog .bub .nf{white-space:normal}
+  #mbotLog .bub .qh{font-weight:800;margin-bottom:6px;white-space:normal}
+  #mbotLog .src{font-size:12px;color:#475569;padding-left:4px}
+  #mbotLog .src em{font-style:normal;background:#FEF3C7;color:#92400E;border-radius:6px;padding:1px 6px;margin-left:4px;font-weight:700}
+  #mbotLog .kob{align-self:flex-start;font:inherit;font-size:12.5px;font-weight:700;color:#1D4ED8;background:none;border:0;padding:6px 4px;min-height:32px;cursor:pointer}
+  #mbotLog .ko{background:#F1F5F9;border-radius:10px;padding:9px 11px;font-size:13.5px;line-height:1.6;color:#334155;word-break:keep-all}
+  #mbotLog .ko .nf{font-size:13.5px}
+  #mbotLog .note{font-size:11.5px;color:#9A3412;padding-left:4px}
+  #mbotLog .qs{display:flex;flex-direction:column;gap:6px;margin-top:2px}
+  #mbotLog .qs button{text-align:left;font:inherit;font-size:14.5px;line-height:1.4;padding:10px 12px;border-radius:12px;border:1px solid #CBD5E1;background:#fff;color:#0F172A;cursor:pointer;word-break:keep-all}
+  #mbotLog .dots{align-self:flex-start;background:#fff;border:1px solid #E2E8F0;border-radius:16px;padding:10px 16px;font-size:18px;letter-spacing:3px;color:#94A3B8}
+  #mbotSheet .ch{display:flex;gap:6px;padding:10px 16px 4px;overflow-x:auto;border-top:1px solid #F1F5F9;scrollbar-width:none}
+  #mbotSheet .ch::-webkit-scrollbar{display:none}
+  #mbotSheet .ch button{flex:none}
+  #mbotSheet .ch button{font:inherit;font-size:14px;font-weight:700;min-height:40px;padding:0 14px;border-radius:999px;border:1px solid #CBD5E1;background:#fff;color:#0F172A;cursor:pointer}
+  #mbotSheet .in{display:flex;gap:8px;align-items:center;padding:8px 16px calc(12px + env(safe-area-inset-bottom))}
+  #mbotSheet .in input{flex:1;min-width:0;font:inherit;font-size:16px;min-height:46px;padding:0 14px;border:1px solid #CBD5E1;border-radius:999px;background:#fff;color:#0F172A}
+  #mbotSheet .in button{width:46px;height:46px;flex:none;border:0;border-radius:50%;background:#EA580C;display:flex;align-items:center;justify-content:center;padding:0;cursor:pointer}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style>
+<div id="mbotTip" aria-hidden="true"></div>
+<button type="button" id="mbotFab" aria-label="엠봇 안전 도우미 열기">
+  <svg role="img" aria-label="엠봇" viewBox="0 0 100 122" width="88" height="107">
+    <ellipse cx="50" cy="117" rx="27" ry="4" fill="#0F172A" fill-opacity="0.18"></ellipse>
+    <line x1="26" y1="82" x2="14" y2="97" stroke="#0F172A" stroke-width="8" stroke-linecap="round"></line>
+    <line x1="26" y1="82" x2="14" y2="97" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round"></line>
+    <circle cx="13" cy="99" r="5.5" fill="#FFFFFF" stroke="#0F172A" stroke-width="3"></circle>
+    <line x1="74" y1="82" x2="87" y2="67" stroke="#0F172A" stroke-width="8" stroke-linecap="round"></line>
+    <line x1="74" y1="82" x2="87" y2="67" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round"></line>
+    <circle cx="88.5" cy="64.5" r="5.5" fill="#FFFFFF" stroke="#0F172A" stroke-width="3"></circle>
+    <rect x="34" y="104" width="11" height="10" rx="3.5" fill="#0F172A"></rect>
+    <rect x="55" y="104" width="11" height="10" rx="3.5" fill="#0F172A"></rect>
+    <rect x="25" y="73" width="50" height="35" rx="13" fill="#EA580C" stroke="#0F172A" stroke-width="3"></rect>
+    <circle cx="50" cy="90" r="9" fill="#FFFFFF"></circle>
+    <text x="50" y="94.2" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="800" fill="#EA580C">M</text>
+    <rect x="44" y="68" width="12" height="7" fill="#CBD5E1" stroke="#0F172A" stroke-width="2"></rect>
+    <rect x="19" y="33" width="62" height="38" rx="15" fill="#FFFFFF" stroke="#0F172A" stroke-width="3"></rect>
+    <rect x="26" y="43" width="48" height="19" rx="9.5" fill="#0F172A"></rect>
+    <path d="M34 55.5q5-6 10 0M56 55.5q5-6 10 0" fill="none" stroke="#67E8F9" stroke-width="3.2" stroke-linecap="round"></path>
+    <circle cx="27" cy="66" r="3" fill="#FDBA74"></circle>
+    <circle cx="73" cy="66" r="3" fill="#FDBA74"></circle>
+    <path d="M17 36C17 18 32 11 50 11S83 18 83 36Z" fill="#FACC15" stroke="#0F172A" stroke-width="3" stroke-linejoin="round"></path>
+    <path d="M50 12v23" stroke="#0F172A" stroke-width="2.5" stroke-opacity="0.35"></path>
+    <rect x="11" y="33" width="78" height="7" rx="3.5" fill="#FACC15" stroke="#0F172A" stroke-width="3"></rect>
+    <line x1="50" y1="11" x2="50" y2="4" stroke="#0F172A" stroke-width="3"></line>
+    <circle cx="50" cy="4" r="3.6" fill="#EA580C" stroke="#0F172A" stroke-width="2"></circle>
+  </svg>
+  <span class="tag">엠봇</span>
+</button>
+<div id="mbotOv"></div>
+<section id="mbotSheet" role="dialog" aria-modal="true" aria-label="엠봇 안전 도우미">
+  <div class="mh">
+    <div class="av"><svg aria-hidden="true" viewBox="8 2 84 72" width="38" height="33"><rect x="19" y="33" width="62" height="38" rx="15" fill="#FFFFFF" stroke="#0F172A" stroke-width="3"></rect><rect x="26" y="43" width="48" height="19" rx="9.5" fill="#0F172A"></rect><path d="M34 55.5q5-6 10 0M56 55.5q5-6 10 0" fill="none" stroke="#67E8F9" stroke-width="3.2" stroke-linecap="round"></path><path d="M17 36C17 18 32 11 50 11S83 18 83 36Z" fill="#FACC15" stroke="#0F172A" stroke-width="3" stroke-linejoin="round"></path><rect x="11" y="33" width="78" height="7" rx="3.5" fill="#FACC15" stroke="#0F172A" stroke-width="3"></rect><line x1="50" y1="11" x2="50" y2="4" stroke="#0F172A" stroke-width="3"></line><circle cx="50" cy="4" r="3.6" fill="#EA580C" stroke="#0F172A" stroke-width="2"></circle></svg></div>
+    <div class="tt"><b id="mbotTitle">엠봇 · 안전 도우미</b><span id="mbotSub"></span></div>
+    <button type="button" class="x" id="mbotClose" aria-label="닫기"><svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#334155" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+  </div>
+  <div class="pv" id="mbotPv" style="display:none">미리보기 — 검토 전 답도 보입니다 (직원 화면에는 '확정'만 표시)</div>
+  <div class="lg" id="mbotLangs"></div>
+  <div id="mbotLog" aria-live="polite"></div>
+  <div class="ch" id="mbotCats"></div>
+  <div class="in">
+    <label for="mbotQ" class="sr">질문</label>
+    <input id="mbotQ" type="text" maxlength="200" autocomplete="off" enterkeyhint="send">
+    <button type="button" id="mbotSend" aria-label="보내기"><svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"></path></svg></button>
+  </div>
+</section>
+<script>
+(function () {
+  const UI = {
+    ko: { title: '엠봇 · 안전 도우미', sub: '● 엠솔루션 안전 자료로 답해요', greet: '안녕하세요! 저는 엠솔루션 안전 도우미 엠봇이에요.\n아래 주제를 누르거나 질문을 입력해 주세요.', pick: '궁금한 질문을 눌러 주세요.', ph: '질문을 입력하세요', miss: '등록된 답을 찾지 못했어요.\n관리자에게 직접 물어봐 주세요.\n질문은 기록되어, 다음에 답이 추가됩니다.', src: '출처', koShow: '', koHide: '', note: '', err: '연결이 안 됐어요. 잠시 후 다시 해 주세요.', limit: '오늘 질문 수를 다 썼어요. 관리자에게 물어봐 주세요.', bubble: '엠봇에게 물어보세요!', empty: '아직 준비된 답이 없어요. 관리자에게 물어봐 주세요.', draft: '검토 전' },
+    vi: { title: 'M-Bot · Trợ lý an toàn', sub: '● Trả lời theo tài liệu an toàn của M-Solution', greet: 'Xin chào! Tôi là M-Bot, trợ lý an toàn của M-Solution.\nHãy chọn chủ đề bên dưới hoặc nhập câu hỏi.', pick: 'Hãy chọn câu hỏi bạn muốn hỏi.', ph: 'Nhập câu hỏi...', miss: 'Tôi chưa tìm thấy câu trả lời.\nHãy hỏi trực tiếp quản lý.\nCâu hỏi đã được ghi lại để bổ sung câu trả lời.', src: 'Nguồn', koShow: 'Xem bản gốc tiếng Hàn ▼', koHide: 'Ẩn bản gốc tiếng Hàn ▲', note: 'Bản dịch tự động. Bản gốc tiếng Hàn là chuẩn.', err: 'Không kết nối được. Vui lòng thử lại sau.', limit: 'Hôm nay bạn đã hỏi hết số lần cho phép. Hãy hỏi quản lý.', bubble: 'Hỏi M-Bot!', empty: 'Chưa có câu trả lời. Hãy hỏi quản lý.', draft: 'Chưa duyệt' },
+    zh: { title: 'M-Bot · 安全助手', sub: '● 根据M-Solution安全资料回答', greet: '您好！我是M-Solution安全助手M-Bot。\n请点击下方主题，或输入您的问题。', pick: '请点击您想问的问题。', ph: '请输入问题…', miss: '没有找到已登记的答案。\n请直接询问管理人员。\n您的问题已被记录，之后会补充答案。', src: '来源', koShow: '查看韩语原文 ▼', koHide: '收起韩语原文 ▲', note: '自动翻译，以韩语原文为准。', err: '连接失败，请稍后再试。', limit: '今天的提问次数已用完，请询问管理人员。', bubble: '问M-Bot！', empty: '暂无答案，请询问管理人员。', draft: '未审核' },
+    ru: { title: 'M-Bot · Помощник по безопасности', sub: '● Отвечает по материалам M-Solution', greet: 'Здравствуйте! Я M-Bot, помощник по безопасности M-Solution.\nВыберите тему ниже или напишите вопрос.', pick: 'Нажмите на нужный вопрос.', ph: 'Введите вопрос...', miss: 'Ответ не найден.\nСпросите, пожалуйста, руководителя.\nВопрос записан, ответ будет добавлен.', src: 'Источник', koShow: 'Оригинал на корейском ▼', koHide: 'Скрыть оригинал ▲', note: 'Автоматический перевод. Основной текст — на корейском.', err: 'Нет связи. Попробуйте позже.', limit: 'Лимит вопросов на сегодня исчерпан. Спросите руководителя.', bubble: 'Спросите M-Bot!', empty: 'Ответов пока нет. Спросите руководителя.', draft: 'Не проверено' },
+    id: { title: 'M-Bot · Asisten Keselamatan', sub: '● Menjawab dari materi keselamatan M-Solution', greet: 'Halo! Saya M-Bot, asisten keselamatan M-Solution.\nPilih topik di bawah atau ketik pertanyaan.', pick: 'Ketuk pertanyaan yang ingin Anda tanyakan.', ph: 'Ketik pertanyaan...', miss: 'Jawaban belum ditemukan.\nSilakan tanya langsung ke atasan.\nPertanyaan Anda dicatat dan jawabannya akan ditambahkan.', src: 'Sumber', koShow: 'Lihat teks asli bahasa Korea ▼', koHide: 'Tutup teks asli ▲', note: 'Terjemahan otomatis. Teks asli bahasa Korea yang berlaku.', err: 'Gagal terhubung. Coba lagi nanti.', limit: 'Batas pertanyaan hari ini sudah habis. Tanya atasan.', bubble: 'Tanya M-Bot!', empty: 'Belum ada jawaban. Tanya atasan.', draft: 'Belum diperiksa' },
+    en: { title: 'M-Bot · Safety Assistant', sub: '● Answers from M-Solution safety materials', greet: 'Hello! I am M-Bot, the safety assistant of M-Solution.\nChoose a topic below or type a question.', pick: 'Tap the question you want to ask.', ph: 'Type a question...', miss: 'No registered answer was found.\nPlease ask your manager directly.\nYour question has been recorded and an answer will be added.', src: 'Source', koShow: 'Show Korean original ▼', koHide: 'Hide Korean original ▲', note: 'Automatic translation. The Korean original is the standard.', err: 'Connection failed. Please try again later.', limit: 'You have used all questions for today. Please ask your manager.', bubble: 'Ask M-Bot!', empty: 'No answers yet. Please ask your manager.', draft: 'Not reviewed' }
+  };
+  const LNAME = { ko: '한국어', vi: 'Tiếng Việt', zh: '中文', km: 'ខ្មែរ', id: 'Indonesia', ru: 'Русский' };
+  const toApi = l => l === 'in' ? 'id' : l;   // 화면 언어코드 → 구글 번역 코드
+  const ui = () => UI[S.lang] || UI.en;      // 크메르어 화면 글자는 영어로 (답변은 크메르어로 번역)
+  const PREVIEW = (new URLSearchParams(location.search).get('bot') || '') === 'MSBOT' ? 'MSBOT' : '';
+  const S = { lang: 'ko', list: {}, msgs: [], busy: false, cat: '' };
+  try { const l = localStorage.getItem('ms_bot_lang'); if (l && LNAME[l]) S.lang = l; } catch (e) {}
+  const el = id => document.getElementById(id);
+  const fab = el('mbotFab'), tip = el('mbotTip'), ov = el('mbotOv'), sheet = el('mbotSheet'), log = el('mbotLog');
+  const e2 = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const fmt = s => (typeof fmtN === 'function' ? fmtN(s) : e2(s));
+  function langs() {
+    let ls = ['ko'];
+    try { if (typeof tLangs === 'function') ls = tLangs().map(toApi); } catch (e) {}
+    if (!ls.length || (typeof team !== 'undefined' && !team)) ls = ['ko', 'vi', 'zh', 'km', 'id', 'ru'];
+    if (ls.indexOf(S.lang) < 0) ls.push(S.lang);
+    return ls.filter((x, i) => LNAME[x] && ls.indexOf(x) === i);
+  }
+  async function call(body) {
+    const r = await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify(Object.assign({ key: API_KEY, type: 'bot', lang: S.lang, team: (typeof team !== 'undefined' ? team : 0), dev: (typeof DEV !== 'undefined' ? DEV : ''), preview: PREVIEW }, body)) });
+    return r.json();
+  }
+  async function loadList() {
+    if (S.list[S.lang]) return S.list[S.lang];
+    const o = await call({ list: 1 });
+    if (!o.ok) throw new Error(o.error || 'err');
+    return (S.list[S.lang] = o);
+  }
+  function render() {
+    const U = ui();
+    el('mbotTitle').textContent = U.title; el('mbotSub').textContent = U.sub;
+    el('mbotQ').placeholder = U.ph; el('mbotPv').style.display = PREVIEW ? '' : 'none';
+    el('mbotLangs').innerHTML = langs().map(l => `<button type="button" data-l="${l}" class="${l === S.lang ? 'on' : ''}">${LNAME[l]}</button>`).join('');
+    el('mbotLangs').querySelectorAll('[data-l]').forEach(b => b.onclick = () => setLang(b.dataset.l));
+    const L = S.list[S.lang];
+    el('mbotCats').innerHTML = L ? L.cats.map(c => `<button type="button" data-c="${e2(c.id)}">${e2(c.label)}</button>`).join('') : '';
+    el('mbotCats').querySelectorAll('[data-c]').forEach(b => b.onclick = () => showCat(b.dataset.c));
+    log.innerHTML = S.msgs.map((m, i) => {
+      if (m.t === 'me') return `<div class="me">${e2(m.text)}</div>`;
+      if (m.t === 'dots') return '<div class="dots">•••</div>';
+      if (m.t === 'say') return `<div class="bot"><div class="bub">${e2(U[m.key] || m.key)}</div></div>`;
+      if (m.t === 'qs') {
+        const items = (L ? L.items : []).filter(x => x.cat === m.cat);
+        return `<div class="bot"><div class="bub">${e2(U.pick)}</div><div class="qs">${items.length ? items.map(x => `<button type="button" data-q="${e2(x.no)}">${e2(x.q)}</button>`).join('') : e2(U.empty)}</div></div>`;
+      }
+      if (m.t === 'ans') {
+        const ko = S.lang !== 'ko';
+        return `<div class="bot"><div class="bub"><div class="qh">${e2(m.q)}</div>${fmt(m.a)}</div>
+          <div class="src">${e2(U.src)}: ${e2(m.src)}${m.draft ? `<em>${e2(U.draft)}</em>` : ''}</div>
+          ${ko ? `<div class="note">${e2(U.note)}</div><button type="button" class="kob" data-k="${i}">${e2(m.open ? U.koHide : U.koShow)}</button>${m.open ? `<div class="ko"><b>${e2(m.ko.q)}</b>${fmt(m.ko.a)}</div>` : ''}` : ''}</div>`;
+      }
+      return '';
+    }).join('');
+    log.querySelectorAll('[data-q]').forEach(b => b.onclick = () => askId(b.dataset.q, b.textContent));
+    log.querySelectorAll('[data-k]').forEach(b => b.onclick = () => { const m = S.msgs[+b.dataset.k]; m.open = !m.open; render(); });
+    log.scrollTop = log.scrollHeight;
+  }
+  const push = m => { S.msgs = S.msgs.filter(x => x.t !== 'dots').concat(m); render(); };
+  async function boot() {
+    if (!S.msgs.length) S.msgs.push({ t: 'say', key: 'greet' });
+    render();
+    try { await loadList(); } catch (e) { push({ t: 'say', key: 'err' }); return; }
+    render();
+  }
+  async function setLang(l) {
+    S.lang = l; try { localStorage.setItem('ms_bot_lang', l); } catch (e) {}
+    tipText(); render();
+    try { push({ t: 'dots' }); await loadList(); S.msgs = S.msgs.filter(x => x.t !== 'dots'); render(); } catch (e) { push({ t: 'say', key: 'err' }); }
+  }
+  function showCat(c) { const L = S.list[S.lang], lab = L && L.cats.find(x => x.id === c); push([{ t: 'me', text: lab ? lab.label : c }, { t: 'qs', cat: c }]); }
+  async function ask(body, shown) {
+    if (S.busy) return; S.busy = true;
+    push([{ t: 'me', text: shown }, { t: 'dots' }]);
+    try {
+      const o = await call(body);
+      if (!o.ok) push({ t: 'say', key: o.error === 'limit' ? 'limit' : 'err' });
+      else if (!o.found) push({ t: 'say', key: 'miss' });
+      else push({ t: 'ans', q: o.q, a: o.a, src: o.src, draft: o.draft, ko: o.ko, open: false });
+    } catch (e) { push({ t: 'say', key: 'err' }); }
+    S.busy = false;
+  }
+  const askId = (no, text) => ask({ id: no }, text);
+  function sendText() { const v = el('mbotQ').value.trim(); if (!v) return; el('mbotQ').value = ''; ask({ q: v }, v); }
+  function open() { ov.classList.add('on'); sheet.classList.add('on'); tip.classList.remove('on'); try { localStorage.setItem('ms_bot_seen', '1'); } catch (e) {} boot(); }
+  function close() { ov.classList.remove('on'); sheet.classList.remove('on'); }
+  function tipText() { const U = ui(); tip.textContent = U.bubble + (S.lang !== 'ko' ? '' : ' · Hỏi M-Bot'); }
+  fab.onclick = open; ov.onclick = close; el('mbotClose').onclick = close;
+  el('mbotSend').onclick = sendText;
+  el('mbotQ').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.isComposing) { e.preventDefault(); sendText(); } });
+  // 첫 화면(메뉴)이 보일 때만 엠봇 표시 — 점검 입력·TBM 화면에서는 숨김
+  let seen = false; try { seen = !!localStorage.getItem('ms_bot_seen'); } catch (e) {}
+  tipText();
+  setInterval(() => {
+    const m = el('menu'), show = !!m && m.style.display !== 'none' && m.offsetParent !== null && !sheet.classList.contains('on');
+    fab.classList.toggle('on', show); tip.classList.toggle('on', show && !seen); document.body.classList.toggle('mbot-pad', show);
+    if (sheet.classList.contains('on')) seen = true;
+  }, 700);
+})();
+</script>
+
 </body>
 </html>
