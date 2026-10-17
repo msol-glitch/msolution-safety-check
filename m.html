@@ -335,6 +335,93 @@
   body:not(.p-risk) #rkSheet{display:none}
   @media print{body.p-risk main>*:not(#riskView),body.p-risk .rail,body.p-risk #riskView>*:not(#rkSheet){display:none!important}body.p-risk .app,body.p-risk main{display:block;padding:0;background:none}
     .rsheet{border:0;margin:0;padding:0}.rsheet td,.rsheet th{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+  /* ===== v13 보호구 지급·관리 대장 (MS-SF-06) ===== */
+  main[data-k="ppe"]{--band:#F5B700}
+  .pp-hero{position:relative;overflow:hidden;border-radius:16px;background:#13284A;color:#fff;padding:24px 26px 30px;display:flex;flex-direction:column;gap:18px}
+  .pp-hero svg.bg{position:absolute;inset:0;width:100%;height:100%;opacity:.55;pointer-events:none}
+  .pp-hero .stripe{position:absolute;left:0;right:0;bottom:0;height:8px;background:repeating-linear-gradient(135deg,#F5B700 0 14px,#13284A 14px 28px)}
+  .pp-hero .tx{position:relative;max-width:640px;display:flex;flex-direction:column;gap:6px}
+  .pp-hero .tx b{font-size:12px;letter-spacing:.16em;color:#F5B700}
+  .pp-hero .tx h2{margin:0;font-size:22px;line-height:1.4;color:#fff}
+  .pp-hero .tx span{font-size:13.5px;color:#C9D6EA;line-height:1.6}
+  .pp-k4{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+  .pp-k{background:#fff;color:var(--ink);border-radius:12px;padding:13px 15px;border-top:4px solid #2563EB;display:flex;flex-direction:column;gap:2px;min-width:0}
+  .pp-k.o{border-top-color:#EA580C}.pp-k.y{border-top-color:#F5B700}.pp-k.nv{border-top-color:#1B3A6B}
+  .pp-k .k{font-size:12px;color:#475569}.pp-k .v{font-size:23px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1.25}
+  .pp-k .v small{font-size:13px;font-weight:600;color:#475569}.pp-k .d{font-size:12px;color:#475569}
+  .pp-bar{height:9px;border-radius:5px;background:#E2E8F0;overflow:hidden;margin-top:4px}.pp-bar i{display:block;height:100%;background:#2563EB}
+  .pp-tabs{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:14px 0 12px}
+  .pp-tabs button{font:inherit;font-size:14px;font-weight:700;min-height:42px;padding:0 18px;border-radius:999px;border:1px solid var(--line2);background:#fff;color:var(--ink);cursor:pointer}
+  .pp-tabs button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .pp-tabs .sp{flex:1}
+  .pp-tabs .pr{background:#EA580C;color:#fff;border:0;border-radius:9px}
+  .pp-sign{background:#FFF8E1;border:1px solid #F5D47A;border-left:0;border-radius:10px;padding:10px 14px;font-size:13px;line-height:1.6;color:#5B4100;margin-bottom:12px}
+  .pp-sign b{color:#3D2B00}
+  .pp-in{display:flex;flex-wrap:wrap;gap:14px;align-items:stretch}
+  .pp-drop{flex:1 1 230px;min-height:170px;border:2px dashed #94A3B8;border-radius:12px;background:#F8FAFC;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:14px;text-align:center;cursor:pointer;color:#334155}
+  .pp-drop.on{background:#EFF6FF;border-color:#2563EB}
+  .pp-drop img{max-width:100%;max-height:130px;border-radius:6px;border:1px solid var(--line)}
+  .pp-f{flex:3 1 520px;min-width:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px 10px}
+  .pp-f label,.pp-form label{display:flex;flex-direction:column;gap:3px;font-size:12px;color:#334155;min-width:0}
+  .pp-f input,.pp-f select,.pp-form input,.pp-form select,.pp-form textarea{font:inherit;font-size:14px;min-height:40px;padding:0 9px;border:1px solid var(--line2);border-radius:8px;background:#fff;color:var(--ink);box-sizing:border-box;width:100%;min-width:0}
+  .pp-form textarea{padding:8px 9px;min-height:70px}
+  .pp-f .w2{grid-column:span 2}.pp-f .w4,.pp-form .w4{grid-column:1/-1}
+  .pp-auto{background:#EFF6FF!important}
+  .pp-act{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px;align-items:center;margin-top:10px}
+  .pp-msg{font-size:13px;color:var(--sub);margin-right:auto}
+  .pp-msg.bad{color:var(--bad)}.pp-msg.ok{color:#1D7A43;font-weight:700}
+  .pp-cands{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+  .pp-cands button{font:inherit;font-size:12px;border:1px solid var(--line2);background:#fff;border-radius:8px;padding:5px 9px;cursor:pointer;text-align:left}
+  .pp-filt{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}
+  .pp-filt select{font:inherit;padding:7px;border:1px solid var(--line2);border-radius:8px}
+  .pp-chip{display:inline-block;font-size:11.5px;font-weight:700;border-radius:999px;padding:2px 9px}
+  .pp-chip.소모{background:#DBEAFE;color:#1E3A8A}.pp-chip.내구{background:#DCF3E4;color:#14532D}.pp-chip.비치{background:#FDF0D8;color:#8A4B00}
+  .pp-tbl tr.ret td{background:#FFF4E5}.pp-tbl tr.np td{color:#94A3B8}
+  .pp-tbl .src{font-size:11px;color:var(--sub)}
+  .pp-g2{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+  .pp-item{background:#fff;border:1px solid var(--line);border-radius:12px;padding:13px 15px;display:flex;flex-direction:column;gap:6px}
+  .pp-item .t{display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .pp-item .t b{font-size:15px}.pp-item .m{font-size:12.5px;color:#334155;line-height:1.55}
+  .pp-warn{font-size:11px;font-weight:700;color:#8A4B00;background:#FDF0D8;border-radius:999px;padding:2px 9px;white-space:nowrap}
+  .pp-good{font-size:11px;font-weight:700;color:#14532D;background:#DCF3E4;border-radius:999px;padding:2px 9px;white-space:nowrap}
+  .pp-pd{display:grid;grid-template-columns:42px minmax(0,1fr);gap:10px;align-items:start;margin-top:8px}
+  .pp-pd span{display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:10px;font-weight:800;color:#fff;font-size:17px}
+  .pp-pd div{font-size:13px;color:#334155;line-height:1.55;white-space:pre-wrap}
+  .pp-modal{position:fixed;inset:0;background:rgba(15,23,42,.45);z-index:50;display:flex;align-items:center;justify-content:center}
+  .pp-modal .card{width:min(720px,94vw);max-height:92vh;overflow:auto}
+  .pp-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px 12px}
+  /* A4 출력 */
+  @page ppeL{size:A4 landscape;margin:9mm}
+  @page ppeP{size:A4 portrait;margin:11mm}
+  .pdoc{background:#fff;color:#0F172A;font-family:"Malgun Gothic","맑은 고딕",sans-serif;font-size:11px;margin-top:14px;border:1px solid var(--line);padding:12px}
+  .pdoc.l{page:ppeL}.pdoc.p{page:ppeP}
+  .pdoc .bandh{background:#1E293B;color:#fff;display:flex;justify-content:space-between;align-items:center;padding:8px 12px;gap:10px}
+  .pdoc .bandh .lg{background:#fff;border-radius:6px;padding:3px 6px;display:flex}.pdoc .bandh .lg img{height:20px}
+  .pdoc .bandh small{display:block;font-size:9.5px;color:#CBD5E1}
+  .pdoc .bandh h2{margin:2px 0;font-size:17px;color:#fff}
+  .pdoc .bandh .r{text-align:right;font-weight:800;font-size:15px;color:#fff;line-height:1.3}
+  .pdoc .bandh .r small{font-weight:600}
+  .pdoc table{width:100%;border-collapse:collapse;background:#fff}
+  .pdoc th,.pdoc td{border:1px solid #94A3B8;padding:4px 5px;font-size:10.5px;vertical-align:middle;color:#0F172A}
+  .pdoc th{background:#E2E8F0;font-weight:700;text-align:center}
+  .pdoc .meta td{text-align:center}.pdoc .meta th{width:11%}
+  .pdoc .lt th{background:#1E293B;color:#fff}
+  .pdoc tr.ret td{background:#FFF4E5}
+  .pdoc tfoot td{background:#E2E8F0;font-weight:700}
+  .pdoc .note{font-size:9.5px;color:#334155;margin-top:5px;line-height:1.5}
+  .pdoc .sig{margin-top:8px}.pdoc .sig td{height:13mm;text-align:center}
+  .pdoc .foot{margin-top:6px;background:#334155;color:#E2E8F0;font-size:9px;display:flex;justify-content:space-between;padding:4px 10px}
+  .pdoc .pdca td.k{width:16mm;text-align:center;font-size:22px;font-weight:800;color:#fff}
+  .pdoc .pdca td.b{white-space:pre-wrap;line-height:1.6;font-size:11px}
+  .pdoc .pdca td.h{font-weight:700;font-size:12px;background:#F1F5F9}
+  .pdoc .end{border:1.5px solid #15803D;background:#F0FDF4;padding:7px 10px;margin-top:8px;line-height:1.6;font-size:11px}
+  .pdoc .ck{font-size:13px}
+  body:not(.p-ppe) #ppePrint{display:none}
+  @media print{body.p-ppe main>*:not(#ppeView),body.p-ppe .rail,body.p-ppe #ppeView>*:not(#ppePrint){display:none!important}
+    body.p-ppe .app,body.p-ppe main{display:block;padding:0;background:none}
+    .pdoc{border:0;margin:0;padding:0;break-after:page}.pdoc:last-child{break-after:auto}
+    .pdoc *{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+  @media (max-width:900px){.pp-k4{grid-template-columns:1fr 1fr}.pp-f{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
@@ -392,6 +479,7 @@
   <div id="tbmView" class="hide"></div>
   <div id="noticeView" class="hide"></div>
   <div id="praiseView" class="hide"></div>
+  <div id="ppeView" class="hide"></div>
   <div id="riskView" class="hide"></div>
   <div id="soonView" class="hide"></div>
 
@@ -433,8 +521,8 @@ const ICON = {
 const FOLDERS = [
   { key: 'dust', name: '집진기 청소 점검', no: 'MS-SF-04', open: '' },
   { key: 'patrol', name: '중대재해예방 순회점검', no: 'MS-SF-05' },
-  { key: '5s', name: '3정5행 점검', no: 'MS-SF-06' },
-  { key: 'ppe', name: '보호구 지급 (PDCA)', no: '준비 중', off: true },
+  { key: '5s', name: '3정5행 점검', no: 'MS-SF-08' },
+  { key: 'ppe', name: '보호구 지급 (PDCA)', no: 'MS-SF-06', off: true },
   { key: 'plt', name: 'PLT(납입대차) 관리대장', no: '준비 중', off: true }
 ];
 const $ = id => document.getElementById(id);
@@ -464,7 +552,8 @@ const NAV = [
   { key: 'patrol', name: '순회점검', ic: ICON.patrol },
   { key: 'tbm', name: 'TBM', ic: '<circle cx="8" cy="9" r="3"/><circle cx="16" cy="9" r="3"/><path d="M3 20c0-3 2.5-5 5-5s5 2 5 5M11 20c0-3 2.5-5 5-5s5 2 5 5"/>' },
   { key: 'dust', name: '집진기 청소', ic: ICON.dust },
-  { key: 'notice', name: '전달사항·발도장', ic: '<path d="M4 10v4h3l5 4V6L7 10z"/><path d="M16 9a4 4 0 010 6M18.5 6.5a8 8 0 010 11"/>' },
+  { key: 'ppe', name: '보호구 지급', ic: ICON.ppe },
+  { key: 'notice', name: '전달사항·안전참여', ic: '<path d="M4 10v4h3l5 4V6L7 10z"/><path d="M16 9a4 4 0 010 6M18.5 6.5a8 8 0 010 11"/>' },
   { key: 'praise', name: '칭찬·행운 지급', ic: '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>' },
   { key: 'actions', name: '조치관리', ic: '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 0 0 5.4-5.4l-2.4 2.4-2.6-.4-.4-2.6z"/>' },
   { key: 'risk', name: '위험성평가', ic: '<path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17v.5"/>' },
@@ -473,7 +562,6 @@ const NAV = [
   { key: 'ceo2', name: '증빙 자동매핑', ic: '<path d="M3 7h6l2 2h10v10H3z"/><path d="M12 12v5M9.5 14.5 12 12l2.5 2.5"/>', lock: 1, soon: 'v7' },
   { key: 'ceo3', name: '반기 이행점검', ic: '<path d="M7 3h7l4 4v14H7z"/><path d="M10 13l2 2 4-4"/>', lock: 1, soon: 'v7' },
   { grp: '준비 중' },
-  { key: 'ppe', name: '보호구 지급', ic: ICON.ppe, off: 1 },
   { key: 'plt', name: 'PLT 관리대장', ic: ICON.plt, off: 1 }
 ];
 const WD = ['일', '월', '화', '수', '목', '금', '토'];
@@ -490,6 +578,8 @@ $('ceo').innerHTML = `<div class="lb">CEO SAFETY MESSAGE</div><h3>${CEO.title}</
 async function api(q) {
   const d = await (await fetch(`${ENDPOINT}?${q}&pin=${encodeURIComponent(PIN)}`)).json();
   if (!d.ok) throw new Error(d.error || '불러오기 실패');
+  if (d.docno && d.type === '5s') d.docno = String(d.docno).replace('MS-SF-06', 'MS-SF-08');   // v13 문서번호 정리(종이 보호구 대장이 06)
+  if (d.docno && d.type === 'tbm') d.docno = String(d.docno).replace('MS-SF-07', 'MS-SF-09');  // 종이 PDCA 보고서가 07
   return d;
 }
 async function start() {
@@ -502,7 +592,7 @@ async function start() {
   loadAnalytics();
 }
 function showLock(msg) {
-  ['home', 'folder', 'actionsView', 'soonView', 'tbmView', 'noticeView', 'riskView', 'praiseView'].forEach(id => $(id).classList.add('hide'));
+  ['home', 'folder', 'actionsView', 'soonView', 'tbmView', 'noticeView', 'riskView', 'praiseView', 'ppeView'].forEach(id => $(id).classList.add('hide'));
   $('lock').classList.remove('hide'); $('lockErr').textContent = msg || ''; $('pin').focus();
 }
 $('enter').onclick = () => { PIN = $('pin').value.trim(); start(); };
@@ -511,12 +601,13 @@ window.onhashchange = () => SUM && route();
 
 function route() {
   const key = location.hash.slice(1);
-  const mk = document.querySelector('main'); if (['risk', 'patrol', '5s', 'tbm', 'dust', 'actions', 'notice'].indexOf(key) >= 0) mk.dataset.k = key; else delete mk.dataset.k;
+  const mk = document.querySelector('main'); if (['risk', 'patrol', '5s', 'tbm', 'dust', 'actions', 'notice', 'ppe'].indexOf(key) >= 0) mk.dataset.k = key; else delete mk.dataset.k;
   document.body.classList.remove('dash');
-  ['home', 'folder', 'actionsView', 'soonView', 'tbmView', 'noticeView', 'riskView', 'praiseView'].forEach(id => $(id).classList.add('hide'));
+  ['home', 'folder', 'actionsView', 'soonView', 'tbmView', 'noticeView', 'riskView', 'praiseView', 'ppeView'].forEach(id => $(id).classList.add('hide'));
   renderNav(key);
   if (['dust', 'patrol', '5s'].indexOf(key) >= 0) { $('pageTitle').textContent = (FOLDERS.find(f => f.key === key) || {}).name; return openFolder(key); }
-  if (key === 'notice') { $('pageTitle').textContent = '전달사항·발도장'; return renderNotice(); }
+  if (key === 'notice') { $('pageTitle').textContent = '전달사항·안전참여'; return renderNotice(); }
+  if (key === 'ppe') { $('pageTitle').textContent = '보호구(안전용품) 지급·관리 대장'; return renderPpe(); }
   if (key === 'praise') { $('pageTitle').textContent = '안전 칭찬 · 행운 이벤트 지급'; return renderPraise(); }
   if (key === 'risk') { $('pageTitle').textContent = '위험성평가'; return renderRisk(); }
   if (key === 'tbm') { $('pageTitle').textContent = 'TBM (작업 전 안전회의)'; return renderTbm(); }
@@ -545,6 +636,7 @@ function renderNav(cur) {
     if (k === 'patrol') return `<span class="bd ${s.patrol.length === n ? 'ok' : 'w'}">${s.patrol.length}/${n}</span>`;
     if (k === 'dust') return s.dust.every(x => x.ok) ? '<span class="bd ok">정상</span>' : '<span class="bd w">청소 필요</span>';
     if (k === 'tbm') { const t = tbmToday(); return t == null ? '<span class="bd n">연결 전</span>' : `<span class="bd ${t.size === 9 ? 'ok' : 'w'}">${t.size}/9</span>`; }
+    if (k === 'ppe') return ppeBadge();
     if (k === 'actions') return SUM.open ? `<span class="bd w">진행 ${SUM.open}</span>` : '<span class="bd ok">0</span>';
     return '';
   };
@@ -864,7 +956,7 @@ async function renderNotice() {
       <label style="display:block;margin-top:8px;font-size:13px;color:var(--sub)">게시 종료일 (비우면 내릴 때까지) <input type="date" id="nUntil" style="font:inherit;padding:6px;border:1px solid var(--line2);border-radius:8px"></label>
       <button class="btn" id="nSave" style="margin-top:10px">등록</button> <span class="err" id="nMsg"></span>
       <p class="note">직원이 [확인했습니다]를 누르면 팀별 확인 수가 쌓입니다(이름 없이 기기 단위). 안전보건 전달 증빙으로 출력할 수 있습니다.</p></div>
-    <div class="card"><h2>QR 발도장 <small>최근 14일 · 팀별 방문 기기 수</small></h2><div id="vTbl"><div class="wait">불러오는 중…</div></div></div></div>
+    <div class="card"><h2>👣 전 직원 안전참여 기록 <small>최근 14일 · 팀별 참여 기기 수 (QR 확인)</small></h2><div id="vTbl"><div class="wait">불러오는 중…</div></div></div></div>
     <div class="card" style="margin-top:12px"><h2>전달사항 목록 · 팀별 확인 <button class="btn ghost sm" id="nPrint">확인 현황 인쇄</button></h2><div id="nList"><div class="wait">불러오는 중…</div></div></div>`;
   $('nSave').onclick = async () => {
     const m = $('nMsg'); m.textContent = '등록 중…';
@@ -1087,7 +1179,7 @@ function renderTbm() {
 }
 function tbmDoc(k, ym, rs) {
   const tot = rs.reduce((a, r) => a + Number(r.minutes || 0), 0);
-  return `<div class="doc tbmdoc">${`<div class="hd"><img src="${LOGO}" alt="㈜엠솔루션"><div class="r">안전보건팀<br>문서번호 MS-SF-07</div></div>`}
+  return `<div class="doc tbmdoc">${`<div class="hd"><img src="${LOGO}" alt="㈜엠솔루션"><div class="r">안전보건팀<br>문서번호 MS-SF-09</div></div>`}
     <h2>TBM(작업 전 안전회의) 일지 · ${esc(TBM_LN[k][0])} ${esc(TBM_LN[k][1])} · ${ym.replace('-', '년 ')}월</h2>
     <table class="meta"><tr><th>사업장명</th><td>㈜엠솔루션</td><th>구분</th><td>위험성평가 결과 공유 (작업 전 안전교육)</td></tr></table><div style="height:6px"></div>
     <table><thead><tr><th style="width:9%">일자</th><th style="width:11%">시간</th><th>오늘의 안전 주제 (위험성평가 자동 3개)</th><th style="width:9%">참석/결근</th><th style="width:12%">결근자</th><th style="width:11%">진행자</th><th style="width:11%">서명</th></tr></thead>
@@ -1343,6 +1435,432 @@ document.querySelectorAll('[data-print]').forEach(b => b.onclick = () => {
   document.body.className = b.dataset.print === 'list' ? 'p-list' : b.dataset.print === 'detail' ? 'p-detail' : '';
   print();
 });
+/* ===== v13 보호구(안전용품) 지급·관리 대장 MS-SF-06 · PDCA MS-SF-07 · 안전보건 예산 (2026-10-17 대표 직권) =====
+ * 입력: 쿠팡 주문 상세 캡처 → 글자 자동 인식(서버 Drive API) → 칸 자동 채움 → 직접 수정 → 저장. 캡처 원본은 드라이브 증빙.
+ * 직원 개인 수령 서명은 작업일보(중간 줄 'TBM 참석 · 보호구 수령 확인')에 함 — 프로그램엔 서명 없음 */
+let PPE = null, PPE_TAB = 'ledger', PPE_Y = '', PPE_K = '', PPE_FILE = null, PPE_CANDS = [];
+const PPE_TARGETS = ['라인 비치함', '개인 지급', '현장 비치', '부서 전체'];
+const PPE_UNITS = ['개', '켤레', '쌍', '묶음', '박스', '세트', '팩'];
+const PPE_SIGN = '직원 개인 수령 서명은 <b>작업일보에 합니다</b> — 작업일보 중간 줄 「TBM 참석 · 보호구 수령 확인」에 <b>TBM이 끝난 뒤 친필 서명</b> (원본 = 작업일보). 안전화·안전모 등 내구성 보호구는 지급할 때 개인 서명.';
+const PPE_SIGN_TXT = PPE_SIGN.replace(/<[^>]+>/g, '');
+const PPE_KW = [[/방연|숨수건|화재\s*대피/, '대피용 방연마스크'], [/방진\s*마스크|특급|[12]급\s*마스크|분진/, '방진마스크(인증)'],
+  [/귀마개|이어\s*플러그|earplug|귀\s*보호|소음\s*방지/i, '귀마개'], [/장갑|글러브|glove/i, '안전장갑'], [/kf\s*-?\s*(94|80|ad)|마스크/i, '일반 마스크'],
+  [/안전화/, '안전화'], [/안전모|헬멧/, '안전모'], [/보안경|고글/, '보안경'], [/작업복|근무복|조끼/, '작업복']];
+const won = v => v == null || v === '' ? '—' : num(v) + '원';
+
+async function ppePost(type, body) {
+  const o = await (await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify(Object.assign({ key: API_KEY, type, pin: PIN }, body)) })).json();
+  if (!o.ok) throw new Error(o.error || '저장 실패'); return o;
+}
+async function ppeLoad() { PPE = await api('action=ppe'); }
+function ppeItem(n) { return (PPE.items || []).find(x => x.item === n) || {}; }
+function ppeIs(r) { return r.st !== '삭제' && (ppeItem(r.item).cls || '보호구') === '보호구'; }
+function ppeLive() { return PPE.recs.filter(r => r.st !== '삭제'); }
+const ppeSum = rs => rs.reduce((a, r) => a + (Number(r.amt) || 0), 0);
+function ppeBadge() {
+  if (!PPE) return '';
+  const today = dstr(kstNow()), n = PPE.items.filter(x => /확인 필요/.test(x.cert) || (x.exp && dayDiff(today, x.exp) <= 180)).length;
+  return n ? `<span class="bd w">확인 ${n}</span>` : '<span class="bd ok">정상</span>';
+}
+
+/* ---------- 쿠팡 주문 캡처 글자 → 칸 (처음 한 번 확인한 상품명은 다음부터 그 품목으로) ---------- */
+function ppeGuess(name) {
+  const s = String(name || '');
+  const m = ((PPE && PPE.map) || []).find(x => x.name && (s.indexOf(x.name) >= 0 || x.name.indexOf(s) >= 0) && s.length >= 4);
+  if (m) return m.item;
+  const k = PPE_KW.find(([re]) => re.test(s)); return k ? k[1] : '';
+}
+function ppeParse(text) {
+  const t = String(text || '').replace(/\r/g, ''), lines = t.split('\n').map(s => s.replace(/\s+/g, ' ').trim()).filter(Boolean);
+  const out = { lines: [], date: '', total: 0, vendor: /쿠팡|coupang/i.test(t) ? '쿠팡' : '' };
+  const dm = t.match(/(20\d{2})\s*[.\-\/년]\s*(\d{1,2})\s*[.\-\/월]\s*(\d{1,2})/);
+  if (dm) out.date = `${dm[1]}-${p2(+dm[2])}-${p2(+dm[3])}`;
+  const tm = t.match(/(총\s*결제\s*금액|최종\s*결제\s*금액|결제\s*금액|총\s*주문\s*금액|결제\s*예정\s*금액)[^\d\n]{0,12}\n?[^\d\n]{0,12}([\d,]{3,})\s*원/);
+  if (tm) out.total = +tm[2].replace(/,/g, '');
+  const skip = /결제|배송비|할인|쿠폰|적립|캐시|합계|주문번호|받는\s*사람|주소|연락처|반품|교환|리뷰|장바구니|배송\s*(완료|중|준비)/;
+  lines.forEach((ln, i) => {
+    if (skip.test(ln) || ln.length < 4) return;
+    const item = ppeGuess(ln); if (!item) return;
+    const after = lines.slice(i + 1, i + 4).join(' ');
+    const qm = after.match(/(?:수량\s*:?\s*)?(\d{1,3})\s*(개|켤레|쌍|박스|세트|묶음|팩)(?![가-힣]*입)/) || ln.match(/[x×]\s*(\d{1,3})\s*$/);
+    const pm = after.match(/([\d,]{3,})\s*원/) || ln.match(/([\d,]{3,})\s*원/);
+    if (out.lines.some(x => x.name === ln)) return;
+    out.lines.push({ name: ln.slice(0, 200), item, qty: qm ? +qm[1] : '', unit: qm && qm[2] ? qm[2] : '개', price: pm ? +pm[1].replace(/,/g, '') : '' });
+  });
+  return out;
+}
+function ppeFill(L, P) {
+  const set = (id, v) => { const el = $(id); if (el && v !== '' && v != null) { el.value = v; el.classList.add('pp-auto'); } };
+  if (P.date) set('ppDate', P.date);
+  if (P.vendor) set('ppVendor', P.vendor);
+  if (L) {
+    set('ppName', L.name); set('ppItem', L.item);
+    const it = ppeItem(L.item); if (it.kind) set('ppKind', it.kind);
+    set('ppQty', L.qty); if (L.qty) set('ppUnit', L.unit);
+    set('ppAmt', num(P.lines.length === 1 && P.total ? P.total : (L.price || P.total || '')));
+    ppeTargetSync();
+  }
+}
+
+/* ---------- 화면 ---------- */
+async function renderPpe() {
+  const v = $('ppeView'); v.classList.remove('hide');
+  if (!PPE) {
+    v.innerHTML = emptyMsg('불러오는 중…');
+    try { await ppeLoad(); renderNav('ppe'); } catch (e) { v.innerHTML = emptyMsg('서버 연결 전: ' + esc(e.message) + ' — 서버에 ppe 파일 추가·배포 후 사용'); return; }
+  }
+  const now = kstNow(), Y = String(now.getFullYear()), PY = String(now.getFullYear() - 1), today = dstr(now);
+  const live = ppeLive(), ppeRows = live.filter(ppeIs);
+  const yr = y => ppeRows.filter(r => r.date.slice(0, 4) === y);
+  const cY = yr(Y), lastD = cY.map(r => r.date).sort().pop();
+  const gem = cY.filter(r => /장갑|귀마개|마스크/.test(r.item));
+  const exps = PPE.items.filter(x => x.exp).sort((a, b) => a.exp.localeCompare(b.exp)), ne = exps[0];
+  const B = y => (PPE.budget || []).find(b => b.year === +y) || {};
+  const bY = B(Y), bP = B(PY), bN = B(+Y + 1);
+  const rate = bY.plan && bY.spent != null ? Math.round(bY.spent / bY.plan * 1000) / 10 : null;
+  v.innerHTML = `
+  <section class="pp-hero">
+    <svg class="bg" aria-hidden="true" viewBox="0 0 1200 300" preserveAspectRatio="xMaxYMax slice">
+      <g fill="none" stroke="#3E5F8F" stroke-width="2"><path d="M560 300V190l70-40v40l70-40v40l70-40v40l70-40v130"/><path d="M640 150V95h22v45"/><path d="M880 300V160h150v140"/>
+      <path d="M900 190h30v26h-30zM960 190h30v26h-30z"/><path d="M520 262h680"/><circle cx="600" cy="282" r="9"/><circle cx="700" cy="282" r="9"/><circle cx="800" cy="282" r="9"/><path d="M580 262v-18h240v18"/></g>
+      <g stroke="#F5B700" stroke-width="3" fill="none"><path d="M1062 168c0-34 26-58 58-58s58 24 58 58"/><path d="M1046 168h148"/><path d="M1120 110v-12"/></g>
+      <g fill="none" stroke="#7FA6D9" stroke-width="2.4"><path d="M1084 182c0 30 16 52 36 52s36-22 36-52"/><path d="M1078 196c-10 0-12 18 0 18M1162 196c10 0 12 18 0 18"/><path d="M1088 300c4-34 16-50 32-50s28 16 32 50"/><path d="M1040 292c-6-22 0-46 14-52l8 22"/><path d="M1200 292c6-22 0-46-14-52l-8 22"/></g>
+      <g fill="none" stroke="#5FBF8F" stroke-width="2.4"><path d="M470 70l40-16 40 16v34c0 26-18 42-40 50-22-8-40-24-40-50z"/><path d="M494 98l12 12 22-24"/></g>
+    </svg><div class="stripe" aria-hidden="true"></div>
+    <div class="tx"><b>SAFE WORKPLACE</b><h2>지급한 만큼 기록하고, 기록한 만큼 지킵니다</h2>
+      <span>장갑·귀마개·마스크는 라인 비치함 보충으로 기록하고, 직원 개인 수령 서명은 작업일보에 합니다.</span></div>
+    <div class="pp-k4">
+      <div class="pp-k"><span class="k">${PY}년 보호구 집행</span><span class="v">${num(ppeSum(yr(PY)))}<small> 원</small></span><span class="d">${yr(PY).length}건 · 작업복·비품 제외</span></div>
+      <div class="pp-k"><span class="k">${Y}년 보호구 집행</span><span class="v">${num(ppeSum(cY))}<small> 원</small></span><span class="d">${cY.length}건 · 마지막 구매 ${lastD || '-'}</span></div>
+      <div class="pp-k o"><span class="k">${Y} 장갑·귀마개·마스크</span><span class="v">${num(ppeSum(gem))}<small> 원</small></span><span class="d">${ppeSum(cY) ? Math.round(ppeSum(gem) / ppeSum(cY) * 100) : 0}% · 소모품</span></div>
+      <div class="pp-k y"><span class="k">${ne ? esc(ne.item) + ' 사용기한' : '사용기한 관리 품목'}</span><span class="v">${ne ? 'D-' + num(dayDiff(today, ne.exp)) : '-'}</span><span class="d">${ne ? esc(ne.exp) : '품목 카드에서 기한 입력'}</span></div>
+    </div>
+  </section>
+  <section class="card" style="margin-top:12px;border-top:4px solid #1B3A6B">
+    <h2>안전보건 체계 구축 · 총 예산 <small>중대재해처벌법 시행령 제4조 제4호 — 편성과 집행 <button class="btn ghost sm" id="ppBudEdit">예산 입력·수정</button></small></h2>
+    <div class="pp-k4">
+      <div class="pp-k nv"><span class="k">${PY}년 총 집행</span><span class="v">${bP.spent != null ? num(bP.spent) : '-'}<small> 원</small></span><span class="d">${bP.plan != null ? '편성 ' + num(bP.plan) + '원' : esc(bP.memo || '편성액 미입력')}</span></div>
+      <div class="pp-k nv"><span class="k">${Y}년 총 편성</span><span class="v">${bY.plan != null ? num(bY.plan) : '-'}<small> 원</small></span><span class="d">${esc(bY.memo || '')}</span></div>
+      <div class="pp-k nv"><span class="k">${Y}년 총 집행${bY.asof ? ' · ' + esc(bY.asof.slice(5).replace('-', '/')) + '까지' : ''}</span><span class="v">${bY.spent != null ? num(bY.spent) : '-'}<small> 원${rate != null ? ' · ' + rate + '%' : ''}</small></span>
+        <div class="pp-bar" role="img" aria-label="집행률 ${rate || 0}%"><i style="width:${Math.min(100, rate || 0)}%"></i></div></div>
+      <div class="pp-k nv"><span class="k">${+Y + 1}년 편성(안)</span><span class="v">${bN.plan != null ? num(bN.plan) : '-'}<small> 원</small></span><span class="d">${bN.ppePlan != null ? '이 중 보호구 ' + num(bN.ppePlan) + '원' + (bN.plan ? ' (' + Math.round(bN.ppePlan / bN.plan * 1000) / 10 + '%)' : '') : ''}</span></div>
+    </div>
+    <p class="note">보호구는 ${Y}년 총 집행의 ${bY.spent ? Math.round(ppeSum(cY) / bY.spent * 1000) / 10 : '-'}% (${num(ppeSum(cY))}원) · 보호구 금액은 아래 기록에서 자동 합산, 총 예산은 '예산 입력·수정'에서 경리·자재 자료 기준으로 입력</p>
+  </section>
+  <div class="pp-tabs" role="tablist">
+    ${[['ledger', '지급대장'], ['items', '품목 카드'], ['pdca', '예산 · PDCA'], ['print', '출력']].map(([k, t]) => `<button role="tab" aria-selected="${PPE_TAB === k}" class="${PPE_TAB === k ? 'on' : ''}" data-pt="${k}">${t}</button>`).join('')}
+    <span class="sp"></span><button class="pr" data-pt="print">🖨 A4 인쇄</button>
+  </div>
+  <div id="ppBody"></div><div id="ppModal"></div><div id="ppePrint"></div>`;
+  v.querySelectorAll('[data-pt]').forEach(b => b.onclick = () => { PPE_TAB = b.dataset.pt; renderPpe(); });
+  $('ppBudEdit').onclick = ppeBudgetForm;
+  ({ ledger: ppeLedger, items: ppeItems, pdca: ppePdcaTab, print: ppePrintTab })[PPE_TAB]();
+}
+
+function ppeTargetSync() {
+  const t = $('ppTarget'), w = $('ppWhoWrap'); if (t && w) w.style.display = t.value === '개인 지급' ? '' : 'none';
+}
+function ppeLedger() {
+  const today = dstr(kstNow()), live = ppeLive();
+  const years = [...new Set(PPE.recs.map(r => r.date.slice(0, 4)))].sort().reverse();
+  if (!PPE_Y) PPE_Y = years.indexOf(today.slice(0, 4)) >= 0 ? today.slice(0, 4) : (years[0] || '');
+  const items = PPE.items.map(x => x.item);
+  $('ppBody').innerHTML = `
+  <div class="pp-sign">✍ ${PPE_SIGN}</div>
+  <section class="card" style="border-top:4px solid #F5B700">
+    <h2>구매 기록 추가 <small>쿠팡 주문 상세 캡처(결제 정보까지 한 장)를 올리면 칸이 자동으로 채워지고, 모든 칸은 직접 입력·수정할 수 있습니다</small></h2>
+    <div class="pp-in">
+      <label class="pp-drop" id="ppDrop">
+        <span id="ppDropIn"><b style="font-size:15px">📷 쿠팡 주문 캡처 올리기</b><br><span style="font-size:12px;color:var(--sub)">끌어다 놓거나 눌러서 선택 · 원본은 증빙으로 드라이브 보관</span></span>
+        <input type="file" id="ppFile" accept="image/*,application/pdf" style="display:none">
+      </label>
+      <div class="pp-f">
+        <label>구매일<input type="date" id="ppDate" value="${today}"></label>
+        <label>구분<select id="ppKind">${['소모', '내구', '비치'].map(k => `<option>${k}</option>`).join('')}</select></label>
+        <label>품목<select id="ppItem"><option value="">선택</option>${items.map(i => `<option>${esc(i)}</option>`).join('')}</select></label>
+        <label>실제 결제금액(원)<input id="ppAmt" inputmode="numeric" placeholder="예: 104,100"></label>
+        <label class="w2">상품명(원문)<input id="ppName" maxlength="200" placeholder="캡처에서 자동 입력 · 직접 입력 가능"></label>
+        <label>규격·사이즈<input id="ppSpec" maxlength="60" placeholder="예: L, 265"></label>
+        <label>수량 · 단위<span style="display:flex;gap:6px"><input id="ppQty" type="number" min="0" placeholder="수량"><select id="ppUnit" aria-label="단위" style="width:auto">${PPE_UNITS.map(u => `<option>${u}</option>`).join('')}</select></span></label>
+        <label>구매처<input id="ppVendor" maxlength="60" placeholder="쿠팡 등"></label>
+        <label>지급 대상<select id="ppTarget">${PPE_TARGETS.map(t => `<option>${t}</option>`).join('')}</select></label>
+        <label id="ppWhoWrap" style="display:none">수령자 이름<input id="ppWho" maxlength="20" placeholder="개인 지급 시 필수"></label>
+        <label>사용공정<input id="ppProc" maxlength="40" placeholder="예: KA4, 전 라인"></label>
+        <label class="w4">비고<input id="ppNote" maxlength="200" placeholder="예: 신규 품목 — MSDS·냄새 사전 확인 완료"></label>
+      </div>
+    </div>
+    <div id="ppCands" class="pp-cands"></div>
+    <div class="pp-act"><span class="pp-msg" id="ppMsg"></span><button class="btn ghost" id="ppClear">비우기</button><button class="btn" id="ppSave">확인하고 저장</button></div>
+  </section>
+  <section class="card" style="margin-top:12px">
+    <h2>지급 기록 <small>MS-SF-06 · 최근순 · 주황 행 = 철수·반품(PDCA)</small></h2>
+    <div class="pp-filt"><label>연도 <select id="ppY"><option value="">전체</option>${years.map(y => `<option ${y === PPE_Y ? 'selected' : ''}>${y}</option>`).join('')}</select></label>
+      <label>구분 <select id="ppK"><option value="">전체</option>${['소모', '내구', '비치'].map(k => `<option ${k === PPE_K ? 'selected' : ''}>${k}</option>`).join('')}</select></label></div>
+    <div id="ppList"></div>
+  </section>`;
+  const fileIn = $('ppFile'), drop = $('ppDrop');
+  fileIn.onchange = () => { if (fileIn.files[0]) ppeUpload(fileIn.files[0]); fileIn.value = ''; };
+  drop.ondragover = e => { e.preventDefault(); drop.classList.add('on'); };
+  drop.ondragleave = () => drop.classList.remove('on');
+  drop.ondrop = e => { e.preventDefault(); drop.classList.remove('on'); if (e.dataTransfer.files[0]) ppeUpload(e.dataTransfer.files[0]); };
+  $('ppTarget').onchange = ppeTargetSync;
+  $('ppItem').onchange = () => { const it = ppeItem($('ppItem').value); if (it.kind) $('ppKind').value = it.kind; if (it.place && PPE_TARGETS.indexOf(it.place) >= 0) $('ppTarget').value = it.place; ppeTargetSync(); };
+  document.querySelectorAll('.pp-f input,.pp-f select').forEach(el => el.addEventListener('input', () => el.classList.remove('pp-auto')));
+  $('ppClear').onclick = () => { PPE_FILE = null; PPE_CANDS = []; ppeLedger(); };
+  $('ppSave').onclick = ppeSave;
+  $('ppY').onchange = e => { PPE_Y = e.target.value; ppeList(); };
+  $('ppK').onchange = e => { PPE_K = e.target.value; ppeList(); };
+  if (PPE_FILE) ppeShowFile();
+  ppeList();
+}
+function ppeShowFile() {
+  $('ppDropIn').innerHTML = `${PPE_FILE.thumb ? `<img src="${PPE_FILE.thumb}" alt="올린 캡처">` : '📄'}<br><span style="font-size:12px">${PPE_FILE.url ? `<a href="${esc(PPE_FILE.url)}" target="_blank" rel="noopener">증빙 저장됨 · 원본 보기</a>` : '올리는 중…'}</span>`;
+}
+async function ppeImg(file) {   // 큰 캡처는 글자가 읽히는 크기(가로 최대 1600px)로 줄여서 올림
+  const thumb = await new Promise(ok => { const r = new FileReader(); r.onload = () => ok(String(r.result)); r.readAsDataURL(file); });
+  if (!/^image\//.test(file.type) || file.size < 2.5e6) return { data: thumb.split(',')[1], mime: file.type || 'application/pdf', thumb: /^image/.test(file.type) ? thumb : '' };
+  const img = await new Promise((ok, no) => { const i = new Image(); i.onload = () => ok(i); i.onerror = no; i.src = thumb; });
+  const s = Math.min(1, 1600 / img.width), c = document.createElement('canvas'); c.width = Math.round(img.width * s); c.height = Math.round(img.height * s);
+  c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+  const out = c.toDataURL('image/jpeg', 0.9); return { data: out.split(',')[1], mime: 'image/jpeg', thumb: out };
+}
+async function ppeUpload(file) {
+  const m = $('ppMsg'); m.className = 'pp-msg';
+  if (file.size > 20 * 1024 * 1024) { m.textContent = '20MB 이하 파일만 올릴 수 있습니다'; m.classList.add('bad'); return; }
+  m.textContent = '캡처 올리는 중…';
+  try {
+    const f = await ppeImg(file); PPE_FILE = { thumb: f.thumb, url: '' }; ppeShowFile();
+    const o = await ppePost('ppeocr', { name: file.name, mime: f.mime, data: f.data });
+    PPE_FILE.url = o.url; ppeShowFile();
+    if (!o.ocr) { m.textContent = '증빙 저장 완료 · 자동 인식은 아직 꺼져 있어 칸을 직접 입력해 주세요'; return; }
+    const P = ppeParse(o.text); PPE_CANDS = P.lines;
+    if (!P.lines.length) { if (P.date) $('ppDate').value = P.date; if (P.total) { $('ppAmt').value = num(P.total); } m.textContent = '상품을 찾지 못했습니다 — 품목·금액을 확인·입력해 주세요'; return; }
+    ppeFill(P.lines[0], P);
+    $('ppCands').innerHTML = P.lines.length > 1 ? '<span style="font-size:12px;color:var(--sub)">캡처에 상품이 여러 개입니다 — 저장할 상품을 고르세요 (하나 저장 후 다른 상품을 다시 골라 저장):</span>' +
+      P.lines.map((L, i) => `<button data-cand="${i}">${esc(L.item)} · ${esc(L.name.slice(0, 40))}${L.price ? ' · ' + num(L.price) + '원' : ''}</button>`).join('') : '';
+    $('ppCands').querySelectorAll('[data-cand]').forEach(b => b.onclick = () => ppeFill(PPE_CANDS[+b.dataset.cand], Object.assign({}, P, { total: 0 })));
+    m.textContent = '자동으로 채운 칸(파란 바탕)을 확인한 뒤 저장해 주세요'; m.classList.add('ok');
+  } catch (e) { m.textContent = '올리기 실패: ' + e.message + ' — 칸을 직접 입력해 저장할 수 있습니다'; m.classList.add('bad'); }
+}
+async function ppeSave() {
+  const m = $('ppMsg'), b = $('ppSave'); m.className = 'pp-msg';
+  const v = { date: $('ppDate').value, kind: $('ppKind').value, item: $('ppItem').value, name: $('ppName').value.trim(), spec: $('ppSpec').value.trim(),
+    qty: $('ppQty').value, unit: $('ppUnit').value, amt: $('ppAmt').value, vendor: $('ppVendor').value.trim(), target: $('ppTarget').value,
+    who: $('ppWho').value.trim(), proc: $('ppProc').value.trim(), note: $('ppNote').value.trim(), file: PPE_FILE && PPE_FILE.url || '', by: '관리자 PC' };
+  if (!v.item) { m.textContent = '품목을 선택해 주세요'; m.classList.add('bad'); return; }
+  if (!/\d/.test(v.amt) && !confirmAmt0()) return;
+  b.disabled = true; m.textContent = '저장 중…';
+  try { const o = await ppePost('ppeadd', { v }); PPE_FILE = null; PPE_CANDS = []; await ppeLoad(); PPE_Y = v.date.slice(0, 4); renderPpe(); setTimeout(() => { const x = $('ppMsg'); if (x) { x.textContent = '✔ 저장됨 ' + o.id; x.className = 'pp-msg ok'; } }, 0); }
+  catch (e) { m.textContent = e.message; m.classList.add('bad'); b.disabled = false; }
+  function confirmAmt0() { if (m.dataset.zero === '1') return true; m.dataset.zero = '1'; m.textContent = '금액이 비어 있습니다 — 금액 없이 저장하려면 한 번 더 누르세요'; m.classList.add('bad'); return false; }
+}
+function ppeList() {
+  const rows = PPE.recs.filter(r => (!PPE_Y || r.date.slice(0, 4) === PPE_Y) && (!PPE_K || r.kind === PPE_K) && r.st !== '삭제')
+    .sort((a, b) => b.date.localeCompare(a.date) || b.time.localeCompare(a.time));
+  const tot = ppeSum(rows), totP = ppeSum(rows.filter(ppeIs));
+  $('ppList').innerHTML = rows.length ? `<div style="overflow-x:auto"><table class="pp-tbl"><thead><tr><th style="width:9%">지급일자</th><th style="width:6%">구분</th><th style="width:11%">품목</th><th>품명(모델명)</th><th style="width:7%">구매처</th><th style="width:6%">수량</th><th style="width:11%">지급대상</th><th style="width:9%">금액</th><th style="width:14%">철수(반품) · 사유</th><th style="width:5%">증빙</th><th style="width:6%"></th></tr></thead>
+    <tbody>${rows.map(r => `<tr class="${r.ret ? 'ret' : ''} ${ppeIs(r) ? '' : 'np'}"><td class="c">${esc(r.date)}</td><td class="c"><span class="pp-chip ${esc(r.kind)}">${esc(r.kind)}</span></td><td class="c">${esc(r.item)}</td>
+      <td>${esc(r.name || r.item)}${r.spec ? ' · ' + esc(r.spec) : ''}${r.note ? `<div class="src">${esc(r.note)}</div>` : ''}</td><td class="c">${esc(r.vendor || '—')}</td><td class="c">${r.qty === '' ? '—' : num(r.qty) + esc(r.unit || '')}</td>
+      <td class="c">${esc(r.target)}${r.who ? '<br>' + esc(r.who) : ''}${r.proc ? `<div class="src">${esc(r.proc)}</div>` : ''}</td><td class="n">${won(r.amt || '')}</td>
+      <td>${r.ret ? esc(r.ret) + ' · ' + esc(r.retWhy) : ''}</td><td class="c">${r.file ? `<a href="${esc(r.file)}" target="_blank" rel="noopener">보기</a>` : `<span class="src" title="${esc(r.src || '')}">${/예산/.test(r.src || '') ? '예산파일' : /종이/.test(r.src || '') ? '종이대장' : esc(r.src || '')}</span>`}</td>
+      <td class="c"><button class="btn ghost sm" data-pm="${esc(r.id)}">관리</button></td></tr>`).join('')}</tbody>
+    <tfoot><tr><td colspan="7" class="c">합계 ${num(rows.length)}건 (회색 = 보호구 외 품목, 보호구 합계에서 제외)</td><td class="n">${num(tot)}원</td><td colspan="3">보호구만 ${num(totP)}원</td></tr></tfoot></table></div>` : emptyMsg('기록이 없습니다');
+  $('ppList').querySelectorAll('[data-pm]').forEach(b => b.onclick = () => ppeManage(b.dataset.pm));
+}
+function ppeManage(id) {
+  const r = PPE.recs.find(x => x.id === id); if (!r) return;
+  $('ppModal').innerHTML = `<div class="pp-modal"><div class="card"><h2>기록 관리 <small>${esc(r.id)} · ${esc(r.date)} · ${esc(r.name || r.item)}</small></h2>
+    <div class="pp-form"><label>철수(반품)일자<input type="date" id="pmRet" value="${esc(r.ret)}"></label><label>철수 사유 / 후속 대안<input id="pmWhy" maxlength="200" value="${esc(r.retWhy)}"></label></div>
+    <div class="pp-act"><span class="pp-msg" id="pmMsg">철수·반품은 PDCA 대상입니다 — '예산 · PDCA' 탭에서 보고서(MS-SF-07)를 작성하세요</span><button class="btn" id="pmSave">철수 내용 저장</button></div>
+    <hr style="border:0;border-top:1px solid var(--line);margin:14px 0">
+    <div class="pp-form"><label class="w4">잘못 입력한 기록 삭제 (기록은 남고 '삭제'로 표시) — 사유<input id="pmDel" maxlength="100" placeholder="예: 중복 입력"></label></div>
+    <div class="pp-act"><button class="btn ghost" id="pmClose">닫기</button><button class="btn orange" id="pmDelBtn">삭제 처리</button></div></div></div>`;
+  $('pmClose').onclick = () => { $('ppModal').innerHTML = ''; };
+  const go = async (body, btn) => { btn.disabled = true; try { await ppePost('ppeupd', Object.assign({ id }, body)); await ppeLoad(); $('ppModal').innerHTML = ''; renderPpe(); }
+    catch (e) { $('pmMsg').textContent = e.message; $('pmMsg').className = 'pp-msg bad'; btn.disabled = false; } };
+  $('pmSave').onclick = () => go({ ret: $('pmRet').value, retWhy: $('pmWhy').value.trim() }, $('pmSave'));
+  $('pmDelBtn').onclick = () => go({ del: true, why: $('pmDel').value.trim() }, $('pmDelBtn'));
+}
+
+function ppeItems() {
+  const today = dstr(kstNow());
+  $('ppBody').innerHTML = `<div class="pp-sign">품목 카드: 사양·인증·사용기한·비치 위치를 한곳에서 관리 — 방음용 귀마개·방진마스크·안전화·안전모·보안경은 <b>국내 안전인증 대상</b>(포장의 KCs 마크·인증번호 확인 후 기재). 신규 품목은 도입 전 MSDS·냄새·유해성 확인(MS-SF-07 재발방지).</div>
+    <div class="pp-act" style="justify-content:flex-start;margin:0 0 10px"><button class="btn" id="piNew">+ 품목 추가</button></div>
+    <div class="pp-g2">${PPE.items.map((x, i) => { const d = x.exp ? dayDiff(today, x.exp) : null; const used = ppeLive().filter(r => r.item === x.item);
+      return `<div class="pp-item"><div class="t"><b>${esc(x.item)}</b>${/확인|기재/.test(x.cert) ? `<span class="pp-warn">${esc(x.cert)}</span>` : x.cert ? `<span class="pp-good">인증 ${esc(x.cert.slice(0, 18))}</span>` : ''}</div>
+        <div class="m"><span class="pp-chip ${esc(x.kind)}">${esc(x.kind)}</span> ${esc(x.cls)}${x.spec ? ' · ' + esc(x.spec) : ''}</div>
+        ${x.exp ? `<div class="m">사용기한 <b>${esc(x.exp)}</b> · ${d < 0 ? '<b style="color:var(--bad)">기한 지남</b>' : 'D-' + num(d)}</div>` : ''}
+        ${x.place ? `<div class="m">비치·지급: ${esc(x.place)}</div>` : ''}${x.owner ? `<div class="m">담당: ${esc(x.owner)}</div>` : ''}${x.memo ? `<div class="m" style="color:var(--sub)">${esc(x.memo)}</div>` : ''}
+        <div class="m" style="color:var(--sub)">구매 ${used.length}건 · ${num(ppeSum(used))}원</div>
+        <div><button class="btn ghost sm" data-pe="${i}">수정</button></div></div>`; }).join('')}</div>`;
+  $('piNew').onclick = () => ppeItemForm({ kind: '소모', cls: '보호구' });
+  document.querySelectorAll('[data-pe]').forEach(b => b.onclick = () => ppeItemForm(PPE.items[+b.dataset.pe]));
+}
+function ppeItemForm(x) {
+  $('ppModal').innerHTML = `<div class="pp-modal"><div class="card"><h2>품목 카드 ${x.item ? '수정 · ' + esc(x.item) : '추가'}</h2>
+    <div class="pp-form"><label>품목 이름<input id="fiItem" maxlength="40" value="${esc(x.item || '')}" ${x.item ? 'readonly' : ''}></label>
+      <label>구분<select id="fiKind">${['소모', '내구', '비치'].map(k => `<option ${k === x.kind ? 'selected' : ''}>${k}</option>`).join('')}</select></label>
+      <label>분류<select id="fiCls">${['보호구', '지급품', '안전용품', '보건용품', '비보호구'].map(k => `<option ${k === x.cls ? 'selected' : ''}>${k}</option>`).join('')}</select></label>
+      <label>안전인증(번호)<input id="fiCert" maxlength="80" value="${esc(x.cert || '')}"></label>
+      <label class="w4">사양·모델<input id="fiSpec" maxlength="120" value="${esc(x.spec || '')}"></label>
+      <label>사용기한<input type="date" id="fiExp" value="${esc(x.exp || '')}"></label><label>담당<input id="fiOwner" maxlength="80" value="${esc(x.owner || '')}"></label>
+      <label class="w4">비치 위치·수량<input id="fiPlace" maxlength="150" value="${esc(x.place || '')}"></label>
+      <label class="w4">메모<input id="fiMemo" maxlength="200" value="${esc(x.memo || '')}"></label></div>
+    <div class="pp-act"><span class="pp-msg" id="fiMsg"></span><button class="btn ghost" id="fiClose">닫기</button><button class="btn" id="fiSave">저장</button></div></div></div>`;
+  $('fiClose').onclick = () => { $('ppModal').innerHTML = ''; };
+  $('fiSave').onclick = async () => { const b = $('fiSave'); b.disabled = true;
+    try { await ppePost('ppeitem', { v: { item: $('fiItem').value.trim(), kind: $('fiKind').value, cls: $('fiCls').value, cert: $('fiCert').value.trim(), spec: $('fiSpec').value.trim(),
+      exp: $('fiExp').value, owner: $('fiOwner').value.trim(), place: $('fiPlace').value.trim(), memo: $('fiMemo').value.trim() } }); await ppeLoad(); $('ppModal').innerHTML = ''; renderPpe(); }
+    catch (e) { $('fiMsg').textContent = e.message; $('fiMsg').className = 'pp-msg bad'; b.disabled = false; } };
+}
+function ppeBudgetForm() {
+  const Y = kstNow().getFullYear(), b0 = (PPE.budget || []).find(b => b.year === Y) || { year: Y };
+  $('ppModal').innerHTML = `<div class="pp-modal"><div class="card"><h2>안전보건 예산 입력·수정 <small>연도를 고르면 저장된 값이 채워집니다</small></h2>
+    <div class="pp-form"><label>연도<select id="fbY">${[Y - 2, Y - 1, Y, Y + 1].map(y => `<option ${y === Y ? 'selected' : ''}>${y}</option>`).join('')}</select></label>
+      <label>총 편성(원)<input id="fbPlan" inputmode="numeric"></label><label>총 집행(원)<input id="fbSpent" inputmode="numeric"></label>
+      <label>집행 기준일<input type="date" id="fbAsof"></label><label>보호구 편성(원)<input id="fbPpe" inputmode="numeric"></label>
+      <label class="w4">메모<input id="fbMemo" maxlength="200"></label></div>
+    <div class="pp-act"><span class="pp-msg" id="fbMsg">경리·자재 자료 기준으로 입력 (보호구 집행은 기록에서 자동 합산)</span><button class="btn ghost" id="fbClose">닫기</button><button class="btn" id="fbSave">저장</button></div></div></div>`;
+  const fill = y => { const b = (PPE.budget || []).find(x => x.year === +y) || {}; const f = x => x == null ? '' : num(x);
+    $('fbPlan').value = f(b.plan); $('fbSpent').value = f(b.spent); $('fbAsof').value = b.asof || ''; $('fbPpe').value = f(b.ppePlan); $('fbMemo').value = b.memo || ''; };
+  fill(b0.year); $('fbY').onchange = e => fill(e.target.value);
+  $('fbClose').onclick = () => { $('ppModal').innerHTML = ''; };
+  $('fbSave').onclick = async () => { const b = $('fbSave'); b.disabled = true;
+    try { await ppePost('ppebudget', { v: { year: $('fbY').value, plan: $('fbPlan').value, spent: $('fbSpent').value, asof: $('fbAsof').value, ppePlan: $('fbPpe').value, memo: $('fbMemo').value.trim() } });
+      await ppeLoad(); $('ppModal').innerHTML = ''; renderPpe(); }
+    catch (e) { $('fbMsg').textContent = e.message; $('fbMsg').className = 'pp-msg bad'; b.disabled = false; } };
+}
+
+function ppePdcaTab() {
+  const live = ppeLive().filter(ppeIs), Y = kstNow().getFullYear(), years = [Y - 2, Y - 1, Y].map(String);
+  const bud = (PPE.budget || []).slice().sort((a, b) => a.year - b.year);
+  const mon = y => Array.from({ length: 12 }, (_, i) => ppeSum(live.filter(r => r.date.slice(0, 7) === `${y}-${p2(i + 1)}`)));
+  const m1 = mon(Y - 1), m2 = mon(Y), mx = Math.max(1, ...m1, ...m2);
+  const bars = Array.from({ length: 12 }, (_, i) => { const x = 36 + i * 52, h1 = m1[i] / mx * 110, h2 = m2[i] / mx * 110;
+    return `<rect x="${x}" y="${130 - h1}" width="18" height="${h1}" rx="3" fill="#93C5FD"/><rect x="${x + 20}" y="${130 - h2}" width="18" height="${h2}" rx="3" fill="#EA580C"/><text class="ax" x="${x + 6}" y="146">${i + 1}월</text>`; }).join('');
+  $('ppBody').innerHTML = `
+  <section class="card"><h2>연도별 예산 편성·집행 <small>총 예산 = 입력값 · 보호구 집행 = 기록 자동 합산</small></h2>
+    <table><thead><tr><th>연도</th><th>총 편성</th><th>총 집행</th><th>집행 기준일</th><th>집행률</th><th>보호구 편성</th><th>보호구 집행(자동)</th><th>보호구 비중</th><th>메모</th></tr></thead>
+    <tbody>${bud.map(b => { const ps = ppeSum(live.filter(r => r.date.slice(0, 4) === String(b.year)));
+      return `<tr><td class="c"><b>${b.year}</b></td><td class="n">${won(b.plan)}</td><td class="n">${won(b.spent)}</td><td class="c">${esc(b.asof || '')}</td>
+      <td class="c">${b.plan && b.spent != null ? (Math.round(b.spent / b.plan * 1000) / 10) + '%' : '-'}</td><td class="n">${won(b.ppePlan)}</td><td class="n">${ps ? num(ps) + '원' : '-'}</td>
+      <td class="c">${b.spent && ps ? (Math.round(ps / b.spent * 1000) / 10) + '%' : '-'}</td><td style="font-size:12px">${esc(b.memo || '')}</td></tr>`; }).join('')}</tbody></table></section>
+  <section class="card" style="margin-top:12px"><h2>월별 보호구 구매 <small>${Y - 1}년(하늘) vs ${Y}년(주황) · 원</small></h2>
+    <svg viewBox="0 0 680 150" width="100%" role="img" aria-label="월별 보호구 구매 비교"><line x1="30" y1="130" x2="670" y2="130" stroke="var(--line)"/>${bars}</svg>
+    <div class="lgd"><span><i style="background:#93C5FD"></i>${Y - 1}년 ${num(m1.reduce((a, b) => a + b, 0))}원</span><span><i style="background:#EA580C"></i>${Y}년 ${num(m2.reduce((a, b) => a + b, 0))}원</span>
+      ${years.map(y => `<span>${y}년 ${num(ppeSum(live.filter(r => r.date.slice(0, 4) === y)))}원</span>`).join('')}</div></section>
+  <section class="card" style="margin-top:12px"><h2>PDCA 개선활동 보고서 <small>MS-SF-07 · 도입 → 문제 발견 → 철수·대체 → 재발 방지</small> <button class="btn sm" id="pdNew">+ 새 보고서</button></h2>
+    ${(PPE.pdca || []).slice().reverse().map((x, i) => `<div style="border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-top:10px">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:center"><b>${esc(x.id)} · ${esc(x.title)}</b>
+        <span><span style="font-size:12px;color:var(--sub)">${esc(x.date)} · ${esc(x.by)}</span> <button class="btn ghost sm" data-pdedit="${esc(x.id)}">수정</button> <button class="btn orange sm" data-pdprint="${esc(x.id)}">A4 인쇄</button></span></div>
+      ${[['P', '#1B3A6B', x.P], ['D', '#2563EB', x.D], ['C', '#B45309', x.C], ['A', '#B91C1C', x.A]].map(([k, c, t]) => `<div class="pp-pd"><span style="background:${c}">${k}</span><div>${esc(t)}</div></div>`).join('')}
+      ${x.end ? `<p class="note" style="border-left:0;background:#F0FDF4;border-radius:8px;padding:8px 10px;color:#14532D">결론: ${esc(x.end)}</p>` : ''}</div>`).join('') || emptyMsg('PDCA 보고서가 없습니다')}
+  </section>`;
+  $('pdNew').onclick = () => ppePdcaForm({});
+  document.querySelectorAll('[data-pdedit]').forEach(b => b.onclick = () => ppePdcaForm(PPE.pdca.find(x => x.id === b.dataset.pdedit)));
+  document.querySelectorAll('[data-pdprint]').forEach(b => b.onclick = () => ppeDoPrint('pdca', { id: b.dataset.pdprint }));
+}
+function ppePdcaForm(x) {
+  const recs = PPE.recs.filter(r => r.ret || r.kind === '비치').slice().reverse();
+  $('ppModal').innerHTML = `<div class="pp-modal"><div class="card"><h2>PDCA 보고서 ${x.id ? '수정 · ' + esc(x.id) : '작성'}</h2>
+    <div class="pp-form"><label class="w4">제목<input id="fpT" maxlength="120" value="${esc(x.title || '')}" placeholder="예: 보호구(안전용품) 도입 PDCA 개선 사례 — ○○"></label>
+      <label>작성일<input type="date" id="fpD" value="${esc(x.date || dstr(kstNow()))}"></label><label>작성자<input id="fpB" maxlength="30" value="${esc(x.by || '이성희 (생산과장)')}"></label>
+      <label class="w4">연결 기록<select id="fpR"><option value="">(없음)</option>${recs.map(r => `<option value="${esc(r.id)}" ${r.id === x.rec ? 'selected' : ''}>${esc(r.date)} · ${esc(r.name || r.item)}${r.ret ? ' · 철수 ' + esc(r.ret) : ''}</option>`).join('')}</select></label>
+      ${[['P', 'Plan (계획) — 추진 배경·기대 효과·대상·제품 정보'], ['D', 'Do (실행) — 실행 내용·일자·방법'], ['C', 'Check (점검) — 점검 결과·위험성 판단·근거'], ['A', 'Action (조치/개선) — 조치·철수일·대안·재발 방지']]
+        .map(([k, l]) => `<label class="w4">${l}<textarea id="fpx${k}" maxlength="1500">${esc(x[k] || '')}</textarea></label>`).join('')}
+      <label class="w4">결론<textarea id="fpE" maxlength="800">${esc(x.end || '')}</textarea></label></div>
+    <div class="pp-act"><span class="pp-msg" id="fpMsg"></span><button class="btn ghost" id="fpClose">닫기</button><button class="btn" id="fpSave">저장</button></div></div></div>`;
+  $('fpClose').onclick = () => { $('ppModal').innerHTML = ''; };
+  $('fpSave').onclick = async () => { const b = $('fpSave'); b.disabled = true;
+    try { await ppePost('ppepdca', { v: { id: x.id || '', title: $('fpT').value.trim(), date: $('fpD').value, by: $('fpB').value.trim(), rec: $('fpR').value,
+      P: $('fpxP').value.trim(), D: $('fpxD').value.trim(), C: $('fpxC').value.trim(), A: $('fpxA').value.trim(), end: $('fpE').value.trim() } }); }
+    catch (e) { $('fpMsg').textContent = e.message; $('fpMsg').className = 'pp-msg bad'; b.disabled = false; return; }
+    await ppeLoad(); $('ppModal').innerHTML = ''; renderPpe(); };
+}
+
+/* ---------- 출력 (A4) ---------- */
+function ppePrintTab() {
+  const Y = kstNow().getFullYear();
+  $('ppBody').innerHTML = `<div class="pp-sign">A4 인쇄 — 로고·결재란 포함. 인쇄 창에서 '배경 그래픽' 켜기 권장. ${PPE_SIGN}</div>
+  <div class="pp-g2">
+    <section class="pp-item"><div class="t"><b>① 보호구 지급·관리 대장 (MS-SF-06)</b><span class="pp-good">A4 가로</span></div>
+      <div class="pp-form"><label>시작일<input type="date" id="prF" value="${Y}-01-01"></label><label>종료일<input type="date" id="prT" value="${dstr(kstNow())}"></label>
+        <label>구분<select id="prK"><option value="">전체</option><option>소모</option><option>내구</option><option>비치</option></select></label>
+        <label>범위<select id="prP"><option value="ppe">보호구·안전용품</option><option value="">예산 항목 전체(작업복·비품 포함)</option></select></label></div>
+      <div><button class="btn orange" data-pp="ledger">인쇄</button></div></section>
+    <section class="pp-item"><div class="t"><b>② PDCA 개선활동 보고서 (MS-SF-07)</b><span class="pp-good">A4 가로</span></div>
+      <label class="m">보고서<select id="prD" style="font:inherit;padding:8px;border:1px solid var(--line2);border-radius:8px">${(PPE.pdca || []).map(x => `<option value="${esc(x.id)}">${esc(x.id)} · ${esc(x.title)}</option>`).join('')}</select></label>
+      <div><button class="btn orange" data-pp="pdca">인쇄</button></div></section>
+    <section class="pp-item"><div class="t"><b>③ 안전보건 예산 편성·집행 요약</b><span class="pp-good">A4 세로</span></div>
+      <div class="m">연도별 총 편성·집행·집행률, 보호구 편성·집행(자동), 올해 월별 보호구 구매</div>
+      <div><button class="btn orange" data-pp="budget">인쇄</button></div></section>
+    <section class="pp-item"><div class="t"><b>④ 보호구 수령 확인서 (일괄)</b><span class="pp-good">A4 세로</span></div>
+      <div class="pp-form"><label>대상 기간<input id="prBF" value="2025년 1월 ~ 2026년 10월"></label><label>이름 인쇄<select id="prBN"><option value="1">직원명단 이름 미리 인쇄</option><option value="">빈칸</option></select></label></div>
+      <div class="m" style="color:var(--sub)">작성일은 실제 서명한 날짜로 적습니다 (과거 날짜 기재 금지)</div>
+      <div><button class="btn orange" data-pp="bulk">인쇄</button></div></section>
+  </div>`;
+  document.querySelectorAll('[data-pp]').forEach(b => b.onclick = () => ppeDoPrint(b.dataset.pp, {
+    from: ($('prF') || {}).value, to: ($('prT') || {}).value, kind: ($('prK') || {}).value, onlyPpe: ($('prP') || {}).value === 'ppe',
+    id: ($('prD') || {}).value, period: ($('prBF') || {}).value, names: ($('prBN') || {}).value === '1' }));
+}
+function ppeBand(no, title, sub, right) {
+  return `<div class="bandh"><div style="display:flex;gap:10px;align-items:center"><span class="lg"><img src="${LOGO}" alt="㈜엠솔루션"></span><div><small>${esc(no)}</small><h2>${esc(title)}</h2><small>${esc(sub)}</small></div></div><div class="r">${right}</div></div>`;
+}
+function ppeSig(a) { return `<table class="sig"><tr><th style="width:33%">작성</th><th style="width:33%">검토</th><th>승인</th></tr><tr><td>${a || '생산총괄 이성희 생산과장'}</td><td></td><td>대표이사 이민희</td></tr></table>`; }
+function ppeFoot(no) { return `<div class="foot"><span>㈜엠솔루션 · 안전보건관리체계</span><span>${esc(no)} · 출력 ${new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })}</span></div>`; }
+function ppeDoPrint(kind, o) {
+  const el = $('ppePrint'); let html = '';
+  if (kind === 'ledger') {
+    const rows = PPE.recs.filter(r => r.st !== '삭제' && r.date >= (o.from || '0') && r.date <= (o.to || '9') && (!o.kind || r.kind === o.kind) && (!o.onlyPpe || ppeIs(r) || ppeItem(r.item).cls === '안전용품'))
+      .sort((a, b) => a.date.localeCompare(b.date));
+    html = `<div class="pdoc l">${ppeBand('MS-SF-06 · 안전보건 관리기록', '보호구(안전용품) 지급·관리 대장', '㈜엠솔루션 · 중대재해처벌법 시행령 제4조 · 안전보건관리체계', 'PDCA 연계 관리<br><small>(품질·안전 점검 포함)</small>')}
+      <table class="meta" style="margin-top:6px"><tr><th>관리부서</th><td>생산팀</td><th>작성자</th><td>이성희 (생산과장)</td><th>조회 기간</th><td>${esc(o.from)} ~ ${esc(o.to)}</td><th>비치장소</th><td>현장內</td></tr></table>
+      <table class="lt" style="margin-top:6px"><thead><tr><th style="width:4%">No</th><th style="width:8%">지급일자</th><th style="width:5%">구분</th><th>품명(모델명)</th><th style="width:7%">구매처</th><th style="width:6%">수량</th><th style="width:12%">지급대상 (부서/성명)</th><th style="width:7%">사용공정</th><th style="width:8%">금액</th><th style="width:8%">철수(반품)일자</th><th style="width:13%">철수 사유 / 후속 대안</th><th style="width:8%">수령 서명</th></tr></thead>
+      <tbody>${rows.map((r, i) => `<tr class="${r.ret ? 'ret' : ''}"><td style="text-align:center">${i + 1}</td><td style="text-align:center">${esc(r.date.slice(2).replace(/-/g, '.'))}</td><td style="text-align:center">${esc(r.kind)}</td>
+        <td>${esc(r.item)}${r.name && r.name !== r.item ? ' · ' + esc(r.name) : ''}${r.spec ? ' (' + esc(r.spec) + ')' : ''}</td><td style="text-align:center">${esc(r.vendor || '—')}</td><td style="text-align:center">${r.qty === '' ? '—' : num(r.qty) + esc(r.unit || '')}</td>
+        <td style="text-align:center">${esc(r.target)}${r.who ? ' / ' + esc(r.who) : ''}</td><td style="text-align:center">${esc(r.proc || '')}</td><td style="text-align:right">${r.amt ? num(r.amt) : '—'}</td>
+        <td style="text-align:center">${esc(r.ret ? r.ret.slice(2).replace(/-/g, '.') : '')}</td><td>${esc(r.retWhy || '')}</td>
+        <td style="text-align:center;font-size:9px;color:#475569">${r.target === '개인 지급' ? '' : '작업일보'}</td></tr>`).join('')}</tbody>
+      <tfoot><tr><td colspan="8" style="text-align:center">합계 ${rows.length}건</td><td style="text-align:right">${num(ppeSum(rows))}</td><td colspan="3"></td></tr></tfoot></table>
+      <div class="note">※ ${esc(PPE_SIGN_TXT)}<br>※ 주황 음영 행은 PDCA 개선활동 사례 기록입니다. 상세 진행 경과는 「PDCA 개선보고서(MS-SF-07)」를 참조하십시오. ※ 금액 원본: 구매 증빙(주문 캡처·거래명세서)</div>
+      ${ppeSig()}${ppeFoot('MS-SF-06 Rev.1 · ' + kstNow().getFullYear())}</div>`;
+  }
+  if (kind === 'pdca') {
+    const x = (PPE.pdca || []).find(p => p.id === o.id); if (!x) return;
+    html = `<div class="pdoc l">${ppeBand('MS-SF-07 · PDCA 개선활동 보고서', x.title, x.id, 'PDCA Cycle')}
+      <table class="meta" style="margin-top:6px"><tr><th>관리부서</th><td>생산팀</td><th>작성자</th><td>${esc(x.by)}</td><th>작성일</th><td>${esc(x.date.slice(2).replace(/-/g, '.'))}</td></tr></table>
+      <table class="pdca" style="margin-top:6px">${[['P', 'Plan (계획)', '#1B3A6B', x.P], ['D', 'Do (실행)', '#2563EB', x.D], ['C', 'Check (점검)', '#B45309', x.C], ['A', 'Action (조치/개선)', '#B91C1C', x.A]]
+        .map(([k, t, c, b]) => `<tr><td class="k" rowspan="2" style="background:${c}">${k}</td><td class="h">${t}</td></tr><tr><td class="b">${esc(b)}</td></tr>`).join('')}</table>
+      ${x.end ? `<div class="end">결론: ${esc(x.end)}</div>` : ''}${ppeSig()}${ppeFoot('MS-SF-07 Rev.1 · ' + kstNow().getFullYear())}</div>`;
+  }
+  if (kind === 'budget') {
+    const live = ppeLive().filter(ppeIs), Y = kstNow().getFullYear(), bud = (PPE.budget || []).slice().sort((a, b) => a.year - b.year);
+    html = `<div class="pdoc p">${ppeBand('안전보건 예산 · 편성·집행 요약', '안전보건 체계 구축 예산 편성·집행 현황', '중대재해처벌법 시행령 제4조 제4호 — 예산 편성 및 용도에 맞는 집행', '예산<br><small>' + Y + '</small>')}
+      <table style="margin-top:8px"><thead><tr><th>연도</th><th>총 편성</th><th>총 집행</th><th>기준일</th><th>집행률</th><th>보호구 편성</th><th>보호구 집행</th><th>메모</th></tr></thead>
+      <tbody>${bud.map(b => { const ps = ppeSum(live.filter(r => r.date.slice(0, 4) === String(b.year)));
+        return `<tr><td style="text-align:center">${b.year}</td><td style="text-align:right">${b.plan != null ? num(b.plan) : '—'}</td><td style="text-align:right">${b.spent != null ? num(b.spent) : '—'}</td><td style="text-align:center">${esc(b.asof || '')}</td>
+          <td style="text-align:center">${b.plan && b.spent != null ? Math.round(b.spent / b.plan * 1000) / 10 + '%' : '—'}</td><td style="text-align:right">${b.ppePlan != null ? num(b.ppePlan) : '—'}</td><td style="text-align:right">${ps ? num(ps) : '—'}</td><td style="font-size:9.5px">${esc(b.memo || '')}</td></tr>`; }).join('')}</tbody></table>
+      <table style="margin-top:8px"><thead><tr><th>${Y}년 월</th>${Array.from({ length: 12 }, (_, i) => `<th>${i + 1}</th>`).join('')}<th>합계</th></tr></thead>
+      <tbody><tr><td style="text-align:center">보호구 구매</td>${Array.from({ length: 12 }, (_, i) => `<td style="text-align:right;font-size:9.5px">${num(ppeSum(live.filter(r => r.date.slice(0, 7) === `${Y}-${p2(i + 1)}`)) || 0)}</td>`).join('')}<td style="text-align:right">${num(ppeSum(live.filter(r => r.date.slice(0, 4) === String(Y))))}</td></tr></tbody></table>
+      <div class="note">※ 총 편성·집행 = 경리·자재 자료 입력값 · 보호구 집행 = 보호구 지급·관리 대장(MS-SF-06) 기록 자동 합산(작업복·비품·상비약 제외)</div>
+      ${ppeSig('안전보건팀')}${ppeFoot('안전보건 예산 요약')}</div>`;
+  }
+  if (kind === 'bulk') {
+    const names = o.names ? (PPE.roster || []) : [], n = Math.max(30, names.length);
+    html = `<div class="pdoc p">${ppeBand('MS-SF-06 부속 · 보호구 수령 확인서', '보호구 수령 확인서 (일괄)', '개인별 수령 기록 보완용', '수령 확인')}
+      <p style="font-size:11.5px;line-height:1.7;margin:10px 2px">본인은 ${esc(o.period)} 기간 동안 ㈜엠솔루션으로부터 아래 체크한 보호구를 작업 중 필요할 때마다 지급받아 사용하였음을 확인합니다.
+      이 확인서는 해당 기간 개인별 수령 기록을 보완하기 위한 것으로, 작성일은 실제 서명한 날짜입니다. (지급 근거: 보호구 지급·관리 대장 MS-SF-06 구매 기록)</p>
+      <p style="font-size:12px;font-weight:700;margin:4px 2px 8px">작성일(실제 서명일) : 20&nbsp;&nbsp;&nbsp;&nbsp;년 &nbsp;&nbsp;&nbsp;&nbsp;월 &nbsp;&nbsp;&nbsp;&nbsp;일</p>
+      <table><thead><tr><th style="width:5%">No</th><th style="width:11%">팀</th><th style="width:10%">라인</th><th style="width:15%">성명</th>${['안전장갑', '귀마개', '마스크', '안전화', '작업복', '안전모'].map(k => `<th style="width:7%">${k}</th>`).join('')}<th>서명</th></tr></thead>
+      <tbody>${Array.from({ length: n }, (_, i) => { const p = names[i] || {}; return `<tr style="height:7.6mm"><td style="text-align:center">${i + 1}</td><td style="text-align:center">${esc(p.team || '')}</td><td style="text-align:center">${esc(p.line || '')}</td><td style="text-align:center">${esc(p.name || '')}</td>${'<td style="text-align:center" class="ck">□</td>'.repeat(6)}<td></td></tr>`; }).join('')}</tbody></table>
+      <div class="note">※ 받은 품목에 ☑ 표시 · 이후 기간은 작업일보 중간 줄 「TBM 참석 · 보호구 수령 확인」 서명으로 관리 · 이 확인서에 과거 날짜를 적지 않습니다</div>
+      ${ppeSig('안전보건팀')}${ppeFoot('MS-SF-06 부속')}</div>`;
+  }
+  el.innerHTML = html;
+  document.body.className = 'p-ppe';
+  setTimeout(() => print(), 60);
+}
+
 window.onafterprint = () => { document.body.className = ''; };
 start();
 </script>

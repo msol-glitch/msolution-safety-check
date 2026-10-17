@@ -22,10 +22,66 @@ main{max-width:520px;margin:0 auto;padding:12px 14px 30px}
 .best{background:linear-gradient(135deg,#FFF7ED,#FFEDD5);border:1px solid #FDBA74;border-radius:14px;padding:12px 14px;margin-top:10px;font-weight:800;color:#9A3412;text-align:center}
 .wait{color:var(--sub);font-size:13px;text-align:center;padding:14px 0}
 .foot{font-size:11.5px;color:#94A3B8;text-align:center;margin-top:14px;line-height:1.6}
-</style></head><body>
+</style>
+<style>
+/* ===== v14 안전경영 한눈에 보기 (감사·점검 소개용 슬라이드) — 공개 숫자만, 이름·팀·금액 없음 ===== */
+.tgo{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:10px;border:0;border-radius:14px;padding:14px;font:inherit;font-size:16px;font-weight:800;color:#fff;cursor:pointer;
+  background:linear-gradient(135deg,#EA580C,#F59E0B);box-shadow:0 6px 18px rgba(234,88,12,.28)}
+.tgo small{font-weight:600;font-size:12px;opacity:.9}
+#tour{position:fixed;inset:0;z-index:99;display:none;color:#fff;font-family:'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif;
+  background:radial-gradient(120% 80% at 10% 0%,#24497F 0%,#0F1E3A 55%,#0A1428 100%);overflow:hidden;user-select:none;-webkit-user-select:none}
+#tour.on{display:block}
+#tour .glow{position:absolute;border-radius:50%;filter:blur(60px);opacity:.35;pointer-events:none}
+#tour .bar{position:absolute;top:0;left:0;right:0;display:flex;gap:4px;padding:10px 12px 0;z-index:3}
+#tour .bar i{flex:1;height:4px;border-radius:2px;background:rgba(255,255,255,.22);overflow:hidden}
+#tour .bar i b{display:block;height:100%;width:0;background:#FDBA74}
+#tour .bar i.d b{width:100%}
+#tour .top{position:absolute;top:22px;left:14px;right:14px;display:flex;align-items:center;gap:8px;z-index:3;font-size:12.5px;color:#CBD5E1}
+#tour .top img{height:26px;background:#fff;border-radius:6px;padding:2px}
+#tour .top .sp{flex:1}
+#tour .top button{font:inherit;font-size:13px;font-weight:700;color:#fff;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);border-radius:999px;min-width:40px;height:36px;padding:0 12px;cursor:pointer}
+#tour .stage{position:absolute;inset:66px 0 64px;display:flex;align-items:center;justify-content:center;padding:0 16px}
+#tour .sl{display:none;width:100%;max-width:560px;animation:tIn .5s ease}
+#tour .sl.on{display:block}
+@keyframes tIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+#tour .no{font-size:12px;letter-spacing:.18em;color:#FDBA74;font-weight:800}
+#tour h2{margin:6px 0 4px;font-size:26px;line-height:1.35;word-break:keep-all}
+#tour .lead{font-size:14.5px;color:#CBD5E1;line-height:1.6;word-break:keep-all;margin:0 0 14px}
+#tour .gl{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:18px;padding:14px 16px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+#tour .big{font-size:58px;font-weight:900;line-height:1.05;color:#FDBA74;font-variant-numeric:tabular-nums}
+#tour .big small{font-size:20px;font-weight:700;color:#FED7AA;margin-left:4px}
+#tour .g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:10px}
+#tour .g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}
+#tour .kv{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:10px 8px;text-align:center;min-width:0}
+#tour .kv b{display:block;font-size:24px;font-weight:900;font-variant-numeric:tabular-nums;color:#fff}
+#tour .kv span{display:block;font-size:11.5px;color:#CBD5E1;line-height:1.35;margin-top:2px;word-break:keep-all}
+#tour ul.pt{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:7px}
+#tour ul.pt li{display:flex;gap:9px;align-items:flex-start;font-size:14px;line-height:1.5;color:#E2E8F0;word-break:keep-all}
+#tour ul.pt li:before{content:'';flex:0 0 8px;height:8px;margin-top:7px;border-radius:50%;background:#FDBA74}
+#tour .flow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:12px}
+#tour .flow span{background:rgba(253,186,116,.16);border:1px solid rgba(253,186,116,.45);color:#FFEDD5;border-radius:10px;padding:6px 10px;font-size:13px;font-weight:700}
+#tour .flow i.fs{display:inline-flex;align-items:center;gap:6px;font-style:normal;white-space:nowrap}
+#tour .flow em{color:#FDBA74;font-style:normal;font-weight:900}
+#tour .rm{display:flex;flex-direction:column;gap:6px;margin-top:4px}
+#tour .rm div{display:grid;grid-template-columns:26px 1fr auto;gap:8px;align-items:center;font-size:13.5px;background:rgba(255,255,255,.06);border-radius:10px;padding:7px 10px}
+#tour .rm div small{font-size:11px;color:#94A3B8;white-space:nowrap}
+#tour .rm .ing{background:rgba(253,186,116,.14)}
+#tour .rm .plan{opacity:.75}
+#tour .note{font-size:11.5px;color:#94A3B8;margin-top:10px;line-height:1.5}
+#tour .nav{position:absolute;left:0;right:0;bottom:0;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;z-index:3}
+#tour .nav button{font:inherit;font-size:14px;font-weight:700;color:#fff;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);border-radius:999px;height:42px;padding:0 18px;cursor:pointer}
+#tour .nav .cnt{font-size:12.5px;color:#CBD5E1}
+#tour .tap{position:absolute;top:66px;bottom:64px;width:30%;z-index:2}
+#tour .tap.l{left:0}#tour .tap.r{right:0}
+#tour svg.tr{width:100%;height:auto;display:block;margin-top:6px}
+@media (min-width:900px){#tour h2{font-size:34px}#tour .lead{font-size:16px}#tour .sl{max-width:760px}#tour .big{font-size:76px}}
+@media (prefers-reduced-motion:reduce){#tour .sl{animation:none}}
+</style>
+</head><body>
 <header><div class="br"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHwAAABQBAMAAAApXgzAAAAAMFBMVEUNTqEAAADy9v4Fq+3K6vtbo9iOs9hr0fes0ezo+f4HdsXb7Perq/1ch7uk3vq30e5amtN2AAAAEHRSTlP+AAz++v7n/vdZ/58D+wR86zJ2egAABMdJREFUeNqVmF1oHFUUgL+5u9P8tdmZiraNpvkRtBGSJgQFRbEB0YjYptRQlTaJQqEaQja21diCbgtqraAtQrUIWi2lP9g2ESlVkeahL4olwZ+HPpRsajUBxZnNNJrsZjM+7HSz3b27e2despNzvjn3nnPPuederWHLHiTPM5exF9+MXysofTh4AX2f/S6BxkByLKUk+qQ0XxPNeBtJACwA9gIkA4QB+LJNnJbSzNai8JwS+SSH8kPliz9FOI/OMlPBepeYGpNLGirtorT+pDgwtU36gWTdSBF42fYz3cJ6/tLOtyXCRPvGwvSS4992m4LQ1OXjEYn457vyjf5fADr7rWFLEBt1/zwpUTrjFPZ8UzK5AYHbopmxHolfaqOFR38jAALAKu3MlTrtLQXpKzYejrtDIt9TlfqryXH3Yhq3HUnwxDYjpSfHNdK4KDmYK48PjwBoKw25dYBg6ufIaonCvS0Aod7qcF4HeCnz6GGJ7BMDYGK6gP883DogkQX7DdBWjBfHxbQs8sMjUF5xtDjuGh2SyD9RB/pOiuO4U7LIG16JKopbH8oi/6bBxMsquJgckkX+qGb0KA3eeEsWeW1pWRgV17my2vjRlmm9WQHXYvY+WUXZYe6iOK6VWyFNMsl4bOIvBXwh0VZ5SrYxTEbHUHFdw7XuO2TLvmlICT8ScXfLxBGUcKExLVm38e/V8PiAqJUtEEMNZ3O5+6pEfqwwHkyX9QoC+H7S1ks+r749z/KOKlh3xm7Ycj0tomCd5+KGfIH+FlLBG3XpZgEnpllXHE8e0pwOmUqzkvXEwfkSWZR1V8XzsOLa+CMSjUDYVsLPGaasx9sYU7Ouf2EMSyLfYKvhzpj9oCTn19ao4XRQU51brwYUrQOx3MkvuCjizSzclhP5bUmUrYvJnLK86pI67hr3Zy+a0LhSvqee8YHsdNvrqlvHnMmafPwsPvClOZPv8IM7F7Oy5qVKfMydF5ZkOT7oxzp/B27ZlfS1F33hwclbGsSAhi/cDW3NfP2lp9kXjtab+XbW8GedeCAzVN9EfeJMZhjUN7g+8ZnRDOvaB7X4iju0Zfxr0w+WkvWMAf+jL5ovi6ptkf9l5vzitzbU4MO6AeCeq12sc2obtLkdoGw+Nfl0j6RjK+ETvQCJVwyAqnSP1FWIXjwKVae6+XjdBABf3fTdlaqbqkaeo5AAKn5/L9W9baoZNWCmu8+b+viMV4Nk9W5NnYf/UdXqxenjFguwNnlT12wAzbSkVwFNJghCdl2Vl1bO0y1azKByLjX6rnkA17VMWbu8Z7nlGoKYefi7dL5cmg3ZOBdSn1t5DCBW+tmLP0nwsq7Tph0cferOlRn5tmz3McduuxtAb+kBXLPvjLS5cyKd24+w/Hz26cs069YAUGuapsk9nqD0scdBf20X0Np61NMVq6qyLh3uM41YoAO4sgBo9Q/lD33ipOjLrkaN/V7Ov34dwC50ljkv3pcdjq2tgJWK9lCBa58fxUx2P7LlEDT2wpKN6wB36AHZ1YcHhYMlz+qzEWAQKB0sHaxYf9bl+oqrTnA9AD1z7dWzEXCCYXGVxBBbZ6G+fj+Dkb1Nn2qm9s6td10Rwwb2MxdJ1bmxdm/2B296QZzavDoKMPfG//8aX018voz2AAAAAElFTkSuQmCC" alt="㈜엠솔루션 로고"><div><b>🛡 ㈜엠솔루션 안전 참여 현황</b><small>우리 회사 근로자 안전 참여 · <span id="mon"></span></small></div></div></header>
 <main>
   <div class="hero"><div class="l">무재해</div><div class="n" id="days">-</div><div class="l">2015.01.02 개업 이후 재해 0건</div></div>
+  <button class="tgo" id="tourGo" type="button">▶ 우리 회사 안전경영 한눈에 보기 <small>1분 · 9장</small></button>
   <div class="kp"><div class="k"><div class="v" id="kJoin">-</div><div class="t">이번 달 참여<br>(공지·TBM 읽고 확인)</div></div>
     <div class="k"><div class="v" id="kTbm">-</div><div class="t">이번 달<br>TBM 실시율</div></div>
     <div class="k"><div class="v" id="kPr">-</div><div class="t">이번 달<br>안전 칭찬</div></div></div>
@@ -67,4 +123,142 @@ function trend(w) {
     $('upd').textContent = new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
   } catch (e) { ['trend', 'recent', 'pays'].forEach(id => $(id).innerHTML = '<div class="wait">잠시 후 다시 열어 주세요</div>'); }
 })();
-</script></body></html>
+</script>
+<div id="tour" aria-label="안전경영 한눈에 보기" role="dialog">
+  <div class="glow" style="width:320px;height:320px;background:#EA580C;right:-120px;top:-80px"></div>
+  <div class="glow" style="width:280px;height:280px;background:#2563EB;left:-120px;bottom:-60px"></div>
+  <div class="bar" id="tBar"></div>
+  <div class="top"><img id="tLogo" alt="㈜엠솔루션 로고"><span>㈜엠솔루션 안전경영 소개</span><span class="sp"></span>
+    <button type="button" id="tPause" aria-label="일시정지">❚❚</button><button type="button" id="tClose" aria-label="닫기">✕</button></div>
+  <div class="tap l" id="tPrevT"></div><div class="tap r" id="tNextT"></div>
+  <div class="stage" id="tStage"></div>
+  <div class="nav"><button type="button" id="tPrev">‹ 이전</button><span class="cnt" id="tCnt"></span><button type="button" id="tNext">다음 ›</button></div>
+</div>
+<script>
+/* ===== v14 안전경영 한눈에 보기 — 공개 응답(pubsum·status)만 사용. 이름·팀·금액·고충 내용 없음 ===== */
+(() => {
+  const SEC = 7000, TEAMS_N = 4;
+  const $t = id => document.getElementById(id);
+  const n0 = v => Number(v || 0).toLocaleString('ko-KR');
+  let data = { sum: null, st: null }, idx = 0, timer = 0, t0 = 0, paused = false, loaded = null;
+  const days = () => Math.round((new Date(ymd + 'T00:00:00') - new Date(NO_ACCIDENT_SINCE + 'T00:00:00')) / 864e5) + 1;
+  async function load() {
+    if (loaded) return loaded;
+    loaded = (async () => {
+      try { const d = await (await fetch(`${ENDPOINT}?action=pubsum`)).json(); if (d.ok) data.sum = d; } catch (e) {}
+      try {
+        const rs = await Promise.all([1, 2, 3, 4].map(t => fetch(`${ENDPOINT}?action=status&team=${t}`).then(r => r.json()).catch(() => null)));
+        const ok = rs.filter(r => r && r.ok); if (ok.length) {
+          const s = { tbm: 0, min: 0, patrol: 0, fives: 0, teams: ok.length };
+          ok.forEach(r => r.days.forEach(x => { s.tbm += x.tbm || 0; s.min += x.tbmMin || 0; s.patrol += x.patrol ? 1 : 0; s.fives += x.fives ? 1 : 0; }));
+          data.st = s;
+        }
+      } catch (e) {}
+    })();
+    return loaded;
+  }
+  const v = (x, unit) => x == null ? '<b>-</b>' : `<b>${n0(x)}${unit ? `<small style="font-size:13px;font-weight:700;margin-left:2px">${unit}</small>` : ''}</b>`;
+  function trendSvg(w) {
+    if (!w || w.length < 2) return '';
+    const W = 320, H = 96, L = 8, R = 8, T = 16, B = 18, n = w.length, mx = Math.max(10, ...w.map(x => x.n));
+    const X = i => L + i * (W - L - R) / (n - 1), Y = q => T + (1 - q / mx) * (H - T - B);
+    const p = w.map((x, i) => (i ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(x.n).toFixed(1)).join(' ');
+    return `<svg class="tr" viewBox="0 0 ${W} ${H}" role="img" aria-label="참여 추이"><path d="${p} L${X(n - 1)} ${Y(0)} L${X(0)} ${Y(0)}Z" fill="#FDBA74" opacity=".18"/>
+      <path d="${p}" fill="none" stroke="#FDBA74" stroke-width="2.6"/>${w.map((x, i) => `<circle cx="${X(i)}" cy="${Y(x.n)}" r="3" fill="#FDBA74"/>
+      <text x="${X(i)}" y="${Y(x.n) - 6}" text-anchor="middle" font-size="9.5" fill="#FFEDD5">${x.n}</text><text x="${X(i)}" y="${H - 4}" text-anchor="middle" font-size="9" fill="#94A3B8">${+x.to.slice(5, 7)}/${+x.to.slice(8)}</text>`).join('')}</svg>`;
+  }
+  const flow = a => a.map((x, i) => `<i class="fs"><span>${x}</span>${i < a.length - 1 ? '<em>›</em>' : ''}</i>`).join('');
+  function slides() {
+    const s = data.sum, st = data.st, w = s ? (s.weeks && s.weeks.length >= 3 ? s.weeks : (s.daily || []).map(x => ({ n: x.n, to: x.d }))) : [];
+    const rec = s && s.recent && s.recent[0];
+    return [
+      `<div class="no">SAFETY FIRST</div><h2>안전한 일터,<br>전 직원이 함께 만듭니다</h2>
+       <p class="lead">현장 QR 하나로 점검·교육·참여를 매일 기록합니다. 기록은 종이가 아니라 데이터로 쌓입니다.</p>
+       <div class="gl"><div style="font-size:13px;color:#CBD5E1">무재해</div><div class="big">${n0(days())}<small>일</small></div>
+       <div style="font-size:12.5px;color:#CBD5E1;margin-top:4px">2015.01.02 개업 이후 · 4개 팀 9개 라인</div></div>`,
+      `<div class="no">01 · 전 직원 참여</div><h2>👣 전 직원 안전참여 기록</h2>
+       <p class="lead">직원이 매일 QR로 대표 전달사항이나 TBM 주제를 읽고 확인합니다. 하루 1회, 기기 단위로 셉니다.</p>
+       <div class="g2"><div class="kv">${v(s && s.join, '회')}<span>이번 달 참여<br>(읽고 확인)</span></div><div class="kv">${v(s && s.praise, '건')}<span>이번 달<br>안전 칭찬</span></div></div>
+       ${w.length >= 2 ? `<div class="gl" style="margin-top:10px;padding:10px 12px"><div style="font-size:12px;color:#CBD5E1">참여 추이</div>${trendSvg(w)}</div>` : `<p class="note">참여 집계는 10월 19일(월)부터 시작합니다.</p>`}`,
+      `<div class="no">02 · TBM</div><h2>매일 작업 전 안전회의</h2>
+       <p class="lead">위험성평가 항목이 오늘의 TBM 주제로 자동 선택됩니다. 외국인 직원은 모국어 화면으로 함께 봅니다.</p>
+       <div class="g3"><div class="kv">${v(s && s.tbmRate, '%')}<span>이번 달<br>TBM 실시율</span></div><div class="kv">${v(st && st.tbm, '회')}<span>최근 2주<br>TBM 실시</span></div><div class="kv">${v(st && st.min, '분')}<span>최근 2주<br>교육 시간</span></div></div>
+       <div class="flow">${flow(['QR 시작','주제 3개','진행자 서명','작업일보 친필 서명'])}</div>`,
+      `<div class="no">03 · 현장 점검</div><h2>순회점검 · 3정5행</h2>
+       <p class="lead">관리자가 현장에서 QR로 점검하고 서명합니다. '개선 필요'는 조치관리로 자동 등록되어 완료까지 추적합니다.</p>
+       <div class="g2"><div class="kv">${v(st && st.patrol, '회')}<span>최근 2주 순회점검<br>(팀별 실시일 합계)</span></div><div class="kv">${v(st && st.fives, '회')}<span>최근 2주 3정5행<br>(팀별 실시일 합계)</span></div></div>
+       <div class="flow">${flow(['점검','개선 필요','조치관리 등록','조치 완료'])}</div>`,
+      `<div class="no">04 · 위험성평가</div><h2>위험성평가가 현장 교육으로 이어집니다</h2>
+       <ul class="pt"><li>공정별 위험요인과 감소대책을 고용노동부 고시 기준으로 평가·관리</li>
+       <li>평가 항목이 매일 TBM 주제로 자동 선택 — 평가가 문서에서 끝나지 않음</li>
+       <li>신규 설비·작업 변경 시 수시평가 실시 (예: 신규 자동부착기)</li>
+       <li>대표 전달사항은 5개 언어로 자동 번역해 전달</li></ul>`,
+      `<div class="no">05 · 화재예방</div><h2>집진기 청소 · 화재예방</h2>
+       <ul class="pt"><li>집진기 청소를 30일 주기로 QR 기록, 기한이 지나면 '청소 필요' 자동 표시</li>
+       <li>화재예방 대응 시나리오(MS-SF-01) 현장 게시</li>
+       <li>점검·청소 기록은 매일 자동 백업, 매주 엑셀로 별도 보관</li></ul>`,
+      `<div class="no">06 · 보호구 · 예산</div><h2>보호구 지급과 안전보건 예산</h2>
+       <div class="flow">${flow(['구매','현장 비치·지급','작업일보 수령 서명','PDCA 점검'])}</div>
+       <ul class="pt"><li>안전장갑·귀마개·마스크 구매 내역을 2025년부터 누적 관리 (MS-SF-06)</li>
+       <li>연도별 안전보건 예산 편성과 집행을 함께 관리</li>
+       <li>보호구 PDCA 보고서(MS-SF-07)와 A4 대장 출력</li></ul>`,
+      `<div class="no">07 · 칭찬 · 포상</div><h2>잘한 안전 행동은 바로 칭찬합니다</h2>
+       <p class="lead">관리자가 등록하고 대표가 승인합니다. 반기마다 안전 우수사원을 선정합니다.</p>
+       <div class="g2"><div class="kv">${v(s && s.praise, '건')}<span>이번 달<br>안전 칭찬</span></div><div class="kv">${v(s && s.pays ? s.pays.length : null, '건')}<span>최근<br>포상 지급</span></div></div>
+       ${rec ? `<div class="gl" style="margin-top:10px;font-size:13.5px;line-height:1.55"><b style="color:#FDBA74">⭐ ${esc(rec.cat)}</b><br>${esc(rec.why)}</div>` : ''}
+       <p class="note">직원 이름과 팀은 표시하지 않습니다.</p>`,
+      `<div class="no">08 · 로드맵</div><h2>계속 발전하는 안전관리 체계</h2>
+       <div class="rm">
+        <div><span>✅</span><span>QR 현장점검 · 순회 · 3정5행</span><small>운영 중</small></div>
+        <div><span>✅</span><span>TBM 기록 · 다국어 · 작업일보 연계</span><small>운영 중</small></div>
+        <div><span>✅</span><span>대표 전달사항 · 전 직원 참여 기록</span><small>운영 중</small></div>
+        <div><span>✅</span><span>집진기 · 조치관리 · 자동 백업</span><small>운영 중</small></div>
+        <div class="ing"><span>🔄</span><span>안전 칭찬 · 참여 이벤트</span><small>2026.10 시작</small></div>
+        <div class="ing"><span>🔄</span><span>보호구 지급 · 안전보건 예산 · PDCA</span><small>2026.10 시작</small></div>
+        <div class="plan"><span>📅</span><span>경영책임자 반기 점검 체계</span><small>예정</small></div>
+        <div class="plan"><span>📅</span><span>PLT 관리대장</span><small>예정</small></div></div>
+       <p class="note">모든 기록은 원본 그대로 보관하며 요청 시 제출합니다.</p>`
+    ];
+  }
+  function draw() {
+    const list = slides();
+    $t('tStage').innerHTML = list.map((h, i) => `<div class="sl${i === idx ? ' on' : ''}">${h}</div>`).join('');
+    $t('tBar').innerHTML = list.map((_, i) => `<i class="${i < idx ? 'd' : ''}"><b${i === idx ? ' id="tFill"' : ''}></b></i>`).join('');
+    $t('tCnt').textContent = `${idx + 1} / ${list.length}`;
+    $t('tPrev').style.visibility = idx ? 'visible' : 'hidden';
+    $t('tNext').textContent = idx === list.length - 1 ? '처음으로 ↺' : '다음 ›';
+    t0 = performance.now(); tick();
+  }
+  function tick() {
+    cancelAnimationFrame(timer);
+    const f = $t('tFill'); if (!f) return;
+    const step = now => {
+      if (paused) { t0 = now - (parseFloat(f.style.width) || 0) / 100 * SEC; timer = requestAnimationFrame(step); return; }
+      const p = Math.min(1, (now - t0) / SEC); f.style.width = (p * 100) + '%';
+      if (p >= 1) { if (idx < 8) go(1); else { paused = true; $t('tPause').textContent = '▶'; } return; }
+      timer = requestAnimationFrame(step);
+    };
+    timer = requestAnimationFrame(step);
+  }
+  function go(dx) { const n = 9; idx = idx + dx; if (idx >= n) idx = 0; if (idx < 0) idx = 0; draw(); }
+  async function open() {
+    try { $t('tLogo').src = document.querySelector('.br img').src; } catch (e) {}
+    idx = 0; paused = false; $t('tPause').textContent = '❚❚';
+    $t('tour').classList.add('on'); document.body.style.overflow = 'hidden'; draw();
+    await load(); if ($t('tour').classList.contains('on')) draw();
+  }
+  function close() { cancelAnimationFrame(timer); $t('tour').classList.remove('on'); document.body.style.overflow = ''; if (location.hash === '#tour') history.replaceState(null, '', location.pathname + location.search); }
+  $t('tourGo').onclick = open;
+  $t('tClose').onclick = close;
+  $t('tNext').onclick = $t('tNextT').onclick = () => go(1);
+  $t('tPrev').onclick = $t('tPrevT').onclick = () => go(-1);
+  $t('tPause').onclick = () => { paused = !paused; $t('tPause').textContent = paused ? '▶' : '❚❚'; };
+  document.addEventListener('keydown', e => { if (!$t('tour').classList.contains('on')) return;
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(1); } else if (e.key === 'ArrowLeft') go(-1); else if (e.key === 'Escape') close(); });
+  let sx = 0; $t('tour').addEventListener('touchstart', e => { sx = e.touches[0].clientX; }, { passive: true });
+  $t('tour').addEventListener('touchend', e => { const dx = e.changedTouches[0].clientX - sx; if (Math.abs(dx) > 50) go(dx < 0 ? 1 : -1); }, { passive: true });
+  load();
+  if (location.hash === '#tour') open();
+})();
+</script>
+</body></html>

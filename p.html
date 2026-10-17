@@ -240,7 +240,7 @@
     <div id="pubNotice"></div>
     <div class="card" id="pubCard"><h2>오늘 우리 팀 안전 현황 <span class="cnt">누구나 보기</span></h2><div id="pubToday" style="margin-bottom:6px"></div>
       <div class="cnt" style="margin-bottom:2px">오늘의 TBM 안전 주제 (위험성평가 자동 선택)</div><div id="pubTopics"></div><div id="topicAck"></div><div id="pubTrend"></div><div style="height:6px"></div></div>
-    <div class="card" id="mgrLock"><h2>관리자 메뉴 🔒</h2><div class="cnt" style="margin-bottom:8px">TBM·점검 등록은 관리자 폰에서만 할 수 있습니다. 처음 한 번 관리자 번호를 넣으면 이 휴대폰이 등록됩니다.</div>
+    <div class="card" id="mgrLock" style="display:none"><h2>관리자 메뉴 🔒</h2><div class="cnt" style="margin-bottom:8px">TBM·점검 등록은 관리자 폰에서만 할 수 있습니다. 처음 한 번 관리자 번호를 넣으면 이 휴대폰이 등록됩니다.</div>
       <input type="password" id="mgrPin" inputmode="numeric" maxlength="8" placeholder="관리자 번호" autocomplete="off"><div style="height:8px"></div>
       <button class="submit" id="mgrBtn">이 휴대폰을 관리자 폰으로 등록</button><p class="msg" id="mgrMsg" style="margin-top:6px"></p></div>
 
@@ -362,7 +362,7 @@ const FIVE = [
     ['d5', '보호구: 작업자 보호구 착용'], ['d6', '방호장치: 설비 안전커버·비상정지 정상'],
     ['d7', '화학물질: 용기 라벨 부착, MSDS 게시']]]
 ];
-const DOCNO = { patrol: '중대재해예방 일일 점검 체크리스트 · 문서번호 MS-SF-05', '5s': '3정5행 점검표 · 문서번호 MS-SF-06' };
+const DOCNO = { patrol: '중대재해예방 일일 점검 체크리스트 · 문서번호 MS-SF-05', '5s': '3정5행 점검표 · 문서번호 MS-SF-08' };
 const INSPECTORS = [['이성희 과장', '안전관리자'], ['이민희 대표', '안전보건관리책임자']];
 
 const $ = id => document.getElementById(id);
@@ -927,7 +927,7 @@ function tbmOpen() {
   type = 'tbm'; answers = {};
   $('menu').style.display = 'none'; $('form').style.display = 'none'; $('bar').style.display = 'none';
   $('backBtn').style.display = ''; $('title').textContent = 'TBM (작업 전 안전회의)';
-  $('docno').textContent = 'TBM 일지 · 문서번호 MS-SF-07 · 위험성평가 결과 공유';
+  $('docno').textContent = 'TBM 일지 · 문서번호 MS-SF-09 · 위험성평가 결과 공유';
   tbm = { view: 'teams', team: 0, line: '', lang: 'ko', busy: false };
   $('tbmForm').style.display = '';
   $('tbmLeader').value = store.get('ms_tbm_leader') || TBM_LEADER[team] || '';
@@ -1057,6 +1057,11 @@ async function tbmRest(k) {   // 쉬는 라인
 
 /* ===== 누구나 보는 현장 현황 + 관리자 폰 잠금 (v6-2) ===== */
 let FIELD_PIN = store.get('ms_field_pin') || '';
+/* 2026-10-17 대표 지시: 직원·외부인 화면에 관리자 메뉴를 보이지 않음. 등록 안 된 폰은 상단 로고를 3초 안에 5번 누르면 등록 칸이 열림 (보안은 기존 관리자 번호·5회 잠금 그대로) */
+let MGR_OPEN = false;
+(() => { const lg = document.querySelector('header .brand img'); if (!lg) return; let n = 0, t = 0;
+  lg.addEventListener('click', () => { const now = Date.now(); n = now - t < 3000 ? n + 1 : 1; if (n === 1) t = now;
+    if (n >= 5 && !FIELD_PIN) { n = 0; MGR_OPEN = true; mgrRender(); const c = document.getElementById('mgrLock'); if (c) { c.scrollIntoView({ behavior: 'smooth', block: 'center' }); setTimeout(() => document.getElementById('mgrPin').focus(), 400); } } }); })();
 let DEV = store.get('ms_dev'); if (!DEV) { DEV = (Math.random().toString(36).slice(2) + Date.now().toString(36)).slice(0, 16).replace(/[^a-z0-9]/g, 'x'); store.set('ms_dev', DEV); }
 function visit(kind, nid) {   // 발도장: 팀·시각·무작위 기기번호만 (이름 없음)
   const k = kind === 'ack' ? 'ms_ack_' + nid : `ms_visit_${team}_${today()}`;
@@ -1165,7 +1170,7 @@ async function pubLoad() {
 }
 function mgrRender() {
   const on = !!FIELD_PIN;
-  $('mgrLock').style.display = on ? 'none' : '';
+  $('mgrLock').style.display = on || !MGR_OPEN ? 'none' : '';
   document.querySelectorAll('#menu [data-type]').forEach(b => b.style.display = on ? '' : 'none');
   $('mgrOff').style.display = on ? '' : 'none';
   $('prBtn').style.display = on ? '' : 'none'; evCardRender();
