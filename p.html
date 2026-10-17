@@ -179,6 +179,27 @@
   .ntc .nko{font-size:11.5px;color:#9A3412;margin-bottom:8px}
   .menu .ntc button{width:100%;font:inherit;font-weight:800;border-radius:10px;padding:11px;text-align:center}
   .menu .ntc button.ack{background:#EA580C;color:#fff;border:0}.menu .ntc button.ackd{background:#fff;color:var(--ok);border:1px solid var(--ok)}
+
+  /* v12 행운 이벤트·칭찬 */
+  .evc{background:linear-gradient(135deg,#0F172A,#1B3A6B);color:#fff;border-radius:14px;padding:12px 14px;margin-bottom:12px}
+  .evc .evh{font-weight:800;font-size:15px;display:flex;justify-content:space-between;align-items:center}.evc .evh span{font-size:11.5px;color:#FDBA74;font-weight:700}
+  .evc .evs{margin-top:6px;font-size:14px}.evc .evok{color:#93C5FD}.evc .evgo{color:#FDBA74}.evc .cnt{color:#CBD5E1!important}
+  .menu .evc b{color:inherit;font-size:inherit}.menu .evc .evwon b{color:#FDBA74;font-size:16px;letter-spacing:.5px}.menu .evc b.evgo{color:#FDBA74}.menu .evc b.evok{color:#93C5FD}
+  .evc .evwon{margin-top:8px;background:rgba(253,186,116,.15);border:1px solid #FDBA74;border-radius:10px;padding:7px 10px;font-size:13.5px}
+  .menu .evc button.lnk{color:#FDBA74;font-weight:700;font-size:13.5px;background:none;border:0;padding:0;width:auto}
+  .menu button.evwait,.menu .ntc button.evwait{width:100%;font:inherit;font-weight:800;border-radius:10px;padding:11px;text-align:center;background:#F1F5F9;color:#64748B;border:1px dashed #94A3B8}
+  .menu #topicAck button{width:100%;font:inherit;font-weight:800;border-radius:10px;padding:11px;text-align:center}
+  .menu #topicAck button.ack{background:#EA580C;color:#fff;border:0}.menu #topicAck button.ackd{background:#fff;color:var(--ok);border:1px solid var(--ok)}
+  #evWin{position:fixed;inset:0;background:rgba(15,23,42,.8);display:none;align-items:center;justify-content:center;z-index:99;padding:16px}
+  .evwbox{background:#fff;border-radius:20px;padding:22px 20px;max-width:360px;width:100%;text-align:center;border:4px solid #EA580C}
+  .evconf{font-size:56px;line-height:1}.evw1{font-size:34px;font-weight:900;color:#EA580C;margin:6px 0}
+  .evw2{font-size:13px;color:#64748B}.evcode{font-size:28px;font-weight:900;color:#0F172A;letter-spacing:1px;margin:4px 0 12px}
+  .evw3{font-size:14.5px;line-height:1.6;margin-bottom:14px}
+  #prDlg label{display:block;font-size:13px;font-weight:700;color:#334155;margin:10px 0 4px}
+  #prDlg select,#prDlg input{width:100%;font:inherit;font-size:16px;padding:10px;border:1px solid #CBD5E1;border-radius:10px;box-sizing:border-box;background:#fff}
+  #prDlg .chip{font:inherit;font-size:14px;font-weight:700;border:1px solid #CBD5E1;background:#fff;border-radius:999px;padding:7px 12px;margin:0 6px 6px 0;cursor:pointer}
+  #prDlg .chip.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+  #prMsg{font-size:14px;font-weight:700;color:var(--bad);min-height:20px;margin:8px 0}
   #mgrLock input{font-size:20px;letter-spacing:6px;text-align:center}
   .menu .card b{display:inline;font-size:inherit;color:inherit}.menu .plh b{font-size:16px;color:var(--navy)}
   .menu .card button.lnk{border:0;background:none;padding:0;font-size:13px;color:var(--ok);font-weight:400}
@@ -214,9 +235,10 @@
 
 <main id="main">
   <section id="menu" class="menu">
+    <div id="evCard"></div>
     <div id="pubNotice"></div>
     <div class="card" id="pubCard"><h2>오늘 우리 팀 안전 현황 <span class="cnt">누구나 보기</span></h2><div id="pubToday" style="margin-bottom:6px"></div>
-      <div class="cnt" style="margin-bottom:2px">오늘의 TBM 안전 주제 (위험성평가 자동 선택)</div><div id="pubTopics"></div><div id="pubTrend"></div><div style="height:6px"></div></div>
+      <div class="cnt" style="margin-bottom:2px">오늘의 TBM 안전 주제 (위험성평가 자동 선택)</div><div id="pubTopics"></div><div id="topicAck"></div><div id="pubTrend"></div><div style="height:6px"></div></div>
     <div class="card" id="mgrLock"><h2>관리자 메뉴 🔒</h2><div class="cnt" style="margin-bottom:8px">TBM·점검 등록은 관리자 폰에서만 할 수 있습니다. 처음 한 번 관리자 번호를 넣으면 이 휴대폰이 등록됩니다.</div>
       <input type="password" id="mgrPin" inputmode="numeric" maxlength="8" placeholder="관리자 번호" autocomplete="off"><div style="height:8px"></div>
       <button class="submit" id="mgrBtn">이 휴대폰을 관리자 폰으로 등록</button><p class="msg" id="mgrMsg" style="margin-top:6px"></p></div>
@@ -224,6 +246,8 @@
     <button data-type="patrol"><b>중대재해예방 순회점검</b><span>안전관리자 · 안전보건관리책임자 일일 순회 · 법적 근거 포함</span></button>
     <button data-type="tbm" style="border-color:#EA580C;background:#FFF7ED"><b>TBM (작업 전 안전회의)</b><span>시작 누르고 → 끝나면 마치기 · 오늘의 안전 주제 3개 · 외국어 지원</span></button>
     <button data-type="5s"><b>3정5행 점검</b><span>자재·제품 관리, 작업장 정리정돈, 품질, 안전</span></button>
+    <button id="prBtn" style="border-color:#1D4ED8;background:#EFF6FF;display:none"><b>⭐ 안전 칭찬 등록</b><span>잘한 직원 추천 → 대표 승인 → 상품권 · 사유는 이름 없이 한 줄</span></button>
+    <a href="s.html" style="display:block;text-align:center;font-weight:800;color:var(--navy);background:#fff;border:1px solid #CBD5E1;border-radius:12px;padding:12px;margin:4px 0 10px;text-decoration:none">🛡 우리 회사 안전 참여 현황 보기 ›</a>
     <div class="cnt" style="text-align:center;margin:4px 0 10px"><a href="guide.html" style="font-weight:700;color:var(--navy)">📖 사용 설명서 보기</a></div>
   <div id="mgrOff" class="cnt" style="text-align:center">관리자 폰으로 등록됨 · <button class="lnk" id="mgrOffBtn">등록 해제</button></div>
   </section>
@@ -271,6 +295,13 @@
   <div class="barbtns"><button class="allok" id="allOk">남은 항목<br>모두 양호</button><button class="submit" id="submit">제출</button></div>
 </div></div>
 
+<dialog id="prDlg"><div class="dh">⭐ 안전 칭찬 등록</div><div class="db">
+  <label>등록하는 사람</label><select id="prBy"></select>
+  <label>칭찬할 직원</label><select id="prName"></select>
+  <label>항목</label><div id="prCats"></div>
+  <label>사유 한 줄 <span style="font-weight:400;color:#C2410C">(이름은 쓰지 마세요 · 화면에 공개됩니다)</span></label><input id="prWhy" maxlength="60" placeholder="예: 작업 후 라인 바닥 청소를 매일 꼼꼼히">
+  <p id="prMsg"></p><button class="submit" id="prSave">등록 (대표 승인 대기)</button></div>
+  <div class="df"><button id="prClose">닫기</button></div></dialog>
 <dialog id="bigDlg"><div class="dh">오늘의 안전 주제</div><div class="db" id="bigBody"></div><div class="df"><button id="bigClose">닫기</button></div></dialog>
 <div id="signOv" aria-modal="true" role="dialog"><div class="sohd"><b>서명</b><span id="soHint">화면이 고정됩니다 · 손가락으로 크게</span></div><canvas id="pad"></canvas><div class="sobtn"><button type="button" id="soClear">지우기</button><button type="button" id="soCancel">취소</button><button type="button" id="soOk">서명 완료</button></div></div>
 <dialog id="lawDlg"><div class="dh" id="lawTitle"></div><div class="db"><div class="lw" id="lawRef"></div><p id="lawPoint"></p><small>※ 조문 원문은 국가법령정보센터(law.go.kr)에서 확인할 수 있습니다.</small></div><div class="df"><button id="lawClose">닫기</button></div></dialog>
@@ -1062,6 +1093,7 @@ function fmtN(raw) {
 const NLANG = {};
 function teamLangs() { return [...new Set(teamLines().flatMap(k => TBM_LINE[k].lang))]; }
 function noticeRender(ns) {
+  LAST_NOTICES = ns || [];
   const el = $('pubNotice'); if (!ns || !ns.length) { el.innerHTML = ''; return; }
   const langs = ['ko'].concat(teamLangs());
   el.innerHTML = ns.map(n => { const done = store.get('ms_ack_' + n.id), l = NLANG[n.id] || 'ko', open = NLANG[n.id + '_o'];
@@ -1072,11 +1104,12 @@ function noticeRender(ns) {
         ${tx[1] ? `<div class="nb">${fmtN(tx[1])}</div>` : ''}
         ${l !== 'ko' ? '<div class="nko">자동 번역입니다. 정확한 내용은 한국어 원문을 기준으로 합니다.</div>' : ''}` : ''}
       ${!open ? `<button class="${done ? 'ackd' : 'ack nread'}" data-open="${esc(n.id)}">${done ? '✔ 확인 완료 · 다시 보기' : '📖 자세히 보기 (읽고 확인해 주세요)'}</button>`
-        : done ? `<button class="ackd" disabled>✔ 확인 완료</button>` : `<button class="ack" data-ack="${esc(n.id)}">확인했습니다</button>`}</div>`; }).join('');
-  document.querySelectorAll('[data-open]').forEach(b => b.onclick = () => { const k = b.dataset.open + '_o'; NLANG[k] = !NLANG[k]; noticeRender(ns); });
+        : done ? `<button class="ackd" disabled>✔ 확인 완료</button>` : `${evBtnHtml(n.id)}`}</div>`; }).join('');
+  document.querySelectorAll('[data-open]').forEach(b => b.onclick = () => { const k = b.dataset.open + '_o'; NLANG[k] = !NLANG[k]; if (NLANG[k] && !evOpenAt[b.dataset.open]) evOpenAt[b.dataset.open] = Date.now(); noticeRender(ns); });
   document.querySelectorAll('[data-nl]').forEach(b => b.onclick = () => { const [id, x] = b.dataset.nl.split('|'); NLANG[id] = x; noticeRender(ns); });
-  document.querySelectorAll('[data-ack]').forEach(b => b.onclick = async () => { b.disabled = true; b.textContent = '저장 중…'; await visit('ack', b.dataset.ack);
-    if (store.get('ms_ack_' + b.dataset.ack)) { NLANG[b.dataset.ack + '_o'] = false; noticeRender(ns); ackThanks(); } else { b.disabled = false; b.textContent = '다시 눌러 주세요'; } });
+  document.querySelectorAll('[data-evok]').forEach(b => b.onclick = () => { const n = ns.find(x => x.id === b.dataset.evok);
+    evPress(b, 'notice', `공지 ${n.time.slice(5, 10)}: ${n.title}`, () => { visit('ack', n.id); noticeRender(ns); }); });
+  if (!evDone() && el.querySelector('.evwait') && Object.keys(evOpenAt).some(k => k !== 'tbm')) evTick(() => noticeRender(ns));
 }
 // 2026-10-10 대표 지시: [확인했습니다] 누르면 감사 팝업 (브라우저 alert 대신 화면 안 팝업)
 function ackThanks() {
@@ -1126,13 +1159,15 @@ async function pubLoad() {
   pubRender(null);
   if (!team) return;
   visit('view');
-  try { const st = await (await fetch(`${ENDPOINT}?action=status&team=${team}`)).json(); if (st.ok) { pubRender(st); noticeRender(st.notices); } } catch (e) {}
+  try { const st = await (await fetch(`${ENDPOINT}?action=status&team=${team}`)).json(); if (st.ok) { pubRender(st); noticeRender(st.notices); topicAckRender(); } } catch (e) {}
+  evLoad();
 }
 function mgrRender() {
   const on = !!FIELD_PIN;
   $('mgrLock').style.display = on ? 'none' : '';
   document.querySelectorAll('#menu [data-type]').forEach(b => b.style.display = on ? '' : 'none');
   $('mgrOff').style.display = on ? '' : 'none';
+  $('prBtn').style.display = on ? '' : 'none'; evCardRender();
 }
 $('mgrBtn').onclick = async () => {
   const pin = $('mgrPin').value.trim(), m = $('mgrMsg'); m.textContent = '확인 중…';
@@ -1143,6 +1178,119 @@ $('mgrBtn').onclick = async () => {
   } catch (e) { m.textContent = e.message; }
 };
 $('mgrOffBtn').onclick = () => { FIELD_PIN = ''; try { localStorage.removeItem('ms_field_pin'); } catch (e) {} mgrRender(); };
+
+/* ===== v12 행운 이벤트 · 안전 칭찬 =====
+ * 참여: 공지 내용을 펼쳐 읽고 [읽었습니다] (공지 없는 날: TBM 주제 읽고 [확인]) → 하루 1번(팀 무관)
+ * 지급: 당첨 화면 캡처 + 그날 읽은 내용 질문 (서버에 기록)
+ */
+const EV_WAIT = 5;   // 펼친 뒤 몇 초 지나야 확인 가능
+const evKey = () => 'ms_ev_' + today();
+let EV = null, evOpenAt = {}, evTimer = null;
+function evDone() { return store.get(evKey()); }
+async function evJoin(how, what) {
+  const o = await (await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ key: API_KEY, type: 'evjoin', team, dev: DEV, how, what, fieldPin: FIELD_PIN }) })).json();
+  if (!o.ok) throw new Error(o.error || '저장 실패');
+  if (o.mgr) { store.set(evKey(), 'mgr'); return o; }
+  if (o.notyet) return o;
+  store.set(evKey(), String(o.no));
+  if (o.win) evWinShow(o.win);
+  return o;
+}
+function evBtnHtml(id) {
+  const d = evDone();
+  if (EV && EV.round === 0) return `<button class="evwait" disabled>${esc((EV.start || '').slice(5).replace('-', '/'))}부터 참여할 수 있어요</button>`;
+  if (d) return `<button class="ackd" disabled>✔ 오늘 확인 완료${d !== 'mgr' ? ` · 참여번호 ${esc(d)}` : ''}</button>`;
+  const t0 = evOpenAt[id];
+  if (!t0) return `<button class="evwait" disabled>▼ 내용을 펼쳐 읽어 주세요</button>`;
+  const left = EV_WAIT - Math.floor((Date.now() - t0) / 1000);
+  if (left > 0) return `<button class="evwait" disabled>읽는 중… ${left}초</button>`;
+  return `<button class="ack" data-evok="${esc(id)}">읽었습니다 · 오늘 확인</button>`;
+}
+function evTick(rerender) { clearTimeout(evTimer); evTimer = setTimeout(() => { rerender(); }, 1000); }
+async function evPress(b, how, what, after) {
+  b.disabled = true; b.textContent = '저장 중…';
+  try { await evJoin(how, what); } catch (e) { b.disabled = false; b.textContent = '다시 눌러 주세요 (' + e.message + ')'; return; }
+  after(); evCardRender();
+}
+/* 이벤트 안내 칸 (팀 화면 맨 위) */
+function evCardRender() {
+  const el = $('evCard'); if (!el) return;
+  if (!team) { el.innerHTML = ''; return; }
+  const d = evDone(), E = EV || {};
+  let s = '';
+  if (FIELD_PIN) s = '<span class="cnt">관리자 폰은 행운 이벤트에서 제외됩니다</span>';
+  else if (E.round === 0) s = `<span class="cnt">${esc((E.start || '').slice(5).replace('-', '/'))}부터 시작합니다</span>`;
+  else s = d ? `<b class="evok">✔ 오늘 참여 완료 · 참여번호 ${esc(d)}</b>` : `<b class="evgo">오늘 아직 참여 전 — 아래 내용을 읽고 [확인]을 눌러 주세요</b>`;
+  const won = E.won ? `<div class="evwon">🎉 이번 회차 행운 당첨번호 <b>${esc(E.won.code)}</b> 나왔어요!</div>` : '';
+  const mine = (E.myWin || []).map(w => `<button class="lnk" data-mywin="${esc(w.code)}">🎁 내 당첨 보기 (${esc(w.code)})</button>`).join(' ');
+  el.innerHTML = `<div class="evc"><div class="evh">🎁 행운 이벤트 <span>2주마다 1명 · 상품권</span></div>
+    <div class="evs">${s}</div>${won}${mine ? `<div style="margin-top:6px">${mine}</div>` : ''}
+    <div class="cnt" style="margin-top:4px">하루 1번 · 매일 참여할수록 기회가 늘어요${E.from && E.round ? ` · 이번 회차 ${esc(E.from.slice(5).replace('-', '/'))}~${esc(E.to.slice(5).replace('-', '/'))}` : ''}</div></div>`;
+  document.querySelectorAll('[data-mywin]').forEach(b => b.onclick = () => evWinShow(b.dataset.mywin));
+}
+function evWinShow(code) {
+  let ov = $('evWin');
+  if (!ov) { ov = document.createElement('div'); ov.id = 'evWin'; document.body.appendChild(ov); }
+  ov.innerHTML = `<div class="evwbox"><div class="evconf">🎉</div><div class="evw1">축! 당첨</div>
+    <div class="evw2">행운 이벤트 당첨번호</div><div class="evcode">${esc(code)}</div>
+    <div class="evw3">이 화면을 <b>캡처</b>해서<br><b>이성희 과장</b>(관리감독자)에게 보여주세요.<br>지급할 때 <b>그날 읽은 내용</b>을 물어봅니다.</div>
+    <button class="submit" id="evWinClose">확인</button></div>`;
+  ov.style.display = 'flex'; $('evWinClose').onclick = () => { ov.style.display = 'none'; };
+}
+async function evLoad() {
+  evCardRender();
+  if (!team) return;
+  try { const o = await (await fetch(`${ENDPOINT}?action=ev&dev=${DEV}`)).json(); if (o.ok) { EV = o;
+    if (o.joined && !evDone()) store.set(evKey(), String(o.no));
+    if (!o.joined && evDone() && evDone() !== 'mgr') { try { localStorage.removeItem(evKey()); } catch (e) {} }
+    evCardRender(); noticeRender(LAST_NOTICES); topicAckRender(); } } catch (e) {}
+}
+/* 공지 없는 날: 오늘의 TBM 주제 읽고 [확인] */
+let LAST_NOTICES = [];
+function topicAckRender() {
+  const el = $('topicAck'); if (!el) return;
+  if (!team || (LAST_NOTICES && LAST_NOTICES.length)) { el.innerHTML = ''; return; }
+  if (!evOpenAt.tbm) evOpenAt.tbm = Date.now();
+  el.innerHTML = `<div class="cnt" style="margin:6px 0 4px">오늘의 주제 3개를 읽고 확인해 주세요 (행운 이벤트 참여)</div>${evBtnHtml('tbm')}`;
+  const b = el.querySelector('[data-evok]');
+  if (b) b.onclick = () => evPress(b, 'tbm', 'TBM 주제: ' + tbmTopicsTeam(today()).map(t => t.ko[0]).join(' / '), topicAckRender);
+  if (!evDone() && el.querySelector('.evwait')) evTick(topicAckRender);
+}
+
+/* ===== 안전 칭찬 등록 (관리자 폰) ===== */
+const PR_BY = ['이성희', '조찬형', '강연식'];
+let PR = null;
+async function prOpen() {
+  const dl = $('prDlg'); dl.showModal(); $('prMsg').textContent = '명단 불러오는 중…';
+  try {
+    if (!PR) { const o = await (await fetch(`${ENDPOINT}?action=roster&fp=${encodeURIComponent(FIELD_PIN)}`)).json(); if (!o.ok) throw new Error(o.error); PR = o; }
+    const by = store.get('ms_pr_by') || '';
+    const teams = [...new Set(PR.people.map(p => p.team))];
+    $('prBy').innerHTML = '<option value="">등록하는 사람 선택</option>' + PR_BY.map(n => `<option ${n === by ? 'selected' : ''}>${esc(n)}</option>`).join('');
+    $('prName').innerHTML = '<option value="">칭찬할 직원 선택</option>' + teams.map(t => `<optgroup label="${esc(t)}">${PR.people.filter(p => p.team === t)
+      .map(p => `<option value="${esc(p.name)}">${esc(p.name)} (${esc(p.line)})</option>`).join('')}</optgroup>`).join('');
+    $('prCats').innerHTML = PR.cats.map(c => `<button type="button" class="chip" data-cat="${esc(c)}">${esc(c)}</button>`).join('');
+    document.querySelectorAll('[data-cat]').forEach(b => b.onclick = () => { document.querySelectorAll('[data-cat]').forEach(x => x.classList.remove('on')); b.classList.add('on'); });
+    $('prMsg').textContent = '';
+  } catch (e) { $('prMsg').textContent = '불러오기 실패: ' + e.message; }
+}
+async function prSave() {
+  const cat = (document.querySelector('[data-cat].on') || {}).dataset, by = $('prBy').value, name = $('prName').value, why = $('prWhy').value.trim(), m = $('prMsg');
+  if (!by) return m.textContent = '등록하는 사람을 선택해 주세요';
+  if (!name) return m.textContent = '칭찬할 직원을 선택해 주세요';
+  if (by === name) return m.textContent = '본인은 등록할 수 없습니다';
+  if (!cat) return m.textContent = '항목을 선택해 주세요';
+  if (why.length < 4) return m.textContent = '사유를 한 줄 적어 주세요';
+  m.textContent = '저장 중…'; store.set('ms_pr_by', by);
+  try {
+    const o = await (await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ key: API_KEY, type: 'praise', fieldPin: FIELD_PIN, by, name, cat: cat.cat, why }) })).json();
+    if (!o.ok) throw new Error(o.error);
+    m.textContent = '✔ 등록했습니다. 대표 승인 후 지급됩니다.'; $('prWhy').value = ''; $('prName').value = '';
+    document.querySelectorAll('[data-cat]').forEach(x => x.classList.remove('on'));
+  } catch (e) { m.textContent = '저장 실패: ' + e.message; }
+}
+$('prBtn').onclick = prOpen; $('prSave').onclick = prSave; $('prClose').onclick = () => $('prDlg').close();
+
 mgrRender(); pubLoad();
 
 $('tbmBigBtn').onclick = tbmBig; $('bigClose').onclick = () => $('bigDlg').close();
