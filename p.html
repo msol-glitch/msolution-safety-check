@@ -185,6 +185,7 @@
   .evc .evh{font-weight:800;font-size:15px;display:flex;justify-content:space-between;align-items:center}.evc .evh span{font-size:11.5px;color:#FDBA74;font-weight:700}
   .evc .evs{margin-top:6px;font-size:14px}.evc .evok{color:#93C5FD}.evc .evgo{color:#FDBA74}.evc .cnt{color:#CBD5E1!important}
   .menu .evc b{color:inherit;font-size:inherit}.menu .evc .evwon b{color:#FDBA74;font-size:16px;letter-spacing:.5px}.menu .evc b.evgo{color:#FDBA74}.menu .evc b.evok{color:#93C5FD}
+  .evc .evpr{margin-top:8px;border-top:1px solid rgba(255,255,255,.15);padding-top:8px;font-size:13px;line-height:1.55;color:#E2E8F0}.evc .evpr span{color:#94A3B8;font-size:12px}.menu .evc .evpr b{color:#FDBA74;display:inline}
   .evc .evwon{margin-top:8px;background:rgba(253,186,116,.15);border:1px solid #FDBA74;border-radius:10px;padding:7px 10px;font-size:13.5px}
   .menu .evc button.lnk{color:#FDBA74;font-weight:700;font-size:13.5px;background:none;border:0;padding:0;width:auto}
   .menu button.evwait,.menu .ntc button.evwait{width:100%;font:inherit;font-weight:800;border-radius:10px;padding:11px;text-align:center;background:#F1F5F9;color:#64748B;border:1px dashed #94A3B8}
@@ -1185,7 +1186,7 @@ $('mgrOffBtn').onclick = () => { FIELD_PIN = ''; try { localStorage.removeItem('
  */
 const EV_WAIT = 5;   // 펼친 뒤 몇 초 지나야 확인 가능
 const evKey = () => 'ms_ev_' + today();
-let EV = null, evOpenAt = {}, evTimer = null;
+let EV = null, EVP = null, evOpenAt = {}, evTimer = null;
 function evDone() { return store.get(evKey()); }
 async function evJoin(how, what) {
   const o = await (await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ key: API_KEY, type: 'evjoin', team, dev: DEV, how, what, fieldPin: FIELD_PIN }) })).json();
@@ -1222,9 +1223,12 @@ function evCardRender() {
   else if (E.round === 0) s = `<span class="cnt">${esc((E.start || '').slice(5).replace('-', '/'))}부터 시작합니다</span>`;
   else s = d ? `<b class="evok">✔ 오늘 참여 완료 · 참여번호 ${esc(d)}</b>` : `<b class="evgo">오늘 아직 참여 전 — 아래 내용을 읽고 [확인]을 눌러 주세요</b>`;
   const won = E.won ? `<div class="evwon">🎉 이번 회차 행운 당첨번호 <b>${esc(E.won.code)}</b> 나왔어요!</div>` : '';
+  const P = EVP || {}, mm = String(new Date().getMonth() + 1).padStart(2, '0');
+  const pn = (P.pays || []).filter(x => x.date.slice(0, 2) === mm).length, r0 = (P.recent || [])[0];
+  const praise = (r0 || pn) ? `<div class="evpr">${r0 ? `⭐ 최근 칭찬 · <b>${esc(r0.cat)}</b> ${esc(r0.why)} <span>${esc(r0.date)}</span>` : ''}${pn ? `<div>🎁 이번 달 상품권 지급 <b>${pn}건</b></div>` : ''}</div>` : '';
   const mine = (E.myWin || []).map(w => `<button class="lnk" data-mywin="${esc(w.code)}">🎁 내 당첨 보기 (${esc(w.code)})</button>`).join(' ');
   el.innerHTML = `<div class="evc"><div class="evh">🎁 행운 이벤트 <span>2주마다 1명 · 상품권</span></div>
-    <div class="evs">${s}</div>${won}${mine ? `<div style="margin-top:6px">${mine}</div>` : ''}
+    <div class="evs">${s}</div>${won}${praise}${mine ? `<div style="margin-top:6px">${mine}</div>` : ''}
     <div class="cnt" style="margin-top:4px">하루 1번 · 매일 참여할수록 기회가 늘어요${E.from && E.round ? ` · 이번 회차 ${esc(E.from.slice(5).replace('-', '/'))}~${esc(E.to.slice(5).replace('-', '/'))}` : ''}</div></div>`;
   document.querySelectorAll('[data-mywin]').forEach(b => b.onclick = () => evWinShow(b.dataset.mywin));
 }
@@ -1244,6 +1248,7 @@ async function evLoad() {
     if (o.joined && !evDone()) store.set(evKey(), String(o.no));
     if (!o.joined && evDone() && evDone() !== 'mgr') { try { localStorage.removeItem(evKey()); } catch (e) {} }
     evCardRender(); noticeRender(LAST_NOTICES); topicAckRender(); } } catch (e) {}
+  try { const d = await (await fetch(`${ENDPOINT}?action=pubsum`)).json(); if (d.ok) { EVP = d; evCardRender(); } } catch (e) {}
 }
 /* 공지 없는 날: 오늘의 TBM 주제 읽고 [확인] */
 let LAST_NOTICES = [];
