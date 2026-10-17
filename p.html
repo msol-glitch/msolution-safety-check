@@ -1222,14 +1222,14 @@ function evCardRender() {
   if (FIELD_PIN) s = '<span class="cnt">관리자 폰은 행운 이벤트에서 제외됩니다</span>';
   else if (E.round === 0) s = `<span class="cnt">${esc((E.start || '').slice(5).replace('-', '/'))}부터 시작합니다</span>`;
   else s = d ? `<b class="evok">✔ 오늘 참여 완료 · 참여번호 ${esc(d)}</b>` : `<b class="evgo">오늘 아직 참여 전 — 아래 내용을 읽고 [확인]을 눌러 주세요</b>`;
-  const won = E.won ? `<div class="evwon">🎉 이번 회차 행운 당첨번호 <b>${esc(E.won.code)}</b> 나왔어요!</div>` : '';
+  const won = E.won ? `<div class="evwon">🎉 ${E.mode === 'v2' ? '최근' : '이번 회차'} 행운 당첨번호 <b>${esc(E.won.code)}</b> 나왔어요!</div>` : '';
   const P = EVP || {}, mm = String(new Date().getMonth() + 1).padStart(2, '0');
   const pn = (P.pays || []).filter(x => x.date.slice(0, 2) === mm).length, r0 = (P.recent || [])[0];
   const praise = (r0 || pn) ? `<div class="evpr">${r0 ? `⭐ 최근 칭찬 · <b>${esc(r0.cat)}</b> ${esc(r0.why)} <span>${esc(r0.date)}</span>` : ''}${pn ? `<div>🎁 이번 달 상품권 지급 <b>${pn}건</b></div>` : ''}</div>` : '';
   const mine = (E.myWin || []).map(w => `<button class="lnk" data-mywin="${esc(w.code)}">🎁 내 당첨 보기 (${esc(w.code)})</button>`).join(' ');
-  el.innerHTML = `<div class="evc"><div class="evh">🎁 행운 이벤트 <span>2주마다 1명 · 상품권</span></div>
+  el.innerHTML = `<div class="evc"><div class="evh">🎁 행운 이벤트 <span>${E.mode === 'v2' ? '언제 당첨될지 몰라요 · 상품권' : '2주마다 1명 · 상품권'}</span></div>
     <div class="evs">${s}</div>${won}${praise}${mine ? `<div style="margin-top:6px">${mine}</div>` : ''}
-    <div class="cnt" style="margin-top:4px">하루 1번 · 매일 참여할수록 기회가 늘어요${E.from && E.round ? ` · 이번 회차 ${esc(E.from.slice(5).replace('-', '/'))}~${esc(E.to.slice(5).replace('-', '/'))}` : ''}</div></div>`;
+    <div class="cnt" style="margin-top:4px">하루 1번 · ${E.mode === 'v2' ? '언제 당첨될지 몰라요 · 매일 참여하세요' : '매일 참여할수록 기회가 늘어요'}${E.from && E.round ? ` · 이번 회차 ${esc(E.from.slice(5).replace('-', '/'))}~${esc(E.to.slice(5).replace('-', '/'))}` : ''}</div></div>`;
   document.querySelectorAll('[data-mywin]').forEach(b => b.onclick = () => evWinShow(b.dataset.mywin));
 }
 function evWinShow(code) {
