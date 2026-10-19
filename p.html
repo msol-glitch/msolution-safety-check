@@ -248,6 +248,7 @@
     <button data-type="tbm" style="border-color:#EA580C;background:#FFF7ED"><b>TBM (작업 전 안전회의)</b><span>시작 누르고 → 끝나면 마치기 · 오늘의 안전 주제 3개 · 외국어 지원</span></button>
     <button data-type="5s"><b>3정5행 점검</b><span>자재·제품 관리, 작업장 정리정돈, 품질, 안전</span></button>
     <button id="prBtn" style="border-color:#1D4ED8;background:#EFF6FF;display:none"><b>⭐ 안전 칭찬 등록</b><span>잘한 직원 추천 → 대표 승인 → 상품권 · 사유는 이름 없이 한 줄</span></button>
+    <button id="actBtn" style="border-color:#16A34A;background:#F0FDF4;display:none"><b>🛠 조치 입력</b><span>우리 팀 개선 필요 건 → 조치 내용·사진 → 완료 (상시평가 자동 반영)</span></button>
     <a href="s.html" style="display:block;text-align:center;font-weight:800;color:var(--navy);background:#fff;border:1px solid #CBD5E1;border-radius:12px;padding:12px;margin:4px 0 10px;text-decoration:none">🛡 우리 회사 안전 참여 현황 보기 ›</a>
     <div class="cnt" style="text-align:center;margin:4px 0 10px"><a href="guide.html" style="font-weight:700;color:var(--navy)">📖 사용 설명서 보기</a></div>
   <div id="mgrOff" class="cnt" style="text-align:center">관리자 폰으로 등록됨 · <button class="lnk" id="mgrOffBtn">등록 해제</button></div>
@@ -1173,7 +1174,7 @@ function mgrRender() {
   $('mgrLock').style.display = on || !MGR_OPEN ? 'none' : '';
   document.querySelectorAll('#menu [data-type]').forEach(b => b.style.display = on ? '' : 'none');
   $('mgrOff').style.display = on ? '' : 'none';
-  $('prBtn').style.display = on ? '' : 'none'; evCardRender();
+  $('prBtn').style.display = on ? '' : 'none'; if ($('actBtn')) $('actBtn').style.display = on ? '' : 'none'; evCardRender();
 }
 $('mgrBtn').onclick = async () => {
   const pin = $('mgrPin').value.trim(), m = $('mgrMsg'); m.textContent = '확인 중…';
@@ -1511,5 +1512,95 @@ $('tbmBigBtn').onclick = tbmBig; $('bigClose').onclick = () => $('bigDlg').close
 })();
 </script>
 
+<script>
+/* v15 (2026-10-19 대표 지시): 직원 폰에 창이 열린 채로 남아도 '어제 화면'이 보이지 않게
+ *  - 날짜가 바뀐 뒤 다시 보면 → 처음부터 새로 불러옴 (오늘 공지·오늘 TBM 주제)
+ *  - 10분 넘게 다른 앱에 있다가 돌아오면 → 새로 불러옴
+ *  - 점검·TBM 입력 중이거나 서명 중이면 새로 불러오지 않음 (입력 내용 보호)
+ *  - 서버 변경 없음 */
+(() => {
+  const kday = () => new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10);
+  const LOAD_DAY = kday(); let hiddenAt = 0;
+  const shown = id => { const e = document.getElementById(id); return !!e && e.style.display !== 'none' && getComputedStyle(e).display !== 'none'; };
+  const busy = () => document.documentElement.classList.contains('signing') || shown('form') || shown('tbmForm') || shown('actSheet');
+  window.__p15 = { LOAD_DAY, busy, set day(v) { window.__p15day = v; } };
+  function check(fromHidden) {
+    const dayChanged = (window.__p15day || kday()) !== LOAD_DAY;
+    const longAway = fromHidden && hiddenAt && Date.now() - hiddenAt > 10 * 60000;
+    if ((dayChanged || longAway) && !busy()) location.reload();
+  }
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') hiddenAt = Date.now(); else check(true); });
+  window.addEventListener('pageshow', e => { if (e.persisted) check(true); });
+  window.addEventListener('focus', () => check(true));
+  setInterval(() => check(false), 60000);
+})();
+</script>
+<script>
+/* v16 (2026-10-19 대표 지시): 관리자 폰 조치 입력 — 우리 팀 개선 필요 건 → 조치 내용·사진(최대 3장) → 완료
+ *  사진은 줄여서(1600px) 올림, 완료된 건은 덮어쓰지 않고 정정 이력으로. 상시평가 연결은 서버가 처리(폰 입력은 '대표 확인 대기') */
+(() => {
+  const sheet = document.createElement('section'); sheet.id = 'actSheet';
+  sheet.style.cssText = 'display:none;position:fixed;inset:0;z-index:60;background:#F1F5F9;overflow:auto;padding:12px 14px 60px;box-sizing:border-box';
+  document.body.appendChild(sheet);
+  const box = 'background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:12px 14px;margin-top:10px';
+  const inp = 'width:100%;box-sizing:border-box;font:inherit;font-size:16px;padding:10px;border:1px solid #CBD5E1;border-radius:10px';
+  const top = t => `<div style="display:flex;align-items:center;gap:8px"><button type="button" id="acBack" style="font:inherit;font-weight:700;border:1px solid #CBD5E1;background:#fff;border-radius:10px;padding:8px 12px">← 닫기</button><b style="font-size:17px">${t}</b></div>`;
+  let list = [];
+  const shrink = file => new Promise((ok, no) => { const img = new Image(), u = URL.createObjectURL(file);
+    img.onload = () => { const k = Math.min(1, 1600 / Math.max(img.width, img.height)), c = document.createElement('canvas');
+      c.width = Math.round(img.width * k); c.height = Math.round(img.height * k); c.getContext('2d').drawImage(img, 0, 0, c.width, c.height); URL.revokeObjectURL(u); ok(c.toDataURL('image/jpeg', 0.8)); };
+    img.onerror = () => { URL.revokeObjectURL(u); no(new Error('사진을 읽을 수 없습니다')); }; img.src = u; });
+  const close = () => { sheet.style.display = 'none'; sheet.innerHTML = ''; document.body.style.overflow = ''; };
+  async function open() {
+    sheet.style.display = 'block'; document.body.style.overflow = 'hidden';
+    sheet.innerHTML = top('🛠 조치 입력') + `<div style="${box}">불러오는 중…</div>`; document.getElementById('acBack').onclick = close;
+    try {
+      const o = await (await fetch(`${ENDPOINT}?action=acts&fp=${encodeURIComponent(FIELD_PIN)}&team=${team}`)).json();
+      if (!o.ok) throw new Error(o.error || '불러오기 실패'); list = o.acts; draw();
+    } catch (e) { sheet.innerHTML = top('🛠 조치 입력') + `<div style="${box};color:#B91C1C">${esc(e.message)}</div>`; document.getElementById('acBack').onclick = close; }
+  }
+  function draw() {
+    const op = list.filter(a => a.status === '미조치'), dn = list.filter(a => a.status !== '미조치');
+    const card = (a, i) => `<div style="${box}"><div style="font-size:12px;color:#64748B">${esc(a.found)} · ${esc(a.kind)} · ${esc(a.inspector)}</div>
+      <div style="font-weight:800;margin:3px 0">${esc(a.label)}</div>${a.note ? `<div style="font-size:14px;color:#334155">${esc(a.note)}</div>` : ''}
+      ${a.status === '미조치' ? `<button type="button" data-i="${i}" style="margin-top:10px;width:100%;font:inherit;font-weight:800;font-size:16px;border:0;border-radius:10px;padding:12px;background:#16A34A;color:#fff">조치 입력</button>`
+        : `<div style="margin-top:8px;font-size:14px;white-space:pre-wrap;background:#F0FDF4;border-radius:8px;padding:8px">✅ ${esc(a.action)}<br><small>${esc(a.by)} · ${esc(a.date)}${a.photos.length ? ' · 📷 ' + a.photos.length + '장' : ''}${a.risk ? ' · 상시평가 ' + esc(a.risk.no) : ''}</small></div>
+          <button type="button" data-i="${i}" style="margin-top:8px;font:inherit;font-size:13px;border:1px solid #CBD5E1;background:#fff;border-radius:8px;padding:6px 10px">정정</button>`}</div>`;
+    sheet.innerHTML = top('🛠 조치 입력') + `<div style="font-size:13px;color:#64748B;margin-top:8px">우리 팀 진행 중 ${op.length}건 · 최근 2주 완료 ${dn.length}건</div>`
+      + (op.length ? op.map(a => card(a, list.indexOf(a))).join('') : `<div style="${box}">진행 중인 조치가 없습니다 👍</div>`)
+      + (dn.length ? `<div style="margin-top:16px;font-weight:800">최근 완료</div>` + dn.map(a => card(a, list.indexOf(a))).join('') : '');
+    document.getElementById('acBack').onclick = close;
+    sheet.querySelectorAll('[data-i]').forEach(b => b.onclick = () => form(list[+b.dataset.i]));
+  }
+  function form(a) {
+    const fix = a.status !== '미조치'; let pics = [];
+    sheet.innerHTML = top(fix ? '조치 정정' : '조치 입력') + `<div style="${box}"><div style="font-size:12px;color:#64748B">${esc(a.found)} · ${esc(a.kind)}</div><div style="font-weight:800">${esc(a.label)}</div>${a.note ? `<div style="font-size:14px">${esc(a.note)}</div>` : ''}
+      ${fix ? `<div style="font-size:12px;color:#64748B;margin-top:6px;white-space:pre-wrap">기존: ${esc(a.action)} — 지우지 않고 정정 이력으로 추가됩니다</div>` : ''}</div>
+      <div style="${box}"><label style="font-size:13px;font-weight:700">조치 내용<textarea id="acT" rows="3" maxlength="500" style="${inp};margin-top:4px" placeholder="예: 적재물 이동, 바닥 통로 표시"></textarea></label>
+      <label style="display:block;font-size:13px;font-weight:700;margin-top:10px">조치자<select id="acB" style="${inp};margin-top:4px"><option value="">선택</option><option>이성희</option><option>조찬형</option><option>강연식</option><option>이민희</option></select></label>
+      <label style="display:block;font-size:13px;font-weight:700;margin-top:10px">조치완료일<input id="acD" type="date" style="${inp};margin-top:4px"></label>
+      <div style="font-size:13px;font-weight:700;margin-top:10px">사진 (최대 3장 · 설비·현장 위주, 사람 얼굴 제외)</div>
+      <div id="acPv" style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap"></div>
+      <label id="acPL" style="display:block;text-align:center;margin-top:8px;border:2px dashed #94A3B8;border-radius:10px;padding:12px;font-weight:700;color:#334155">📷 사진 찍기 / 고르기<input id="acP" type="file" accept="image/*" capture="environment" style="display:none"></label>
+      <div id="acM" style="margin-top:10px;font-size:14px;color:#B91C1C;min-height:18px"></div>
+      <button type="button" id="acS" style="margin-top:6px;width:100%;font:inherit;font-weight:800;font-size:17px;border:0;border-radius:12px;padding:14px;background:#1B3A6B;color:#fff">${fix ? '정정 저장' : '저장 · 완료 처리'}</button></div>`;
+    document.getElementById('acBack').onclick = () => draw();
+    const $$ = id => document.getElementById(id), td = today(); $$('acD').value = td; $$('acD').max = td;
+    const pv = () => { $$('acPv').innerHTML = pics.map((p, i) => `<span style="position:relative"><img src="${p}" style="height:72px;border-radius:8px;border:1px solid #E2E8F0"><button type="button" data-rm="${i}" style="position:absolute;top:-6px;right:-6px;border:0;border-radius:50%;width:24px;height:24px;background:#0F172A;color:#fff">×</button></span>`).join('');
+      $$('acPv').querySelectorAll('[data-rm]').forEach(b => b.onclick = () => { pics.splice(+b.dataset.rm, 1); pv(); }); $$('acPL').style.display = pics.length >= 3 ? 'none' : 'block'; };
+    $$('acP').onchange = async e => { const f = e.target.files[0]; e.target.value = ''; if (!f) return; try { pics.push(await shrink(f)); pv(); } catch (er) { $$('acM').textContent = er.message; } };
+    $$('acS').onclick = async () => {
+      const m = $$('acM'); $$('acS').disabled = true; m.style.color = '#334155'; m.textContent = '저장 중…' + (pics.length ? ` (사진 ${pics.length}장)` : '');
+      try {
+        const o = await (await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ key: API_KEY, fp: FIELD_PIN, type: 'actdone', akey: a.key, action: $$('acT').value.trim(), by: $$('acB').value, date: $$('acD').value, photos: pics, fix }) })).json();
+        if (!o.ok) throw new Error(o.error || '저장 실패');
+        m.style.color = '#15803D'; m.textContent = '✅ 저장됨' + (o.photos ? ` · 사진 ${o.photos}장` : '') + (o.risk ? ` · 상시평가 ${o.risk} 반영` : '');
+        setTimeout(open, 900);
+      } catch (er) { m.style.color = '#B91C1C'; m.textContent = er.message; $$('acS').disabled = false; }
+    };
+  }
+  const btn = document.getElementById('actBtn'); if (btn) btn.onclick = open;
+})();
+</script>
 </body>
 </html>

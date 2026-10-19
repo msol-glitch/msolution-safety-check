@@ -815,19 +815,66 @@ function patterns(rep, s28) {
 }
 
 /* ===== 조치관리 화면 ===== */
-function renderActions() {
+/* ===== v16 조치관리: 화면에서 조치 입력 · 사진 · 상시평가 연결 (2026-10-19 대표 지시) ===== */
+let ACTS = null;
+async function renderActions() {
   const v = $('actionsView'); v.classList.remove('hide');
-  if (!AN) { v.innerHTML = emptyMsg('불러오는 중…'); return; }
-  if (AN.err) { v.innerHTML = emptyMsg('불러오기 실패: ' + esc(AN.err)); return; }
-  const rows = [...AN.acts].sort((a, b) => (a.status === '미조치' ? 0 : 1) - (b.status === '미조치' ? 0 : 1) || b.found.localeCompare(a.found));
-  const open = rows.filter(a => a.status === '미조치').length;
+  if (!ACTS) v.innerHTML = emptyMsg('불러오는 중…');
+  try { ACTS = (await api('action=acts')).acts; } catch (e) { if (!ACTS) { v.innerHTML = emptyMsg('불러오기 실패: ' + esc(e.message)); return; } }
+  if (location.hash.slice(1) !== 'actions') return;
+  const rows = [...ACTS].sort((a, b) => (a.status === '미조치' ? 0 : 1) - (b.status === '미조치' ? 0 : 1) || b.found.localeCompare(a.found));
+  const open = rows.filter(a => a.status === '미조치').length, linked = rows.filter(a => a.risk).length;
   v.innerHTML = `<div class="sum"><div class="${open ? 'red' : ''}">조치 진행<strong>${num(open)}건</strong></div><div>완료<strong>${num(rows.length - open)}건</strong></div>
-    <div>조회 기간<strong style="font-size:14px">${AN.from} ~ ${AN.to}</strong></div><div>원본<strong style="font-size:14px"><a href="${esc(SUM.sheets.hub)}" target="_blank" rel="noopener">조치관리 시트</a></strong></div></div>
-    ${rows.length ? `<table><thead><tr><th style="width:11%">발견일</th><th style="width:9%">구분</th><th style="width:9%">팀</th><th>항목 · 내용</th><th>조치 내용</th><th style="width:9%">조치자</th><th style="width:11%">완료일</th><th style="width:9%">상태</th></tr></thead>
-    <tbody>${rows.map(a => `<tr><td class="c">${esc(a.found)}</td><td class="c">${a.kind === 'patrol' ? '순회점검' : '3정5행'}</td><td class="c">${esc(a.area)}</td><td>${esc(a.label)}${a.note ? ' — ' + esc(a.note) : ''}</td><td>${esc(a.action)}</td><td class="c">${esc(a.by)}</td><td class="c">${esc(a.date)}</td>
-      <td class="c"><span class="pill ${a.status === '미조치' ? 'open' : 'done'}">${a.status === '미조치' ? '조치 진행' : esc(a.status === '미조치' ? '조치 진행' : a.status)}</span></td></tr>`).join('')}</tbody>
-    <tfoot><tr><td colspan="7" class="c">합계</td><td class="c">${num(rows.length)}건</td></tr></tfoot></table>` : '<div class="doc"><p class="empty">조치 대상이 없습니다.</p></div>'}
-    <p class="note">조치 입력·완료 처리는 지금처럼 원본 시트에서 합니다. (화면에서 바로 처리하는 기능은 다음 단계)</p>`;
+    <div>상시평가 연결<strong>${num(linked)}건</strong></div><div>원본<strong style="font-size:14px"><a href="${esc(SUM.sheets.hub)}" target="_blank" rel="noopener">조치관리 시트</a></strong></div></div>
+    ${rows.length ? `<table><thead><tr><th style="width:8%">발견일</th><th style="width:7%">구분</th><th style="width:7%">팀</th><th>항목 · 내용</th><th>조치 내용</th><th style="width:7%">조치자</th><th style="width:8%">완료일</th><th style="width:7%">사진</th><th style="width:9%">상시평가</th><th style="width:7%">상태</th><th style="width:8%"></th></tr></thead><tbody>
+    ${rows.map((a, i) => `<tr><td class="c">${esc(a.found)}</td><td class="c">${esc(a.kind)}</td><td class="c">${esc(a.team)}</td><td>${esc(a.label)}${a.note ? ' — ' + esc(a.note) : ''}</td>
+      <td style="white-space:pre-wrap">${esc(a.action)}</td><td class="c">${esc(a.by)}</td><td class="c">${esc(a.date)}</td>
+      <td class="c">${a.photos.map((u, j) => `<a href="${esc(u)}" target="_blank" rel="noopener">📷${j + 1}</a>`).join(' ')}</td>
+      <td class="c">${a.risk ? `<b>${esc(a.risk.no)}</b>${a.risk.confirm ? '<br><small>' + esc(a.risk.confirm) + '</small>' : ''}` : '<small style="color:var(--mute)">미등록</small>'}</td>
+      <td class="c"><span class="pill ${a.status === '미조치' ? 'open' : 'done'}" style="white-space:nowrap">${a.status === '미조치' ? '조치 진행' : '완료'}</span></td>
+      <td class="c"><button type="button" class="btn ${a.status === '미조치' ? '' : 'ghost'} sm" style="white-space:nowrap" data-act="${i}">${a.status === '미조치' ? '조치 입력' : '정정'}</button></td></tr>`).join('')}</tbody>
+    <tfoot><tr><td colspan="10" class="c">합계</td><td class="c">${num(rows.length)}건</td></tr></tfoot></table>` : '<div class="doc"><p class="empty">조치 대상이 없습니다.</p></div>'}
+    <p class="note">사진은 최대 3장(설비·현장 위주, 사람 얼굴 제외). 완료된 조치는 덮어쓰지 않고 [정정] 이력으로 남습니다. 위험성평가 '10.수시평가'에 등록된 항목은 조치완료일·사진이 상시평가 줄에 자동 기록되고, 관리자 폰 입력분은 '대표 확인 대기'로 표시됩니다.</p>`;
+  v.querySelectorAll('[data-act]').forEach(b => b.onclick = () => actForm(rows[+b.dataset.act]));
+}
+function actShrink(file) {
+  return new Promise((ok, no) => { const img = new Image(), u = URL.createObjectURL(file);
+    img.onload = () => { const k = Math.min(1, 1600 / Math.max(img.width, img.height)), c = document.createElement('canvas');
+      c.width = Math.round(img.width * k); c.height = Math.round(img.height * k); c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(u); ok(c.toDataURL('image/jpeg', 0.8)); };
+    img.onerror = () => { URL.revokeObjectURL(u); no(new Error('사진을 읽을 수 없습니다')); }; img.src = u; });
+}
+function actForm(a) {
+  const fix = a.status !== '미조치', inp = 'font:inherit;padding:7px 9px;border:1px solid var(--line2);border-radius:8px;box-sizing:border-box';
+  const wrap = document.createElement('div'); wrap.className = 'pp-modal';
+  wrap.innerHTML = `<div class="card"><h2>${fix ? '조치 정정' : '조치 입력'} <small>${esc(a.team)} · ${esc(a.kind)} · 발견 ${esc(a.found)}</small></h2>
+    <p style="margin:4px 0 10px;font-size:14px"><b>${esc(a.label)}</b>${a.note ? ' — ' + esc(a.note) : ''}</p>
+    ${fix ? `<p class="note" style="white-space:pre-wrap;margin-top:0">기존 기록: ${esc(a.action)} (${esc(a.by)} · ${esc(a.date)}) — 지우지 않고 아래에 정정 이력으로 추가됩니다</p>` : ''}
+    <label style="display:block;font-size:13px">조치 내용<textarea id="acT" rows="3" maxlength="500" style="width:100%;${inp}"></textarea></label>
+    <div style="display:flex;gap:10px;margin-top:8px;flex-wrap:wrap">
+      <label style="font-size:13px">조치자<input id="acB" list="acBL" maxlength="20" style="display:block;${inp}"></label>
+      <datalist id="acBL"><option>이성희</option><option>조찬형</option><option>강연식</option><option>이민희</option></datalist>
+      <label style="font-size:13px">조치완료일<input id="acD" type="date" style="display:block;${inp}"></label></div>
+    <label style="display:block;font-size:13px;margin-top:8px">사진 (최대 3장 · 설비·현장 위주, 사람 얼굴 제외)<input id="acP" type="file" accept="image/*" multiple style="display:block;margin-top:4px"></label>
+    <div id="acPv" style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap"></div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;align-items:center;margin-top:12px">
+      <span id="acM" style="margin-right:auto;font-size:13px;color:var(--bad)"></span>
+      <button type="button" class="btn ghost" id="acX">닫기</button><button type="button" class="btn" id="acS">${fix ? '정정 저장' : '저장 · 완료 처리'}</button></div></div>`;
+  document.body.appendChild(wrap);
+  const today = dstr(kstNow()); $('acD').value = today; $('acD').max = today;
+  let pics = [];
+  const pv = () => { $('acPv').innerHTML = pics.map((p, i) => `<span style="position:relative"><img src="${p}" style="height:64px;border-radius:6px;border:1px solid var(--line)"><button type="button" data-rm="${i}" style="position:absolute;top:-6px;right:-6px;border:0;border-radius:50%;width:20px;height:20px;background:#0F172A;color:#fff;cursor:pointer">×</button></span>`).join('');
+    $('acPv').querySelectorAll('[data-rm]').forEach(b => b.onclick = () => { pics.splice(+b.dataset.rm, 1); pv(); }); };
+  $('acP').onchange = async e => { const m = $('acM'); for (const f of [...e.target.files]) { if (pics.length >= 3) { m.textContent = '사진은 3장까지입니다'; break; } try { pics.push(await actShrink(f)); } catch (er) { m.textContent = er.message; } } e.target.value = ''; pv(); };
+  $('acX').onclick = () => wrap.remove();
+  $('acS').onclick = async () => {
+    const m = $('acM'); $('acS').disabled = true; m.textContent = '저장 중…' + (pics.length ? ` (사진 ${pics.length}장)` : '');
+    try {
+      const o = await (await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ key: API_KEY, pin: PIN, type: 'actdone', akey: a.key, action: $('acT').value.trim(), by: $('acB').value.trim(), date: $('acD').value, photos: pics, fix }) })).json();
+      if (!o.ok) throw new Error(o.error || '저장 실패');
+      wrap.remove(); await refresh(true);
+    } catch (er) { m.textContent = er.message; $('acS').disabled = false; }
+  };
 }
 
 function renderSoon(n) {
@@ -1102,6 +1149,7 @@ function riskForm(c) {
       const o = await riskPost({ type: 'riskreg', ckey: c ? c.key : '', v: { src: c ? c.src : '직접 추가', srcDate: c ? c.date : dstr(kstNow()), team: c ? c.team : '', cat: $('fCat').value,
         cause: $('fCause').value.trim(), hazard: $('fHaz').value.trim(), law: $('fLaw').value.trim(), cur: $('fCur').value.trim(), L: val.fL, S: val.fS, L2: val.fL2 || 0, S2: val.fS2 || 0,
         measure: $('fMea').value.trim(), owner: $('fOwn').value, due: $('fDue').value ? $('fDue').value.slice(2).replace(/-/g, '.') : '', files: $('fFile').value } });
+      if (c && /^A\|/.test(c.key)) { try { await riskPost({ type: 'actsync', akey: c.key }); } catch (e) {} }   // v16: 이미 끝난 조치면 상시평가 줄에 조치완료일·사진 채움
       $('rkForm').innerHTML = ''; renderRisk(); alertNote(o.no + ' 등록됨');
     } catch (e) { m.textContent = e.message; $('fSave').disabled = false; }
   };
