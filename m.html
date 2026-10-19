@@ -434,7 +434,7 @@
   <div class="tiny" id="railLinks"></div>
 </aside>
 <main>
-  <div class="topline"><div><h1 id="pageTitle">오늘의 안전경영 현황</h1><p id="today"></p></div><span><span class="bk" id="bkInfo" title="매일 새벽 2시 드라이브 사본 · 매주 월요일 엑셀 메일">백업 확인 중…</span> <button class="btn ghost sm" id="bkPc">💾 PC에 백업 받기</button></span></div>
+  <div class="topline"><div><h1 id="pageTitle">오늘의 안전경영 현황</h1><p id="today"></p></div><span><span id="liveBar" style="display:inline-flex;align-items:center;gap:6px;margin-right:8px;vertical-align:middle"><button type="button" id="refNow" title="지금 새 기록을 불러옵니다" style="font:inherit;font-size:12px;font-weight:700;border:1px solid #CBD5E1;background:#fff;color:#1B3A6B;border-radius:999px;padding:3px 10px;cursor:pointer">⟳ 새로 불러오기</button><span id="newMark"></span></span><span class="bk" id="bkInfo" title="매일 새벽 2시 드라이브 사본 · 매주 월요일 엑셀 메일">백업 확인 중…</span> <button class="btn ghost sm" id="bkPc">💾 PC에 백업 받기</button></span></div>
 
   <div class="lock hide" id="lock">
     <b>관리자 PIN</b>
@@ -464,7 +464,7 @@
       <div class="cv" id="pos"><div class="wait">불러오는 중…</div></div>
       <div class="clock">
         <div><span class="live"></span><b id="clk">--</b></div>
-        <div class="up">갱신 <b id="upd">--:--:--</b> · 5분 자동 · 다음 <b id="nxt">5:00</b></div>
+        <div class="up">갱신 <b id="upd">--:--:--</b> · 1분 자동 · 다음 <b id="nxt">1:00</b></div>
       </div>
      </div>
      <div class="card aicard">
@@ -587,9 +587,9 @@ async function start() {
   try { SUM = await api('action=summary'); } catch (e) { return showLock(e.message); }
   try { sessionStorage.setItem('ms_pin', PIN); } catch (e) {}
   $('lock').classList.add('hide');
-  lastUpd = kstNow(); nextAt = Date.now() + 300000;
+  lastUpd = kstNow(); nextAt = Date.now() + REF_MS;
   route();
-  loadAnalytics();
+  lastAna = Date.now(); loadAnalytics();
 }
 function showLock(msg) {
   ['home', 'folder', 'actionsView', 'soonView', 'tbmView', 'noticeView', 'riskView', 'praiseView', 'ppeView'].forEach(id => $(id).classList.add('hide'));
@@ -1252,15 +1252,44 @@ function monthSheet(d, team, Y, M, last) {
 }
 
 /* ===== 시계(초 단위) + 5분 자동 갱신 ===== */
-async function refresh() {
-  try { SUM = await api('action=summary'); lastUpd = kstNow(); route(); loadAnalytics(); } catch (e) {}
+/* v15 (2026-10-19 대표 지시): 새로고침 없이 반영
+ *  - 1분마다 + PC 창으로 돌아올 때 자동으로 새 기록을 불러옴
+ *  - 처음 화면: 바로 다시 그림 / 다른 메뉴: 입력·선택 중인 내용을 지우지 않도록 '● 새 기록 보기' 버튼만 표시
+ *  - [⟳ 지금]: 언제든 즉시 다시 불러와 현재 화면을 새로 그림
+ *  - 그래프(AI 데이터 학습 등)는 5분에 한 번만 다시 계산 (서버 부담 줄임) */
+const REF_MS = 60000; let lastAna = 0, refBusy = false, lastRefAt = Date.now();
+function viewBusy() {
+  const a = document.activeElement;
+  if (a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName) && !a.closest('#lock')) return true;
+  if (document.querySelector('.pp-modal')) return true;
+  if (/(^|\s)p-/.test(document.body.className)) return true;
+  return false;
 }
+async function refresh(force) {
+  if (refBusy || !SUM) return; refBusy = true;
+  try {
+    const s = await api('action=summary'), changed = JSON.stringify(s) !== JSON.stringify(SUM);
+    SUM = s; lastUpd = kstNow(); lastRefAt = Date.now(); nextAt = Date.now() + REF_MS;
+    const home = !$('home').classList.contains('hide');
+    if (force || (home && !viewBusy())) {
+      route(); $('newMark').textContent = '';
+      if (home && (force || Date.now() - lastAna > 300000)) { lastAna = Date.now(); loadAnalytics(); }
+    } else {
+      renderNav(location.hash.slice(1));
+      if (changed) $('newMark').innerHTML = '<button type="button" id="newBtn" style="font:inherit;font-size:11px;font-weight:800;border:0;background:#EA580C;color:#fff;border-radius:999px;padding:2px 9px;cursor:pointer">● 새 기록 보기</button>';
+    }
+  } catch (e) {} finally { refBusy = false; }
+}
+document.addEventListener('click', e => { if (e.target && (e.target.id === 'refNow' || e.target.id === 'newBtn')) refresh(true); });
+function backToPc() { if (SUM && Date.now() - lastRefAt > 15000) refresh(false); }
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') backToPc(); });
+window.addEventListener('focus', backToPc);
 function tick() {
   const d = kstNow();
   $('clk').textContent = `${dstr(d)} (${WD[d.getDay()]}) ${p2(d.getHours())}:${p2(d.getMinutes())}:${p2(d.getSeconds())}`;
   if (!SUM) return;
   let left = Math.max(0, Math.round((nextAt - Date.now()) / 1000));
-  if (left === 0) { nextAt = Date.now() + 300000; left = 300; refresh(); }
+  if (left === 0) { nextAt = Date.now() + REF_MS; left = REF_MS / 1000; refresh(false); }
   $('upd').textContent = `${p2(lastUpd.getHours())}:${p2(lastUpd.getMinutes())}:${p2(lastUpd.getSeconds())}`;
   $('nxt').textContent = `${Math.floor(left / 60)}:${p2(left % 60)}`;
 }
