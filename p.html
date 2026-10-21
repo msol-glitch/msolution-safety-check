@@ -223,6 +223,87 @@
   #signOv .sobtn button{font:inherit;font-size:17px;font-weight:800;padding:15px 6px;border-radius:12px;border:0;color:#fff;background:#334155;cursor:pointer}
   #signOv .sobtn #soOk{background:#EA580C}
   html.signing,html.signing body{overflow:hidden;height:100%;overscroll-behavior:none;touch-action:none}
+  /* v17 교육참여 보상 · 오늘의 안전 주제 */
+  .menu .edtop{display:flex;align-items:center;gap:8px;margin:2px 0 8px}.menu .edtop b{font-size:17px;color:var(--navy)}
+  .menu .edtop .lnk{margin-left:auto}
+  .menu .edlang{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+  .menu .edlang button{width:auto;font:inherit;font-size:14px;font-weight:700;border:1px solid #CBD5E1;background:#fff;color:#0F172A;border-radius:999px;padding:6px 13px;text-align:center}
+  .menu .edlang button.on{background:var(--navy);border-color:var(--navy);color:#fff}
+  .edtp{border:1px solid #CBD5E1;border-radius:14px;padding:12px 12px 10px;margin-bottom:10px;background:#fff}
+  .edtp .eh{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+  .edtp .en{flex:none;width:30px;height:30px;border-radius:50%;background:#FFEDD5;color:#9A3412;font-weight:900;font-size:16px;display:flex;align-items:center;justify-content:center}
+  .edtp.hot{border:2px solid #FB923C}.edtp.hot .en{background:#EA580C;color:#fff}
+  .edtp .et{font-size:17.5px;font-weight:800;line-height:1.35;word-break:keep-all}
+  .edtp .eko{font-size:12.5px;color:var(--sub);margin:-4px 0 6px 40px}
+  .edtp .er{display:flex;gap:8px;align-items:flex-start;font-size:16px;line-height:1.55;margin-top:6px;word-break:keep-all}
+  .edtp .er i{flex:none;font-style:normal;font-size:12.5px;font-weight:800;border-radius:6px;padding:2px 8px;margin-top:2px;min-width:44px;text-align:center}
+  .edtp .er.r i{background:#FEE2E2;color:#B91C1C}.edtp .er.m i{background:#DCFCE7;color:#15803D}
+  .edtp .ek{font-size:11.5px;color:var(--sub);margin-top:6px}
+  .menu #topicAck button.edu-ack,.menu .ntc button.edu-ack{display:block;width:100%;min-height:56px;font-size:18px;font-weight:900;border-radius:14px;background:#EA580C;color:#fff;border:0;text-align:center;padding:12px}
+  .menu button.edu-ack small{display:block;font-size:12px;font-weight:700;opacity:.85;margin-top:2px}
+  .menu #topicAck button.ackd,.menu .ntc button.ackd{min-height:48px;font-size:15.5px;text-align:center}
+  .edsend{font-size:12.5px;color:#94A3B8;font-weight:700}
+  .evc .edwon{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;font-size:14.5px}.evc .edwon span{font-size:12px;color:#FDBA74;width:100%}
+  .menu .evc .edwon b{font-size:20px;color:#fff}.evc .edwon em{font-style:normal;color:#FDE68A;font-weight:800}
+  .evc .edlast{margin-top:8px;font-size:13px;color:#CBD5E1}
+  .evc .edrec{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
+  .evc .edrec div{background:rgba(255,255,255,.08);border-radius:10px;padding:6px 8px;text-align:center}
+  .evc .edrec small{display:block;font-size:11px;color:#CBD5E1}.menu .evc .edrec b{display:block;font-size:17px;color:#fff}
+  .edg{border-top:1px solid var(--line);margin-top:10px;padding-top:10px}
+  .edg .edgt{font-size:15.5px;font-weight:800;color:var(--navy)}.edg .edgt span{display:block;font-size:12px;color:var(--sub);font-weight:400}
+  .edg .edgn{margin-top:6px;font-size:14px;color:var(--sub)}.menu .edg .edgn b{font-size:26px;color:#0F172A;font-weight:900}.edg .edgn em{font-style:normal}
+  .edg .edgd{font-size:13px;font-weight:700}.edg .edgd.up{color:#15803D}.edg .edgd.dn{color:#B91C1C}
+  #eduPop{position:fixed;inset:0;background:rgba(15,23,42,.6);display:none;align-items:center;justify-content:center;padding:20px;z-index:9999}
+  #eduPop.on{display:flex}
+  #eduPop .epbox{background:#fff;border-radius:20px;padding:22px 20px 18px;max-width:340px;width:100%;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.25)}
+  #eduPop .epic{width:56px;height:56px;border-radius:50%;background:#DCFCE7;color:#15803D;font-size:30px;font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 10px}
+  #eduPop .ept{font-size:20px;font-weight:900;word-break:keep-all}#eduPop .epko{font-size:12.5px;color:var(--sub)}
+  #eduPop .eplb{margin-top:14px;font-size:13px;color:var(--sub)}
+  #eduPop .epno{font-size:52px;font-weight:900;line-height:1.1;color:#0F172A}#eduPop .epno small{font-size:20px;margin:0 2px}
+  #eduPop .epw{font-size:15px;color:#94A3B8;font-weight:700}
+  #eduPop .epmeta{margin-top:10px;font-size:13px;line-height:1.6;color:#475569;word-break:keep-all}
+  #eduPop button{margin-top:14px;width:100%;padding:13px;border:0;border-radius:12px;background:var(--navy);color:#fff;font:inherit;font-weight:800;font-size:16px}
+  #evWin .erbox{position:relative;overflow:hidden;background:#FFF7E6;border:3px solid #F59E0B;border-radius:22px;padding:26px 20px 18px;max-width:360px;width:100%;text-align:center}
+  #evWin .ercf{position:absolute;inset:0;pointer-events:none}
+  #evWin .ercf i{position:absolute;top:-14px;width:8px;height:13px;border-radius:2px;opacity:.9;animation:edfall 2.6s linear infinite}
+  @keyframes edfall{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(420px) rotate(320deg);opacity:0}}
+  @media (prefers-reduced-motion:reduce){#evWin .ercf{display:none}}
+  #evWin .erdate{position:relative;font-size:13px;font-weight:700;color:#92400E}
+  #evWin .ert{position:relative;font-size:24px;font-weight:900;color:#451A03;margin-top:4px;word-break:keep-all}#evWin .erko{font-size:12.5px;color:#92400E}
+  #evWin .ermed{position:relative;font-size:58px;line-height:1;margin:10px 0 6px;animation:edpop .7s ease-out}
+  @keyframes edpop{0%{transform:scale(.3)}70%{transform:scale(1.15)}100%{transform:scale(1)}}
+  #evWin .erlb{position:relative;font-size:13px;color:#92400E}
+  #evWin .erno{position:relative;font-size:56px;font-weight:900;color:#451A03;line-height:1.05}#evWin .erno small{font-size:20px;margin:0 2px}
+  #evWin .erprize{position:relative;display:inline-block;margin:10px 0 4px;background:#fff;border:1px solid #F59E0B;border-radius:10px;padding:8px 16px;font-size:17px;font-weight:900;color:#78350F}
+  #evWin .ercode{position:relative;font-size:12px;color:#B45309;letter-spacing:.5px}
+  #evWin .erhow{position:relative;font-size:14px;line-height:1.6;color:#78350F;margin:10px 0 14px;word-break:keep-all}
+  /* v18 TBM 팀 단위 */
+  .tl18s{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .tl18{position:relative;border-radius:12px;padding:10px 10px 30px;min-height:70px;display:flex;flex-direction:column;gap:3px}
+  .tl18 b{font-size:16px;font-weight:900;line-height:1.2}.tl18 span{font-size:13px}
+  .tl18.on{background:#1B3A6B;color:#fff}.tl18.fin{background:#F1F5F9;color:#94A3B8;border:1px solid #E2E8F0;padding-bottom:10px}
+  .rest18{position:absolute;right:8px;bottom:7px;font:inherit;font-size:12.5px;border:1px solid rgba(255,255,255,.7);background:rgba(255,255,255,.15);color:#fff;border-radius:999px;padding:3px 12px}
+  /* v18 TBM 전달사항 */
+  .tnc{border:2px solid #2563EB;background:#EFF6FF;border-radius:14px;padding:11px 12px;margin-bottom:10px}
+  .tnc .tnh{font-size:12.5px;font-weight:800;color:#1D4ED8;display:flex;justify-content:space-between}.tnc .tnh span{color:#64748B;font-weight:400}
+  .tnc .tnt{font-size:17.5px;font-weight:900;margin-top:4px;line-height:1.35;word-break:keep-all;color:#0F172A}
+  .tnc .tnko{font-size:12px;color:#64748B;margin-top:2px}
+  .tnc .tnb{font-size:15.5px;line-height:1.55;margin-top:6px;word-break:keep-all;color:#1E293B}
+  .tnc.big .tnt{font-size:22px}.tnc.big .tnb{font-size:19px}
+  .tnp{display:flex;gap:8px;margin-top:8px}
+  .menu .tnph,.tnph{position:relative;width:96px;height:96px;flex:none;border:1px solid #BFDBFE;border-radius:10px;background:#DBEAFE;padding:0;overflow:hidden;cursor:pointer}
+  .tnph img{width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity .3s}.tnph.on img{opacity:1}
+  .tnph span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:12px;color:#1D4ED8}.tnph.on span{display:none}
+  #tnOv{position:fixed;inset:0;background:rgba(15,23,42,.85);display:none;align-items:center;justify-content:center;z-index:9999;padding:14px}#tnOv.on{display:flex}
+  #tnOv .tnobox{max-width:100%;text-align:center}#tnOv img{max-width:100%;max-height:75vh;border-radius:10px;background:#fff}
+  #tnOv .tnow{color:#CBD5E1;font-size:13px;margin:6px 0}#tnOv button{font:inherit;font-weight:800;border:0;border-radius:10px;padding:10px 26px;background:#fff;color:#0F172A}
+  #tnDlg{border:0;border-radius:16px;padding:0;width:min(420px,94vw)}#tnDlg .dh{background:#1B3A6B;color:#fff;font-weight:800;padding:12px 14px}
+  #tnDlg .db{padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+  #tnDlg input,#tnDlg textarea{font:inherit;font-size:15px;padding:9px;border:1px solid #CBD5E1;border-radius:10px;width:100%}
+  #tnDlg .tnl{font-size:13px;color:#475569}#tnDlg .tnl input{width:auto;margin-left:6px}
+  #tnDlg .btnf{display:inline-block;border:1px dashed #2563EB;color:#1D4ED8;border-radius:10px;padding:9px 12px;font-weight:700;font-size:14px}
+  #tnDlg .tnpick img{width:52px;height:52px;object-fit:cover;border-radius:8px;vertical-align:middle}
+  #tnDlg .tnrow{padding:5px 0;border-top:1px dashed #E2E8F0;font-size:13.5px;color:#0F172A}
 </style>
 </head>
 <body>
@@ -239,7 +320,7 @@
     <div id="evCard"></div>
     <div id="pubNotice"></div>
     <div class="card" id="pubCard"><h2>오늘 우리 팀 안전 현황 <span class="cnt">누구나 보기</span></h2><div id="pubToday" style="margin-bottom:6px"></div>
-      <div class="cnt" style="margin-bottom:2px">오늘의 TBM 안전 주제 (위험성평가 자동 선택)</div><div id="pubTopics"></div><div id="topicAck"></div><div id="pubTrend"></div><div style="height:6px"></div></div>
+      <div id="pubTopics"></div><div id="topicAck"></div><div id="pubTrend"></div><div style="height:6px"></div></div>
     <div class="card" id="mgrLock" style="display:none"><h2>관리자 메뉴 🔒</h2><div class="cnt" style="margin-bottom:8px">TBM·점검 등록은 관리자 폰에서만 할 수 있습니다. 처음 한 번 관리자 번호를 넣으면 이 휴대폰이 등록됩니다.</div>
       <input type="password" id="mgrPin" inputmode="numeric" maxlength="8" placeholder="관리자 번호" autocomplete="off"><div style="height:8px"></div>
       <button class="submit" id="mgrBtn">이 휴대폰을 관리자 폰으로 등록</button><p class="msg" id="mgrMsg" style="margin-top:6px"></p></div>
@@ -248,6 +329,7 @@
     <button data-type="tbm" style="border-color:#EA580C;background:#FFF7ED"><b>TBM (작업 전 안전회의)</b><span>시작 누르고 → 끝나면 마치기 · 오늘의 안전 주제 3개 · 외국어 지원</span></button>
     <button data-type="5s"><b>3정5행 점검</b><span>자재·제품 관리, 작업장 정리정돈, 품질, 안전</span></button>
     <button id="prBtn" style="border-color:#1D4ED8;background:#EFF6FF;display:none"><b>⭐ 안전 칭찬 등록</b><span>잘한 직원 추천 → 대표 승인 → 상품권 · 사유는 이름 없이 한 줄</span></button>
+    <button id="tnBtn" style="border-color:#2563EB;background:#EFF6FF;display:none"><b>📌 TBM 전달사항 등록</b><span>다음 근무일 전 팀 TBM 주제 맨 위에 표시 · 사진 2장까지</span></button>
     <button id="actBtn" style="border-color:#16A34A;background:#F0FDF4;display:none"><b>🛠 조치 입력</b><span>우리 팀 개선 필요 건 → 조치 내용·사진 → 완료 (상시평가 자동 반영)</span></button>
     <a href="s.html" style="display:block;text-align:center;font-weight:800;color:var(--navy);background:#fff;border:1px solid #CBD5E1;border-radius:12px;padding:12px;margin:4px 0 10px;text-decoration:none">🛡 우리 회사 안전 참여 현황 보기 ›</a>
     <div class="cnt" style="text-align:center;margin:4px 0 10px"><a href="guide.html" style="font-weight:700;color:var(--navy)">📖 사용 설명서 보기</a></div>
@@ -279,7 +361,7 @@
       <div class="cnt" style="margin:4px 0 6px">위험성평가에서 위험도 순으로 매일 자동 선택 · 팀의 모든 라인 같은 주제</div>
       <div class="chips" id="tbmLang"></div><div id="tbmCards"></div>
       <div class="cnt" style="margin:2px 0 8px">외국어 문구는 번역 초안입니다. 이상한 표현은 반장에게 알려 주세요.</div></div>
-    <div class="cnt" style="margin:8px 2px">참석 서명은 작업일보에 받습니다. 쉬는 라인은 [쉼]. 작업일보에는 기록번호만 적으면 됩니다.</div>
+    <div class="cnt" style="margin:8px 2px">참석 서명은 작업일보에 받습니다. 쉬는 라인은 [쉼]. 라인별 시간은 팀 시간을 라인 수로 나눠 자동 기록됩니다. 작업일보에는 기록번호만 적으면 됩니다.</div>
   </section>
 </main>
 
@@ -948,56 +1030,6 @@ const mmss = ms => { const s = Math.max(0, Math.round(ms / 1000)); return `${Mat
 const lnDone = L => L.st === 'done' || L.st === 'off';
 function tbmGo(view, t, k) { tbm.view = view; if (t) tbm.team = t; if (k !== undefined) tbm.line = k; tbm.lang = 'ko'; tmsg(''); tbmRender(); scrollTo(0, 0); }
 
-function tbmRender() {
-  const v = tbm.view, guide = $('tbmGuide'), box = $('tbmLines'), foot = $('tbmFoot');
-  $('tbmTopicsCard').style.display = v === 'line' ? '' : 'none';
-  $('tbmWho').style.display = 'none'; $('tbmWhoDone').textContent = ''; foot.innerHTML = '';
-  if (v === 'teams') {
-    guide.className = 'tguide'; guide.innerHTML = '<span class="ar">▶</span> 팀을 고르세요';
-    box.innerHTML = `<div class="tiles">${[1, 2, 3, 4].map(t => { const T = curT(t), ks = tLines(t), d = ks.filter(k => lnDone(T.lines[k])).length, all = d === ks.length;
-      return `<button class="ttile ${all ? 'fin' : ''}" data-team="${t}"><b>${TEAM_N[t]}</b><span>${all ? '✔ 완료' : `${d} / ${ks.length} 라인`}</span></button>`; }).join('')}</div>`;
-    $('tbmBoxH').textContent = '팀';
-  } else if (v === 'lines') {
-    const t = tbm.team, T = curT(t), ks = tLines(t), left = ks.filter(k => !lnDone(T.lines[k]));
-    guide.className = 'tguide' + (left.length ? '' : ' ok');
-    guide.innerHTML = left.length ? `<span class="ar">▶</span> ${TEAM_N[t]} · 교육할 라인을 누르세요` : `✔ ${TEAM_N[t]} 오늘 TBM 완료${T.tno ? ' · ' + esc(T.tno) : ''}`;
-    $('tbmWhoDone').textContent = T.tno ? `기록번호 ${T.tno} (작업일보에 이 번호만 적기)` : '';
-    $('tbmBoxH').textContent = TEAM_N[t] + ' 라인';
-    box.innerHTML = `<div class="tiles">${ks.map(k => { const L = T.lines[k], N = TBM_LINE[k].name;
-      if (L.st === 'done') return `<div class="ttile fin"><b>${esc(N)}</b><span>✔ ${L.sec != null ? mmss(L.sec * 1000) : (L.min != null ? L.min + '분' : '완료')}</span></div>`;
-      if (L.st === 'off') return `<div class="ttile fin"><b>${esc(N)}</b><span>쉼 (비가동)</span></div>`;
-      return `<div class="tcell"><button class="ttile" data-line="${k}"><b>${esc(N)}</b><span>${L.st === 'run' ? '● 교육 중' : '눌러서 교육'}</span></button><button class="rest" data-rest="${k}">쉼</button></div>`; }).join('')}</div>`;
-    foot.innerHTML = `<button class="go off" id="tbmBackT">← 팀 목록</button>`;
-  } else {
-    const t = tbm.team, k = tbm.line, T = curT(t), L = T.lines[k], N = TBM_LINE[k].name;
-    tbm.topics = tbmTopicsTeam(today(), t); tbm.langs = tLangs(t);
-    $('tbmBoxH').textContent = N;
-    if (L.st === 'run') {
-      guide.className = 'tguide'; guide.innerHTML = `<span class="ar">●</span> ${esc(N)} 교육 중 · 끝나면 [교육 마치기]`;
-      box.innerHTML = `<div class="since">시작 ${hhmm(L.start)} · 경과 <b id="tbmEl">${mmss(Date.now() - L.start)}</b></div>`;
-      foot.innerHTML = `<input class="opin" id="tbmOpin" maxlength="200" placeholder="근로자 의견 (있을 때만)" value="${esc(L.op || '')}"><button class="go g hot" id="tbmFin">■ 교육 마치기</button>`;
-    } else {
-      guide.className = 'tguide'; guide.innerHTML = `<span class="ar">▶</span> ${esc(N)} · 아래 주제로 교육 → [교육 시작]`;
-      $('tbmWho').style.display = savedSign && $('tbmLeader').value.trim() ? 'none' : '';
-      $('tbmWhoDone').textContent = savedSign && $('tbmLeader').value.trim() ? `진행자 ${$('tbmLeader').value.trim()} (서명 저장됨)` : '';
-      box.innerHTML = '';
-      foot.innerHTML = `<button class="go hot" id="tbmStart">▶ 교육 시작</button><button class="go off" id="tbmBackL">← 라인 목록</button>`;
-    }
-  }
-  document.querySelectorAll('[data-team]').forEach(b => b.onclick = () => tbmGo('lines', +b.dataset.team));
-  document.querySelectorAll('[data-line]').forEach(b => b.onclick = () => tbmGo('line', 0, b.dataset.line));
-  document.querySelectorAll('[data-rest]').forEach(b => b.onclick = () => tbmRest(b.dataset.rest));
-  if ($('tbmBackT')) $('tbmBackT').onclick = () => tbmGo('teams');
-  if ($('tbmBackL')) $('tbmBackL').onclick = () => tbmGo('lines');
-  if ($('tbmStart')) $('tbmStart').onclick = tbmStartLine;
-  if ($('tbmFin')) $('tbmFin').onclick = tbmFinish;
-  if ($('tbmOpin')) $('tbmOpin').oninput = e => { const T = curT(tbm.team); T.lines[tbm.line].op = e.target.value.slice(0, 200); setT(tbm.team, T); };
-  if (v === 'line') {
-    $('tbmLang').innerHTML = tbm.langs.map(l => `<button data-lang="${l}" class="${l === tbm.lang ? 'on' : ''}">${LANG[l]}</button>`).join('');
-    document.querySelectorAll('[data-lang]').forEach(b => b.onclick = () => { tbm.lang = b.dataset.lang; tbmRender(); });
-    $('tbmCards').innerHTML = tbm.topics.map((t2, i) => tbmCard(t2, i, tbm.lang)).join('');
-  }
-}
 function tbmCard(t, i, l) {
   const x = t[l] || t.ko, lb = LBL[l] || LBL.ko;
   return `<div class="tcard"><div class="tt"><span class="tn ${i === 0 ? 'hot' : ''}">${i === 0 ? '중점' : i + 1}</span>${esc(x[0])}</div>
@@ -1013,39 +1045,95 @@ function tbmBig() {
   document.querySelectorAll('[data-big]').forEach(b => b.onclick = () => { tbm.lang = b.dataset.big; tbmBig(); if (type === 'tbm') tbmRender(); });
   if (!$('bigDlg').open) $('bigDlg').showModal();
 }
-function tbmTick() {
-  if (!tbm || type !== 'tbm') return;
-  const el = $('tbmEl');
-  if (el && tbm.view === 'line') { const L = curT(tbm.team).lines[tbm.line]; if (L.st === 'run') el.textContent = mmss(Date.now() - L.start); }
-  setTimeout(tbmTick, 1000);
-}
 const tmsg = t => { $('tbmMsg').textContent = t || ''; if (t) $('tbmMsg').scrollIntoView({ behavior: 'smooth', block: 'center' }); };
 const post = async body => { const o = await (await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ key: API_KEY, team, fieldPin: FIELD_PIN, ...body }) })).json(); if (!o.ok) throw new Error(o.error || '저장 실패'); return o; };
 
-function tbmStartLine() {   // 시작: 이 폰에 시각만 저장 (서버 저장은 마치기 때 한 번)
+/* ===== v18 TBM 팀 단위 진행 (2026-10-21 대표 확정) =====
+ * 팀 선택 → (쉬는 라인만 [쉼]) → [팀 교육 시작] 1번 → [팀 교육 마치기] 1번
+ * 시간: 팀 시작~마치기 실제 시간 ÷ 교육한 라인 수 → 라인별 시간으로 기록 ('팀 진행·균등 배분' 표시)
+ * 오후에 가동하는 라인은 같은 방법으로 그 라인만 다시 진행 (같은 기록번호)
+ */
+function tbmTeamLeft(t, T) { return tLines(t).filter(k => !lnDone(T.lines[k])); }
+function tbmRender() {
+  const v = tbm.view, guide = $('tbmGuide'), box = $('tbmLines'), foot = $('tbmFoot');
+  $('tbmTopicsCard').style.display = v === 'team' ? '' : 'none';
+  $('tbmWho').style.display = 'none'; $('tbmWhoDone').textContent = ''; foot.innerHTML = '';
+  if (v === 'teams') {
+    guide.className = 'tguide'; guide.innerHTML = '<span class="ar">▶</span> 팀을 고르세요';
+    box.innerHTML = `<div class="tiles">${[1, 2, 3, 4].map(t => { const T = curT(t), ks = tLines(t), d = ks.filter(k => lnDone(T.lines[k])).length, all = d === ks.length;
+      return `<button class="ttile ${all ? 'fin' : ''}" data-team="${t}"><b>${TEAM_N[t]}</b><span>${all ? '✔ 완료' : T.run ? '● 교육 중' : `${d} / ${ks.length} 라인`}</span></button>`; }).join('')}</div>`;
+    $('tbmBoxH').textContent = '팀';
+  } else {
+    const t = tbm.team, T = curT(t), ks = tLines(t), left = tbmTeamLeft(t, T), N = TEAM_N[t];
+    tbm.topics = tbmTopicsTeam(today(), t); tbm.langs = tLangs(t);
+    $('tbmBoxH').textContent = N + ' 라인';
+    const chip = k => { const L = T.lines[k], nm = esc(TBM_LINE[k].name);
+      if (L.st === 'done') return `<div class="tl18 fin"><b>${nm}</b><span>✔ ${L.min != null ? L.min + '분' : '완료'}</span></div>`;
+      if (L.st === 'off') return `<div class="tl18 fin"><b>${nm}</b><span>쉼 (비가동)</span></div>`;
+      return `<div class="tl18 on"><b>${nm}</b><span>${T.run ? '● 교육 중' : '교육 대상'}</span>${T.run ? '' : `<button class="rest18" data-rest="${k}">쉼</button>`}</div>`; };
+    box.innerHTML = `<div class="tl18s">${ks.map(chip).join('')}</div>`;
+    if (T.run) {
+      guide.className = 'tguide'; guide.innerHTML = `<span class="ar">●</span> ${N} 교육 중 · 모든 라인 끝나면 [팀 교육 마치기]`;
+      box.innerHTML += `<div class="since">시작 ${hhmm(T.run.start)} · 경과 <b id="tbmEl">${mmss(Date.now() - T.run.start)}</b> · ${T.run.lines.length}개 라인</div>`;
+      foot.innerHTML = `<input class="opin" id="tbmOpin" maxlength="200" placeholder="근로자 의견 (있을 때만)" value="${esc(T.run.op || '')}"><button class="go g hot" id="tbmFin">■ 팀 교육 마치기</button>`;
+    } else if (!left.length) {
+      guide.className = 'tguide ok'; guide.innerHTML = `✔ ${N} 오늘 TBM 완료${T.tno ? ' · ' + esc(T.tno) : ''}`;
+      $('tbmWhoDone').textContent = T.tno ? `기록번호 ${T.tno} (작업일보에 이 번호만 적기)` : '';
+      foot.innerHTML = `<button class="go off" id="tbmBackT">← 팀 목록</button>`;
+    } else {
+      guide.className = 'tguide'; guide.innerHTML = `<span class="ar">▶</span> ${N} · 쉬는 라인만 [쉼] → [팀 교육 시작]`;
+      const ok = savedSign && $('tbmLeader').value.trim();
+      $('tbmWho').style.display = ok ? 'none' : '';
+      $('tbmWhoDone').textContent = (ok ? `진행자 ${$('tbmLeader').value.trim()} (서명 저장됨)` : '') + (T.tno ? ` · 기록번호 ${T.tno}` : '');
+      foot.innerHTML = `<button class="go hot" id="tbmStart">▶ 팀 교육 시작 (${left.length}개 라인)</button><button class="go off" id="tbmBackT">← 팀 목록</button>`;
+    }
+  }
+  document.querySelectorAll('[data-team]').forEach(b => b.onclick = () => tbmGo('team', +b.dataset.team));
+  document.querySelectorAll('[data-rest]').forEach(b => b.onclick = () => tbmRest(b.dataset.rest));
+  if ($('tbmBackT')) $('tbmBackT').onclick = () => tbmGo('teams');
+  if ($('tbmStart')) $('tbmStart').onclick = tbmStartLine;
+  if ($('tbmFin')) $('tbmFin').onclick = tbmFinish;
+  if ($('tbmOpin')) $('tbmOpin').oninput = e => { const T = curT(tbm.team); if (T.run) { T.run.op = e.target.value.slice(0, 200); setT(tbm.team, T); } };
+  if (v === 'team') {
+    $('tbmLang').innerHTML = tbm.langs.map(l => `<button data-lang="${l}" class="${l === tbm.lang ? 'on' : ''}">${LANG[l]}</button>`).join('');
+    document.querySelectorAll('[data-lang]').forEach(b => b.onclick = () => { tbm.lang = b.dataset.lang; tbmRender(); });
+    $('tbmCards').innerHTML = tnHtml(tbm.lang, true) + tbm.topics.map((t2, i) => tbmCard(t2, i, tbm.lang)).join(''); tnThumbs();
+  }
+}
+function tbmTick() {
+  if (!tbm || type !== 'tbm') return;
+  const el = $('tbmEl');
+  if (el && tbm.view === 'team') { const T = curT(tbm.team); if (T.run) el.textContent = mmss(Date.now() - T.run.start); }
+  setTimeout(tbmTick, 1000);
+}
+function tbmStartLine() {   // 팀 시작: 이 폰에 시각만 저장 (서버 저장은 마치기 때 한 번)
   const leader = $('tbmLeader').value.trim();
   if (!leader) { $('tbmWho').style.display = ''; return tmsg('진행자 이름을 입력해 주세요.'); }
   const sign = savedSign || (padDirty ? exportSign() : '');
   if (!sign) { $('tbmWho').style.display = ''; $('signCard').scrollIntoView({ behavior: 'smooth' }); return tmsg('진행자 서명을 해 주세요.'); }
   store.set('ms_tbm_leader', leader); if (!savedSign) store.set(signKey(), sign); savedSign = sign;
-  const T = curT(tbm.team); T.lines[tbm.line] = { st: 'run', start: Date.now() }; setT(tbm.team, T);
+  const T = curT(tbm.team), left = tbmTeamLeft(tbm.team, T);
+  if (!left.length) return tmsg('교육할 라인이 없습니다.');
+  T.run = { start: Date.now(), lines: left, op: '' }; left.forEach(k => { T.lines[k] = { st: 'run' }; }); setT(tbm.team, T);
   tmsg(''); tbmRender(); scrollTo(0, 0);
 }
 async function tbmFinish() {
   if (tbm.busy) return;
-  const t = tbm.team, k = tbm.line, T = curT(t), L = T.lines[k], now = Date.now();
-  if (now - L.start > 60 * 60000) return tmsg('60분이 넘었습니다. 관리자에게 알려 주세요.');
+  const t = tbm.team, T = curT(t), R = T.run, now = Date.now();
+  if (!R) return tbmRender();
+  if (now - R.start > 60 * 60000) return tmsg('60분이 넘었습니다. 관리자에게 알려 주세요.');
   const leader = $('tbmLeader').value.trim() || store.get('ms_tbm_leader') || '';
   const sign = savedSign || store.get(`ms_sign_${today()}_${leader}`) || '';
   tbm.busy = true; $('tbmFin').textContent = '저장 중…';
   try {
     const tp = tbmTopicsTeam(today(), t);
-    const o = await post({ type: 'tbmline', team: t, line: k, start: L.start, end: now, leader, sign, attend: TBM_LINE[k].head,
-      opinion: (L.op || '').trim(), topics: tp.map(x => x.id), topicText: tp.map(x => x.ko[0]).join(' / ') });
-    const T2 = curT(t); T2.lines[k] = { st: 'done', min: o.minutes, sec: Math.round((now - L.start) / 1000) }; T2.tno = o.recNo; setT(t, T2);
-    tbm.busy = false; tbmGo('lines');
-  } catch (e) { tbm.busy = false; tmsg(`저장이 안 됐습니다. 다시 눌러 주세요. (${e.message})`); $('tbmFin').textContent = '■ 교육 마치기'; }
+    const o = await post({ type: 'tbmgroup', team: t, lines: R.lines, heads: R.lines.map(k => TBM_LINE[k].head), start: R.start, end: now, sec: Math.round((now - R.start) / 1000),
+      leader, sign, opinion: (R.op || '').trim(), topics: tp.map(x => x.id), topicText: (tnWhat() + tp.map(x => x.ko[0]).join(' / ')).slice(0, 400) });
+    const T2 = curT(t); delete T2.run; (o.lines || []).forEach(x => { T2.lines[x.line] = { st: 'done', min: x.min }; }); T2.tno = o.recNo; setT(t, T2);
+    tbm.busy = false; tbmRender(); scrollTo(0, 0);
+  } catch (e) { tbm.busy = false; tmsg(`저장이 안 됐습니다. 다시 눌러 주세요. (${e.message})`); $('tbmFin').textContent = '■ 팀 교육 마치기'; }
 }
+
 async function tbmRest(k) {   // 쉬는 라인
   if (tbm.busy) return;
   tbm.busy = true;
@@ -1132,49 +1220,41 @@ function ackThanks() {
   clearTimeout(o._t); o._t = setTimeout(close, 5000);
 }
 function teamLines() { return tLines(); }
+let PUB_ST = null;
 function pubRender(st) {
   if (!team) { $('pubCard').style.display = 'none'; return; }
+  if (st) PUB_ST = st;
   $('pubCard').style.display = '';
   const done = st ? new Set((st.tbmToday || []).filter(x => x.status === '완료').map(x => x.line)) : null;
   const off = st ? new Set((st.tbmOff || []).map(x => x.line)) : new Set();
-  const ts = tbmTopicsTeam(today());
-  $('pubTopics').innerHTML = `<div class="pl"><div class="plh"><b>오늘의 팀 주제</b><button class="lnk" id="pubBig">크게·외국어</button></div>
-      <ol>${ts.map(t => `<li>${esc(t.ko[0])}</li>`).join('')}</ol></div>
+  const ts = tbmTopicsTeam(today()), l = pubLang(), lb = LBL[l] || LBL.ko, langs = tLangs();
+  $('pubTopics').innerHTML = `<div class="edtop"><b>오늘의 안전 주제</b><span class="cnt">${esc(today().slice(5).replace('-', '/'))} · ${esc(TEAMS[team][0])}</span><button class="lnk" id="pubBig">크게 보기</button></div>
+    ${langs.length > 1 ? `<div class="edlang">${langs.map(x => `<button data-pl="${x}" class="${x === l ? 'on' : ''}">${LANG[x]}</button>`).join('')}</div>` : ''}
+    ${tnHtml(l)}${ts.map((t, i) => { const x = t[l] || t.ko; return `<div class="edtp ${i === 0 ? 'hot' : ''}"><div class="eh"><span class="en">${i + 1}</span><span class="et">${esc(x[0])}</span></div>
+      ${l !== 'ko' ? `<div class="eko">${esc(t.ko[0])}</div>` : ''}
+      <div class="er r"><i>${esc(lb[0])}</i><span>${esc(x[1])}</span></div><div class="er m"><i>${esc(lb[1])}</i><span>${esc(x[2])}</span></div>
+      <div class="ek">${i === 0 ? '오늘의 중점 · ' : ''}위험성평가 ${esc(t.ra)}</div></div>`; }).join('')}
     <div class="pl">${teamLines().map(k => `<span class="pill ${done && done.has(k) ? 'ok' : ''}" style="margin:2px 4px 2px 0">${esc(TBM_LINE[k].name)} ${off.has(k) ? '비가동' : done ? (done.has(k) ? 'TBM 완료' : 'TBM 전') : ''}</span>`).join('')}</div>`;
-  $('pubBig').onclick = () => { tbm = { lang: 'ko', topics: ts, langs: tLangs() }; tbmBig(); };
-  if (!st) { $('pubTrend').innerHTML = '<div class="cnt">최근 기록 추이는 서버 연결 후 표시됩니다.</div>'; return; }
+  $('pubBig').onclick = () => { tbm = { lang: l, topics: ts, langs }; tbmBig(); };
+  document.querySelectorAll('[data-pl]').forEach(b => b.onclick = () => { store.set('ms_pub_lang', b.dataset.pl); pubRender(PUB_ST); topicAckRender(); evCardRender(); });
+  eduGraph(); tnThumbs();
+  if (!st) return;
   const nL = teamLines().length, nOn = Math.max(0, nL - off.size), last = st.days[st.days.length - 1];
   $('pubToday').innerHTML = `<span class="pill ${last.patrol ? 'ok' : ''}">순회점검 ${last.patrol ? '실시' : '전'}</span> <span class="pill ${last.fives ? 'ok' : ''}">3정5행 ${last.fives ? '실시' : '전'}</span> <span class="pill ${nOn && done.size >= nOn ? 'ok' : ''}">TBM ${done.size}/${nOn}라인${off.size ? ` (비가동 ${off.size})` : ''}</span>`;
-  const D = st.days.filter(x => new Date(x.d + 'T00:00:00').getDay() !== 0), W = 320, H = 130, L = 26, R = 8, T = 12, B = 22, n = D.length;
-  const X = i => L + i * (W - L - R) / (n - 1), Y = v => T + (1 - v / 100) * (H - T - B);
-  const tr = x => { const on = nL - (x.off || 0); return on > 0 ? Math.min(1, x.tbm / on) : 1; };
-  const tot = D.map(x => Math.round((tr(x) + x.patrol + x.fives) / 3 * 100));
-  const tbmR = D.map(x => Math.round(tr(x) * 100));
-  const path = a => a.map((v, i) => (i ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(v).toFixed(1)).join(' ');
-  $('pubTrend').innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="최근 14일 실시율 추이" style="display:block;margin-top:6px">
-    ${[0, 50, 100].map(v => `<line x1="${L}" x2="${W - R}" y1="${Y(v)}" y2="${Y(v)}" stroke="#E2E8F0"/><text x="${L - 4}" y="${Y(v) + 3}" text-anchor="end" font-size="9" fill="#94A3B8">${v}</text>`).join('')}
-    <path d="${path(tot)} L${X(n - 1)} ${Y(0)} L${X(0)} ${Y(0)}Z" fill="#1D4ED8" opacity=".08"/>
-    <path d="${path(tbmR)}" fill="none" stroke="#EA580C" stroke-width="1.6" stroke-dasharray="4 3"/>
-    <path d="${path(tot)}" fill="none" stroke="#1D4ED8" stroke-width="2.2"/>
-    ${tot.map((v, i) => `<circle cx="${X(i)}" cy="${Y(v)}" r="${i === n - 1 ? 4 : 2.4}" fill="#1D4ED8" stroke="#fff" stroke-width="1"/>`).join('')}
-    <text x="${X(n - 1)}" y="${Y(tot[n - 1]) - 8}" text-anchor="end" font-size="11" font-weight="700" fill="#1D4ED8">${tot[n - 1]}%</text>
-    ${D.map((x, i) => (i % 2 === 1 || i === n - 1) ? `<text x="${X(i)}" y="${H - 6}" text-anchor="middle" font-size="9" fill="${new Date(x.d + 'T00:00:00').getDay() === 0 ? '#CBD5E1' : '#64748B'}">${+x.d.slice(8)}</text>` : '').join('')}
-  </svg>
-  <div class="cnt"><b style="color:#1D4ED8">━ 종합 실시율</b> (순회·3정5행·TBM 평균) · <b style="color:#EA580C">┅ TBM 실시율</b> · 최근 14일(일요일 제외)</div>`;
 }
 async function pubLoad() {
   pubRender(null);
   if (!team) return;
   visit('view');
   try { const st = await (await fetch(`${ENDPOINT}?action=status&team=${team}`)).json(); if (st.ok) { pubRender(st); noticeRender(st.notices); topicAckRender(); } } catch (e) {}
-  evLoad();
+  evLoad(); tnLoad();
 }
 function mgrRender() {
   const on = !!FIELD_PIN;
   $('mgrLock').style.display = on || !MGR_OPEN ? 'none' : '';
   document.querySelectorAll('#menu [data-type]').forEach(b => b.style.display = on ? '' : 'none');
   $('mgrOff').style.display = on ? '' : 'none';
-  $('prBtn').style.display = on ? '' : 'none'; if ($('actBtn')) $('actBtn').style.display = on ? '' : 'none'; evCardRender();
+  $('prBtn').style.display = on ? '' : 'none'; if ($('actBtn')) $('actBtn').style.display = on ? '' : 'none'; if ($('tnBtn')) $('tnBtn').style.display = on ? '' : 'none'; evCardRender();
 }
 $('mgrBtn').onclick = async () => {
   const pin = $('mgrPin').value.trim(), m = $('mgrMsg'); m.textContent = '확인 중…';
@@ -1186,75 +1266,186 @@ $('mgrBtn').onclick = async () => {
 };
 $('mgrOffBtn').onclick = () => { FIELD_PIN = ''; try { localStorage.removeItem('ms_field_pin'); } catch (e) {} mgrRender(); };
 
-/* ===== v12 행운 이벤트 · 안전 칭찬 =====
- * 참여: 공지 내용을 펼쳐 읽고 [읽었습니다] (공지 없는 날: TBM 주제 읽고 [확인]) → 하루 1번(팀 무관)
- * 지급: 당첨 화면 캡처 + 그날 읽은 내용 질문 (서버에 기록)
+/* ===== v17 교육참여 보상 (2026-10-20 대표 직권) =====
+ * 확인: 오늘의 TBM 주제(또는 공지) 읽고 [확인] → 즉시 '확인 완료' 팝업 + 오늘 내 번호(들어온 순서)
+ *       저장은 뒤에서 자동 재전송(최대 24시간), 다음에 화면을 열 때도 다시 보냄
+ * 추첨: 서버가 추첨일에만 마감 시각 전 확인자 중 1명 → 결과는 '교육참여 보상' 화면으로 표시
+ * 지급: 결과 화면 캡처 + 이성희 과장에게 오늘 교육 내용 1가지 말하기
  */
 const EV_WAIT = 5;   // 펼친 뒤 몇 초 지나야 확인 가능
 const evKey = () => 'ms_ev_' + today();
 let EV = null, EVP = null, evOpenAt = {}, evTimer = null;
-function evDone() { return store.get(evKey()); }
+function evDone() { return store.get(evKey()); }   // 번호 | 'p'(전송 중) | 'mgr'(예전 값)
+const EDU_TX = {
+  ko: { done: '오늘 교육 확인 완료', myno: '오늘 내 번호', wait: '번호 받는 중…', note: '교육참여 보상은 무작위 날 발표돼요', ok: '확인',
+    rw: '교육참여 보상', rw2: '교육을 잘 받으셨어요', rwno: '오늘의 보상 번호', prize: '보상', how: '이 화면을 캡처해서 이성희 과장에게 보여주고,\n오늘 교육 내용 1가지를 말해 주세요', ack: '읽었습니다 · 오늘 확인', reading: '읽는 중…', sec: '초' },
+  zh: { done: '今日教育确认完成', myno: '今天我的号码', wait: '正在获取号码…', note: '教育参与奖励将在随机日子公布', ok: '确认',
+    rw: '教育参与奖励', rw2: '您认真接受了教育', rwno: '今日奖励号码', prize: '奖励', how: '请截图此画面给李成熙科长看，\n并说出今天教育内容中的一项', ack: '已阅读 · 今日确认', reading: '阅读中…', sec: '秒' },
+  vi: { done: 'Đã xác nhận đào tạo hôm nay', myno: 'Số của tôi hôm nay', wait: 'Đang lấy số…', note: 'Phần thưởng tham gia đào tạo được công bố vào ngày ngẫu nhiên', ok: 'OK',
+    rw: 'Phần thưởng tham gia đào tạo', rw2: 'Bạn đã học rất tốt', rwno: 'Số nhận thưởng hôm nay', prize: 'Phần thưởng', how: 'Chụp màn hình này cho trưởng phòng Lee Seong-hee xem\nvà nói 1 nội dung đào tạo hôm nay', ack: 'Đã đọc · Xác nhận hôm nay', reading: 'Đang đọc…', sec: 'giây' },
+  km: { done: 'បានបញ្ជាក់ការបណ្តុះបណ្តាលថ្ងៃនេះ', myno: 'លេខរបស់ខ្ញុំថ្ងៃនេះ', wait: 'កំពុងទទួលលេខ…', note: 'រង្វាន់ចូលរួមការបណ្តុះបណ្តាល ប្រកាសនៅថ្ងៃចៃដន្យ', ok: 'យល់ព្រម',
+    rw: 'រង្វាន់ចូលរួមការបណ្តុះបណ្តាល', rw2: 'អ្នកបានរៀនបានល្អ', rwno: 'លេខរង្វាន់ថ្ងៃនេះ', prize: 'រង្វាន់', how: 'សូមថតអេក្រង់នេះ បង្ហាញលោកប្រធាន លី សុងហ៊ី\nហើយប្រាប់ខ្លឹមសារមេរៀនថ្ងៃនេះ ១ចំណុច', ack: 'បានអាន · បញ្ជាក់ថ្ងៃនេះ', reading: 'កំពុងអាន…', sec: 'វិនាទី' },
+  in: { done: 'Pelatihan hari ini sudah dikonfirmasi', myno: 'Nomor saya hari ini', wait: 'Mengambil nomor…', note: 'Hadiah partisipasi pelatihan diumumkan pada hari acak', ok: 'OK',
+    rw: 'Hadiah Partisipasi Pelatihan', rw2: 'Anda mengikuti pelatihan dengan baik', rwno: 'Nomor hadiah hari ini', prize: 'Hadiah', how: 'Tangkap layar ini, tunjukkan ke Manajer Lee Seong-hee,\nlalu sebutkan 1 isi pelatihan hari ini', ack: 'Sudah dibaca · Konfirmasi hari ini', reading: 'Membaca…', sec: 'detik' },
+  ru: { done: 'Обучение сегодня подтверждено', myno: 'Мой номер сегодня', wait: 'Получаем номер…', note: 'Награда за участие в обучении объявляется в случайный день', ok: 'OK',
+    rw: 'Награда за участие в обучении', rw2: 'Вы хорошо прошли обучение', rwno: 'Номер награды сегодня', prize: 'Награда', how: 'Сделайте скриншот, покажите начальнику Ли Сон Хи\nи назовите 1 пункт сегодняшнего обучения', ack: 'Прочитал(а) · Подтвердить сегодня', reading: 'Читаю…', sec: 'сек' }
+};
+function pubLang() { const l = store.get('ms_pub_lang') || 'ko'; return team && tLangs().indexOf(l) >= 0 ? l : 'ko'; }
+function etx(k) { const l = pubLang(); return (EDU_TX[l] || EDU_TX.ko)[k] || EDU_TX.ko[k]; }
+function etxKo(k) { return pubLang() === 'ko' ? '' : EDU_TX.ko[k]; }
+function eduNoHtml(n) { return pubLang() === 'ko' ? esc(n) + '<small>번</small>' : '<small>No.</small>' + esc(n); }
+
+/* ----- 보내기 줄 (폰에 먼저 저장 → 될 때까지 자동 재전송) ----- */
+const EQ_KEY = 'ms_edu_q';
+function eduQ() { try { return JSON.parse(store.get(EQ_KEY) || '[]'); } catch (e) { return []; } }
+function eduQset(q) { store.set(EQ_KEY, JSON.stringify(q)); }
+let eduSending = false, eduRetry = null, eduTries = 0;
+async function eduFlush() {
+  if (eduSending) return; const q = eduQ(); if (!q.length) return;
+  eduSending = true; clearTimeout(eduRetry);
+  const x = q[0];
+  try {
+    if (Date.now() - x.at > 24 * 3600e3) throw { drop: true };
+    const o = await (await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ key: API_KEY, type: 'evjoin', team: x.team, dev: DEV, how: x.how, what: x.what, at: x.at, fieldPin: FIELD_PIN }) })).json();
+    if (!o.ok) { if (o.expired) throw { drop: true }; throw new Error(o.error || '저장 실패'); }
+    if (o.notyet) { /* 예전 서버 응답 — 기록 없이 끝남 */ }
+    store.set('ms_ev_' + (o.day || x.day), String(o.no || 'mgr'));
+    eduQset(eduQ().filter(y => y.id !== x.id)); eduTries = 0;
+    if (x.day === today()) eduPopNo(o.no);
+    if (o.win && typeof o.win === 'string') eduRewardShow({ code: o.win, no: Number(o.win.slice(-3)), date: today().slice(5).replace('-', '/'), prize: '상품권 10,000원' });   // 예전 서버 응답 대비
+    eduSending = false; evCardRender(); noticeRender(LAST_NOTICES); topicAckRender();
+    if (eduQ().length) eduFlush();
+    return;
+  } catch (e) {
+    if (e && e.drop) { eduQset(eduQ().filter(y => y.id !== x.id)); eduSending = false; if (eduQ().length) eduFlush(); return; }
+    eduTries++;
+  }
+  eduSending = false;
+  eduRetry = setTimeout(eduFlush, Math.min(60000, 3000 * Math.pow(2, Math.min(eduTries - 1, 5))));   // 3·6·12·24·48·60초…
+}
+window.addEventListener('online', () => eduFlush());
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') eduFlush(); });
+
+/* 누른 순간: 폰에 저장 + 팝업 → 서버 전송은 뒤에서 */
 async function evJoin(how, what) {
-  const o = await (await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ key: API_KEY, type: 'evjoin', team, dev: DEV, how, what, fieldPin: FIELD_PIN }) })).json();
-  if (!o.ok) throw new Error(o.error || '저장 실패');
-  if (o.mgr) { store.set(evKey(), 'mgr'); return o; }
-  if (o.notyet) return o;
-  store.set(evKey(), String(o.no));
-  if (o.win) evWinShow(o.win);
-  return o;
+  const at = Date.now(), day = today(), id = at.toString(36); what = (tnWhat() + what).slice(0, 300);
+  if (!eduQ().some(x => x.day === day)) eduQset(eduQ().concat([{ id, at, day, how, what, team }]));
+  store.set(evKey(), 'p');
+  eduPop();
+  eduFlush();
+  return { ok: true };
 }
 function evBtnHtml(id) {
   const d = evDone();
-  if (EV && EV.round === 0) return `<button class="evwait" disabled>${esc((EV.start || '').slice(5).replace('-', '/'))}부터 참여할 수 있어요</button>`;
-  if (d) return `<button class="ackd" disabled>✔ 오늘 확인 완료${d !== 'mgr' ? ` · 참여번호 ${esc(d)}` : ''}</button>`;
+  if (d) return `<button class="ackd" disabled>✔ ${esc(etx('done'))}${d === 'p' ? ` · <span class="edsend">${esc(etx('wait'))}</span>` : d !== 'mgr' ? ` · ${esc(etx('myno'))} ${esc(d)}` : ''}</button>`;
   const t0 = evOpenAt[id];
   if (!t0) return `<button class="evwait" disabled>▼ 내용을 펼쳐 읽어 주세요</button>`;
   const left = EV_WAIT - Math.floor((Date.now() - t0) / 1000);
-  if (left > 0) return `<button class="evwait" disabled>읽는 중… ${left}초</button>`;
-  return `<button class="ack" data-evok="${esc(id)}">읽었습니다 · 오늘 확인</button>`;
+  if (left > 0) return `<button class="evwait" disabled>${esc(etx('reading'))} ${left}${esc(etx('sec'))}</button>`;
+  return `<button class="ack edu-ack" data-evok="${esc(id)}">${esc(etx('ack'))}${etxKo('ack') ? `<small>${esc(etxKo('ack'))}</small>` : ''}</button>`;
 }
 function evTick(rerender) { clearTimeout(evTimer); evTimer = setTimeout(() => { rerender(); }, 1000); }
 async function evPress(b, how, what, after) {
-  b.disabled = true; b.textContent = '저장 중…';
-  try { await evJoin(how, what); } catch (e) { b.disabled = false; b.textContent = '다시 눌러 주세요 (' + e.message + ')'; return; }
+  b.disabled = true;
+  await evJoin(how, what);
   after(); evCardRender();
 }
-/* 이벤트 안내 칸 (팀 화면 맨 위) */
+
+/* ----- 확인 팝업 (매일) ----- */
+function eduPop() {
+  let o = $('eduPop');
+  if (!o) { o = document.createElement('div'); o.id = 'eduPop'; document.body.appendChild(o); }
+  const d = evDone(), n = d && d !== 'p' && d !== 'mgr' ? d : '';
+  const now = new Date(), hm = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+  o.innerHTML = `<div class="epbox" role="dialog" aria-live="polite"><div class="epic">✔</div>
+    <div class="ept">${esc(etx('done'))}</div>${etxKo('done') ? `<div class="epko">${esc(etxKo('done'))}</div>` : ''}
+    <div class="eplb">${esc(etx('myno'))}</div><div class="epno" id="epNo">${n ? eduNoHtml(n) : `<span class="epw">${esc(etx('wait'))}</span>`}</div>
+    <div class="epmeta">${esc(today().slice(5).replace('-', '/'))} · ${hm}<br>${esc(etx('note'))}</div>
+    <button type="button" id="epClose">${esc(etx('ok'))}</button></div>`;
+  o.className = 'on';
+  const close = () => { o.className = ''; };
+  $('epClose').onclick = close; o.onclick = e => { if (e.target === o) close(); };
+}
+function eduPopNo(n) { const e = $('epNo'); if (e && $('eduPop').className === 'on') e.innerHTML = eduNoHtml(n || ''); }
+
+/* ----- 교육참여 보상 결과 화면 ----- */
+function eduRewardShow(w) {
+  let ov = $('evWin');
+  if (!ov) { ov = document.createElement('div'); ov.id = 'evWin'; document.body.appendChild(ov); }
+  const cf = Array.from({ length: 26 }, (_, i) => `<i style="left:${(i * 37) % 100}%;background:${['#F97316', '#2563EB', '#16A34A', '#DB2777', '#EAB308', '#7C3AED'][i % 6]};animation-delay:${(i % 9) * 0.22}s;animation-duration:${2.2 + (i % 5) * 0.35}s"></i>`).join('');
+  ov.innerHTML = `<div class="erbox"><div class="ercf" aria-hidden="true">${cf}</div>
+    <div class="erdate">${esc(w.date)} · ${esc(etx('rw'))}${w.special ? ' ⭐' : ''}</div>
+    <div class="ert">${esc(etx('rw2'))}</div>${etxKo('rw2') ? `<div class="erko">${esc(etxKo('rw2'))}</div>` : ''}
+    <div class="ermed" aria-hidden="true">🏅</div>
+    <div class="erlb">${esc(etx('rwno'))}</div><div class="erno">${eduNoHtml(w.no)}</div>
+    <div class="erprize">${esc(etx('prize'))}: ${esc(w.prize)}</div>
+    <div class="ercode">${esc(w.code)}</div>
+    <div class="erhow">${esc(etx('how')).replace(/\n/g, '<br>')}</div>
+    <button class="submit" id="evWinClose">${esc(etx('ok'))}</button></div>`;
+  ov.style.display = 'flex'; $('evWinClose').onclick = () => { ov.style.display = 'none'; };
+}
+function evWinShow(code) {   // 예전 행운 당첨(미지급) 보기
+  const w = (EV && EV.rewards || []).find(x => x.code === code) || { code, no: Number(String(code).slice(-3)) || '', date: '', prize: '상품권 10,000원' };
+  eduRewardShow(w);
+}
+
+/* ----- 상단 안내 칸 ----- */
 function evCardRender() {
   const el = $('evCard'); if (!el) return;
   if (!team) { el.innerHTML = ''; return; }
-  const d = evDone(), E = EV || {};
-  let s = '';
-  if (FIELD_PIN) s = '<span class="cnt">관리자 폰은 행운 이벤트에서 제외됩니다</span>';
-  else if (E.round === 0) s = `<span class="cnt">${esc((E.start || '').slice(5).replace('-', '/'))}부터 시작합니다</span>`;
-  else s = d ? `<b class="evok">✔ 오늘 참여 완료 · 참여번호 ${esc(d)}</b>` : `<b class="evgo">오늘 아직 참여 전 — 아래 내용을 읽고 [확인]을 눌러 주세요</b>`;
-  const won = E.won ? `<div class="evwon">🎉 ${E.mode === 'v2' ? '최근' : '이번 회차'} 행운 당첨번호 <b>${esc(E.won.code)}</b> 나왔어요!</div>` : '';
-  const P = EVP || {}, mm = String(new Date().getMonth() + 1).padStart(2, '0');
-  const pn = (P.pays || []).filter(x => x.date.slice(0, 2) === mm).length, r0 = (P.recent || [])[0];
-  const praise = (r0 || pn) ? `<div class="evpr">${r0 ? `⭐ 최근 칭찬 · <b>${esc(r0.cat)}</b> ${esc(r0.why)} <span>${esc(r0.date)}</span>` : ''}${pn ? `<div>🎁 이번 달 상품권 지급 <b>${pn}건</b></div>` : ''}</div>` : '';
-  const mine = (E.myWin || []).map(w => `<button class="lnk" data-mywin="${esc(w.code)}">🎁 내 당첨 보기 (${esc(w.code)})</button>`).join(' ');
-  el.innerHTML = `<div class="evc"><div class="evh">🎁 행운 이벤트 <span>${E.mode === 'v2' ? '언제 당첨될지 몰라요 · 상품권' : '2주마다 1명 · 상품권'}</span></div>
-    <div class="evs">${s}</div>${won}${praise}${mine ? `<div style="margin-top:6px">${mine}</div>` : ''}
-    <div class="cnt" style="margin-top:4px">하루 1번 · ${E.mode === 'v2' ? '언제 당첨될지 몰라요 · 매일 참여하세요' : '매일 참여할수록 기회가 늘어요'}${E.from && E.round ? ` · 이번 회차 ${esc(E.from.slice(5).replace('-', '/'))}~${esc(E.to.slice(5).replace('-', '/'))}` : ''}</div></div>`;
-  document.querySelectorAll('[data-mywin]').forEach(b => b.onclick = () => evWinShow(b.dataset.mywin));
+  const d = evDone(), E = EV || {}, M = E.mine || {};
+  let s;
+  if (d === 'p') s = `<b class="evok">✔ 오늘 교육 확인 완료</b> <span class="edsend">· 번호 받는 중…</span>`;
+  else if (d) s = `<b class="evok">✔ 오늘 교육 확인 완료${d !== 'mgr' ? ` · 오늘 내 번호 ${esc(d)}번` : ''}</b>`;
+  else s = `<b class="evgo">오늘 아직 확인 전 — 아래 주제를 읽고 [확인]을 눌러 주세요</b>`;
+  const tw = E.todayWin, mineToday = tw && (E.rewards || []).some(x => x.code === tw.code);
+  const res = tw ? `<div class="evwon edwon"><span>🏅 오늘의 교육참여 보상</span><b>${esc(tw.no)}번</b> · ${esc(tw.prize)}${mineToday ? ' <em>← 내 번호예요!</em>' : ''}</div>`
+    : E.last ? `<div class="edlast">최근 보상 ${esc(E.last.date)} · ${esc(E.last.no)}번 · ${esc(E.last.prize)}</div>` : '';
+  const unpaid = (E.rewards || []).filter(x => !x.paid).map(x => `<button class="lnk" data-myrw="${esc(x.code)}">🏅 내 보상 보기 (${esc(x.date)})</button>`)
+    .concat((E.myWin || []).map(w => `<button class="lnk" data-mywin="${esc(w.code)}">🎁 내 당첨 보기 (${esc(w.code)})</button>`)).join(' ');
+  const rec = E.mine ? `<div class="edrec"><div><small>이번 달</small><b>${M.month || 0}일</b></div><div><small>연속</small><b>${M.streak || 0}일</b></div><div><small>받은 보상</small><b>${(E.rewards || []).length}회</b></div></div>` : '';
+  el.innerHTML = `<div class="evc"><div class="evh">🏅 교육참여 보상 <span>오늘의 안전 주제를 확인하면 참여</span></div>
+    <div class="evs">${s}</div>${res}${rec}${unpaid ? `<div style="margin-top:6px">${unpaid}</div>` : ''}
+    <div class="cnt" style="margin-top:6px">하루 1번 · 보상은 무작위 날 ${esc(E.drawAt || '09:00')}쯤 발표 (${esc(E.cutoff || '08:30')}까지 확인한 분 대상)${FIELD_PIN ? ' · 관리자 폰은 확인 기록만 남고 보상 추첨에서 제외' : ''}</div></div>`;
+  el.querySelectorAll('[data-myrw]').forEach(b => b.onclick = () => eduRewardShow((E.rewards || []).find(x => x.code === b.dataset.myrw)));
+  el.querySelectorAll('[data-mywin]').forEach(b => b.onclick = () => evWinShow(b.dataset.mywin));
+  if (tw && mineToday && !store.get('ms_rw_seen_' + tw.code)) { store.set('ms_rw_seen_' + tw.code, '1'); eduRewardShow((E.rewards || []).find(x => x.code === tw.code)); }
 }
-function evWinShow(code) {
-  let ov = $('evWin');
-  if (!ov) { ov = document.createElement('div'); ov.id = 'evWin'; document.body.appendChild(ov); }
-  ov.innerHTML = `<div class="evwbox"><div class="evconf">🎉</div><div class="evw1">축! 당첨</div>
-    <div class="evw2">행운 이벤트 당첨번호</div><div class="evcode">${esc(code)}</div>
-    <div class="evw3">이 화면을 <b>캡처</b>해서<br><b>이성희 과장</b>(관리감독자)에게 보여주세요.<br>지급할 때 <b>그날 읽은 내용</b>을 물어봅니다.</div>
-    <button class="submit" id="evWinClose">확인</button></div>`;
-  ov.style.display = 'flex'; $('evWinClose').onclick = () => { ov.style.display = 'none'; };
+
+/* ----- 매일 몇 명이 확인했나 (팀 화면, 인원수 표시) ----- */
+function eduGraph() {
+  const el = $('pubTrend'); if (!el) return;
+  const P = EVP; if (!P || !P.daily || !P.daily.length) { el.innerHTML = ''; return; }
+  const base = P.base || 34, D = P.daily, n = D.length, last = D[n - 1], prev = n > 1 ? D[n - 2] : null;
+  const isToday = last.d === today(), pct = Math.round(last.n / base * 100), diff = prev ? last.n - prev.n : 0;
+  const W = 320, H = 132, L = 8, R = 8, T = 18, B = 26, bw = Math.min(26, (W - L - R) / n * 0.62);
+  const Y = v => T + (1 - Math.min(v, base) / base) * (H - T - B), X = i => L + (i + 0.5) * (W - L - R) / n;
+  const wd = ['일', '월', '화', '수', '목', '금', '토'];
+  el.innerHTML = `<div class="edg"><div class="edgt">매일 몇 명이 안전 내용을 확인했나 <span>전 직원 ${base}명 기준 · 일별</span></div>
+    <div class="edgn"><small>${isToday ? '오늘' : esc(last.d.slice(5).replace('-', '/'))}</small> <b>${last.n}명</b> / ${base}명 <em>(${pct}%)</em></div>
+    ${prev ? `<div class="edgd ${diff >= 0 ? 'up' : 'dn'}">${diff > 0 ? `▲ 전날보다 ${diff}명 늘었어요` : diff < 0 ? `▼ 전날보다 ${-diff}명 줄었어요` : '전날과 같아요'}</div>` : ''}
+    <svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="최근 일별 안전 내용 확인 인원" style="display:block;margin-top:4px">
+      <line x1="${L}" x2="${W - R}" y1="${Y(base)}" y2="${Y(base)}" stroke="#EA580C" stroke-dasharray="4 4"/>
+      <text x="${W - R}" y="${Y(base) - 4}" text-anchor="end" font-size="10" fill="#C2410C">전원 ${base}명</text>
+      <line x1="${L}" x2="${W - R}" y1="${Y(0)}" y2="${Y(0)}" stroke="#CBD5E1"/>
+      ${D.map((x, i) => { const dd = new Date(x.d + 'T12:00:00'), lastBar = i === n - 1;
+        return `<rect x="${(X(i) - bw / 2).toFixed(1)}" y="${Y(x.n).toFixed(1)}" width="${bw.toFixed(1)}" height="${(Y(0) - Y(x.n)).toFixed(1)}" rx="3" fill="${lastBar ? '#1D4ED8' : '#93C5FD'}"/>
+        <text x="${X(i).toFixed(1)}" y="${(Y(x.n) - 4).toFixed(1)}" text-anchor="middle" font-size="10" font-weight="${lastBar ? 700 : 400}" fill="#0F172A">${x.n}</text>
+        <text x="${X(i).toFixed(1)}" y="${H - 12}" text-anchor="middle" font-size="9.5" fill="#64748B">${dd.getMonth() + 1}/${dd.getDate()}</text>
+        <text x="${X(i).toFixed(1)}" y="${H - 2}" text-anchor="middle" font-size="9" fill="#94A3B8">${wd[dd.getDay()]}</text>`; }).join('')}
+    </svg><div class="cnt">막대 = 그날 TBM 주제나 전달사항을 읽고 [확인]한 사람 수 (관리자 포함) · 점선까지 차면 전원 확인</div></div>`;
 }
+
 async function evLoad() {
   evCardRender();
   if (!team) return;
+  eduFlush();
   try { const o = await (await fetch(`${ENDPOINT}?action=ev&dev=${DEV}`)).json(); if (o.ok) { EV = o;
-    if (o.joined && !evDone()) store.set(evKey(), String(o.no));
-    if (!o.joined && evDone() && evDone() !== 'mgr') { try { localStorage.removeItem(evKey()); } catch (e) {} }
+    const d = evDone();
+    if (o.joined && (!d || d === 'p') && !eduQ().some(x => x.day === today())) store.set(evKey(), String(o.no));
+    if (!o.joined && d && d !== 'p' && d !== 'mgr' && !eduQ().length) { try { localStorage.removeItem(evKey()); } catch (e) {} }
     evCardRender(); noticeRender(LAST_NOTICES); topicAckRender(); } } catch (e) {}
-  try { const d = await (await fetch(`${ENDPOINT}?action=pubsum`)).json(); if (d.ok) { EVP = d; evCardRender(); } } catch (e) {}
+  try { const d = await (await fetch(`${ENDPOINT}?action=pubsum`)).json(); if (d.ok) { EVP = d; evCardRender(); eduGraph(); } } catch (e) {}
 }
 /* 공지 없는 날: 오늘의 TBM 주제 읽고 [확인] */
 let LAST_NOTICES = [];
@@ -1262,10 +1453,103 @@ function topicAckRender() {
   const el = $('topicAck'); if (!el) return;
   if (!team || (LAST_NOTICES && LAST_NOTICES.length)) { el.innerHTML = ''; return; }
   if (!evOpenAt.tbm) evOpenAt.tbm = Date.now();
-  el.innerHTML = `<div class="cnt" style="margin:6px 0 4px">오늘의 주제 3개를 읽고 확인해 주세요 (행운 이벤트 참여)</div>${evBtnHtml('tbm')}`;
+  el.innerHTML = `${evBtnHtml('tbm')}`;
   const b = el.querySelector('[data-evok]');
   if (b) b.onclick = () => evPress(b, 'tbm', 'TBM 주제: ' + tbmTopicsTeam(today()).map(t => t.ko[0]).join(' / '), topicAckRender);
   if (!evDone() && el.querySelector('.evwait')) evTick(topicAckRender);
+}
+
+/* ===== v18 TBM 전달사항 (관리자 등록 → 다음 근무일 전 팀 TBM 맨 위) =====
+ * 직원 폰 부담 줄이기: 글 먼저 → 화면이 다 뜬 뒤 작은 사진(약 20~30KB)을 1장씩 → 폰에 저장(다시 안 받음)
+ * 큰 사진은 누를 때만 받음
+ */
+let TN = [];
+async function tnLoad() {
+  try { const o = await (await fetch(`${ENDPOINT}?action=tbmnotes`)).json(); if (o.ok) { TN = o.notes || []; tnClean(); pubRender(PUB_ST); if (typeof tbm !== 'undefined' && tbm && type === 'tbm') tbmRender(); } } catch (e) {}
+}
+function tnClean() {   // 오늘 것이 아닌 저장 사진 정리
+  try { const keep = new Set(TN.flatMap(n => n.photos.map(p => 'ms_tn_' + n.id + '_' + p.k)));
+    Object.keys(localStorage).filter(k => k.indexOf('ms_tn_') === 0 && !keep.has(k)).forEach(k => localStorage.removeItem(k)); } catch (e) {}
+}
+function tnText(n, l) { const x = l !== 'ko' && n.tr && n.tr[l] && n.tr[l][0] ? n.tr[l] : [n.title, n.body]; return { t: x[0], b: x[1] || '' }; }
+function tnHtml(l, big) {
+  if (!TN.length) return '';
+  return TN.map(n => { const x = tnText(n, l);
+    return `<div class="tnc${big ? ' big' : ''}"><div class="tnh">📌 오늘 전달사항 <span>관리자</span></div>
+      <div class="tnt">${esc(x.t)}</div>${l !== 'ko' ? `<div class="tnko">${esc(n.title)}</div>` : ''}
+      ${x.b ? `<div class="tnb">${esc(x.b).replace(/\n/g, '<br>')}</div>` : ''}
+      ${n.photos.length ? `<div class="tnp">${n.photos.map(p => `<button class="tnph" data-tnid="${esc(n.id)}" data-tnk="${p.k}" aria-label="사진 크게 보기"><img alt="" data-tn="${esc(n.id)}|${p.k}"><span>사진</span></button>`).join('')}</div>` : ''}
+      ${l !== 'ko' ? '<div class="tnko">자동 번역입니다. 정확한 내용은 한국어 원문 기준.</div>' : ''}</div>`; }).join('');
+}
+let tnBusy = false, tnTimer = null;
+function tnThumbs() {   // 화면 다 뜬 뒤 1장씩
+  document.querySelectorAll('.tnph').forEach(b => b.onclick = () => tnBig(b.dataset.tnid, +b.dataset.tnk));
+  const imgs = [...document.querySelectorAll('img[data-tn]')].filter(i => !i.src);
+  imgs.forEach(i => { const v = store.get('ms_tn_' + i.dataset.tn.replace('|', '_')); if (v) { i.src = v; i.parentNode.classList.add('on'); } });
+  clearTimeout(tnTimer); tnTimer = setTimeout(tnNext, 1200);
+}
+async function tnNext() {
+  if (tnBusy) return; const i = [...document.querySelectorAll('img[data-tn]')].find(x => !x.src); if (!i) return;
+  const [id, k] = i.dataset.tn.split('|'); tnBusy = true;
+  try { const o = await (await fetch(`${ENDPOINT}?action=tbmphoto&id=${encodeURIComponent(id)}&k=${k}&size=s`)).json();
+    if (o.ok) { store.set('ms_tn_' + id + '_' + k, o.data); document.querySelectorAll(`img[data-tn="${id}|${k}"]`).forEach(x => { x.src = o.data; x.parentNode.classList.add('on'); }); }
+    else document.querySelectorAll(`img[data-tn="${id}|${k}"]`).forEach(x => x.removeAttribute('data-tn'));
+  } catch (e) {}
+  tnBusy = false; setTimeout(tnNext, 300);
+}
+async function tnBig(id, k) {
+  let ov = $('tnOv'); if (!ov) { ov = document.createElement('div'); ov.id = 'tnOv'; document.body.appendChild(ov); ov.onclick = () => { ov.className = ''; }; }
+  const sm = store.get('ms_tn_' + id + '_' + k) || '';
+  ov.innerHTML = `<div class="tnobox"><img id="tnoImg" src="${sm}" alt="전달사항 사진"><div class="tnow" id="tnoW">큰 사진 받는 중…</div><button>닫기</button></div>`; ov.className = 'on';
+  try { const o = await (await fetch(`${ENDPOINT}?action=tbmphoto&id=${encodeURIComponent(id)}&k=${k}&size=b`)).json();
+    if (o.ok && $('tnoImg')) { $('tnoImg').src = o.data; $('tnoW').textContent = ''; } else if ($('tnoW')) $('tnoW').textContent = '큰 사진을 받지 못했습니다'; } catch (e) { if ($('tnoW')) $('tnoW').textContent = '연결이 약합니다'; }
+}
+function tnWhat() { return TN.length ? '[전달] ' + TN.map(n => n.title).join(' / ') + ' · ' : ''; }
+
+/* ----- 관리자 폰: 등록 ----- */
+function tnShrink(file, max, q) {
+  return new Promise((ok, no) => { const u = URL.createObjectURL(file), img = new Image();
+    img.onload = () => { const s = Math.min(1, max / Math.max(img.width, img.height)), c = document.createElement('canvas');
+      c.width = Math.round(img.width * s); c.height = Math.round(img.height * s); c.getContext('2d').drawImage(img, 0, 0, c.width, c.height); URL.revokeObjectURL(u); ok(c.toDataURL('image/jpeg', q)); };
+    img.onerror = () => { URL.revokeObjectURL(u); no(new Error('사진을 읽지 못했습니다')); }; img.src = u; });
+}
+let TNP = [];
+async function tnOpen() {
+  let dl = $('tnDlg');
+  if (!dl) { dl = document.createElement('dialog'); dl.id = 'tnDlg'; document.body.appendChild(dl); }
+  TNP = [];
+  dl.innerHTML = `<div class="dh">📌 TBM 전달사항 등록</div><div class="db">
+    <div class="cnt">다음 근무일 아침, <b>전 팀 TBM 주제 맨 위</b>와 직원 QR 화면에 나옵니다. 사진은 설비·현장 위주로(얼굴 제외) — 외부인도 QR로 볼 수 있습니다.</div>
+    <label class="tnl">표시일 <input type="date" id="tnDay"></label>
+    <input id="tnTitle" maxlength="40" placeholder="제목 (예: B동 앞 지게차 동선 변경)">
+    <textarea id="tnBody" maxlength="300" rows="4" placeholder="내용 (짧게, 300자까지)"></textarea>
+    <div class="tnpick"><label class="btnf">📷 사진 추가 (2장까지)<input type="file" id="tnFile" accept="image/*" multiple hidden></label><span id="tnPrev"></span></div>
+    <input id="tnBy" maxlength="20" placeholder="등록자" value="${esc(store.get('ms_tbm_leader') || '')}">
+    <p class="msg" id="tnMsg"></p><button class="submit" id="tnSave">등록</button>
+    <div id="tnList" class="cnt" style="margin-top:10px">불러오는 중…</div>
+    <button class="lnk" id="tnClose" style="margin-top:8px">닫기</button></div>`;
+  dl.showModal();
+  $('tnClose').onclick = () => dl.close();
+  const prev = () => { $('tnPrev').innerHTML = TNP.map((p, i) => `<img src="${p.s}" alt=""><button class="lnk" data-tnx="${i}">빼기</button>`).join(' ');
+    document.querySelectorAll('[data-tnx]').forEach(b => b.onclick = () => { TNP.splice(+b.dataset.tnx, 1); prev(); }); };
+  $('tnFile').onchange = async e => { for (const f of [...e.target.files]) { if (TNP.length >= 2) break;
+      try { TNP.push({ s: await tnShrink(f, 360, 0.6), b: await tnShrink(f, 1280, 0.72) }); } catch (er) { $('tnMsg').textContent = er.message; } }
+    e.target.value = ''; prev(); };
+  $('tnSave').onclick = async () => {
+    const b = $('tnSave'); b.disabled = true; b.textContent = '저장 중…'; $('tnMsg').textContent = '';
+    try { const o = await (await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ key: API_KEY, type: 'tbmnote', fp: FIELD_PIN, day: $('tnDay').value, title: $('tnTitle').value.trim(), body: $('tnBody').value.trim(), by: $('tnBy').value.trim(), photos: TNP }) })).json();
+      if (!o.ok) throw new Error(o.error); $('tnMsg').textContent = `✔ 등록됨 · ${o.day} TBM에 표시 · 사진 ${o.photos}장`; $('tnTitle').value = ''; $('tnBody').value = ''; TNP = []; prev(); tnMine();
+    } catch (e) { $('tnMsg').textContent = '저장 안 됨: ' + e.message; }
+    b.disabled = false; b.textContent = '등록'; };
+  tnMine();
+}
+async function tnMine() {
+  try { const o = await (await fetch(`${ENDPOINT}?action=tbmnotes&mine=1&fp=${encodeURIComponent(FIELD_PIN)}`)).json(); if (!o.ok) throw new Error(o.error);
+    if ($('tnDay') && !$('tnDay').value) $('tnDay').value = o.next;
+    $('tnList').innerHTML = o.notes.length ? '<b>표시 예정</b>' + o.notes.map(n => `<div class="tnrow">${esc(n.day.slice(5).replace('-', '/'))} · ${esc(n.title)}${n.photos.length ? ` · 사진 ${n.photos.length}` : ''} <button class="lnk" data-tnoff="${esc(n.id)}">내리기</button></div>`).join('') : '표시 예정인 전달사항이 없습니다';
+    document.querySelectorAll('[data-tnoff]').forEach(b => b.onclick = async () => { if (!b.dataset.sure) { b.dataset.sure = 1; b.textContent = '한 번 더 누르면 내림'; return; }
+      await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ key: API_KEY, type: 'tbmnoteoff', fp: FIELD_PIN, id: b.dataset.tnoff }) }); tnMine(); });
+  } catch (e) { if ($('tnList')) $('tnList').textContent = '목록을 불러오지 못했습니다'; }
 }
 
 /* ===== 안전 칭찬 등록 (관리자 폰) ===== */
@@ -1300,7 +1584,7 @@ async function prSave() {
     document.querySelectorAll('[data-cat]').forEach(x => x.classList.remove('on'));
   } catch (e) { m.textContent = '저장 실패: ' + e.message; }
 }
-$('prBtn').onclick = prOpen; $('prSave').onclick = prSave; $('prClose').onclick = () => $('prDlg').close();
+$('prBtn').onclick = prOpen; $('tnBtn').onclick = tnOpen; $('prSave').onclick = prSave; $('prClose').onclick = () => $('prDlg').close();
 
 mgrRender(); pubLoad();
 

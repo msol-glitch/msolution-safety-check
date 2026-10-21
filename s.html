@@ -86,7 +86,7 @@ main{max-width:520px;margin:0 auto;padding:12px 14px 30px}
     <div class="k"><div class="v" id="kTbm">-</div><div class="t">이번 달<br>TBM 실시율</div></div>
     <div class="k"><div class="v" id="kPr">-</div><div class="t">이번 달<br>안전 칭찬</div></div></div>
   <div id="bestBox"></div>
-  <div class="sec"><h3>📈 전 직원 참여 추이 <small id="trendT">최근 8주 · 주별 참여 수</small></h3><div id="trend"><div class="wait">불러오는 중…</div></div></div>
+  <div class="sec"><h3>📈 매일 몇 %가 안전 내용을 확인했나 <small id="trendT">전 직원 기준 · 일별 확인 비율</small></h3><div id="trend"><div class="wait">불러오는 중…</div></div></div>
   <div class="sec"><h3>⭐ 최근 안전 칭찬</h3><div id="recent"><div class="wait">불러오는 중…</div></div></div>
   <div class="sec"><h3>🎁 지급 내역 <small>상품권 지급 완료</small></h3><div id="pays"><div class="wait">불러오는 중…</div></div></div>
   <div class="foot">※ 직원 이름과 팀은 표시하지 않습니다<br>참여 = 직원이 매일 안전 전달사항이나 TBM 주제를 읽고 확인한 횟수<br>업데이트 <span id="upd">-</span></div>
@@ -110,16 +110,29 @@ function trend(w) {
     ${w.map((x, i) => `<circle cx="${X(i)}" cy="${Y(x.n)}" r="${i === n - 1 ? 4 : 2.6}" fill="#EA580C" stroke="#fff"/><text x="${X(i)}" y="${Y(x.n) - 7}" text-anchor="middle" font-size="9.5" fill="#9A3412">${x.n}</text>
     <text x="${X(i)}" y="${H - 5}" text-anchor="middle" font-size="9" fill="#64748B">${+x.to.slice(5, 7)}/${+x.to.slice(8)}</text>`).join('')}</svg>`;
 }
+/* v17: 일별 확인 비율 막대 (방문자 화면은 비율만, 인원수 없음) */
+function rateBars(D, base) {
+  const W = 320, H = 132, L = 8, R = 8, T = 18, B = 26, n = D.length, bw = Math.min(26, (W - L - R) / n * 0.62);
+  const pc = x => Math.min(100, Math.round(x.n / base * 100)), Y = v => T + (1 - v / 100) * (H - T - B), X = i => L + (i + 0.5) * (W - L - R) / n;
+  const wd = ['일', '월', '화', '수', '목', '금', '토'], last = pc(D[n - 1]);
+  return `<div style="font-size:14px;color:#64748B;margin-bottom:2px">최근 확인 비율 <b style="font-size:24px;color:#0F172A">${last}%</b></div>
+  <svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="일별 안전 내용 확인 비율">
+    <line x1="${L}" x2="${W - R}" y1="${Y(100)}" y2="${Y(100)}" stroke="#EA580C" stroke-dasharray="4 4"/><text x="${W - R}" y="${Y(100) - 4}" text-anchor="end" font-size="10" fill="#C2410C">전원 100%</text>
+    <line x1="${L}" x2="${W - R}" y1="${Y(0)}" y2="${Y(0)}" stroke="#CBD5E1"/>
+    ${D.map((x, i) => { const v = pc(x), dd = new Date(x.d + 'T12:00:00'); return `<rect x="${(X(i) - bw / 2).toFixed(1)}" y="${Y(v).toFixed(1)}" width="${bw.toFixed(1)}" height="${(Y(0) - Y(v)).toFixed(1)}" rx="3" fill="${i === n - 1 ? '#EA580C' : '#FDBA74'}"/>
+      <text x="${X(i).toFixed(1)}" y="${(Y(v) - 4).toFixed(1)}" text-anchor="middle" font-size="9.5" fill="#9A3412">${v}%</text>
+      <text x="${X(i).toFixed(1)}" y="${H - 12}" text-anchor="middle" font-size="9.5" fill="#64748B">${dd.getMonth() + 1}/${dd.getDate()}</text><text x="${X(i).toFixed(1)}" y="${H - 2}" text-anchor="middle" font-size="9" fill="#94A3B8">${wd[dd.getDay()]}</text>`; }).join('')}
+  </svg><div style="font-size:12px;color:#64748B">막대 = 그날 TBM 주제나 전달사항을 읽고 확인한 직원 비율 (관리자 포함, 전 직원 기준)</div>`;
+}
 (async () => {
   try {
     const d = await (await fetch(`${ENDPOINT}?action=pubsum`)).json(); if (!d.ok) throw new Error(d.error);
     $('kJoin').textContent = num(d.join) + '회'; $('kTbm').textContent = d.tbmRate == null ? '-' : d.tbmRate + '%'; $('kPr').textContent = num(d.praise) + '건';
     if (d.best) $('bestBox').innerHTML = `<div class="best">🏆 ${esc(d.best.replace('-', ' '))} 안전 우수사원 선정 · 특별포상</div>`;
-    if (d.weeks.length >= 3) $('trend').innerHTML = trend(d.weeks);
-    else if (d.daily.length >= 2) { $('trendT').textContent = '이벤트 시작 후 · 일별 참여 수'; $('trend').innerHTML = trend(d.daily.map(x => ({ n: x.n, to: x.d }))); }
+    if (d.base && d.daily.length) $('trend').innerHTML = rateBars(d.daily, d.base);
     else $('trend').innerHTML = d.daily.length ? `<div class="wait">오늘 참여 ${num(d.daily[0].n)}회 · 그래프는 이틀째부터 표시됩니다</div>` : '<div class="wait">10월 19일(월)부터 집계합니다</div>';
     $('recent').innerHTML = d.recent.length ? d.recent.map(x => `<div class="it"><span class="tag">${esc(x.cat)}</span><div>${esc(x.why)}</div><span class="dt">${esc(x.date)}</span></div>`).join('') : '<div class="wait">아직 칭찬이 없습니다</div>';
-    $('pays').innerHTML = d.pays.length ? d.pays.map(x => `<div class="it"><span class="tag ${x.kind === '행운' ? 'b' : ''}">${x.kind}</span><div>${x.kind === '행운' ? '당첨번호 ' + esc(x.what) : esc(x.what)} · 지급 완료</div><span class="dt">${esc(x.date)}</span></div>`).join('') : '<div class="wait">아직 지급 내역이 없습니다</div>';
+    $('pays').innerHTML = d.pays.length ? d.pays.map(x => `<div class="it"><span class="tag ${x.kind !== '칭찬' ? 'b' : ''}">${x.kind === '교육보상' ? '교육참여 보상' : x.kind}</span><div>${x.kind === '교육보상' ? '보상 번호 ' + Number(String(x.what).slice(-3)) + (x.prize ? ' · ' + esc(x.prize) : '') : x.kind === '행운' ? '당첨번호 ' + esc(x.what) : esc(x.what)} · 지급 완료</div><span class="dt">${esc(x.date)}</span></div>`).join('') : '<div class="wait">아직 지급 내역이 없습니다</div>';
     $('upd').textContent = new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
   } catch (e) { ['trend', 'recent', 'pays'].forEach(id => $(id).innerHTML = '<div class="wait">잠시 후 다시 열어 주세요</div>'); }
 })();

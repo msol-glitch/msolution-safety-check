@@ -950,10 +950,12 @@ const PAY = { praise: 10000, ev: 10000, best: 50000 };
 async function renderPraise() {
   const v = $('praiseView'); v.classList.remove('hide'); v.innerHTML = '<div class="wait">불러오는 중…</div>';
   let d; try { d = await api('action=praiselist'); } catch (e) { v.innerHTML = emptyMsg('서버 연결 전: ' + esc(e.message)); return; }
+  let ea = null; try { ea = await api('action=eduadmin'); } catch (e) {}
+  const gift = w => String(w.how || '').indexOf('(특별)') > 0, gname = w => String(w.how || '').split('· ')[1] || '', isEdu = w => String(w.how || '').indexOf('교육참여 보상') === 0;
   const ym = dstr(kstNow()).slice(0, 7);
-  const wait = d.list.filter(x => x.st === '대기'), toPay = d.list.filter(x => x.st === '승인' && !x.paid), evPay = d.wins.filter(w => !w.paid);
+  const wait = d.list.filter(x => x.st === '대기'), toPay = d.list.filter(x => x.st === '승인' && !x.paid), evPay = d.wins.filter(w => !w.paid), evAmt = w => gift(w) ? 0 : PAY.ev;
   const paid = d.list.filter(x => x.paid).map(x => ({ k: '칭찬', d: x.paid, who: `${x.name} (${x.team})`, what: x.cat, amt: PAY.praise, by: x.payer }))
-    .concat(d.wins.filter(w => w.paid).map(w => ({ k: '행운', d: w.paid, who: `${w.code} (${w.team})`, what: w.how, amt: PAY.ev, by: w.payer })))
+    .concat(d.wins.filter(w => w.paid).map(w => ({ k: isEdu(w) ? '교육보상' : '행운', d: w.paid, who: `${w.code} (${w.team})`, what: w.how, amt: evAmt(w), by: w.payer })))
     .sort((a, b) => b.d < a.d ? -1 : 1);
   const kpi = (t, n, u, c) => `<div class="card" style="text-align:center"><div style="font-size:12px;color:var(--sub)">${t}</div><div style="font-size:26px;font-weight:800;color:${c || 'var(--ink)'}">${num(n)}<small style="font-size:13px"> ${u}</small></div></div>`;
   v.innerHTML = `<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px">
@@ -965,12 +967,12 @@ async function renderPraise() {
         <td class="c"><button class="btn sm" data-pa="ok|${esc(x.id)}">승인</button> <button class="btn ghost sm" data-pa="no|${esc(x.id)}">반려</button></td></tr>`).join('')}</tbody></table>` : emptyMsg('승인 대기 칭찬이 없습니다')}</div>
     <div class="card" style="margin-top:12px"><h2>② 지급할 것 <small>행운 당첨은 캡처 확인 + <b>그날 읽은 내용</b>을 물어본 뒤 지급</small></h2>
       ${toPay.length + evPay.length ? `<table><thead><tr><th style="width:8%">구분</th><th style="width:16%">대상</th><th>확인할 것</th><th style="width:10%">금액</th><th style="width:12%"></th></tr></thead><tbody>
-      ${evPay.map(w => `<tr><td class="c"><span class="pill open">행운</span></td><td class="c"><b>${esc(w.code)}</b><div style="font-size:11.5px;color:var(--sub)">${esc(w.team)} · ${esc(w.how)}</div></td>
+      ${evPay.map(w => `<tr><td class="c"><span class="pill open">${isEdu(w) ? '교육보상' : '행운'}</span></td><td class="c"><b>${esc(w.code)}</b><div style="font-size:11.5px;color:var(--sub)">${esc(w.team)} · ${esc(w.how)}</div></td>
         <td>① 이성희 과장이 직원 폰 캡처의 당첨번호가 <b>${esc(w.code)}</b>와 같은지<br>② 질문: "그날 무엇을 읽고 확인했나요?" → 정답 <span style="background:#FFF7ED;padding:1px 6px;border-radius:6px">${esc(w.what || '(기록 없음)')}</span><br>③ 직원 본인인지 (관리자 제외)</td>
-        <td class="c">${num(PAY.ev)}원</td><td class="c"><button class="btn sm" data-pay="ev|${esc(w.code)}">지급 완료</button></td></tr>`).join('')}
+        <td class="c">${gift(w) ? esc(gname(w)) : num(PAY.ev) + '원'}</td><td class="c"><button class="btn sm" data-pay="ev|${esc(w.code)}">지급 완료</button></td></tr>`).join('')}
       ${toPay.map(x => `<tr><td class="c"><span class="pill done">칭찬</span></td><td class="c"><b>${esc(x.name)}</b><div style="font-size:11.5px;color:var(--sub)">${esc(x.team)}</div></td>
         <td>${esc(x.cat)} — ${esc(x.why)}</td><td class="c">${num(PAY.praise)}원</td><td class="c"><button class="btn sm" data-pay="praise|${esc(x.id)}">지급 완료</button></td></tr>`).join('')}</tbody>
-      <tfoot><tr><td colspan="3" class="c">합계</td><td class="c">${num(evPay.length * PAY.ev + toPay.length * PAY.praise)}원</td><td></td></tr></tfoot></table>` : emptyMsg('지급할 것이 없습니다')}
+      <tfoot><tr><td colspan="3" class="c">합계</td><td class="c">${num(evPay.reduce((a, w) => a + evAmt(w), 0) + toPay.length * PAY.praise)}원${evPay.some(gift) ? ' + 현물' : ''}</td><td></td></tr></tfoot></table>` : emptyMsg('지급할 것이 없습니다')}
       <div style="margin-top:8px;font-size:13px">지급자 <input id="payer" value="이성희" style="font:inherit;width:90px;padding:4px 6px;border:1px solid var(--line2);border-radius:6px"></div></div>
     <div class="card" style="margin-top:12px"><h2>③ ${esc(d.half.replace('-', ' '))} 안전 우수사원 후보 <small>승인된 칭찬 많은 순 · 대표 최종 선정 · 상품권 5만 원</small></h2>
       ${d.best.length ? `<p style="margin:0 0 8px">🏆 선정: ${d.best.map(b => `<b>${esc(b.half)} ${esc(b.name)}</b> (${esc(b.team)}, 칭찬 ${b.n}건)`).join(' · ')}</p>` : ''}
@@ -979,9 +981,20 @@ async function renderPraise() {
         <td class="c">${d.best.some(b => b.half === d.half) ? '' : `<button class="btn ghost sm" data-best="${esc(x.name)}">선정</button>`}</td></tr>`).join('')}</tbody></table>` : emptyMsg('이번 반기 승인된 칭찬이 아직 없습니다')}</div>
     <div class="card" style="margin-top:12px"><h2>④ 지급 내역 <small>실명 기록은 이 화면(관리자 PIN)에만 · 직원·외부 화면에는 이름 없이 표시</small></h2>
       ${paid.length ? `<table><thead><tr><th style="width:12%">지급일</th><th style="width:8%">구분</th><th>대상</th><th style="width:16%">내용</th><th style="width:11%">금액</th><th style="width:10%">지급자</th></tr></thead><tbody>
-      ${paid.map(x => `<tr><td class="c">${esc(x.d)}</td><td class="c">${x.k}</td><td class="c">${esc(x.who)}</td><td class="c">${esc(x.what)}</td><td class="c">${num(x.amt)}원</td><td class="c">${esc(x.by || '')}</td></tr>`).join('')}</tbody>
+      ${paid.map(x => `<tr><td class="c">${esc(x.d)}</td><td class="c">${x.k}</td><td class="c">${esc(x.who)}</td><td class="c">${esc(x.what)}</td><td class="c">${x.amt ? num(x.amt) + '원' : '현물'}</td><td class="c">${esc(x.by || '')}</td></tr>`).join('')}</tbody>
       <tfoot><tr><td colspan="4" class="c">합계 ${num(paid.length)}건</td><td class="c">${num(paid.reduce((a, x) => a + x.amt, 0))}원</td><td></td></tr></tfoot></table>` : emptyMsg('지급 내역이 없습니다')}
-      <p class="note">상품권 지급의 세무 처리(근로소득 해당 여부)는 경리 확인 필요.</p></div>`;
+      <p class="note">상품권·현물 지급의 세무 처리(근로소득 해당 여부)는 경리 확인 필요.</p></div>
+    ${ea ? `<div class="card" style="margin-top:12px"><h2>⑤ 교육참여 보상 일정 <small>대표 전용 · 직원 화면에는 날짜가 나오지 않습니다</small></h2>
+      <p style="margin:0 0 8px">다음 정기 추첨일 <b>${esc(ea.next)}</b> · ${esc(ea.cutoff)}까지 확인한 직원 대상 · ${esc(ea.drawAt)}부터 발표 · 평소 보상 상품권 10,000원 · 기준 인원 ${num(ea.base)}명</p>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px"><b>특별 추첨 추가</b>
+        <input type="date" id="spDay" style="font:inherit;padding:4px 6px;border:1px solid var(--line2);border-radius:6px">
+        <input id="spPrize" placeholder="상품 (예: 쌀 10kg)" style="font:inherit;width:180px;padding:4px 6px;border:1px solid var(--line2);border-radius:6px">
+        <button class="btn sm" id="spAdd">추가</button><span id="spMsg" style="font-size:12.5px;color:var(--bad)"></span></div>
+      ${ea.specials.length ? `<table><thead><tr><th style="width:20%">날짜</th><th>상품</th><th style="width:14%"></th></tr></thead><tbody>${ea.specials.map(x => `<tr><td class="c">${esc(x.day)}</td><td class="c">${esc(x.prize)}</td><td class="c"><button class="btn ghost sm" data-spdel="${esc(x.day)}">삭제</button></td></tr>`).join('')}</tbody></table>` : '<p class="note">등록된 특별 추첨이 없습니다. 직원에게는 "이번 주 중 특별 보상"처럼 기간만 알려 주세요.</p>'}
+      ${ea.list.length ? `<table style="margin-top:8px"><thead><tr><th style="width:14%">날짜</th><th style="width:10%">번호</th><th style="width:12%">팀</th><th>보상</th><th style="width:12%">대상 인원</th><th style="width:14%">지급</th></tr></thead><tbody>${ea.list.map(x => `<tr><td class="c">${esc(x.day)}</td><td class="c">${x.no}번</td><td class="c">${esc(x.team)}</td><td class="c">${esc(x.prize)}${x.special ? ' (특별)' : ''}</td><td class="c">${num(x.n)}명</td><td class="c">${x.paid ? esc(x.paid) : '대기'}</td></tr>`).join('')}</tbody></table>` : ''}</div>` : ''}`;
+  const spPost = async body => { const o = await (await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ key: API_KEY, type: 'eduspecial', pin: PIN, ...body }) })).json(); if (!o.ok) throw new Error(o.error); renderPraise(); };
+  if ($('spAdd')) $('spAdd').onclick = () => spPost({ day: $('spDay').value, prize: $('spPrize').value.trim() }).catch(e => { $('spMsg').textContent = e.message; });
+  v.querySelectorAll('[data-spdel]').forEach(b => b.onclick = () => spPost({ day: b.dataset.spdel, del: 1 }).catch(e => { b.textContent = e.message; }));
   const post = async (body, b) => { b.disabled = true; try { const o = await (await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ key: API_KEY, type: 'praiseact', pin: PIN, payer: ($('payer') || {}).value, ...body }) })).json();
     if (!o.ok) throw new Error(o.error); renderPraise(); } catch (e) { b.disabled = false; b.textContent = e.message; } };
   v.querySelectorAll('[data-pa]').forEach(b => b.onclick = () => { const [act, id] = b.dataset.pa.split('|'); post({ id, act }, b); });
@@ -989,6 +1002,38 @@ async function renderPraise() {
   v.querySelectorAll('[data-best]').forEach(b => b.onclick = () => { if (!b.dataset.sure) { b.dataset.sure = 1; b.textContent = '한 번 더 누르면 선정'; return; } post({ kind: 'best', name: b.dataset.best }, b); });
 }
 
+
+/* ===== v18 TBM 전달사항 (다음 근무일 전 팀 TBM 맨 위) — PC 등록 ===== */
+function tnShrinkPc(file, max, q) { return new Promise((ok, no) => { const u = URL.createObjectURL(file), img = new Image();
+  img.onload = () => { const k = Math.min(1, max / Math.max(img.width, img.height)), c = document.createElement('canvas'); c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+    c.getContext('2d').drawImage(img, 0, 0, c.width, c.height); URL.revokeObjectURL(u); ok(c.toDataURL('image/jpeg', q)); }; img.onerror = () => no(new Error('사진을 읽지 못했습니다')); img.src = u; }); }
+function tnPcCard(v) {
+  const box = document.createElement('div'); box.className = 'card'; box.style.marginTop = '12px';
+  box.innerHTML = `<h2>📌 TBM 전달사항 <small>등록하면 표시일(기본: 다음 근무일) 아침 전 팀 TBM 주제 맨 위 + 직원 QR 화면에 나옵니다 · 하루 3건 · 사진 2장</small></h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div>
+      <label style="font-size:13px;color:var(--sub)">표시일 <input type="date" id="tpDay" style="font:inherit;padding:5px;border:1px solid var(--line2);border-radius:8px"></label>
+      <input id="tpTitle" maxlength="40" placeholder="제목 (예: B동 앞 지게차 동선 변경)" style="width:100%;font:inherit;padding:8px;border:1px solid var(--line2);border-radius:8px;margin-top:6px">
+      <textarea id="tpBody" maxlength="300" rows="3" placeholder="내용 (300자까지)" style="width:100%;font:inherit;padding:8px;border:1px solid var(--line2);border-radius:8px;margin-top:6px"></textarea>
+      <div style="margin-top:6px;font-size:13px"><input type="file" id="tpFile" accept="image/*" multiple> <span id="tpPrev"></span></div>
+      <p class="note">사진은 설비·현장 위주로(얼굴 제외). QR 화면은 외부인도 볼 수 있습니다. 사진은 자동으로 줄여 저장됩니다.</p>
+      <button class="btn" id="tpSave">등록</button> <span class="err" id="tpMsg"></span></div>
+      <div id="tpList"><div class="wait">불러오는 중…</div></div></div>`;
+  v.appendChild(box);
+  let P = [];
+  const prev = () => { $('tpPrev').innerHTML = P.map((p, i) => `<img src="${p.s}" style="width:48px;height:48px;object-fit:cover;border-radius:6px;vertical-align:middle"> <button class="btn ghost sm" data-tpx="${i}">빼기</button>`).join(' ');
+    box.querySelectorAll('[data-tpx]').forEach(b => b.onclick = () => { P.splice(+b.dataset.tpx, 1); prev(); }); };
+  $('tpFile').onchange = async e => { for (const f of [...e.target.files]) { if (P.length >= 2) break; try { P.push({ s: await tnShrinkPc(f, 360, 0.6), b: await tnShrinkPc(f, 1280, 0.72) }); } catch (er) { $('tpMsg').textContent = er.message; } } e.target.value = ''; prev(); };
+  const list = async () => { try { const d = await api('action=tbmnotes&mine=1'); if (!$('tpDay').value) $('tpDay').value = d.next;
+      $('tpList').innerHTML = d.notes.length ? `<table><thead><tr><th style="width:18%">표시일</th><th>제목</th><th style="width:10%">사진</th><th style="width:14%">등록자</th><th style="width:14%"></th></tr></thead><tbody>${d.notes.map(n => `<tr><td class="c">${esc(n.day)}</td><td>${esc(n.title)}</td><td class="c">${n.photos.length}</td><td class="c">${esc(n.by || '')}</td><td class="c"><button class="btn ghost sm" data-tpoff="${esc(n.id)}">내리기</button></td></tr>`).join('')}</tbody></table>` : emptyMsg('표시 예정인 전달사항이 없습니다');
+      box.querySelectorAll('[data-tpoff]').forEach(b => b.onclick = async () => { if (!b.dataset.sure) { b.dataset.sure = 1; b.textContent = '한 번 더'; return; }
+        await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ key: API_KEY, type: 'tbmnoteoff', pin: PIN, id: b.dataset.tpoff }) }); list(); });
+    } catch (e) { $('tpList').innerHTML = emptyMsg('서버 연결 전: ' + esc(e.message)); } };
+  $('tpSave').onclick = async () => { const b = $('tpSave'); b.disabled = true; $('tpMsg').textContent = '저장 중…';
+    try { const o = await (await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ key: API_KEY, type: 'tbmnote', pin: PIN, by: '대표', day: $('tpDay').value, title: $('tpTitle').value.trim(), body: $('tpBody').value.trim(), photos: P }) })).json();
+      if (!o.ok) throw new Error(o.error); $('tpMsg').textContent = `✔ ${o.day} TBM에 표시 · 사진 ${o.photos}장`; $('tpTitle').value = ''; $('tpBody').value = ''; P = []; prev(); list();
+    } catch (e) { $('tpMsg').textContent = e.message; } b.disabled = false; };
+  list();
+}
 /* ===== 전달사항(공지) + 발도장(QR 방문·확인) ===== */
 const API_KEY = 'MS-SF-DUST-2026';
 async function renderNotice() {
@@ -1005,6 +1050,7 @@ async function renderNotice() {
       <p class="note">직원이 [확인했습니다]를 누르면 팀별 확인 수가 쌓입니다(이름 없이 기기 단위). 안전보건 전달 증빙으로 출력할 수 있습니다.</p></div>
     <div class="card"><h2>👣 전 직원 안전참여 기록 <small>최근 14일 · 팀별 참여 기기 수 (QR 확인)</small></h2><div id="vTbl"><div class="wait">불러오는 중…</div></div></div></div>
     <div class="card" style="margin-top:12px"><h2>전달사항 목록 · 팀별 확인 <button class="btn ghost sm" id="nPrint">확인 현황 인쇄</button></h2><div id="nList"><div class="wait">불러오는 중…</div></div></div>`;
+  tnPcCard(v);
   $('nSave').onclick = async () => {
     const m = $('nMsg'); m.textContent = '등록 중…';
     try { const o = await (await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ key: API_KEY, type: 'notice', pin: PIN, title: $('nTitle').value.trim(), body: $('nBody').value.trim(), until: $('nUntil').value }) })).json();
