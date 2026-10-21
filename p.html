@@ -1337,6 +1337,7 @@ async function evJoin(how, what) {
 }
 function evBtnHtml(id) {
   const d = evDone();
+  if (d && FIELD_PIN) return `<button class="ackd" disabled>✔ 오늘 교육 확인 완료 · 관리자 폰 (추첨 제외)</button>`;
   if (d) return `<button class="ackd" disabled>✔ ${esc(etx('done'))}${d === 'p' ? ` · <span class="edsend">${esc(etx('wait'))}</span>` : d !== 'mgr' ? ` · ${esc(etx('myno'))} ${esc(d)}` : ''}</button>`;
   const t0 = evOpenAt[id];
   if (!t0) return `<button class="evwait" disabled>▼ 내용을 펼쳐 읽어 주세요</button>`;
@@ -1359,14 +1360,14 @@ function eduPop() {
   const now = new Date(), hm = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
   o.innerHTML = `<div class="epbox" role="dialog" aria-live="polite"><div class="epic">✔</div>
     <div class="ept">${esc(etx('done'))}</div>${etxKo('done') ? `<div class="epko">${esc(etxKo('done'))}</div>` : ''}
-    <div class="eplb">${esc(etx('myno'))}</div><div class="epno" id="epNo">${n ? eduNoHtml(n) : `<span class="epw">${esc(etx('wait'))}</span>`}</div>
-    <div class="epmeta">${esc(today().slice(5).replace('-', '/'))} · ${hm}<br>${esc(etx('note'))}</div>
+    ${FIELD_PIN ? '' : `<div class="eplb">${esc(etx('myno'))}</div><div class="epno" id="epNo">${n ? eduNoHtml(n) : `<span class="epw">${esc(etx('wait'))}</span>`}</div>`}
+    <div class="epmeta">${esc(today().slice(5).replace('-', '/'))} · ${hm}<br>${FIELD_PIN ? '<b style="color:#B45309">관리자 폰 · 확인 기록만 남고 보상 추첨에서는 빠집니다</b>' : esc(etx('note'))}</div>
     <button type="button" id="epClose">${esc(etx('ok'))}</button></div>`;
   o.className = 'on';
   const close = () => { o.className = ''; };
   $('epClose').onclick = close; o.onclick = e => { if (e.target === o) close(); };
 }
-function eduPopNo(n) { const e = $('epNo'); if (e && $('eduPop').className === 'on') e.innerHTML = eduNoHtml(n || ''); }
+function eduPopNo(n) { if (FIELD_PIN) return; const e = $('epNo'); if (e && $('eduPop').className === 'on') e.innerHTML = eduNoHtml(n || ''); }
 
 /* ----- 교육참여 보상 결과 화면 ----- */
 function eduRewardShow(w) {
@@ -1395,7 +1396,8 @@ function evCardRender() {
   if (!team) { el.innerHTML = ''; return; }
   const d = evDone(), E = EV || {}, M = E.mine || {};
   let s;
-  if (d === 'p') s = `<b class="evok">✔ 오늘 교육 확인 완료</b> <span class="edsend">· 번호 받는 중…</span>`;
+  if (FIELD_PIN) s = d ? `<b class="evok">✔ 오늘 교육 확인 완료 (관리자 폰 · 추첨 제외)</b>` : `<b class="evgo">관리자 폰 — 확인 기록만 남고 보상 추첨에서는 빠집니다</b>`;
+  else if (d === 'p') s = `<b class="evok">✔ 오늘 교육 확인 완료</b> <span class="edsend">· 번호 받는 중…</span>`;
   else if (d) s = `<b class="evok">✔ 오늘 교육 확인 완료${d !== 'mgr' ? ` · 오늘 내 번호 ${esc(d)}번` : ''}</b>`;
   else s = `<b class="evgo">오늘 아직 확인 전 — 아래 주제를 읽고 [확인]을 눌러 주세요</b>`;
   const tw = E.todayWin, mineToday = tw && (E.rewards || []).some(x => x.code === tw.code);
