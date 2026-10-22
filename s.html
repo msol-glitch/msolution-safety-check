@@ -92,6 +92,21 @@ main{max-width:520px;margin:0 auto;padding:12px 14px 30px}
   <div class="foot">※ 직원 이름과 팀은 표시하지 않습니다<br>참여 = 직원이 매일 안전 전달사항이나 TBM 주제를 읽고 확인한 횟수<br>업데이트 <span id="upd">-</span></div>
 </main>
 <script>
+/* v18-1: 구글이 데이터 대신 안내 페이지(HTML)를 보내면 → 읽기(GET)는 2초 뒤 1번 다시, 그래도 안 되면 알아보기 쉬운 오류 */
+(function () { const _f = window.fetch.bind(window);
+  window.fetch = async function (u, o) {
+    const url = String(u && u.url || u), isApi = url.indexOf('script.google.com') >= 0 || url.indexOf('script.googleusercontent.com') >= 0;
+    if (!isApi) return _f(u, o);
+    const get = !o || !o.method || String(o.method).toUpperCase() === 'GET';
+    for (let i = 0; i < (get ? 2 : 1); i++) {
+      let r; try { r = await _f(u, o); } catch (e) { if (get && i === 0) { await new Promise(s => setTimeout(s, 2000)); continue; } throw e; }
+      const t = await r.clone().text();
+      if (!/^\s*</.test(t)) return r;
+      if (get && i === 0) { await new Promise(s => setTimeout(s, 2000)); continue; }
+    }
+    return new Response(JSON.stringify({ ok: false, error: '구글 연결 문제입니다 · 새로고침하거나 시크릿 창(또는 solution50826 프로필)으로 열어 주세요' }), { headers: { 'content-type': 'application/json' } });
+  }; })();
+
 const ENDPOINT = 'https://script.google.com/macros/s/AKfycbyk3NwZ25Kdqh1wdc2jvldoyZyuHNU3ebPPFxOh4UYn6TvLj6Fi_ZGpWgEz3b5yf0na/exec';
 const NO_ACCIDENT_SINCE = '2015-01-02';
 const $ = id => document.getElementById(id);

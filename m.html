@@ -422,6 +422,11 @@
     .pdoc{border:0;margin:0;padding:0;break-after:page}.pdoc:last-child{break-after:auto}
     .pdoc *{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
   @media (max-width:900px){.pp-k4{grid-template-columns:1fr 1fr}.pp-f{grid-template-columns:1fr 1fr}}
+  .fa{display:flex;flex-direction:column;gap:8px;font-size:14px}.fa input[type=date]{font:inherit;padding:6px;border:1px solid var(--line2);border-radius:8px}
+  .fa-pick{display:block;text-align:center;border:1px dashed #2563EB;color:#1D4ED8;border-radius:10px;padding:10px;font-weight:700;cursor:pointer}.fa-tip{font-size:12px;color:var(--sub)}.fa-msg{font-size:13px}
+  .fa-b{border:1px solid var(--line);border-radius:10px;padding:8px;margin-top:6px}.fa-bh{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px}.fa-b select{font:inherit;font-size:13px;padding:4px}
+  .fa textarea{width:100%;box-sizing:border-box;font:inherit;padding:6px;border:1px solid var(--line2);border-radius:8px}.fa-paste summary{cursor:pointer;font-size:13px;color:var(--sub)}
+  .fa-save{font:inherit;font-weight:700;border:0;border-radius:10px;padding:10px;background:#22262B;color:#fff;cursor:pointer}.fa-save:disabled{background:#94A3B8}.fa-list{font-size:13px;border-top:1px dashed var(--line);padding-top:6px}.fa-r{padding:2px 0}
 </style>
 </head>
 <body>
@@ -506,6 +511,21 @@
 </div>
 
 <script>
+/* v18-1: 구글이 데이터 대신 안내 페이지(HTML)를 보내면 → 읽기(GET)는 2초 뒤 1번 다시, 그래도 안 되면 알아보기 쉬운 오류 */
+(function () { const _f = window.fetch.bind(window);
+  window.fetch = async function (u, o) {
+    const url = String(u && u.url || u), isApi = url.indexOf('script.google.com') >= 0 || url.indexOf('script.googleusercontent.com') >= 0;
+    if (!isApi) return _f(u, o);
+    const get = !o || !o.method || String(o.method).toUpperCase() === 'GET';
+    for (let i = 0; i < (get ? 2 : 1); i++) {
+      let r; try { r = await _f(u, o); } catch (e) { if (get && i === 0) { await new Promise(s => setTimeout(s, 2000)); continue; } throw e; }
+      const t = await r.clone().text();
+      if (!/^\s*</.test(t)) return r;
+      if (get && i === 0) { await new Promise(s => setTimeout(s, 2000)); continue; }
+    }
+    return new Response(JSON.stringify({ ok: false, error: '구글 연결 문제입니다 · 새로고침하거나 시크릿 창(또는 solution50826 프로필)으로 열어 주세요' }), { headers: { 'content-type': 'application/json' } });
+  }; })();
+
 const ENDPOINT = 'https://script.google.com/macros/s/AKfycbyk3NwZ25Kdqh1wdc2jvldoyZyuHNU3ebPPFxOh4UYn6TvLj6Fi_ZGpWgEz3b5yf0na/exec';
 const LOGO = 'data:image/png;base64,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';
 const BASE = location.href.replace(/[^/]*([?#].*)?$/, '');
@@ -1034,6 +1054,114 @@ function tnPcCard(v) {
     } catch (e) { $('tpMsg').textContent = e.message; } b.disabled = false; };
   list();
 }
+/* ===== v19 식단 등록 (관리자 폰 · PC 공용) =====
+ * 사진 → 서버 글자 읽기 → '덩어리'(칸) 나누기 → 칸마다 요일·점심/저녁 확인 → 저장
+ * 순수 식단: 메뉴 이름만 저장 (칼로리·알레르기·원산지 없음), 야식은 저장하지 않음
+ */
+function foodShrinkImg(file, max, q) {
+  return new Promise((ok, no) => { const u = URL.createObjectURL(file), img = new Image();
+    img.onload = () => { const k = Math.min(1, max / Math.max(img.width, img.height)), c = document.createElement('canvas');
+      c.width = Math.round(img.width * k); c.height = Math.round(img.height * k); c.getContext('2d').drawImage(img, 0, 0, c.width, c.height); URL.revokeObjectURL(u); ok(c.toDataURL('image/jpeg', q)); };
+    img.onerror = () => { URL.revokeObjectURL(u); no(new Error('사진을 읽지 못했습니다')); }; img.src = u; });
+}
+const FOOD_SKIP = /식단표|지점명|SEOYON|AUTOVISION|영타운|Young|Food|Service|^\s*[중석야]\s*$|^\s*[중석야]식\s*$|^\s*<?\s*특식\s*>?\s*$|^\s*[월화수목금토일]\s*$|\d+\s*월\s*\d+\s*일|원산지|변경될|^\s*$/i;
+const FOOD_RICE = /(^|\/)(쌀밥|흑미밥|잡곡밥|추가밥|현미밥|보리밥|비빔밥|볶음밥|덮밥|카레라이스|김밥|주먹밥)/;
+function foodParse(text) {   // 글자 → 칸(덩어리) 목록
+  const toks = String(text || '').split(/\n/).flatMap(l => l.split(/\s+/)).map(s => s.replace(/[|｜]/g, '').trim())
+    .filter(s => s && !FOOD_SKIP.test(s) && /[가-힣]/.test(s) && s.length >= 2 && s.length <= 20 && !/^\d+(월|일)$/.test(s));
+  const isR = s => FOOD_RICE.test(s);
+  // 밥 단어가 3개 이상 연달아 나오면 '가로줄 순서'로 읽힌 표 → 세로 칸으로 다시 묶음
+  let runMax = 0, run = 0; toks.forEach(s => { run = isR(s) ? run + 1 : 0; runMax = Math.max(runMax, run); });
+  if (runMax >= 3) {
+    const out = []; let i = 0;
+    while (i < toks.length) {
+      let W = 0; while (i + W < toks.length && isR(toks[i + W])) W++;
+      if (!W) { i++; continue; }
+      const cols = Array.from({ length: W }, (_, c) => [toks[i + c]]); i += W;
+      let r = 0; while (i < toks.length && !isR(toks[i])) { cols[r % W].push(toks[i]); r++; i++; }
+      cols.forEach(c => out.push(c));
+    }
+    return out.filter(b => b.length >= 2).slice(0, 24);
+  }
+  const blocks = []; let cur = null;
+  toks.forEach(s => { if (isR(s)) { cur = []; blocks.push(cur); } if (cur) cur.push(s); });   // 첫 밥 앞의 글자(제목 등)는 버림
+  return blocks.filter(b => b.length >= 2).slice(0, 24);
+}
+function foodMonday(d) { const x = new Date(d + 'T12:00:00'); const w = x.getDay() || 7; x.setDate(x.getDate() - w + 1); return x; }
+function foodYmd(x) { return `${x.getFullYear()}-${String(x.getMonth() + 1).padStart(2, '0')}-${String(x.getDate()).padStart(2, '0')}`; }
+function foodAdminUI(box, auth, todayStr) {
+  const WD = ['월', '화', '수', '목', '금', '토'];
+  let blocks = [], weekStart = foodYmd(foodMonday(todayStr));
+  const dayOf = i => { const x = new Date(weekStart + 'T12:00:00'); x.setDate(x.getDate() + i); return foodYmd(x); };
+  const slotOpts = () => ['<option value="">빼기 (야식·기타)</option>'].concat([0, 1, 2, 3, 4, 5].flatMap(i => ['점심', '저녁'].map(m => `<option value="${i}|${m}">${WD[i]} ${dayOf(i).slice(5).replace('-', '/')} ${m}</option>`))).join('');
+  const post = async body => { const o = await (await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify(Object.assign({ key: API_KEY }, auth, body)) })).json(); if (!o.ok) throw new Error(o.error || '실패'); return o; };
+  box.innerHTML = `<div class="fa">
+    <div class="fa-row"><label>이번 주 시작(월) <input type="date" id="faWeek" value="${weekStart}"></label></div>
+    <label class="fa-pick">📷 식단표 사진 찍기·고르기<input type="file" id="faFile" accept="image/*" hidden></label>
+    <div class="fa-tip">정면에서, 플래시 없이, 표 전체가 들어오게 · 반사가 심하면 조금 비스듬히</div>
+    <div id="faMsg" class="fa-msg"></div>
+    <div id="faBlocks"></div>
+    <details class="fa-paste"><summary>글자로 직접 넣기</summary>
+      <textarea id="faText" rows="6" placeholder="한 칸씩 빈 줄로 구분&#10;쌀밥&#10;콩나물김치국&#10;닭볶음탕&#10;&#10;쌀밥&#10;동태찌개 …"></textarea>
+      <button type="button" id="faSplit">칸 나누기</button></details>
+    <button type="button" class="fa-save" id="faSave" disabled>확인하고 저장</button>
+    <div id="faList" class="fa-list"></div></div>`;
+  const q = s => box.querySelector(s), msg = t => { q('#faMsg').textContent = t || ''; };
+  function render() {
+    // 기본 배정: 칸 순서대로 월~토 점심, 그다음 월~토 저녁, 나머지(야식)는 빼기
+    q('#faBlocks').innerHTML = blocks.map((b, i) => { const def = b.slot != null ? b.slot : (i < 6 ? `${i}|점심` : i < 12 ? `${i - 6}|저녁` : '');
+      b.slot = def; return `<div class="fa-b"><div class="fa-bh"><b>칸 ${i + 1}</b><select data-bi="${i}">${slotOpts()}</select></div>
+        <textarea data-bt="${i}" rows="${Math.min(7, b.items.length + 1)}">${esc(b.items.join('\n'))}</textarea></div>`; }).join('');
+    box.querySelectorAll('[data-bi]').forEach(s => { s.value = blocks[+s.dataset.bi].slot; s.onchange = () => { blocks[+s.dataset.bi].slot = s.value; }; });
+    box.querySelectorAll('[data-bt]').forEach(t => t.oninput = () => { blocks[+t.dataset.bt].items = t.value.split('\n').map(x => x.trim()).filter(Boolean); });
+    q('#faSave').disabled = !blocks.length;
+    if (blocks.length) msg(`칸 ${blocks.length}개를 찾았어요. 요일·점심/저녁이 맞는지 확인해 주세요 (틀린 글자는 바로 고치면 됩니다).`);
+  }
+  q('#faWeek').onchange = e => { weekStart = foodYmd(foodMonday(e.target.value)); e.target.value = weekStart; render(); };
+  q('#faFile').onchange = async e => {
+    const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+    msg('사진 줄이는 중…');
+    try { const data = await foodShrinkImg(f, 2000, 0.85); msg('글자 읽는 중… (10~20초)');
+      const o = await post({ type: 'foodocr', data });
+      if (!o.text) { msg('글자를 읽지 못했습니다' + (o.why ? ` (${o.why})` : '') + ' — 아래 "글자로 직접 넣기"를 써 주세요.'); return; }
+      blocks = foodParse(o.text).map(items => ({ items })); q('#faText').value = blocks.map(b => b.items.join('\n')).join('\n\n');
+      if (!blocks.length) { msg('표 모양을 찾지 못했습니다. 아래 "글자로 직접 넣기"에서 고쳐 주세요.'); q('.fa-paste').open = true; }
+      render();
+    } catch (er) { msg('실패: ' + er.message); }
+  };
+  q('#faSplit').onclick = () => { blocks = q('#faText').value.split(/\n\s*\n/).map(s => ({ items: s.split('\n').map(x => x.trim()).filter(Boolean) })).filter(b => b.items.length); render(); };
+  q('#faSave').onclick = async () => {
+    const days = blocks.filter(b => b.slot && b.items.length).map(b => { const [i, m] = b.slot.split('|'); return { day: dayOf(+i), meal: m, items: b.items }; });
+    if (!days.length) return msg('저장할 칸이 없습니다 (모두 "빼기"로 되어 있어요).');
+    const dup = days.map(x => x.day + x.meal).filter((k, i, a) => a.indexOf(k) !== i); if (dup.length) return msg('같은 요일·식사에 두 칸이 배정됐어요. 한쪽을 바꿔 주세요.');
+    q('#faSave').disabled = true; msg('저장 중…');
+    try { const o = await post({ type: 'foodsave', days, by: auth.by || '' }); msg(`✔ ${o.n}칸 저장했어요. 그날 아침부터 직원 화면에 나옵니다.`); blocks = []; render(); list(); }
+    catch (er) { msg('저장 안 됨: ' + er.message); q('#faSave').disabled = false; }
+  };
+  async function list() {
+    try { const qs = auth.pin ? `pin=${encodeURIComponent(auth.pin)}` : `fp=${encodeURIComponent(auth.fp)}`;
+      const o = await (await fetch(`${ENDPOINT}?action=foodadmin&${qs}`)).json(); if (!o.ok) throw new Error(o.error);
+      q('#faList').innerHTML = `<div class="fa-on">직원 화면 표시: <b>${o.on ? '켜짐' : '꺼짐'}</b>${o.on ? '' : ' (대표 PC에서 켜면 보입니다)'}</div>` +
+        (o.rows.length ? o.rows.map(r => `<div class="fa-r"><b>${esc(r.day.slice(5).replace('-', '/'))} ${esc(r.meal)}</b> ${esc(r.items.join(', '))}</div>`).join('') : '<div class="fa-r">저장된 식단이 없습니다</div>');
+      if (box._onList) box._onList(o);
+    } catch (er) { q('#faList').textContent = '목록을 불러오지 못했습니다'; }
+  }
+  list();
+  return { list };
+}
+
+/* ===== v19 식단 (PC): 표시 스위치(대표 PIN) + 등록 ===== */
+function foodPcCard(v) {
+  const box = document.createElement('div'); box.className = 'card'; box.style.marginTop = '12px';
+  box.innerHTML = `<h2>🍚 오늘 식단 <small>직원 화면에 오늘 점심·저녁 메뉴 이름만 · 칼로리·알레르기·원산지 없음 · 원청 확인 후 켜기</small></h2>
+    <div style="display:flex;gap:10px;align-items:center;margin-bottom:8px"><b>직원 화면 표시</b><button class="btn sm" id="fdOn">켜기</button><button class="btn ghost sm" id="fdOff">끄기</button><span id="fdState" style="font-size:13px;color:var(--sub)"></span></div>
+    <div id="fdAdmin"></div>`;
+  v.appendChild(box);
+  const ui = foodAdminUI($('fdAdmin'), { pin: PIN, by: '대표' }, dstr(kstNow()));
+  $('fdAdmin')._onList = o => { $('fdState').textContent = o.on ? '지금 켜짐' : '지금 꺼짐'; };
+  const set = async on => { try { const o = await (await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ key: API_KEY, type: 'foodon', pin: PIN, on }) })).json(); if (!o.ok) throw new Error(o.error); ui.list(); } catch (e) { $('fdState').textContent = e.message; } };
+  $('fdOn').onclick = () => set(1); $('fdOff').onclick = () => set(0);
+}
 /* ===== 전달사항(공지) + 발도장(QR 방문·확인) ===== */
 const API_KEY = 'MS-SF-DUST-2026';
 async function renderNotice() {
@@ -1050,7 +1178,7 @@ async function renderNotice() {
       <p class="note">직원이 [확인했습니다]를 누르면 팀별 확인 수가 쌓입니다(이름 없이 기기 단위). 안전보건 전달 증빙으로 출력할 수 있습니다.</p></div>
     <div class="card"><h2>👣 전 직원 안전참여 기록 <small>최근 14일 · 팀별 참여 기기 수 (QR 확인)</small></h2><div id="vTbl"><div class="wait">불러오는 중…</div></div></div></div>
     <div class="card" style="margin-top:12px"><h2>전달사항 목록 · 팀별 확인 <button class="btn ghost sm" id="nPrint">확인 현황 인쇄</button></h2><div id="nList"><div class="wait">불러오는 중…</div></div></div>`;
-  tnPcCard(v);
+  tnPcCard(v); foodPcCard(v);
   $('nSave').onclick = async () => {
     const m = $('nMsg'); m.textContent = '등록 중…';
     try { const o = await (await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ key: API_KEY, type: 'notice', pin: PIN, title: $('nTitle').value.trim(), body: $('nBody').value.trim(), until: $('nUntil').value }) })).json();
