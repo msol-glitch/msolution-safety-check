@@ -427,6 +427,20 @@
   .fa-b{border:1px solid var(--line);border-radius:10px;padding:8px;margin-top:6px}.fa-bh{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px}.fa-b select{font:inherit;font-size:13px;padding:4px}
   .fa textarea{width:100%;box-sizing:border-box;font:inherit;padding:6px;border:1px solid var(--line2);border-radius:8px}.fa-paste summary{cursor:pointer;font-size:13px;color:var(--sub)}
   .fa-save{font:inherit;font-weight:700;border:0;border-radius:10px;padding:10px;background:#22262B;color:#fff;cursor:pointer}.fa-save:disabled{background:#94A3B8}.fa-list{font-size:13px;border-top:1px dashed var(--line);padding-top:6px}.fa-r{padding:2px 0}
+  /* v20 건강증진 스트레칭 (PC) */
+  .hsa-meta table{width:100%;border-collapse:collapse;font-size:13px}.hsa-meta th{background:#1E293B;color:#fff;text-align:left;padding:7px 10px;width:90px;font-weight:600}.hsa-meta td{border:1px solid var(--line);padding:7px 10px}
+  .hsa-meta input{font:inherit;padding:3px 6px;border:1px solid var(--line2);border-radius:6px}
+  .hsa-kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:12px 0}
+  .hsa-kpi div{background:#fff;border:1px solid var(--line);border-top:4px solid #E89A2C;border-radius:12px;padding:12px 14px}.hsa-kpi div:nth-child(2n){border-top-color:#2563EB}
+  .hsa-kpi small{display:block;color:var(--sub);font-size:12px}.hsa-kpi b{display:block;font-size:24px;margin:4px 0;color:var(--ink)}.hsa-kpi span{font-size:12px;color:var(--sub)}
+  .hsa-chart{display:flex;align-items:flex-end;gap:3px;height:150px;padding-top:6px}
+  .hsa-bar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}.hsa-bar i{display:block;width:100%;background:linear-gradient(#F0B055,#E89A2C);border-radius:4px 4px 0 0;min-height:1px}
+  .hsa-bar span{font-size:10px;color:var(--sub);margin-top:3px}
+  .hsa-t{width:100%;border-collapse:collapse;font-size:13px}.hsa-t th{background:#0F172A;color:#fff;padding:8px 6px;font-weight:600;text-align:center}
+  .hsa-t td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:center}.hsa-t td:first-child,.hsa-t td:nth-child(2){text-align:left}
+  .hsa-t tr.hsa-sum td{background:#E2E8F0;border-top:2px solid #94A3B8}.hsa-no{color:#94A3B8}
+  .hsa-as select,.hsa-as input{font:inherit;font-size:13px;padding:4px;border:1px solid var(--line2);border-radius:6px;max-width:100%}
+  @media(max-width:800px){.hsa-kpi{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
@@ -574,6 +588,7 @@ const NAV = [
   { key: 'dust', name: '집진기 청소', ic: ICON.dust },
   { key: 'ppe', name: '보호구 지급', ic: ICON.ppe },
   { key: 'notice', name: '전달사항·안전참여', ic: '<path d="M4 10v4h3l5 4V6L7 10z"/><path d="M16 9a4 4 0 010 6M18.5 6.5a8 8 0 010 11"/>' },
+  { key: 'stretch', name: '건강증진 스트레칭', ic: '<circle cx="12" cy="5" r="2.5"/><path d="M12 8v6M7 10l5 2 5-2M9 21l3-7 3 7"/>' },
   { key: 'praise', name: '칭찬·행운 지급', ic: '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>' },
   { key: 'actions', name: '조치관리', ic: '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 0 0 5.4-5.4l-2.4 2.4-2.6-.4-.4-2.6z"/>' },
   { key: 'risk', name: '위험성평가', ic: '<path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17v.5"/>' },
@@ -626,6 +641,7 @@ function route() {
   ['home', 'folder', 'actionsView', 'soonView', 'tbmView', 'noticeView', 'riskView', 'praiseView', 'ppeView'].forEach(id => $(id).classList.add('hide'));
   renderNav(key);
   if (['dust', 'patrol', '5s'].indexOf(key) >= 0) { $('pageTitle').textContent = (FOLDERS.find(f => f.key === key) || {}).name; return openFolder(key); }
+  if (key === 'stretch') { $('pageTitle').textContent = '건강증진 스트레칭'; return renderStretch(); }
   if (key === 'notice') { $('pageTitle').textContent = '전달사항·안전참여'; return renderNotice(); }
   if (key === 'ppe') { $('pageTitle').textContent = '보호구(안전용품) 지급·관리 대장'; return renderPpe(); }
   if (key === 'praise') { $('pageTitle').textContent = '안전 칭찬 · 행운 이벤트 지급'; return renderPraise(); }
@@ -1148,6 +1164,213 @@ function foodAdminUI(box, auth, todayStr) {
   }
   list();
   return { list };
+}
+
+/* ===== v20 건강증진 스트레칭 (근골격계 예방) — 공용 데이터 (직원 폰·관리자 PC) =====
+ * 근거 문서: 프로젝트 claude/공정별_근골격계_부담요인_정리_20261023.md · 건강증진_엠봇몸풀기_기획 v7
+ * 원칙: 통증·증상·건강정보 수집 없음 / 징후·대처 카드는 보고 권유 없는 중립 문장 / 기록은 작업대 기준(이름 없음)
+ */
+const HS_CHECKUP = { date: '2026-10-29', name: '2026 직원 건강검진' };   // 검진 D-day 카드 (검진기관 안내가 우선)
+const HS_GEO = { lat: 36.85, lon: 126.70, name: '당진 순성' };            // 날씨 기준 위치 (대략)
+const HS_MAX_DAY = 3, HS_MOVE_SEC = 15;
+
+/* 작업대 = 라인 + 공정 (대표 설명 기준) · grp = 루틴·카드 묶음 */
+const HS_WS = [
+  ['KA4-1', 1, 'KA4 G/BOX 1공정', 'over'], ['KA4-2', 1, 'KA4 G/BOX 2공정', 'over'], ['KA4-3', 1, 'KA4 G/BOX 3공정', 'over'], ['KA4-4', 1, 'KA4 G/BOX 4공정(최종검사)', 'wrap'],
+  ['CE-1', 1, 'CE1/CT1 G/BOX 1공정', 'over'], ['CE-2', 1, 'CE1/CT1 G/BOX 2공정', 'over'], ['CE-3', 1, 'CE1/CT1 G/BOX 3공정', 'over'], ['CE-4', 1, 'CE1/CT1 G/BOX 4공정(최종검사)', 'wrap'],
+  ['SV1G-1', 1, 'SV1 G/BOX 1공정', 'over'], ['SV1G-2', 1, 'SV1 G/BOX 2공정', 'over'], ['SV1G-3', 1, 'SV1 G/BOX 3공정(검사)', 'wrap'],
+  ['SV1U-1', 1, 'SV1 UPR 1공정', 'finger'], ['SV1U-2', 1, 'SV1 UPR 2공정', 'finger'], ['SV1U-3', 1, 'SV1 UPR 검사', 'wrap'],
+  ['GN7-1', 2, 'GN7 G/BOX 1공정', 'over'], ['GN7-2', 2, 'GN7 G/BOX 2공정', 'over'], ['GN7-3', 2, 'GN7 G/BOX 3공정(검사)', 'wrap'],
+  ['SP3G-1', 2, 'SP3k G/BOX 1공정', 'over'], ['SP3G-2', 2, 'SP3k G/BOX 2공정', 'over'], ['SP3G-3', 2, 'SP3k G/BOX 3공정(검사)', 'wrap'], ['SP3G-4', 2, 'SP3k G/BOX 4공정', 'wrap'],
+  ['MIL', 3, '밀링 스코어링', 'bend'], ['PAB-1', 3, 'SP3k PAB 융착 1공정', 'bend'], ['PAB-2', 3, 'SP3k PAB 융착 2공정(망치)', 'hammer'], ['PAB-3', 3, 'SP3k PAB 융착 3공정(검사)', 'wrap'],
+  ['PNT-LD', 4, '도장 로딩', 'paint'], ['PNT-JG', 4, '도장 지그', 'jig'], ['PNT-FD', 4, '도장 피더', 'cart'],
+  ['FD', 0, '피더', 'cart'], ['SHP', 0, '출하', 'cart'], ['GM', 0, '생산총괄', 'desk'], ['OFF', 0, '사무(생산·품질·자재관리)', 'desk']
+].map(([code, team, name, grp]) => ({ code, team, name, grp }));
+const HS_WS_BY = Object.fromEntries(HS_WS.map(w => [w.code, w]));
+
+/* 동작 (앉아서) — s: 근력 동작 */
+const HS_MOVES = {
+  neck: { p: '목', n: '목 옆 늘리기', c: '귀를 어깨 쪽으로 천천히. 좌우 번갈아 가며.', j: '제 목은 볼트로 고정돼 있지만, 여러분 목은 풀어 주세요!' },
+  roll: { p: '어깨', n: '어깨 뒤로 돌리기', c: '어깨를 귀까지 올렸다가 뒤로 크게 돌려요.', j: '어깨 위 피로, 뒤로 던져 버려요!' },
+  scap: { p: '어깨·등', n: '어깨 날개 모으기', c: '팔을 W자로 들고 팔꿈치를 뒤로, 등 뒤 날개를 꽉 모아요.', j: '날개를 펴면 저도 날 수 있을까요?', s: 1 },
+  ylift: { p: '어깨', n: 'Y자 팔 들고 버티기', c: '엄지를 위로, 팔을 Y자로 들고 그대로 버텨요.', j: '만세! 오늘도 무사고 만세!', s: 1 },
+  wrist: { p: '손목', n: '손목 앞뒤 늘리기', c: '팔을 펴고 손바닥을 위아래로 젖혀요. 한 팔씩.', j: '융착기 버튼 누른 손목, 고생 많았어요.' },
+  fist: { p: '손가락', n: '주먹 쥐었다 쫙 펴기', c: '꽉 쥐고, 쫙 펴고! 손가락 끝까지.', j: '가위바위보 연습 아닙니다. 진지하게!' },
+  thumb: { p: '손가락', n: '손가락 쫙 펼치기', c: '손을 얼굴 앞에서 쫙 펼쳤다 모았다.', j: '클립 누르던 손가락에게 휴가를!' },
+  shake: { p: '손목', n: '손목 탈탈 털기', c: '힘을 빼고 손목을 탈탈 털어요.', j: '물기 털듯이 탈탈~' },
+  elbow: { p: '팔꿈치', n: '팔꿈치 접었다 펴기', c: '팔꿈치를 천천히 접었다가 끝까지 쭉 펴요.', j: '망치질한 팔, 오늘은 제가 대신 흔들게요.' },
+  twist: { p: '허리', n: '앉아서 허리 비틀기', c: '등을 펴고 팔을 모은 채 상체만 천천히 좌우로.', j: '춤 아닙니다. 천천히 비틀기!' },
+  chest: { p: '등·가슴', n: '등 펴고 가슴 열기', c: '등받이에서 떨어져 가슴을 활짝, 팔은 뒤로.', j: '자신감 자세! 오늘 하루 당당하게.' },
+  side: { p: '옆구리', n: '옆구리 늘리기', c: '한 팔을 위로 쭉 뻗고 반대쪽으로 살짝 기울여요.', j: '키가 1cm 커지는 기분!' },
+  leg: { p: '허벅지·무릎', n: '앉아서 무릎 펴 들기', c: '한쪽 무릎을 쭉 펴서 들고 버텨요. 좌우 번갈아.', j: '허벅지 힘이 허리를 지켜 줘요.', s: 1 },
+  ankle: { p: '발목', n: '발목 까딱', c: '발끝을 몸 쪽으로 당겼다 밀었다.', j: 'PLT 미는 다리에 시동 걸기!' },
+  rest: { p: '호흡', n: '편하게 숨 쉬기', c: '이 동작은 쉬어 가요. 코로 들이쉬고 입으로 길게.', j: '쉬는 것도 운동입니다.' }
+};
+/* 묶음별 동작 후보: 날마다·시간대마다 풀기 2 + 근력 2 */
+const HS_GRP = {
+  over: { st: ['neck', 'wrist', 'fist', 'side', 'shake', 'roll'], sg: ['scap', 'ylift', 'leg'] },
+  paint: { st: ['roll', 'wrist', 'neck', 'side', 'shake'], sg: ['scap', 'ylift', 'leg'] },
+  wrap: { st: ['wrist', 'shake', 'neck', 'chest', 'roll'], sg: ['scap', 'leg'] },
+  finger: { st: ['fist', 'thumb', 'wrist', 'shake'], sg: ['scap', 'leg', 'ylift'] },
+  hammer: { st: ['wrist', 'elbow', 'shake', 'fist'], sg: ['scap', 'leg'] },
+  bend: { st: ['chest', 'twist', 'side', 'ankle'], sg: ['leg', 'scap'] },
+  jig: { st: ['twist', 'chest', 'elbow', 'wrist'], sg: ['leg', 'scap'] },
+  cart: { st: ['chest', 'ankle', 'twist', 'roll'], sg: ['leg', 'scap'] },
+  desk: { st: ['neck', 'roll', 'wrist', 'chest'], sg: ['scap', 'leg'] }
+};
+/* 교육 카드: i = 주지항목 (1 유해요인 · 2 징후·증상 · 3 대처요령 · 4 자세·도구 · 5 그 밖 예방 · 0 안전) — 2·3은 중립 문장 */
+const HS_ITEM = { 0: '안전', 1: '유해요인', 2: '몸의 신호', 3: '대처요령', 4: '올바른 자세·도구', 5: '예방 습관' };
+const HS_CARDS = [
+  ['c01', 1, 'all', '반복이 쌓이면 부담이 돼요', '같은 동작을 하루 수백 번 하면 작은 힘도 관절에 쌓여요. 틈틈이 풀어 주는 것이 예방입니다.'],
+  ['c02', 1, 'over paint', '팔이 어깨 위로 올라가는 작업', '머리 위 융착기, 어깨 높이 지그는 어깨에 부담이 커요. 팔꿈치를 몸 가까이 두세요.'],
+  ['c03', 1, 'hammer', '망치 충격은 손목·팔꿈치로', '고무망치 타격이 반복되면 손목과 팔꿈치에 충격이 쌓여요.'],
+  ['c04', 1, 'bend', '허리 숙여 넣는 동작', '융착기·밀링기에 허리를 숙여 넣을 때 허리 부담이 가장 커요.'],
+  ['c05', 1, 'finger', '손가락 끝으로 누르기', '클립·푸시너트를 손가락 끝으로 계속 누르면 손가락 마디에 부담이 쌓여요.'],
+  ['c06', 1, 'cart jig', 'PLT 출발하는 순간', '멈춘 PLT를 처음 밀 때 허리와 어깨에 힘이 가장 크게 걸려요.'],
+  ['c07', 2, 'all', '저림은 쉬라는 신호', '손이 저리거나 쥐는 힘이 약해지면 몸이 쉬라고 보내는 신호예요. 스트레칭하고 자세를 바꿔 보세요.'],
+  ['c08', 2, 'all', '아침에 뻣뻣하다면', '아침에 손가락이나 허리가 뻣뻣하면 작업 전에 천천히 풀고 시작하세요.'],
+  ['c09', 2, 'over paint wrap', '어깨가 무겁게 느껴지면', '팔을 들 때 어깨가 무겁다면 팔꿈치를 낮추고, 쉬는 시간에 어깨를 돌려 주세요.'],
+  ['c10', 2, 'all', '피로는 쌓여요', '하루 끝에 쌓인 피로는 다음 날로 이어져요. 퇴근 후에도 가볍게 풀어 주세요.'],
+  ['c11', 2, 'finger hammer', '손가락 마디가 뻐근하면', '손가락 마디가 뻐근하면 주먹 쥐었다 쫙 펴기를 10번 해 보세요.'],
+  ['c12', 2, 'bend jig cart', '허리가 뻐근한 날', '허리가 뻐근한 날은 숙일 때 무릎을 먼저 굽히고, 자주 허리를 펴 주세요.'],
+  ['c13', 3, 'all', '불편하면 잠깐 멈추기', '동작이 불편하면 잠깐 멈추고 자세를 바꿔요. 무리해서 참지 않는 것이 대처의 시작입니다.'],
+  ['c14', 3, 'all', '쉬는 시간 1분', '쉬는 시간 1분 스트레칭이 근육 긴장을 풀어 줘요. 아침, 점심, 저녁 3번!'],
+  ['c15', 3, 'all', '추운 날은 데우고 시작', '추운 날 굳은 근육은 다치기 쉬워요. 손을 데우고 천천히 움직이세요.'],
+  ['c16', 3, 'over paint finger', '양손 번갈아 쓰기', '한 손만 계속 쓰면 그쪽만 지쳐요. 가능한 동작은 양손을 번갈아 쓰세요.'],
+  ['c17', 3, 'all', '물과 휴식', '물을 자주 마시고, 쉬는 시간에는 앉아서 쉬어요. 근육 회복을 도와줘요.'],
+  ['c18', 3, 'hammer', '충격 줄이기', '망치질 전 장갑 상태를 확인하고, 손잡이는 끝이 아닌 가운데를 잡으세요.'],
+  ['c19', 4, 'over paint', '팔꿈치는 몸 가까이', '어깨 높이 작업은 몸을 가까이 붙이고 팔꿈치를 낮게. 키가 작으면 발판을 쓰세요.'],
+  ['c20', 4, 'wrap over', '랩 당기기는 팔 전체로', '보호랩을 당길 때 손목을 꺾지 말고 팔 전체로 당기세요.'],
+  ['c21', 4, 'hammer', '손목은 일자로', '망치질할 때 손목은 일자로 고정하고 팔꿈치로 움직이세요.'],
+  ['c22', 4, 'bend', '무릎 먼저, 한 발 앞으로', '숙여 넣을 때는 무릎을 살짝 굽히고 한 발을 앞으로 내밀면 허리가 편해요.'],
+  ['c23', 4, 'finger', '손바닥 두툼한 곳으로', '클립은 손가락 끝 대신 손바닥 두툼한 곳이나 도구로 눌러 보세요.'],
+  ['c24', 4, 'all', '박스는 몸에 붙여서', '자재박스는 무릎을 굽혀 몸에 붙여 들고, 돌 때는 허리 말고 발을 돌리세요.'],
+  ['c25', 4, 'cart jig', 'PLT는 밀기', 'PLT는 가능하면 당기지 말고 미세요. 출발은 한 발 뒤로 빼고 다리 힘으로.'],
+  ['c26', 0, 'cart finger wrap', '내리막·코너는 천천히', '내리막과 코너에서는 PLT를 몸 아래쪽에 두지 말고, 코너 전에 멈춰 좌우를 확인하세요.'],
+  ['c27', 4, 'jig', '지그 교체는 몸 가까이', '철제 지그는 트롤리를 몸 가까이 붙이고, 무거우면 나눠서 옮기세요.'],
+  ['c28', 4, 'desk', '모니터는 눈높이', '모니터 윗선은 눈높이에, 손목은 일자로. 1시간마다 목과 어깨를 풀어 주세요.'],
+  ['c29', 5, 'all', '근력이 관절을 지켜요', '어깨와 허벅지 근력 운동은 관절 부담을 줄여 줘요. 오늘의 근력 동작 2개를 꼭 해 보세요.'],
+  ['c30', 5, 'all', '충분한 잠', '잠이 부족하면 근육 회복이 늦어요. 오늘은 조금 일찍 쉬어요.'],
+  ['c31', 0, 'paint jig', '지그 끼임 주의', '지그에 걸 때 손가락이 끼지 않게, 좁은 통로에서는 발뒤꿈치를 조심하세요.'],
+  ['c32', 5, 'all', '같은 자세는 짧게', '한 자세로 오래 있으면 근육이 굳어요. 작업 틈틈이 자세를 바꿔 주세요.']
+].map(([id, i, g, t, b]) => ({ id, i, g: g.split(' '), t, b }));
+/* 시간대·날씨·마무리 문구 */
+const HS_TXT = {
+  g_am: '좋은 아침입니다! 몸부터 깨우고 시작해요.', g_noon: '점심 맛있게 드셨죠? 식곤증 오기 전에 1분!', g_pm: '잔업 전 1분! 허리 펴고 다시 집중.', g_any: '언제든 1분, 몸이 고마워해요.',
+  e_am: '점심 먹고 다시 만나요!', e_noon: '잔업이면 저녁 5시에, 아니면 내일 아침에!', e_pm: '오늘도 무사히! 내일 아침에 만나요.', e_any: '다음 쉬는 시간에 또 만나요!',
+  w_rain: '비 소식이 있어요. 출입구와 통로 바닥이 미끄러워요. PLT는 천천히!', w_snow: '눈 소식! 출퇴근길과 상차장 빙판 조심. 주머니에서 손 빼고 걷기!',
+  w_cold: '많이 추워요. 손이 굳으면 다치기 쉬워요. 손목과 손가락부터 데우고 시작!', w_chilly: '쌀쌀해요. 몸이 덜 풀린 아침에는 허리부터 천천히.',
+  w_hot: '더워요! 물 한 컵 먼저, 땀 닦고 장갑 말리기.', w_humid: '습한 날이에요. 장갑 속 땀이 미끄럼을 만들어요. 자주 닦기!', w_dry: '건조해요. 물을 자주 마시고 정전기 조심.',
+  w_dust: '미세먼지 나쁨. 바깥으로 이동할 때는 마스크!', w_wind: '바람이 세요. 바깥에서 PLT와 박스 날림 주의.', w_fine: '날씨 좋아요! 오늘도 안전하게.',
+  w_paint: '도장 부스 안은 온습도가 일정해요. 바깥 이동 때만 날씨를 챙겨요.',
+  u_title: '건강증진 스트레칭', u_sub: '근골격계 예방 · 앉아서 1분', u_start: '엠봇이랑 시작 (1분)', u_skip: '이 동작은 쉬어 가기', u_pause: '잠깐 멈춤', u_resume: '계속하기',
+  u_card: '오늘의 근골격계 한 장', u_ok: '확인했어요', u_done: '수고했어요!', u_home: '홈으로', u_ws: '내 작업대', u_ws_pick: '내 작업대를 골라 주세요', u_ws_note: '한 번만 고르면 이 폰이 기억해요. 라인을 옮기면 다시 골라 주세요.',
+  u_total: '내 누적', u_today: '오늘', u_team: '팀 연속', u_cap: '오늘 3회 모두 완료! 더 해도 좋지만 기록은 3회까지예요.', u_safe: '무리하지 말고 할 수 있는 만큼만.',
+  u_hidden: '화면을 벗어나 멈췄어요.', u_novoice: '이 폰에는 이 언어 음성이 없어 글자로만 보여요.'
+};
+/* 번역 묶음 (관리자 PC '번역 만들기'에서 서버로 보냄) */
+function hsTxItems() {
+  const o = Object.assign({}, HS_TXT);
+  Object.keys(HS_MOVES).forEach(k => { o['m_' + k + '_n'] = HS_MOVES[k].n; o['m_' + k + '_c'] = HS_MOVES[k].c; o['m_' + k + '_j'] = HS_MOVES[k].j; o['m_' + k + '_p'] = HS_MOVES[k].p; });
+  HS_CARDS.forEach(c => { o[c.id + '_t'] = c.t; o[c.id + '_b'] = c.b; });
+  Object.keys(HS_ITEM).forEach(k => { o['i_' + k] = HS_ITEM[k]; });
+  return o;
+}
+function hsWsLabel(code) { const w = HS_WS_BY[code]; return w ? w.name : code; }
+
+/* ===== v20 건강증진 스트레칭 (관리자 PC · 대표 PIN) =====
+ * 월간 예방활동 대장: 작업대별 + 담당자별(작업대 배치표와 날짜로 맞춰 이름 표시) · 엑셀 저장
+ * 작업대 배치표 편집 · 다국어 문구 번역 만들기
+ * 기록 자체에는 이름이 없음 — 이름은 이 화면(관리자 PIN)에서만 배치표로 붙여 보여 줌
+ */
+let HSA = null, HSA_ASSIGN = [];
+const hsaItemsHead = ['유해요인', '몸의 신호', '대처요령', '자세·도구', '예방 습관'];
+function hsaDur(s) { s = Math.round(s || 0); const h = Math.floor(s / 3600), m = Math.round(s % 3600 / 60); return h ? `${h}시간 ${m}분` : `${m}분`; }
+function hsaYm(d) { return d.toLocaleDateString('sv-SE', { timeZone: 'Asia/Seoul' }).slice(0, 7); }
+async function renderStretch() {
+  const v = $('noticeView'); v.classList.remove('hide');
+  const ym = (HSA && HSA.ym) || hsaYm(new Date());
+  v.innerHTML = `<div class="card hsa-meta"><table><tr><th>문서</th><td>건강증진 스트레칭(근골격계 예방) 월간 예방활동 대장</td><th>조회 기간</th><td><input type="month" id="hsaYm" value="${ym}"></td></tr>
+      <tr><th>작성</th><td>안전통합시스템 자동 집계 · ㈜엠솔루션</td><th>기준</th><td>기록에 이름 없음 · 이름은 작업대 배치표로 표시 · 통증·건강정보 수집 없음</td></tr></table></div>
+    <div id="hsaBody"><div class="wait">불러오는 중…</div></div>
+    <div style="display:grid;gap:12px;margin-top:12px">
+      <div class="card"><h2>작업대 배치표 <small>작업대마다 담당자·기간 — 라인 변경 때 여기만 고치면 지난 기록은 그때 담당자로 남습니다</small></h2><div id="hsaAs"></div>
+        <button class="btn ghost sm" id="hsaAdd">+ 줄 추가</button> <button class="btn sm" id="hsaSave">배치표 저장</button> <span class="err" id="hsaAsMsg"></span></div>
+      <div class="card"><h2>외국어 문구 <small>동작·카드·날씨 문구를 5개 언어로 1번 번역해 저장 (문구를 바꾼 뒤에만 다시)</small></h2>
+        <p class="note">중국어·베트남어·크메르어·인도네시아어·러시아어 · 구글 번역 자동 — 현장 직원에게 한 번 읽어 보게 하세요.</p>
+        <button class="btn sm" id="hsaTx">번역 만들기 / 갱신</button> <span class="err" id="hsaTxMsg"></span></div></div>`;
+  $('hsaYm').onchange = () => { HSA = { ym: $('hsaYm').value }; hsaLoad(); };
+  $('hsaAdd').onclick = () => { HSA_ASSIGN.push({ ws: '', name: '', from: '', to: '' }); hsaAsRender(); };
+  $('hsaSave').onclick = hsaAsSave;
+  $('hsaTx').onclick = async () => { const b = $('hsaTx'); b.disabled = true; $('hsaTxMsg').textContent = '번역 중… (30초쯤)';
+    try { const o = await (await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ key: API_KEY, type: 'sttxbuild', pin: PIN, items: hsTxItems() }) })).json(); if (!o.ok) throw new Error(o.error);
+      $('hsaTxMsg').textContent = o.n ? `✔ ${o.n}개 번역 저장 (전체 ${o.total}개)` : `바뀐 문구 없음 (전체 ${o.total}개 이미 번역됨)`; } catch (e) { $('hsaTxMsg').textContent = e.message; } b.disabled = false; };
+  hsaLoad();
+}
+async function hsaLoad() {
+  const ym = $('hsaYm').value, body = $('hsaBody'); body.innerHTML = '<div class="wait">불러오는 중…</div>';
+  try { const o = await (await fetch(`${ENDPOINT}?action=stadmin&pin=${encodeURIComponent(PIN)}&ym=${ym}`)).json(); if (!o.ok) throw new Error(o.error);
+    HSA = o; HSA_ASSIGN = (o.assign || []).map(a => Object.assign({}, a)); hsaRender(); hsaAsRender(); }
+  catch (e) { body.innerHTML = `<div class="card err">${esc(e.message)}</div>`; }
+}
+function hsaRender() {
+  const o = HSA, ws = o.ws || [], ppl = o.people || [], secs = ws.reduce((a, w) => a + w.secs, 0), n = o.total || 0;
+  const itemsDone = [0, 1, 2, 3, 4].map(i => ws.reduce((a, w) => a + (w.items[i] || 0), 0));
+  const wsWith = ws.filter(w => w.items.every(x => x > 0)).length;
+  const days = Object.keys(o.daily || {}).sort(), maxD = Math.max(1, ...days.map(d => o.daily[d]));
+  const [y, m] = o.ym.split('-').map(Number), last = new Date(y, m, 0).getDate();
+  const bars = Array.from({ length: last }, (_, i) => { const d = `${o.ym}-${String(i + 1).padStart(2, '0')}`, c = (o.daily || {})[d] || 0;
+    return `<div class="hsa-bar" title="${d} ${c}회"><i style="height:${c / maxD * 100}%"></i><span>${i + 1}</span></div>`; }).join('');
+  const sum = (arr, f) => arr.reduce((a, x) => a + f(x), 0);
+  const row = (cells, cls) => `<tr class="${cls || ''}">${cells.map(c => `<td>${c}</td>`).join('')}</tr>`;
+  $('hsaBody').innerHTML = `<div class="hsa-kpi">
+      <div><small>이번 달 스트레칭</small><b>${num(n)}회</b><span>하루 최대 3회 · 1회 1분</span></div>
+      <div><small>누적 시간</small><b>${hsaDur(secs)}</b><span>작업대 ${num(ws.length)}곳 참여 / ${HS_WS.length}곳</span></div>
+      <div><small>교육 카드 열람</small><b>${num(sum(itemsDone, x => x))}장</b><span>주지 5항목 모두 본 작업대 ${wsWith}곳</span></div>
+      <div><small>참여한 날</small><b>${num(days.length)}일</b><span>${days.length ? esc(days[0].slice(5)) + ' ~ ' + esc(days[days.length - 1].slice(5)) : '-'}</span></div></div>
+    <div class="card"><h2>날짜별 스트레칭 횟수 <small>${esc(o.ym)}</small></h2><div class="hsa-chart">${bars}</div></div>
+    <div class="card" style="margin-top:12px"><h2>작업대별 대장 <small>담당자 = 그 달 기록 날짜의 배치표 기준</small> <button class="btn ghost sm" id="hsaXls" style="float:right">엑셀로 저장</button></h2>
+      <table class="hsa-t"><thead><tr><th>작업대</th><th>담당자</th><th>횟수</th><th>누적</th><th>참여일</th>${hsaItemsHead.map(h => `<th>${h}</th>`).join('')}</tr></thead><tbody>
+      ${ws.map(w => row([esc(hsWsLabel(w.ws)), w.names.length ? esc(w.names.join(', ')) : '<span class="hsa-no">배치 미등록</span>', num(w.n) + '회', hsaDur(w.secs), num(w.days) + '일', ...w.items.map(x => x ? num(x) : '<span class="hsa-no">0</span>')])).join('') || row(['기록 없음', '', '', '', '', '', '', '', '', ''])}
+      ${row(['<b>합계</b>', '', `<b>${num(n)}회</b>`, `<b>${hsaDur(secs)}</b>`, `<b>${num(days.length)}일</b>`, ...itemsDone.map(x => `<b>${num(x)}</b>`)], 'hsa-sum')}</tbody></table></div>
+    <div class="card" style="margin-top:12px"><h2>담당자별 대장 <small>개인 예방활동 근거 · 관리자 화면에서만 표시</small></h2>
+      <table class="hsa-t"><thead><tr><th>담당자</th><th>작업대</th><th>횟수</th><th>누적</th><th>참여일</th>${hsaItemsHead.map(h => `<th>${h}</th>`).join('')}</tr></thead><tbody>
+      ${ppl.map(p => row([esc(p.name), esc(p.ws.map(hsWsLabel).join(', ')), num(p.n) + '회', hsaDur(p.secs), num(p.days) + '일', ...p.items.map(x => x ? num(x) : '<span class="hsa-no">0</span>')])).join('') || row(['기록 없음', '', '', '', '', '', '', '', '', ''])}
+      ${row(['<b>평균</b>', '', `<b>${ppl.length ? (n / ppl.length).toFixed(1) : 0}회</b>`, `<b>${hsaDur(ppl.length ? secs / ppl.length : 0)}</b>`, '', '', '', '', '', ''], 'hsa-sum')}</tbody></table>
+      <p class="note">기록 = 직원 폰에서 1분을 끝까지 마치고 교육 카드 [확인]을 누른 회차. '참여 기록'이며 실제 동작 여부까지 증명하지는 않습니다. 통증·증상은 수집하지 않습니다.</p></div>`;
+  $('hsaXls').onclick = hsaXls;
+}
+function hsaAsRender() {
+  const opts = c => `<option value="">작업대 고르기</option>` + HS_WS.map(w => `<option value="${w.code}" ${w.code === c ? 'selected' : ''}>${esc(w.name)}</option>`).join('');
+  $('hsaAs').innerHTML = `<table class="hsa-t hsa-as"><thead><tr><th>작업대</th><th>담당자</th><th>시작</th><th>종료(비우면 계속)</th><th></th></tr></thead><tbody>
+    ${HSA_ASSIGN.map((a, i) => `<tr><td><select data-i="${i}" data-k="ws">${opts(a.ws)}</select></td><td><input data-i="${i}" data-k="name" value="${esc(a.name)}" maxlength="20" placeholder="이름"></td>
+      <td><input type="date" data-i="${i}" data-k="from" value="${esc(a.from)}"></td><td><input type="date" data-i="${i}" data-k="to" value="${esc(a.to)}"></td><td><button class="btn ghost sm" data-del="${i}">빼기</button></td></tr>`).join('') || '<tr><td colspan="5" class="hsa-no">아직 배치표가 없습니다. [+ 줄 추가]로 작업대마다 담당자를 넣어 주세요.</td></tr>'}</tbody></table>`;
+  $('hsaAs').querySelectorAll('[data-k]').forEach(el => el.onchange = () => { HSA_ASSIGN[+el.dataset.i][el.dataset.k] = el.value.trim(); });
+  $('hsaAs').querySelectorAll('[data-del]').forEach(b => b.onclick = () => { HSA_ASSIGN.splice(+b.dataset.del, 1); hsaAsRender(); });
+}
+async function hsaAsSave() {
+  const rows = HSA_ASSIGN.filter(a => a.ws && a.name), msg = $('hsaAsMsg');
+  if (rows.some(a => a.from && a.to && a.to < a.from)) return msg.textContent = '종료일이 시작일보다 빠른 줄이 있어요.';
+  msg.textContent = '저장 중…';
+  try { const o = await (await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ key: API_KEY, type: 'stassign', pin: PIN, rows }) })).json(); if (!o.ok) throw new Error(o.error);
+    msg.textContent = `✔ ${o.n}줄 저장`; hsaLoad(); } catch (e) { msg.textContent = e.message; }
+}
+function hsaXls() {   // 엑셀에서 열리는 표 (회사 문서 스타일: 네이비 머리줄 · 합계 강조)
+  const o = HSA, ws = o.ws || [], ppl = o.people || [], secs = ws.reduce((a, w) => a + w.secs, 0);
+  const th = h => `<th style="background:#0F172A;color:#fff;border:1px solid #94A3B8;padding:6px">${h}</th>`, td = (v, s) => `<td style="border:1px solid #CBD5E1;padding:5px;${s || ''}">${v}</td>`;
+  const sumS = 'background:#E2E8F0;font-weight:bold';
+  const tbl = (title, head, rows) => `<tr><td colspan="10" style="font-weight:bold;font-size:13pt;padding-top:14px">${title}</td></tr><tr>${head.map(th).join('')}</tr>${rows}`;
+  const html = `<html xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="utf-8"></head><body style="font-family:'맑은 고딕'"><table>
+    <tr><td colspan="10" style="background:#1B3A6B;color:#fff;font-size:15pt;font-weight:bold;padding:10px">㈜엠솔루션 건강증진 스트레칭(근골격계 예방) 월간 예방활동 대장</td></tr>
+    <tr>${td('<b>조회 기간</b>', 'background:#F8FAFC')}${td(esc(o.ym))}${td('<b>작성</b>', 'background:#F8FAFC')}${td('안전통합시스템 자동 집계', '')}${td('<b>출력일</b>', 'background:#F8FAFC')}${td(new Date().toLocaleDateString('ko-KR'))}</tr>
+    <tr>${td('<b>총 횟수</b>', 'background:#FFF1E2')}${td(num(o.total) + '회')}${td('<b>누적 시간</b>', 'background:#FFF1E2')}${td(hsaDur(secs))}${td('<b>참여 작업대</b>', 'background:#FFF1E2')}${td(ws.length + '곳')}</tr>
+    ${tbl('작업대별', ['작업대', '담당자', '횟수', '누적(분)', '참여일', ...hsaItemsHead], ws.map(w => `<tr>${[hsWsLabel(w.ws), w.names.join(', ') || '배치 미등록', w.n, Math.round(w.secs / 60), w.days, ...w.items].map(x => td(esc(x))).join('')}</tr>`).join('')
+      + `<tr>${['합계', '', o.total, Math.round(secs / 60), Object.keys(o.daily || {}).length, ...[0, 1, 2, 3, 4].map(i => ws.reduce((a, w) => a + (w.items[i] || 0), 0))].map(x => td(esc(x), sumS)).join('')}</tr>`)}
+    ${tbl('담당자별 (작업대 배치표 기준)', ['담당자', '작업대', '횟수', '누적(분)', '참여일', ...hsaItemsHead], ppl.map(p => `<tr>${[p.name, p.ws.map(hsWsLabel).join(', '), p.n, Math.round(p.secs / 60), p.days, ...p.items].map(x => td(esc(x))).join('')}</tr>`).join(''))}
+    <tr><td colspan="10" style="color:#64748B;padding-top:10px">기록 = 직원 폰에서 1분을 끝까지 마치고 교육 카드 확인을 누른 회차(참여 기록). 통증·증상·건강정보는 수집하지 않음. 주지 5항목: 산업안전보건기준에 관한 규칙(근골격계 유해성 주지) 기준 — 원문 확인 후 사용.</td></tr>
+  </table></body></html>`;
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['﻿' + html], { type: 'application/vnd.ms-excel' }));
+  a.download = `건강증진스트레칭_예방활동대장_${o.ym}.xls`; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
 }
 
 /* ===== v19 식단 (PC): 표시 스위치(대표 PIN) + 등록 ===== */
