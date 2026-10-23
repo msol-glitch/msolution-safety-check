@@ -441,6 +441,13 @@
   .hsa-t tr.hsa-sum td{background:#E2E8F0;border-top:2px solid #94A3B8}.hsa-no{color:#94A3B8}
   .hsa-as select,.hsa-as input{font:inherit;font-size:13px;padding:4px;border:1px solid var(--line2);border-radius:6px;max-width:100%}
   @media(max-width:800px){.hsa-kpi{grid-template-columns:1fr 1fr}}
+  /* v20-3 식단 사진: 요일 칸 선 맞추기 */
+  .fa-crop{display:flex;flex-direction:column;gap:8px}.fa-cw{position:relative;user-select:none;touch-action:none;border-radius:8px;overflow:hidden;border:1px solid #CBD5E1}
+  .fa-cw img{display:block;width:100%;height:auto;pointer-events:none}
+  .fa-ln{position:absolute;top:0;bottom:0;width:22px;margin-left:-11px;cursor:ew-resize;touch-action:none}
+  .fa-ln::before{content:'';position:absolute;left:10px;top:0;bottom:0;border-left:3px solid #EA580C;box-shadow:0 0 0 1px #fff}
+  .fa-ln b{position:absolute;top:6px;left:14px;background:#EA580C;color:#fff;font-size:12px;font-style:normal;border-radius:6px;padding:1px 6px;white-space:nowrap}
+  .fa-raw summary{cursor:pointer;font-size:12.5px;color:#64748B}.fa-raw textarea{font-size:12px}
 </style>
 </head>
 <body>
@@ -1082,26 +1089,51 @@ function foodShrinkImg(file, max, q) {
 }
 const FOOD_SKIP = /식단표|지점명|SEOYON|AUTOVISION|영타운|Young|Food|Service|^\s*[중석야]\s*$|^\s*[중석야]식\s*$|^\s*<?\s*특식\s*>?\s*$|^\s*[월화수목금토일]\s*$|\d+\s*월\s*\d+\s*일|원산지|변경될|^\s*$/i;
 const FOOD_RICE = /(^|\/)(쌀밥|흑미밥|잡곡밥|추가밥|현미밥|보리밥|비빔밥|볶음밥|덮밥|카레라이스|김밥|주먹밥)/;
-function foodParse(text) {   // 글자 → 칸(덩어리) 목록
-  const toks = String(text || '').split(/\n/).flatMap(l => l.split(/\s+/)).map(s => s.replace(/[|｜]/g, '').trim())
-    .filter(s => s && !FOOD_SKIP.test(s) && /[가-힣]/.test(s) && s.length >= 2 && s.length <= 20 && !/^\d+(월|일)$/.test(s));
-  const isR = s => FOOD_RICE.test(s);
-  // 밥 단어가 3개 이상 연달아 나오면 '가로줄 순서'로 읽힌 표 → 세로 칸으로 다시 묶음
+function foodParse(text) {   // 글자 → 칸 목록 + 기본 배정(요일·점심/저녁) — v20-3: 야식(점심과 같은 칸) 자동 제외, 읽힌 순서 자동 판단
+  const keep = s => s && !FOOD_SKIP.test(s) && /[가-힣]/.test(s) && s.length >= 2 && s.length <= 20 && !/^\d+(월|일)$/.test(s);
+  const norm = s => s.replace(/[|｜_]/g, '').trim();
+  const lines = String(text || '').split(/\n/).map(l => l.split(/\s+/).map(norm).filter(keep)).filter(l => l.length);
+  const toks = lines.flat(), isR = s => FOOD_RICE.test(s);
   let runMax = 0, run = 0; toks.forEach(s => { run = isR(s) ? run + 1 : 0; runMax = Math.max(runMax, run); });
-  if (runMax >= 3) {
-    const out = []; let i = 0;
-    while (i < toks.length) {
-      let W = 0; while (i + W < toks.length && isR(toks[i + W])) W++;
-      if (!W) { i++; continue; }
-      const cols = Array.from({ length: W }, (_, c) => [toks[i + c]]); i += W;
-      let r = 0; while (i < toks.length && !isR(toks[i])) { cols[r % W].push(toks[i]); r++; i++; }
-      cols.forEach(c => out.push(c));
+  let raw = [], mode = 'col';
+  if (runMax >= 3) {   // 가로줄 순서로 읽힘: 밥이 여러 개 연달아 → 그 줄이 한 식사(점심/저녁/야식)의 요일 칸들
+    mode = 'row'; const wide = lines.filter(l => l.length > 1).length >= lines.length / 2;
+    let cols = null, W = 0, r = 0, g = -1;
+    const flush = () => { if (cols) cols.forEach((c, i) => raw.push({ items: c, g, col: i })); };
+    const seq = wide ? lines : toks.map(t => [t]);
+    for (let li = 0; li < seq.length; li++) {
+      const L = seq[li];
+      if (wide ? L.filter(isR).length >= Math.max(2, L.length * 0.6) : isR(L[0]) && (li === 0 || !isR(seq[li - 1][0]))) {
+        let R = L; if (!wide) { R = []; while (li < seq.length && isR(seq[li][0])) { R.push(seq[li][0]); li++; } li--; }
+        flush(); g++; W = R.length; cols = R.map(x => [x]); r = 0; continue;
+      }
+      if (!cols) continue;
+      if (wide) L.slice(0, W).forEach((x, i) => cols[i].push(x)); else { cols[r % W].push(L[0]); r++; }
     }
-    return out.filter(b => b.length >= 2).slice(0, 24);
+    flush();
+  } else {
+    let cur = null; toks.forEach(s => { if (isR(s)) { cur = { items: [] }; raw.push(cur); } if (cur) cur.items.push(s); });   // 첫 밥 앞 글자(제목 등)는 버림
   }
-  const blocks = []; let cur = null;
-  toks.forEach(s => { if (isR(s)) { cur = []; blocks.push(cur); } if (cur) cur.push(s); });   // 첫 밥 앞의 글자(제목 등)는 버림
-  return blocks.filter(b => b.length >= 2).slice(0, 24);
+  raw = raw.filter(b => b.items.length >= 2);
+  // 야식 = 점심과 같은 칸 → 빼기 (같은 메뉴 묶음이 두 번 나오면 뒤엣것)
+  const key = b => b.items.slice(1).join('|'), seen = {}; let gap = 0, dups = 0;
+  raw.forEach((b, i) => { const k = key(b); if (k && seen[k] !== undefined) { b.dup = true; dups++; if (!gap) gap = i - seen[k]; } else seen[k] = i; });
+  const blocks = raw.filter(b => !b.dup).slice(0, 24);
+  // 기본 배정: 가로줄 순서면 줄(g)=식사, 칸=요일 / 세로 순서에서 같은 칸이 2칸 간격으로 반복되면 요일마다 점심·저녁(·야식)
+  if (mode === 'row') { const gs = [...new Set(blocks.map(b => b.g))]; blocks.forEach(b => { const gi = gs.indexOf(b.g); b.slot = gi === 0 ? `${b.col}|점심` : gi === 1 ? `${b.col}|저녁` : ''; }); }
+  else if (gap && gap <= 3) blocks.forEach((b, i) => { b.slot = i < 12 ? `${Math.floor(i / 2)}|${i % 2 ? '저녁' : '점심'}` : ''; });
+  else blocks.forEach((b, i) => { b.slot = i < 6 ? `${i}|점심` : i < 12 ? `${i - 6}|저녁` : ''; });
+  blocks.forEach(b => { if (b.slot && +b.slot.split('|')[0] > 5) b.slot = ''; });
+  return { blocks: blocks.map(b => ({ items: b.items, slot: b.slot })), dups, mode: mode === 'row' ? '가로' : gap && gap <= 3 ? '요일별' : '세로' };
+}
+function foodColBlocks(text) {   // 요일 한 칸(세로 띠) 글자 → [점심, 저녁, 야식…] (밥에서 끊고, 앞 칸과 똑같은 칸=야식은 뺌)
+  const toks = String(text || '').split(/\n/).flatMap(l => l.split(/\s{2,}|\t/)).map(s => s.replace(/[|｜_]/g, '').trim())
+    .filter(s => s && !FOOD_SKIP.test(s) && /[가-힣]/.test(s) && s.length >= 2 && s.length <= 24 && !/^\d+(월|일)$/.test(s));
+  const out = []; let cur = null;
+  toks.forEach(s => { if (FOOD_RICE.test(s) || !cur) { cur = []; out.push(cur); } cur.push(s); });
+  const k = b => b.slice(1).join('|'), res = [];
+  out.filter(b => b.length >= 2).forEach(b => { if (!res.some(r => k(r) === k(b))) res.push(b); });
+  return res;
 }
 function foodMonday(d) { const x = new Date(d + 'T12:00:00'); const w = x.getDay() || 7; x.setDate(x.getDate() - w + 1); return x; }
 function foodYmd(x) { return `${x.getFullYear()}-${String(x.getMonth() + 1).padStart(2, '0')}-${String(x.getDate()).padStart(2, '0')}`; }
@@ -1115,8 +1147,10 @@ function foodAdminUI(box, auth, todayStr) {
     <div class="fa-row"><label>이번 주 시작(월) <input type="date" id="faWeek" value="${weekStart}"></label></div>
     <label class="fa-pick">📷 식단표 사진 찍기·고르기<input type="file" id="faFile" accept="image/*" hidden></label>
     <div class="fa-tip">정면에서, 플래시 없이, 표 전체가 들어오게 · 반사가 심하면 조금 비스듬히</div>
+    <div id="faCrop" class="fa-crop" hidden></div>
     <div id="faMsg" class="fa-msg"></div>
     <div id="faBlocks"></div>
+    <details class="fa-raw" hidden><summary>읽은 글자 원문 보기</summary><textarea id="faRaw" rows="6" readonly></textarea></details>
     <details class="fa-paste"><summary>글자로 직접 넣기</summary>
       <textarea id="faText" rows="6" placeholder="한 칸씩 빈 줄로 구분&#10;쌀밥&#10;콩나물김치국&#10;닭볶음탕&#10;&#10;쌀밥&#10;동태찌개 …"></textarea>
       <button type="button" id="faSplit">칸 나누기</button></details>
@@ -1134,17 +1168,57 @@ function foodAdminUI(box, auth, todayStr) {
     if (blocks.length) msg(`칸 ${blocks.length}개를 찾았어요. 요일·점심/저녁이 맞는지 확인해 주세요 (틀린 글자는 바로 고치면 됩니다).`);
   }
   q('#faWeek').onchange = e => { weekStart = foodYmd(foodMonday(e.target.value)); e.target.value = weekStart; render(); };
+  // v20-3: 사진 위에 세로선 7개(월 왼쪽 ~ 토 오른쪽)를 표 칸 경계에 맞추면 → 요일 칸마다 따로 글자 읽기 (위→아래: 점심·저녁·야식)
+  let IMG = null, XS = [0.022, 0.178, 0.338, 0.498, 0.658, 0.818, 0.975], AUTO = false;
+  function autoLines() {   // 표의 세로선 자동 찾기: 세로로 길게 이어진 어두운 줄 7개(간격이 고른 것)
+    try { const w = 600, h = Math.round(IMG.naturalHeight * w / IMG.naturalWidth), cv = document.createElement('canvas'); cv.width = w; cv.height = h;
+      const g = cv.getContext('2d'); g.drawImage(IMG, 0, 0, w, h); const d = g.getImageData(0, 0, w, h).data, L = new Float32Array(w * h); let avg = 0;
+      for (let i = 0; i < w * h; i++) { L[i] = d[i * 4] * 0.3 + d[i * 4 + 1] * 0.59 + d[i * 4 + 2] * 0.11; avg += L[i]; } avg /= w * h;
+      const sc = []; for (let x = 0; x < w; x++) { let run = 0, best = 0; for (let y = Math.round(h * 0.12); y < h; y++) { const v = Math.min(L[y * w + x], x ? L[y * w + x - 1] : 255, x < w - 1 ? L[y * w + x + 1] : 255); if (v < avg * 0.78) { run++; if (run > best) best = run; } else run = 0; } sc.push(best); }
+      const cand = []; for (let x = 2; x < w - 2; x++) if (sc[x] > h * 0.2 && sc[x] >= sc[x - 1] && sc[x] >= sc[x + 1] && sc[x] >= sc[x - 2] && sc[x] >= sc[x + 2]) { if (cand.length && x - cand[cand.length - 1] < 6) { if (sc[x] > sc[cand[cand.length - 1]]) cand[cand.length - 1] = x; } else cand.push(x); }
+      // 같은 간격 격자 찾기: 두 선 간격을 칸 너비로 보고, 그 격자에 맞는 선이 가장 많은 7칸 경계를 고름
+      const tol = w * 0.025, hit = p => cand.some(c => Math.abs(c - p) <= tol); let best = null;
+      for (let i = 0; i < cand.length; i++) for (let j = i + 1; j < cand.length; j++) { const gp = cand[j] - cand[i]; if (gp < w * 0.1 || gp > w * 0.2) continue;
+        for (let k0 = -7; k0 <= 0; k0++) { const ps = Array.from({ length: 7 }, (_, k) => cand[i] + (k0 + k) * gp); if (ps[0] < -tol || ps[6] > w + tol) continue;
+          const hs = ps.map(p => cand.filter(c => Math.abs(c - p) <= tol).reduce((m, c) => Math.max(m, sc[c]), 0)), n = hs.filter(Boolean).length, sum = hs.reduce((a, b) => a + b, 0); if (!best || n > best.n || (n === best.n && sum > best.sum)) best = { n, sum, ps }; } }
+      if (best && best.n >= 5) { XS = best.ps.map(p => { const cs = cand.filter(c => Math.abs(c - p) <= tol), c = cs.length ? cs.reduce((a, b) => sc[b] > sc[a] ? b : a) : null; return Math.max(0, Math.min(1, (c != null ? c : p) / w)); }); AUTO = true; }
+    } catch (e) {}
+  }
   q('#faFile').onchange = async e => {
     const f = e.target.files[0]; e.target.value = ''; if (!f) return;
-    msg('사진 줄이는 중…');
-    try { const data = await foodShrinkImg(f, 2000, 0.85); msg('글자 읽는 중… (10~20초)');
-      const o = await post({ type: 'foodocr', data });
-      if (!o.text) { msg('글자를 읽지 못했습니다' + (o.why ? ` (${o.why})` : '') + ' — 아래 "글자로 직접 넣기"를 써 주세요.'); return; }
-      blocks = foodParse(o.text).map(items => ({ items })); q('#faText').value = blocks.map(b => b.items.join('\n')).join('\n\n');
-      if (!blocks.length) { msg('표 모양을 찾지 못했습니다. 아래 "글자로 직접 넣기"에서 고쳐 주세요.'); q('.fa-paste').open = true; }
-      render();
-    } catch (er) { msg('실패: ' + er.message); }
+    msg('사진 불러오는 중…');
+    try { const url = await foodShrinkImg(f, 2400, 0.9); IMG = await new Promise((ok, no) => { const im = new Image(); im.onload = () => ok(im); im.onerror = () => no(new Error('사진 오류')); im.src = url; });
+      AUTO = false; autoLines(); cropUI(); } catch (er) { msg('실패: ' + er.message); }
   };
+  function cropUI() {
+    const c = q('#faCrop'); c.hidden = false;
+    c.innerHTML = `<div class="fa-cw"><img src="${IMG.src}" alt="식단표">${XS.map((x, i) => `<i class="fa-ln" data-ln="${i}" style="left:${x * 100}%"><b>${i < 6 ? ['월', '화', '수', '목', '금', '토'][i] : ''}</b></i>`).join('')}</div>
+      <div class="fa-tip">주황 선 7개를 <b>표의 세로 칸 경계</b>(월요일 왼쪽 선 ~ 토요일 오른쪽 선)에 맞춰 주세요. 왼쪽 '중식·석식·야식' 글자는 선 밖으로.</div>
+      <button type="button" class="fa-save" id="faRead">요일 칸대로 글자 읽기</button>`;
+    const w = c.querySelector('.fa-cw');
+    c.querySelectorAll('[data-ln]').forEach(ln => { ln.onpointerdown = ev => { ev.preventDefault(); try { ln.setPointerCapture(ev.pointerId); } catch (er) {}
+      const i = +ln.dataset.ln, mv = e2 => { const r = w.getBoundingClientRect(); let x = (e2.clientX - r.left) / r.width; x = Math.max(i ? XS[i - 1] + 0.02 : 0, Math.min(i < 6 ? XS[i + 1] - 0.02 : 1, x)); XS[i] = x; ln.style.left = x * 100 + '%'; };
+      ln.onpointermove = mv; ln.onpointerup = ln.onpointercancel = () => { ln.onpointermove = null; }; }; });
+    q('#faRead').onclick = readCols;
+    msg(AUTO ? '표의 세로선을 자동으로 찾았어요. 주황 선이 칸 경계와 맞는지 보고 [요일 칸대로 글자 읽기]를 누르세요.' : '사진 위 주황 선을 표 칸 경계에 맞춘 뒤 [요일 칸대로 글자 읽기]를 누르세요.');
+  }
+  async function readCols() {
+    const W = IMG.naturalWidth, H = IMG.naturalHeight; q('#faRead').disabled = true; msg('요일 6칸 글자 읽는 중… (20~40초)');
+    const strips = XS.slice(0, 6).map((x, i) => { const sx = Math.round(x * W), sw = Math.max(8, Math.round((XS[i + 1] - x) * W)), cv = document.createElement('canvas');
+      const k = Math.min(1, 1800 / H); cv.width = Math.round(sw * k * 1.6); cv.height = Math.round(H * k * 1.6) > 2600 ? 2600 : Math.round(H * k * 1.6);
+      cv.getContext('2d').drawImage(IMG, sx, 0, sw, H, 0, 0, cv.width, cv.height); return cv.toDataURL('image/jpeg', 0.9); });
+    try {
+      const outs = await Promise.all(strips.map(data => post({ type: 'foodocr', data }).catch(er => ({ text: '', why: er.message }))));
+      const raw = []; blocks = [];
+      outs.forEach((o, i) => { raw.push(`[${['월', '화', '수', '목', '금', '토'][i]}]\n${o.text || '(못 읽음 ' + (o.why || '') + ')'}`);
+        const d = /(\d{1,2})\s*월\s*(\d{1,2})\s*일/.exec(o.text || ''); if (i === 0 && d) { const y = new Date().getFullYear(), t = `${y}-${String(d[1]).padStart(2, '0')}-${String(d[2]).padStart(2, '0')}`; weekStart = foodYmd(foodMonday(t)); q('#faWeek').value = weekStart; }
+        foodColBlocks(o.text || '').forEach((b, j) => { if (j < 2) blocks.push({ items: b, slot: `${i}|${j ? '저녁' : '점심'}` }); }); });
+      q('#faRaw').value = raw.join('\n\n'); q('.fa-raw').hidden = false; q('#faText').value = blocks.map(b => b.items.join('\n')).join('\n\n');
+      render();
+      msg(blocks.length ? `요일별로 ${blocks.length}칸을 읽었어요 (야식은 자동 제외). 메뉴 글자를 확인하고 [확인하고 저장]을 누르세요.` : '글자를 읽지 못했습니다. 선 위치를 다시 맞추거나 "글자로 직접 넣기"를 써 주세요.');
+    } catch (er) { msg('실패: ' + er.message); }
+    q('#faRead').disabled = false;
+  }
   q('#faSplit').onclick = () => { blocks = q('#faText').value.split(/\n\s*\n/).map(s => ({ items: s.split('\n').map(x => x.trim()).filter(Boolean) })).filter(b => b.items.length); render(); };
   q('#faSave').onclick = async () => {
     const days = blocks.filter(b => b.slot && b.items.length).map(b => { const [i, m] = b.slot.split('|'); return { day: dayOf(+i), meal: m, items: b.items }; });
