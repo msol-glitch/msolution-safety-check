@@ -595,6 +595,23 @@
   .fa-ln::before{content:'';position:absolute;left:10px;top:0;bottom:0;border-left:3px solid #EA580C;box-shadow:0 0 0 1px #fff}
   .fa-ln b{position:absolute;top:6px;left:14px;background:#EA580C;color:#fff;font-size:12px;font-style:normal;border-radius:6px;padding:1px 6px;white-space:nowrap}
   .fa-raw summary{cursor:pointer;font-size:12.5px;color:#64748B}.fa-raw textarea{font-size:12px}
+  /* v20-4: 식단 화면 가로 넘침 수정 (흐르는 문구가 화면 폭을 늘리던 문제) */
+  #foodView{min-width:0;max-width:100%;overflow:hidden}#foodView .fd-mq{min-width:0;width:100%;contain:inline-size}
+  /* v20-4: 떠 있는 엠봇 버튼은 홈 화면에서만 (다른 화면에서는 가리지 않게) — 홈의 '엠봇' 줄로는 언제든 열림 */
+  body:not(:has(#menu[data-view="home"]:not([style*="none"]))) #mbotFab,body:not(:has(#menu[data-view="home"]:not([style*="none"]))) #mbotTip{display:none!important}
+  /* v20-4: 나가기·홈 버튼 잘 보이게 */
+  .menu #v19back button{background:#1B3A6B;color:#fff;padding:10px 16px 10px 12px;font-weight:800;font-size:15.5px;box-shadow:0 3px 10px #1B3A6B40}
+  #v19back{padding:8px 0 10px}
+  .menu #v19back button span,.menu #v19back button svg{color:#fff!important;stroke:#fff}
+  header .back{display:inline-flex;align-items:center;gap:4px;background:#fff;color:#1B3A6B;opacity:1;text-decoration:none;font-weight:800;font-size:15px;border-radius:12px;padding:9px 14px;margin-top:10px;box-shadow:0 2px 8px #0003}
+  #v20home{position:fixed;top:10px;right:10px;z-index:70;display:none;align-items:center;gap:4px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:20px;padding:9px 14px;background:#E89A2C;color:#22262B;box-shadow:0 4px 14px #0004;cursor:pointer}
+  body:has(#backBtn:not([style*="none"])) #v20home{display:flex}
+  #hsView .hs-x{width:auto;height:auto;border-radius:20px;padding:8px 13px;font-size:14px;font-weight:800;color:#22262B}
+  /* v20-5 식단: 엠봇 한마디 · 든든 지수 */
+  .menu .fx-line{display:flex;gap:10px;align-items:center;background:#22262B;color:#fff;border-radius:16px;padding:11px 14px;margin:0 0 10px;font-size:14.5px;line-height:1.45}
+  .menu .fx-line>span{font-size:24px;flex:none}.menu .fx-line small{display:block;color:#FACC15;font-weight:800;font-size:11.5px}
+  .menu .fx-full{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin:10px 0 2px;font-size:13px;color:#55524B}
+  .menu .fx-full b{display:inline-block;background:#FFF1E2;color:#B45309;border-radius:20px;padding:4px 10px;font-size:13px;white-space:nowrap}.menu .fx-full b i{opacity:.25;font-style:normal}
 </style>
 </head>
 <body>
@@ -603,7 +620,7 @@
   <h1 id="title">현장 점검</h1>
   <div class="doc" id="docno">점검 종류를 선택하세요</div>
   <div class="team" id="teamBadge">팀 선택 필요</div><br>
-  <button class="back" id="backBtn" style="display:none">← 점검 종류 다시 선택</button>
+  <button class="back" id="backBtn" style="display:none">🏠 홈으로 (점검 종류 다시 선택)</button>
 </header>
 
 <main id="main">
@@ -1917,11 +1934,23 @@ function foodParse(text) {   // 글자 → 칸 목록 + 기본 배정(요일·�
   blocks.forEach(b => { if (b.slot && +b.slot.split('|')[0] > 5) b.slot = ''; });
   return { blocks: blocks.map(b => ({ items: b.items, slot: b.slot })), dups, mode: mode === 'row' ? '가로' : gap && gap <= 3 ? '요일별' : '세로' };
 }
+/* 고친 글자 기억(이 PC·폰): 저장 전에 고친 메뉴 이름을 다음 사진부터 자동으로 바꿔 줌 */
+function foodFixMap() { try { return JSON.parse(localStorage.getItem('ms_food_fix') || '{}') || {}; } catch (e) { return {}; } }
+function foodFixApply(t) { const m = foodFixMap(); return m[t] || t; }
+function foodFixLearn(bs) { const m = foodFixMap(); let n = 0;
+  bs.forEach(b => { if (!b.orig || b.orig.length !== b.items.length) return; b.orig.forEach((o, i) => { const v = b.items[i]; if (v && o !== v && o.length >= 2 && v.length <= 24) { m[o] = v; n++; } }); });
+  if (n) try { const ks = Object.keys(m); if (ks.length > 400) ks.slice(0, ks.length - 400).forEach(k => delete m[k]); localStorage.setItem('ms_food_fix', JSON.stringify(m)); } catch (e) {}
+  return n; }
 function foodColBlocks(text) {   // 요일 한 칸(세로 띠) 글자 → [점심, 저녁, 야식…] (밥에서 끊고, 앞 칸과 똑같은 칸=야식은 뺌)
   const toks = String(text || '').split(/\n/).flatMap(l => l.split(/\s{2,}|\t/)).map(s => s.replace(/[|｜_]/g, '').trim())
     .filter(s => s && !FOOD_SKIP.test(s) && /[가-힣]/.test(s) && s.length >= 2 && s.length <= 24 && !/^\d+(월|일)$/.test(s));
+  // 한 메뉴가 두 줄로 끊겨 읽힌 것 붙이기: 'A*' + '타르타르', '설렁탕&' + '소면사리', 'A' + '/초간장', '우불고기버섯' + '볶음'
+  const SUF = /^(볶음|무침|조림|구이|찜|국|탕|채|전|김치|샐러드|사리|소스|양념장|초간장|타르타르|튀김|냉채|장아찌|겉절이|나물)$/;
+  const tk = []; toks.forEach(t => { const p = tk[tk.length - 1];
+    if (p && !FOOD_RICE.test(t) && (/[*&/+(·,\-]$/.test(p) || /^[*&/+)·,\-]/.test(t) || (SUF.test(t) && t.length <= 4 && !/(김치|샐러드)$/.test(p) && p.length <= 10))) tk[tk.length - 1] = p + t;
+    else tk.push(t); });
   const out = []; let cur = null;
-  toks.forEach(s => { if (FOOD_RICE.test(s) || !cur) { cur = []; out.push(cur); } cur.push(s); });
+  tk.forEach(s => { if (FOOD_RICE.test(s) || !cur) { cur = []; out.push(cur); } cur.push(s); });
   const k = b => b.slice(1).join('|'), res = [];
   out.filter(b => b.length >= 2).forEach(b => { if (!res.some(r => k(r) === k(b))) res.push(b); });
   return res;
@@ -2003,7 +2032,7 @@ function foodAdminUI(box, auth, todayStr) {
       const raw = []; blocks = [];
       outs.forEach((o, i) => { raw.push(`[${['월', '화', '수', '목', '금', '토'][i]}]\n${o.text || '(못 읽음 ' + (o.why || '') + ')'}`);
         const d = /(\d{1,2})\s*월\s*(\d{1,2})\s*일/.exec(o.text || ''); if (i === 0 && d) { const y = new Date().getFullYear(), t = `${y}-${String(d[1]).padStart(2, '0')}-${String(d[2]).padStart(2, '0')}`; weekStart = foodYmd(foodMonday(t)); q('#faWeek').value = weekStart; }
-        foodColBlocks(o.text || '').forEach((b, j) => { if (j < 2) blocks.push({ items: b, slot: `${i}|${j ? '저녁' : '점심'}` }); }); });
+        foodColBlocks(o.text || '').forEach((b, j) => { if (j < 2) { const it = b.map(foodFixApply); blocks.push({ items: it, orig: it.slice(), slot: `${i}|${j ? '저녁' : '점심'}` }); } }); });
       q('#faRaw').value = raw.join('\n\n'); q('.fa-raw').hidden = false; q('#faText').value = blocks.map(b => b.items.join('\n')).join('\n\n');
       render();
       msg(blocks.length ? `요일별로 ${blocks.length}칸을 읽었어요 (야식은 자동 제외). 메뉴 글자를 확인하고 [확인하고 저장]을 누르세요.` : '글자를 읽지 못했습니다. 선 위치를 다시 맞추거나 "글자로 직접 넣기"를 써 주세요.');
@@ -2015,7 +2044,7 @@ function foodAdminUI(box, auth, todayStr) {
     const days = blocks.filter(b => b.slot && b.items.length).map(b => { const [i, m] = b.slot.split('|'); return { day: dayOf(+i), meal: m, items: b.items }; });
     if (!days.length) return msg('저장할 칸이 없습니다 (모두 "빼기"로 되어 있어요).');
     const dup = days.map(x => x.day + x.meal).filter((k, i, a) => a.indexOf(k) !== i); if (dup.length) return msg('같은 요일·식사에 두 칸이 배정됐어요. 한쪽을 바꿔 주세요.');
-    q('#faSave').disabled = true; msg('저장 중…');
+    foodFixLearn(blocks); q('#faSave').disabled = true; msg('저장 중…');
     try { const o = await post({ type: 'foodsave', days, by: auth.by || '' }); msg(`✔ ${o.n}칸 저장했어요. 그날 아침부터 직원 화면에 나옵니다.`); blocks = []; render(); list(); }
     catch (er) { msg('저장 안 됨: ' + er.message); q('#faSave').disabled = false; }
   };
@@ -2202,7 +2231,7 @@ function foodOpen() {
   m.dataset.view = 'home';
   const top = document.createElement('div'); top.id = 'v19home'; m.insertBefore(top, m.firstChild);
   const back = document.createElement('div'); back.id = 'v19back';
-  back.innerHTML = `<button type="button" id="v19bk">${v19svg(V19I.back, 18)}<span>홈</span></button><b id="v19title"></b>`;
+  back.innerHTML = `<button type="button" id="v19bk">${v19svg(V19I.back, 18)}<span>홈으로</span></button><b id="v19title"></b>`;
   m.insertBefore(back, top.nextSibling);
   const tnb = document.createElement('div'); tnb.id = 'tnBox'; m.insertBefore(tnb, $('pubNotice').nextSibling);
   const fv = document.createElement('div'); fv.id = 'foodView'; m.insertBefore(fv, tnb.nextSibling);
@@ -2506,7 +2535,7 @@ function hsNext() {
   if (R.i >= R.moves.length) return hsCard();
   const m = R.moves[R.i], M = HS_MOVES[m];
   hsBox().innerHTML = `<div class="hs-prog">${R.moves.map((_, i) => `<i class="${i < R.i ? 'on' : i === R.i ? 'cur' : ''}"></i>`).join('')}</div>
-    <div class="hs-rh"><span class="hs-rhl"><button class="hs-x" id="hsX" aria-label="그만하기">✕</button><b>${R.i + 1} / ${R.moves.length}</b></span><span class="hs-tag ${M.s ? 'g' : 's'}">${M.s ? '근력' : '풀기'}</span></div>
+    <div class="hs-rh"><span class="hs-rhl"><button class="hs-x" id="hsX" aria-label="그만하기">✕ 나가기</button><b>${R.i + 1} / ${R.moves.length}</b></span><span class="hs-tag ${M.s ? 'g' : 's'}">${M.s ? '근력' : '풀기'}</span></div>
     <div class="hs-stage" id="hsStage"><span class="hs-part">🎯 ${esc(M.p)}${hsTr('m_' + m + '_p') ? ' · ' + esc(hsTr('m_' + m + '_p')) : ''}</span>${hsBot(m)}</div>
     <div class="hs-mv"><b>${hsDual('m_' + m + '_n', M.n, 'hs-trd')}</b><p>${hsDual('m_' + m + '_c', M.c, 'hs-trd')}</p></div>
     <div class="hs-joke">"${esc(M.j)}"</div>
@@ -2583,6 +2612,39 @@ function hsHomeRow() {
   list.insertBefore(b, list.firstChild); b.onclick = hsOpen;
   const ck = hsCheckupCard(); if (ck) { const s = h.querySelector('.h19strip'); if (s) s.insertAdjacentHTML('afterend', ck); }
 }
+/* ===== v20-5 식단 화면: 엠봇 한마디(날마다) + 든든 지수(칼로리 숫자 대신 밥그릇 1~3) — 대표 직권 10/23 ===== */
+const FX_LINES = ['밥맛이 없다고요? 저는 맛을 몰라서 매일 맛있습니다 🤖', '오늘 반찬 평가는 보류! 일단 다 먹고 다시 생각하기 🍚', '밥맛은 기분 탓, 배고픔은 진짜. 오늘도 든든하게!',
+  '엠봇 전문 분석 결과: 같이 먹으면 맛있어지는 메뉴입니다', '입맛 없는 날엔 국물부터 한 숟갈. 엠봇의 비법입니다', '남이 해 준 밥이 제일 맛있다던데… 오늘이 그날!',
+  '배식 줄은 짧게, 웃음은 길게, 밥은 남김없이!', '밥맛 없을 땐 옆 사람 반찬이 맛있어 보이는 법. 나눠 먹기 금지는 아닙니다 😆',
+  '보릿고개 시절엔 이 반찬이면 잔칫날이었답니다 🍚', '할머니 말씀: 쌀밥에 고기반찬이면 임금님 수라상이여~', '보릿고개를 넘어 여기까지 왔습니다. 남기면 할머니가 서운해하세요 😆',
+  '그 시절엔 흰쌀밥 한 그릇이 소원이었대요. 오늘 소원 성취!', '엠봇 역사 공부: 보릿고개 → 쌀밥 → 오늘의 점심. 우리는 행운아!', '밥맛이 없다면 배가 덜 고픈 겁니다. 보릿고개 기준으로는 사치예요 🤖'];
+function fxLine() { const n = Math.floor(new Date(today() + 'T12:00:00').getTime() / 864e5), L = pubLang() === 'ko' ? FX_LINES : FX_LINES.slice(0, 8); return L[((n % L.length) + L.length) % L.length]; }
+const FX_HEAVY = [[/국수|소면|면사리|우동|짜장|짬뽕|라면|냉면|파스타|스파게티/, '면'], [/까스|가스|튀김|탕수|너겟|치킨|춘권|전병|부침|^.*전$|크로켓/, '튀김·전'],
+  [/추가밥|볶음밥|덮밥|비빔밥|카레|김밥|주먹밥/, '밥 추가'], [/설렁탕|곰탕|갈비탕|해장국|순대국|감자탕|등뼈/, '진한 국물'], [/떡|소떡|빵|피자/, '떡·빵'],
+  [/불고기|갈비|제육|돈육|삼겹|고기|닭|오리|산적|함박|햄|소시지|돈까스/, '고기']];
+function fxFull(items) {   // 든든 지수: 메뉴 이름으로 '양·탄수화물 느낌'만 1~3단계 (칼로리 숫자 아님)
+  const hit = []; (items || []).forEach(w => { FX_HEAVY.forEach(([re, k]) => { if (re.test(w) && hit.indexOf(k) < 0) hit.push(k); }); });
+  const n = hit.length, lv = n >= 3 ? 3 : n >= 1 ? 2 : 1;
+  const tip = lv === 3 ? '든든한 날 · 식후 졸음 주의, 5분 걷고 작업 시작' : lv === 2 ? '보통 · 식후 물 한 컵' : '가벼운 날 · 오후에 출출하면 물 한 잔부터';
+  return { lv, why: hit.slice(0, 3).join('+'), tip };
+}
+(function fxInit() {
+  if (typeof foodRender !== 'function') return;
+  const _r = window.foodRender; window.foodRender = function () {
+    const r = _r.apply(this, arguments); const box = $('foodView'); if (!box) return r;
+    try {
+      const mq = box.querySelector('.fd-mq'); if (mq && !box.querySelector('.fx-line')) mq.insertAdjacentHTML('afterend', `<div class="fx-line"><span>🤖</span><div><small>엠봇의 오늘 한마디</small>${esc(fxLine())}</div></div>`);
+      const F = FOOD && FOOD.on ? FOOD : null, X = F ? (FOOD_MEAL === '점심' ? F.lunch : F.dinner) : null, hero = box.querySelector('.fd-hero');
+      if (X && X.items && X.items.length && hero) { const f = fxFull(X.items);
+        hero.insertAdjacentHTML('afterend', `<div class="fx-full"><b>든든 지수 ${'🍚'.repeat(f.lv)}<i>${'🍚'.repeat(3 - f.lv)}</i></b><span>${f.why ? esc(f.why) + ' → ' : ''}${esc(f.tip)}</span></div>`); }
+    } catch (e) {}
+    return r; };
+})();
+
+(function v20homeBtn() {   // 점검 화면(머리말 보일 때) 오른쪽 위 떠 있는 홈 버튼 → 기존 [홈으로] 버튼과 같은 동작
+  const b = document.createElement('button'); b.id = 'v20home'; b.type = 'button'; b.innerHTML = '🏠 홈'; b.onclick = () => { const k = document.getElementById('backBtn'); if (k) k.click(); try { window.scrollTo(0, 0); } catch (e) {} };
+  document.body.appendChild(b);
+})();
 (function hsInit() {
   const m = $('menu'); if (!m || typeof v19home !== 'function') return;
   const v = document.createElement('div'); v.id = 'hsView'; m.appendChild(v);
