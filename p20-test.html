@@ -561,6 +561,33 @@
   /* 발목 까딱 */
   .mv-ankle .hb-footL{animation:hbAnk 1.3s ease-in-out infinite}.mv-ankle .hb-footR{animation:hbAnk 1.3s ease-in-out infinite .65s}
   @keyframes hbAnk{0%,100%{transform:none}50%{transform:translateY(-6px) scale(1.15,.8)}}
+  /* ===== v20-1 (10/23 대표 의견): 따라 하기 = 밝은 배경 · 화면 고정(스크롤 없음) · 운동 부위 표시 ===== */
+  #hsView.hs.run{position:fixed;inset:0;z-index:60;margin:0;border-radius:0;overflow:hidden;color:#22262B;
+    background:radial-gradient(120% 70% at 50% 28%,#FFFFFF 0%,#FFF6E8 55%,#F3EBDD 100%);
+    padding:max(12px,env(safe-area-inset-top)) 16px max(14px,env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:8px}
+  #hsView.hs.run .hs-prog i{background:#E7E1D6}#hsView.hs.run .hs-prog i.on{background:#E89A2C}#hsView.hs.run .hs-prog i.cur{background:linear-gradient(90deg,#E89A2C,#E7E1D6)}
+  #hsView.hs.run .hs-rh b{color:#22262B}
+  #hsView .hs-x{border:0;background:#fff;color:#55524B;border-radius:50%;width:34px;height:34px;font-size:16px;box-shadow:0 1px 4px #0002;padding:0;text-align:center}
+  #hsView .hs-rhl{display:flex;gap:8px;align-items:center}
+  #hsView.hs.run .hs-stage{flex:1;min-height:0;margin:0;position:relative;align-items:center}
+  #hsView.hs.run .hs-stage .hbot{width:auto;height:100%;max-height:330px;max-width:100%}
+  #hsView .hs-part{position:absolute;top:4px;left:50%;transform:translateX(-50%);background:#22262B;color:#FACC15;font-size:13px;font-weight:800;border-radius:20px;padding:5px 12px;white-space:nowrap}
+  #hsView.hs.run .hs-mv b{color:#22262B;font-size:22px}#hsView.hs.run .hs-mv p{color:#3A3A36;font-size:15px}
+  #hsView.hs.run .hs-trd{color:#77736B}
+  #hsView.hs.run .hs-joke{background:#22262B;color:#fff;font-size:13px;padding:8px 12px}
+  #hsView.hs.run .hs-ring{width:clamp(84px,13dvh,112px);height:clamp(84px,13dvh,112px);flex:none;background:conic-gradient(#E89A2C calc(var(--p)*1%),#E7E1D6 0)}
+  #hsView.hs.run .hs-ring div{width:80%;height:80%;background:#fff;box-shadow:inset 0 1px 3px #0001}#hsView.hs.run .hs-ring b{color:#22262B;font-size:clamp(28px,4.6dvh,40px)}#hsView.hs.run .hs-ring span{color:#77736B}
+  #hsView.hs.run .hs-ctl button{background:#fff;border:1px solid #D6D0C4;color:#22262B}
+  #hsView.hs.run .hs-pz{position:absolute;left:16px;right:16px;bottom:90px;z-index:2;box-shadow:0 8px 24px #0003}
+  @media(max-height:700px){#hsView.hs.run .hs-joke{display:none}#hsView.hs.run .hs-mv p{font-size:14px}}
+  /* 운동 부위 빛 표시 */
+  .hb-hl{fill:#FACC15;fill-opacity:.28;stroke:#F59E0B;stroke-width:3.2;opacity:0;pointer-events:none}
+  .mv-neck .hl-neck,.mv-roll .hl-sh,.mv-scap .hl-sh,.mv-scap .hl-back,.mv-ylift .hl-sh,.mv-wrist .hl-hand,.mv-fist .hl-hand,.mv-thumb .hl-hand,.mv-shake .hl-hand,
+  .mv-elbow .hl-elbow,.mv-twist .hl-waist,.mv-chest .hl-back,.mv-chest .hl-sh,.mv-side .hl-waist,.mv-leg .hl-knee,.mv-ankle .hl-ankle{animation:hbHl 1.3s ease-in-out infinite}
+  @keyframes hbHl{0%,100%{opacity:.55;stroke-width:2.5}50%{opacity:1;stroke-width:4.5}}
+  #hsView.hs.run .hs-stage .hbot{max-height:440px}
+  #hsView .hs-part{left:0;transform:none;top:2px;z-index:1}
+  #hsView.hs.run .hs-ctl button{text-align:center}
 </style>
 </head>
 <body>
@@ -2143,21 +2170,21 @@ const HS_WS_BY = Object.fromEntries(HS_WS.map(w => [w.code, w]));
 
 /* 동작 (앉아서) — s: 근력 동작 */
 const HS_MOVES = {
-  neck: { n: '목 옆 늘리기', c: '귀를 어깨 쪽으로 천천히. 좌우 번갈아 가며.', j: '제 목은 볼트로 고정돼 있지만, 여러분 목은 풀어 주세요!' },
-  roll: { n: '어깨 뒤로 돌리기', c: '어깨를 귀까지 올렸다가 뒤로 크게 돌려요.', j: '어깨 위 피로, 뒤로 던져 버려요!' },
-  scap: { n: '어깨 날개 모으기', c: '팔을 W자로 들고 팔꿈치를 뒤로, 등 뒤 날개를 꽉 모아요.', j: '날개를 펴면 저도 날 수 있을까요?', s: 1 },
-  ylift: { n: 'Y자 팔 들고 버티기', c: '엄지를 위로, 팔을 Y자로 들고 그대로 버텨요.', j: '만세! 오늘도 무사고 만세!', s: 1 },
-  wrist: { n: '손목 앞뒤 늘리기', c: '팔을 펴고 손바닥을 위아래로 젖혀요. 한 팔씩.', j: '융착기 버튼 누른 손목, 고생 많았어요.' },
-  fist: { n: '주먹 쥐었다 쫙 펴기', c: '꽉 쥐고, 쫙 펴고! 손가락 끝까지.', j: '가위바위보 연습 아닙니다. 진지하게!' },
-  thumb: { n: '손가락 쫙 펼치기', c: '손을 얼굴 앞에서 쫙 펼쳤다 모았다.', j: '클립 누르던 손가락에게 휴가를!' },
-  shake: { n: '손목 탈탈 털기', c: '힘을 빼고 손목을 탈탈 털어요.', j: '물기 털듯이 탈탈~' },
-  elbow: { n: '팔꿈치 접었다 펴기', c: '팔꿈치를 천천히 접었다가 끝까지 쭉 펴요.', j: '망치질한 팔, 오늘은 제가 대신 흔들게요.' },
-  twist: { n: '앉아서 허리 비틀기', c: '등을 펴고 팔을 모은 채 상체만 천천히 좌우로.', j: '춤 아닙니다. 천천히 비틀기!' },
-  chest: { n: '등 펴고 가슴 열기', c: '등받이에서 떨어져 가슴을 활짝, 팔은 뒤로.', j: '자신감 자세! 오늘 하루 당당하게.' },
-  side: { n: '옆구리 늘리기', c: '한 팔을 위로 쭉 뻗고 반대쪽으로 살짝 기울여요.', j: '키가 1cm 커지는 기분!' },
-  leg: { n: '앉아서 무릎 펴 들기', c: '한쪽 무릎을 쭉 펴서 들고 버텨요. 좌우 번갈아.', j: '허벅지 힘이 허리를 지켜 줘요.', s: 1 },
-  ankle: { n: '발목 까딱', c: '발끝을 몸 쪽으로 당겼다 밀었다.', j: 'PLT 미는 다리에 시동 걸기!' },
-  rest: { n: '편하게 숨 쉬기', c: '이 동작은 쉬어 가요. 코로 들이쉬고 입으로 길게.', j: '쉬는 것도 운동입니다.' }
+  neck: { p: '목', n: '목 옆 늘리기', c: '귀를 어깨 쪽으로 천천히. 좌우 번갈아 가며.', j: '제 목은 볼트로 고정돼 있지만, 여러분 목은 풀어 주세요!' },
+  roll: { p: '어깨', n: '어깨 뒤로 돌리기', c: '어깨를 귀까지 올렸다가 뒤로 크게 돌려요.', j: '어깨 위 피로, 뒤로 던져 버려요!' },
+  scap: { p: '어깨·등', n: '어깨 날개 모으기', c: '팔을 W자로 들고 팔꿈치를 뒤로, 등 뒤 날개를 꽉 모아요.', j: '날개를 펴면 저도 날 수 있을까요?', s: 1 },
+  ylift: { p: '어깨', n: 'Y자 팔 들고 버티기', c: '엄지를 위로, 팔을 Y자로 들고 그대로 버텨요.', j: '만세! 오늘도 무사고 만세!', s: 1 },
+  wrist: { p: '손목', n: '손목 앞뒤 늘리기', c: '팔을 펴고 손바닥을 위아래로 젖혀요. 한 팔씩.', j: '융착기 버튼 누른 손목, 고생 많았어요.' },
+  fist: { p: '손가락', n: '주먹 쥐었다 쫙 펴기', c: '꽉 쥐고, 쫙 펴고! 손가락 끝까지.', j: '가위바위보 연습 아닙니다. 진지하게!' },
+  thumb: { p: '손가락', n: '손가락 쫙 펼치기', c: '손을 얼굴 앞에서 쫙 펼쳤다 모았다.', j: '클립 누르던 손가락에게 휴가를!' },
+  shake: { p: '손목', n: '손목 탈탈 털기', c: '힘을 빼고 손목을 탈탈 털어요.', j: '물기 털듯이 탈탈~' },
+  elbow: { p: '팔꿈치', n: '팔꿈치 접었다 펴기', c: '팔꿈치를 천천히 접었다가 끝까지 쭉 펴요.', j: '망치질한 팔, 오늘은 제가 대신 흔들게요.' },
+  twist: { p: '허리', n: '앉아서 허리 비틀기', c: '등을 펴고 팔을 모은 채 상체만 천천히 좌우로.', j: '춤 아닙니다. 천천히 비틀기!' },
+  chest: { p: '등·가슴', n: '등 펴고 가슴 열기', c: '등받이에서 떨어져 가슴을 활짝, 팔은 뒤로.', j: '자신감 자세! 오늘 하루 당당하게.' },
+  side: { p: '옆구리', n: '옆구리 늘리기', c: '한 팔을 위로 쭉 뻗고 반대쪽으로 살짝 기울여요.', j: '키가 1cm 커지는 기분!' },
+  leg: { p: '허벅지·무릎', n: '앉아서 무릎 펴 들기', c: '한쪽 무릎을 쭉 펴서 들고 버텨요. 좌우 번갈아.', j: '허벅지 힘이 허리를 지켜 줘요.', s: 1 },
+  ankle: { p: '발목', n: '발목 까딱', c: '발끝을 몸 쪽으로 당겼다 밀었다.', j: 'PLT 미는 다리에 시동 걸기!' },
+  rest: { p: '호흡', n: '편하게 숨 쉬기', c: '이 동작은 쉬어 가요. 코로 들이쉬고 입으로 길게.', j: '쉬는 것도 운동입니다.' }
 };
 /* 묶음별 동작 후보: 날마다·시간대마다 풀기 2 + 근력 2 */
 const HS_GRP = {
@@ -2224,7 +2251,7 @@ const HS_TXT = {
 /* 번역 묶음 (관리자 PC '번역 만들기'에서 서버로 보냄) */
 function hsTxItems() {
   const o = Object.assign({}, HS_TXT);
-  Object.keys(HS_MOVES).forEach(k => { o['m_' + k + '_n'] = HS_MOVES[k].n; o['m_' + k + '_c'] = HS_MOVES[k].c; o['m_' + k + '_j'] = HS_MOVES[k].j; });
+  Object.keys(HS_MOVES).forEach(k => { o['m_' + k + '_n'] = HS_MOVES[k].n; o['m_' + k + '_c'] = HS_MOVES[k].c; o['m_' + k + '_j'] = HS_MOVES[k].j; o['m_' + k + '_p'] = HS_MOVES[k].p; });
   HS_CARDS.forEach(c => { o[c.id + '_t'] = c.t; o[c.id + '_b'] = c.b; });
   Object.keys(HS_ITEM).forEach(k => { o['i_' + k] = HS_ITEM[k]; });
   return o;
@@ -2271,14 +2298,14 @@ function hsPickCard(ws) {
 function hsArm(side) {
   const x = side === 'L' ? 72 : 128;
   return `<g class="hb-arm${side}"><line x1="${x}" y1="108" x2="${x}" y2="138" class="hb-limb"/><line x1="${x}" y1="108" x2="${x}" y2="138" class="hb-limbi"/>
-    <g class="hb-fa${side}"><circle cx="${x}" cy="140" r="5" class="hb-joint"/><line x1="${x}" y1="141" x2="${x}" y2="166" class="hb-limb"/><line x1="${x}" y1="141" x2="${x}" y2="166" class="hb-limbi"/>
-      <g class="hb-hand${side}"><g class="hb-fing"><path d="M${x - 6} 172v-7M${x - 2} 171v-9M${x + 2} 171v-9M${x + 6} 172v-7" class="hb-finger"/></g><circle cx="${x}" cy="174" r="7.5" class="hb-palm"/></g></g></g>`;
+    <g class="hb-fa${side}"><circle cx="${x}" cy="140" r="13" class="hb-hl hl-elbow"/><circle cx="${x}" cy="140" r="5" class="hb-joint"/><line x1="${x}" y1="141" x2="${x}" y2="166" class="hb-limb"/><line x1="${x}" y1="141" x2="${x}" y2="166" class="hb-limbi"/>
+      <g class="hb-hand${side}"><circle cx="${x}" cy="172" r="15" class="hb-hl hl-hand"/><g class="hb-fing"><path d="M${x - 6} 172v-7M${x - 2} 171v-9M${x + 2} 171v-9M${x + 6} 172v-7" class="hb-finger"/></g><circle cx="${x}" cy="174" r="7.5" class="hb-palm"/></g></g></g>`;
 }
 function hsLeg(side) {
   const x = side === 'L' ? 87 : 113;
   return `<g class="hb-leg${side}"><rect x="${x - 8}" y="164" width="16" height="32" rx="7" class="hb-thigh"/>
-    <g class="hb-shin${side}"><rect x="${x - 7}" y="195" width="14" height="38" rx="6" class="hb-shinr"/></g>
-    <g class="hb-foot${side}"><ellipse cx="${x + (side === 'L' ? -4 : 4)}" cy="238" rx="12" ry="6" class="hb-footr"/></g></g>`;
+    <g class="hb-shin${side}"><rect x="${x - 7}" y="195" width="14" height="38" rx="6" class="hb-shinr"/></g><circle cx="${x}" cy="196" r="13" class="hb-hl hl-knee"/>
+    <g class="hb-foot${side}"><ellipse cx="${x + (side === 'L' ? -4 : 4)}" cy="238" rx="12" ry="6" class="hb-footr"/><ellipse cx="${x + (side === 'L' ? -4 : 4)}" cy="238" rx="17" ry="10" class="hb-hl hl-ankle"/></g></g>`;
 }
 function hsBot(mv) {
   return `<svg class="hbot mv-${mv || 'idle'}" viewBox="0 0 200 260" aria-hidden="true">
@@ -2297,7 +2324,8 @@ function hsBot(mv) {
         <rect x="54" y="50" width="92" height="8" rx="4" fill="#FACC15" stroke="#0F172A" stroke-width="3"/>
         <line x1="100" y1="24" x2="100" y2="15" stroke="#0F172A" stroke-width="3"/><circle cx="100" cy="14" r="4.2" fill="#EA580C" stroke="#0F172A" stroke-width="2"/>
       </g>
-      ${hsArm('L')}${hsArm('R')}
+      <ellipse cx="100" cy="164" rx="40" ry="11" class="hb-hl hl-waist"/><ellipse cx="100" cy="118" rx="30" ry="14" class="hb-hl hl-back"/><circle cx="100" cy="94" r="13" class="hb-hl hl-neck"/>
+      ${hsArm('L')}${hsArm('R')}<circle cx="72" cy="108" r="13" class="hb-hl hl-sh"/><circle cx="128" cy="108" r="13" class="hb-hl hl-sh"/>
     </g></svg>`;
 }
 
@@ -2395,6 +2423,7 @@ function hsPickWs() {
 function hsStart(ws, moves, sl) {
   try { speechSynthesis && speechSynthesis.getVoices(); } catch (e) {}
   HS_RUN = { ws, moves, sl, i: -1, el: 0, last: 0, t0: Date.now(), skip: 0, skipped: {}, paused: false, sid: DEV + '-' + Date.now().toString(36), done: false };
+  scrollTo0(); document.documentElement.style.overflow = 'hidden'; document.body.style.overflow = 'hidden';
   hsBox().className = 'hs run'; hsNext();
   clearInterval(hsStart.tm); hsStart.tm = setInterval(hsTick, 200);
 }
@@ -2403,20 +2432,22 @@ function hsNext() {
   if (R.i >= R.moves.length) return hsCard();
   const m = R.moves[R.i], M = HS_MOVES[m];
   hsBox().innerHTML = `<div class="hs-prog">${R.moves.map((_, i) => `<i class="${i < R.i ? 'on' : i === R.i ? 'cur' : ''}"></i>`).join('')}</div>
-    <div class="hs-rh"><b>${R.i + 1} / ${R.moves.length}</b><span class="hs-tag ${M.s ? 'g' : 's'}">${M.s ? '근력' : '풀기'}</span></div>
-    <div class="hs-stage" id="hsStage">${hsBot(m)}</div>
+    <div class="hs-rh"><span class="hs-rhl"><button class="hs-x" id="hsX" aria-label="그만하기">✕</button><b>${R.i + 1} / ${R.moves.length}</b></span><span class="hs-tag ${M.s ? 'g' : 's'}">${M.s ? '근력' : '풀기'}</span></div>
+    <div class="hs-stage" id="hsStage"><span class="hs-part">🎯 ${esc(M.p)}${hsTr('m_' + m + '_p') ? ' · ' + esc(hsTr('m_' + m + '_p')) : ''}</span>${hsBot(m)}</div>
     <div class="hs-mv"><b>${hsDual('m_' + m + '_n', M.n, 'hs-trd')}</b><p>${hsDual('m_' + m + '_c', M.c, 'hs-trd')}</p></div>
     <div class="hs-joke">"${esc(M.j)}"</div>
     <div class="hs-ring" id="hsRing"><div><b id="hsSec">${HS_MOVE_SEC}</b><span>초</span></div></div>
     <div class="hs-ctl"><button id="hsSkip">${esc(hsT('u_skip'))}</button><button id="hsPause">⏸ ${esc(hsT('u_pause'))}</button></div>
     <div class="hs-pz" id="hsPz" hidden><b>${esc(hsT('u_hidden'))}</b><button id="hsRes">▶ ${esc(hsT('u_resume'))}</button></div>`;
-  $('hsSkip').onclick = () => { if (R.skipped[R.i]) return; R.skipped[R.i] = 1; R.skip++; const st = $('hsStage'); st.innerHTML = hsBot('rest');
+  $('hsSkip').onclick = () => { if (R.skipped[R.i]) return; R.skipped[R.i] = 1; R.skip++; const st = $('hsStage'); st.innerHTML = `<span class="hs-part">🎯 ${esc(HS_MOVES.rest.p)}</span>` + hsBot('rest');
     hsBox().querySelector('.hs-mv').innerHTML = `<b>${hsDual('m_rest_n', HS_MOVES.rest.n, 'hs-trd')}</b><p>${hsDual('m_rest_c', HS_MOVES.rest.c, 'hs-trd')}</p>`; hsSayKey('m_rest_c', HS_MOVES.rest.c); };
   $('hsPause').onclick = () => hsPause(true, true);
+  $('hsX').onclick = () => { R.done = true; clearInterval(hsStart.tm); try { speechSynthesis.cancel(); } catch (e) {} hsUnlock(); HS_RUN = null; hsIntro(); scrollTo0(); };
   $('hsRes').onclick = () => hsPause(false);
   hsSayKey('m_' + m + '_c', M.n + '. ' + M.c);
   try { navigator.vibrate && navigator.vibrate(30); } catch (e) {}
 }
+function hsUnlock() { document.documentElement.style.overflow = ''; document.body.style.overflow = ''; }
 function hsPause(on, manual) {
   const R = HS_RUN; if (!R || R.done) return; R.paused = on; R.last = 0;
   const pz = $('hsPz'), b = hsBox().querySelector('.hbot'); if (pz) pz.hidden = !on; if (b) b.classList.toggle('paused', on);
@@ -2434,7 +2465,7 @@ function hsTick() {
 }
 document.addEventListener('visibilitychange', () => { if (document.hidden && HS_RUN && !HS_RUN.done) hsPause(true); });
 function hsCard() {
-  const R = HS_RUN, c = hsPickCard(R.ws); R.card = c; R.done = true; clearInterval(hsStart.tm);
+  const R = HS_RUN, c = hsPickCard(R.ws); R.card = c; R.done = true; clearInterval(hsStart.tm); hsUnlock(); scrollTo0();
   hsBox().className = 'hs card';
   hsBox().innerHTML = `<div class="hs-cdh">${esc(hsT('u_card'))}</div>
     <div class="hs-cd"><span class="hs-it i${c.i}">${hsDual('i_' + c.i, HS_ITEM[c.i], 'hs-tri')}</span><h3>${hsDual(c.id + '_t', c.t, 'hs-trd')}</h3><p>${hsDual(c.id + '_b', c.b, 'hs-trd')}</p>
@@ -2482,7 +2513,7 @@ function hsHomeRow() {
   const m = $('menu'); if (!m || typeof v19home !== 'function') return;
   const v = document.createElement('div'); v.id = 'hsView'; m.appendChild(v);
   const _home = window.v19home; window.v19home = function () { const r = _home.apply(this, arguments); try { hsHomeRow(); } catch (e) {} return r; };
-  const _view = window.v19view; window.v19view = function (vv) { if (vv !== 'stretch' && HS_RUN && !HS_RUN.done) { HS_RUN = null; clearInterval(hsStart.tm); try { speechSynthesis.cancel(); } catch (e) {} }
+  const _view = window.v19view; window.v19view = function (vv) { if (vv !== 'stretch' && HS_RUN && !HS_RUN.done) { HS_RUN = null; clearInterval(hsStart.tm); hsUnlock(); try { speechSynthesis.cancel(); } catch (e) {} }
     const r = _view.apply(this, arguments); if (vv === 'stretch' && $('v19title')) $('v19title').textContent = hsT('u_title'); return r; };
   try { speechSynthesis && speechSynthesis.getVoices(); } catch (e) {}
   hsLoadMe().then(() => { hsSend(null); v19home(); });
