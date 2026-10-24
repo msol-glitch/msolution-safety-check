@@ -520,6 +520,10 @@
   }
   #v21hero{grid-template-columns:minmax(0,1fr) auto}#v21hero>.lb{grid-column:1;grid-row:1;margin-bottom:-14px}#v21hero>div:nth-child(2){grid-column:1;grid-row:2}#v21hero>.nd{grid-column:2;grid-row:1/3}
   @media (min-width:1300px) and (min-height:700px){body.dash #v21hero>.lb,body.dash #v21hero>div:nth-child(2),body.dash #v21hero>.nd{grid-row:1;margin:0}body.dash #v21hero>div:nth-child(2){grid-column:2}body.dash #v21hero>.nd{grid-column:3}}
+  /* v21-2 비가동 표시 */
+  .off21{color:#94A3B8!important;font-weight:700;background:repeating-linear-gradient(135deg,#F8FAFC 0 6px,#EEF2F7 6px 12px)}
+  tr.off21r td:first-child{color:#64748B}.off21t{margin-left:4px;font-size:10.5px;font-weight:700;color:#64748B;background:#E2E8F0;border-radius:4px;padding:1px 5px}
+  .off21n{font-size:11.5px;color:#64748B;margin-top:6px}
   /* v21 안전 인텔리전스 — 대시보드 카드 */
   .aicard{background:linear-gradient(160deg,#FFFFFF 0%,#F4F8FF 100%)!important;border:1px solid #CFDCF2!important;display:flex;flex-direction:column;min-height:0}
   .aicard #learn{display:flex;flex-direction:column;gap:7px;flex:1 1 0;min-height:0}
@@ -786,7 +790,7 @@ async function start() {
   try { sessionStorage.setItem('ms_pin', PIN); } catch (e) {}
   $('lock').classList.add('hide');
   lastUpd = kstNow(); nextAt = Date.now() + REF_MS;
-  route();
+  route(); offRefresh();
   lastAna = Date.now(); loadAnalytics();
 }
 function showLock(msg) {
@@ -824,17 +828,32 @@ function todayState() {
   const patrol = TEAMS.filter(t => PR[t] && (PR[t]['안전관리자'] || PR[t]['안전보건관리책임자']));
   const fives = TEAMS.filter(t => T['5s'].todayTeams.indexOf(t) >= 0);
   const dust = SUM.equipments.map(eq => { const d = daysSince(T.dust.lastBy[eq]); return { eq, d, ok: d != null && d < DUST_CYCLE }; });
-  return { patrol, fives, dust };
+  const ot = offTeams_(), ol = offLines_();   // v21-2: TBM [비가동]으로 모든 라인이 비가동인 팀은 그날 대상에서 제외
+  return { patrol, fives, dust, offT: ot, offL: ol, nOn: TEAMS.length - ot.length, pOn: patrol.filter(t => ot.indexOf(t) < 0), fOn: fives.filter(t => ot.indexOf(t) < 0) };
 }
+/* ===== v21-2 (2026-10-24 대표 지시): 비가동 팀·라인은 '미실시' 대신 '비가동' — 분모에서 제외 =====
+ * 비가동 = 관리자 폰 TBM에서 [비가동]을 누른 라인(서버 tbmOff). 팀의 모든 라인이 비가동이면 그 팀은 오늘 순회·3정5행 대상 제외
+ * [비가동]을 누르지 않은 날은 그대로 '미실시'(빈칸 = 누락 원칙 유지) */
+let OFFT = null;
+function teamLn_(t) { const o = {}; Object.keys(TBM_LN).forEach(k => (o[TBM_LN[k][0]] = o[TBM_LN[k][0]] || []).push(k)); return o[t] || []; }
+function offTeams_() { return OFFT ? TEAMS.filter(t => teamLn_(t).length && teamLn_(t).every(k => OFFT[t].has(k))) : []; }
+function offLines_() { const o = new Set(); if (OFFT) TEAMS.forEach(t => OFFT[t].forEach(k => o.add(k))); return o; }
+async function offLoad() {
+  const today = dstr(kstNow());
+  const rs = await Promise.all(TEAMS.map((t, i) => api(`action=status&team=${i + 1}`).catch(() => null)));
+  const o = {}; TEAMS.forEach((t, i) => { const r = rs[i]; o[t] = new Set(r && r.ok !== false && (!r.today || r.today === today) ? (r.tbmOff || []).map(x => x.line) : []); });
+  const ch = JSON.stringify(TEAMS.map(t => [...o[t]])) !== JSON.stringify(OFFT ? TEAMS.map(t => [...OFFT[t]]) : null); OFFT = o; return ch;
+}
+function offRefresh() { offLoad().then(ch => { if (ch && SUM && !$('home').classList.contains('hide') && !viewBusy()) route(); else if (ch && SUM) renderNav(location.hash.slice(1)); }).catch(() => {}); }
 
 function renderNav(cur) {
   const s = SUM ? todayState() : null, n = TEAMS.length;
   const badge = k => {
     if (!s) return '';
-    if (k === '5s') return `<span class="bd ${s.fives.length === n ? 'ok' : 'w'}">${s.fives.length}/${n}</span>`;
-    if (k === 'patrol') return `<span class="bd ${s.patrol.length === n ? 'ok' : 'w'}">${s.patrol.length}/${n}</span>`;
+    if (k === '5s') return `<span class="bd ${s.fOn.length >= s.nOn ? 'ok' : 'w'}">${s.fOn.length}/${s.nOn}</span>`;
+    if (k === 'patrol') return `<span class="bd ${s.pOn.length >= s.nOn ? 'ok' : 'w'}">${s.pOn.length}/${s.nOn}</span>`;
     if (k === 'dust') return s.dust.every(x => x.ok) ? '<span class="bd ok">정상</span>' : '<span class="bd w">청소 필요</span>';
-    if (k === 'tbm') { const t = tbmToday(); return t == null ? '<span class="bd n">연결 전</span>' : `<span class="bd ${t.size === 9 ? 'ok' : 'w'}">${t.size}/9</span>`; }
+    if (k === 'tbm') { const t = tbmToday(); if (t == null) return '<span class="bd n">연결 전</span>'; const dn = [...t].filter(x => !s.offL.has(x)).length, on = 9 - s.offL.size; return `<span class="bd ${dn >= on ? 'ok' : 'w'}">${dn}/${on}</span>`; }
     if (k === 'ppe') return ppeBadge();
     if (k === 'actions') return SUM.open ? `<span class="bd w">진행 ${SUM.open}</span>` : '<span class="bd ok">0</span>';
     return '';
@@ -849,7 +868,7 @@ function renderNav(cur) {
 function renderHome() {
   const now = kstNow(), s = todayState(), n = TEAMS.length, T = SUM.types;
   $('today').textContent = `${now.getFullYear()}년 ${now.getMonth() + 1}월 ${now.getDate()}일 (${WD[now.getDay()]}) · ${HEADCOUNT}`;
-  const tt = tbmToday(), done = s.patrol.length + s.fives.length + s.dust.filter(x => x.ok).length + (tt ? tt.size : 0), all = n * 2 + s.dust.length + (tt ? 9 : 0);
+  const tt = tbmToday(), done = s.pOn.length + s.fOn.length + s.dust.filter(x => x.ok).length + (tt ? [...tt].filter(k => !s.offL.has(k)).length : 0), all = s.nOn * 2 + s.dust.length + (tt ? 9 - s.offL.size : 0);
   const pct = all ? Math.round(done / all * 100) : 0;
   const nad = NO_ACCIDENT_SINCE ? dayDiff(NO_ACCIDENT_SINCE, dstr(now)) : null;
   $('kpis').innerHTML = `
@@ -861,17 +880,18 @@ function renderHome() {
   const dueToday = AN ? AN.acts.filter(a => a.status === '미조치').length : null;
   $('progNote').textContent = '파랑 = 완료';
   $('prog').innerHTML =
-    bar('순회점검', '관리감독자·대표 중 1명 이상', s.patrol.length, n, `${s.patrol.length} / ${n}팀`) +
-    bar('3정5행', '팀별', s.fives.length, n, `${s.fives.length} / ${n}팀`) +
-    (tbmToday() == null ? bar('TBM', '라인별 · 서버 연결 전', 0, 9, '연결 전', 1) : bar('TBM', `라인별 · 오늘 ${num(tbmTodayMin())}분`, tbmToday().size, 9, `${tbmToday().size} / 9라인`)) +
+    bar('순회점검', '관리감독자·대표 중 1명 이상', s.pOn.length, s.nOn, `${s.pOn.length} / ${s.nOn}팀`) +
+    bar('3정5행', '팀별', s.fOn.length, s.nOn, `${s.fOn.length} / ${s.nOn}팀`) +
+    (tbmToday() == null ? bar('TBM', '라인별 · 서버 연결 전', 0, 9, '연결 전', 1) : (() => { const dn = [...tbmToday()].filter(k => !s.offL.has(k)).length, on = 9 - s.offL.size; return bar('TBM', `라인별 · 오늘 ${num(tbmTodayMin())}분`, dn, on, `${dn} / ${on}라인`); })()) +
     bar('집진기 청소', `주기 ${DUST_CYCLE}일`, s.dust.filter(x => x.ok).length, s.dust.length, s.dust.map(x => `${x.eq} ${x.d == null ? '기록없음' : x.ok ? 'D-' + (DUST_CYCLE - x.d) : '초과'}`).join(' · ')) +
     bar('조치 진행', '미완료 개선 건', AN ? AN.acts.filter(a => a.status !== '미조치').length : 0, AN ? AN.acts.length : 0, dueToday == null ? '…' : `진행 ${dueToday}건`);
   const PR = SUM.patrolRoles || {};
   const cell = v => v ? `<td class="c" style="color:var(--ok);font-weight:700">✔ ${esc(v)}</td>` : `<td class="c" style="color:var(--sub)">-</td>`;
   $('todayTbl').innerHTML = `<table><thead><tr><th>팀</th><th>관리자</th><th>책임자</th><th>순회</th><th>3정5행</th></tr></thead><tbody>
     ${TEAMS.map(t => { const x = PR[t] || {}, ok = x['안전관리자'] || x['안전보건관리책임자'], f = T['5s'].todayTeams.indexOf(t) >= 0;
-      return `<tr><td class="c"><b>${t}</b></td>${cell(x['안전관리자'])}${cell(x['안전보건관리책임자'])}<td class="c" style="font-weight:700;color:${ok ? 'var(--ok)' : 'var(--bad)'}">${ok ? '실시' : '미실시'}</td><td class="c" style="font-weight:700;color:${f ? 'var(--ok)' : 'var(--bad)'}">${f ? '실시' : '미실시'}</td></tr>`; }).join('')}
-    </tbody><tfoot><tr><td class="c">합계</td><td class="c">${TEAMS.filter(t => PR[t] && PR[t]['안전관리자']).length} / ${n}팀</td><td class="c">${TEAMS.filter(t => PR[t] && PR[t]['안전보건관리책임자']).length} / ${n}팀</td><td class="c">${s.patrol.length} / ${n}팀</td><td class="c">${s.fives.length} / ${n}팀</td></tr></tfoot></table>`;
+      const off = s.offT.indexOf(t) >= 0, st = v => v ? `<td class="c" style="font-weight:700;color:var(--ok)">실시</td>` : off ? `<td class="c off21" title="관리자 폰 TBM에서 모든 라인 [비가동] — 오늘 점검 대상 아님">비가동</td>` : `<td class="c" style="font-weight:700;color:var(--bad)">미실시</td>`;
+      return `<tr${off ? ' class="off21r"' : ''}><td class="c"><b>${t}</b></td>${cell(x['안전관리자'])}${cell(x['안전보건관리책임자'])}${st(ok)}${st(f)}</tr>`; }).join('')}
+    </tbody><tfoot><tr><td class="c">합계</td><td class="c">${TEAMS.filter(t => PR[t] && PR[t]['안전관리자']).length} / ${n}팀</td><td class="c">${TEAMS.filter(t => PR[t] && PR[t]['안전보건관리책임자']).length} / ${n}팀</td><td class="c">${s.pOn.length} / ${s.nOn}팀</td><td class="c">${s.fOn.length} / ${s.nOn}팀</td></tr></tfoot></table>${s.offT.length ? `<div class="off21n">비가동: ${s.offT.map(esc).join('·')} — 오늘 합계에서 제외</div>` : ''}`;
   if (AN) { renderCharts(); renderTbmChart(); }
 }
 
@@ -1956,7 +1976,7 @@ async function refresh(force) {
   if (refBusy || !SUM) return; refBusy = true;
   try {
     const s = await api('action=summary'), changed = JSON.stringify(s) !== JSON.stringify(SUM);
-    SUM = s; lastUpd = kstNow(); lastRefAt = Date.now(); nextAt = Date.now() + REF_MS;
+    SUM = s; lastUpd = kstNow(); lastRefAt = Date.now(); nextAt = Date.now() + REF_MS; offRefresh();
     const home = !$('home').classList.contains('hide');
     if (force || (home && !viewBusy())) {
       route(); $('newMark').textContent = '';

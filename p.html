@@ -407,7 +407,8 @@
   .menu .fd-mqi span{font-size:14.5px;color:var(--graph)}
   .menu .h19meal{font-size:12.5px;color:var(--graph2)}.menu .h19x>span.h19meal em{font-size:12.5px}
   .menu .h19strip div{display:block}
-  .rest18.sure{background:#EA580C;border-color:#EA580C}.rest18.un{border-color:#94A3B8;color:#475569;background:#fff}.tguide.offday{background:#64748B}
+  .rest18.sure{background:#EA580C;border-color:#EA580C}.rest18.un{border-color:#94A3B8;color:#475569;background:#fff}
+  .pill.offp{background:#E2E8F0;color:#64748B}.tguide.offday{background:#64748B}
   /* ===== v20 건강증진 스트레칭 ===== */
   #menu:not([data-view="stretch"])>#hsView{display:none!important}
   #menu[data-view="stretch"]>*:not(#v19back):not(#hsView){display:none!important}
@@ -669,7 +670,7 @@
       <div class="cnt" style="margin:4px 0 6px">위험성평가에서 위험도 순으로 매일 자동 선택 · 팀의 모든 라인 같은 주제</div>
       <div class="chips" id="tbmLang"></div><div id="tbmCards"></div>
       <div class="cnt" style="margin:2px 0 8px">외국어 문구는 번역 초안입니다. 이상한 표현은 반장에게 알려 주세요.</div></div>
-    <div class="cnt" style="margin:8px 2px">참석 서명은 작업일보에 받습니다. 쉬는 라인은 [쉼]. 라인별 시간은 팀 시간을 라인 수로 나눠 자동 기록됩니다. 작업일보에는 기록번호만 적으면 됩니다.</div>
+    <div class="cnt" style="margin:8px 2px">참석 서명은 작업일보에 받습니다. 가동하지 않는 라인은 [비가동]. 라인별 시간은 팀 시간을 라인 수로 나눠 자동 기록됩니다. 작업일보에는 기록번호만 적으면 됩니다.</div>
   </section>
 </main>
 
@@ -1392,8 +1393,8 @@ function tbmRender() {
     $('tbmBoxH').textContent = N + ' 라인';
     const chip = k => { const L = T.lines[k], nm = esc(TBM_LINE[k].name);
       if (L.st === 'done') return `<div class="tl18 fin"><b>${nm}</b><span>✔ ${L.min != null ? L.min + '분' : '완료'}</span></div>`;
-      if (L.st === 'off') return `<div class="tl18 fin"><b>${nm}</b><span>쉼 (비가동)</span>${T.run ? '' : `<button class="rest18 un" data-unrest="${k}">쉼 취소</button>`}</div>`;
-      return `<div class="tl18 on"><b>${nm}</b><span>${T.run ? '● 교육 중' : '교육 대상'}</span>${T.run ? '' : `<button class="rest18" data-rest="${k}">쉼</button>`}</div>`; };
+      if (L.st === 'off') return `<div class="tl18 fin"><b>${nm}</b><span>비가동</span>${T.run ? '' : `<button class="rest18 un" data-unrest="${k}">비가동 취소</button>`}</div>`;
+      return `<div class="tl18 on"><b>${nm}</b><span>${T.run ? '● 교육 중' : '교육 대상'}</span>${T.run ? '' : `<button class="rest18" data-rest="${k}">비가동</button>`}</div>`; };
     box.innerHTML = `<div class="tl18s">${ks.map(chip).join('')}</div>`;
     if (T.run) {
       guide.className = 'tguide'; guide.innerHTML = `<span class="ar">●</span> ${N} 교육 중 · 모든 라인 끝나면 [팀 교육 마치기]`;
@@ -1401,11 +1402,11 @@ function tbmRender() {
       foot.innerHTML = `<input class="opin" id="tbmOpin" maxlength="200" placeholder="근로자 의견 (있을 때만)" value="${esc(T.run.op || '')}"><button class="go g hot" id="tbmFin">■ 팀 교육 마치기</button>`;
     } else if (!left.length) {
       const allOff = ks.every(k => T.lines[k].st === 'off');
-      guide.className = 'tguide ok' + (allOff ? ' offday' : ''); guide.innerHTML = allOff ? `${N} 오늘 비가동 (쉼)` : `✔ ${N} 오늘 TBM 완료${T.tno ? ' · ' + esc(T.tno) : ''}`;
+      guide.className = 'tguide ok' + (allOff ? ' offday' : ''); guide.innerHTML = allOff ? `${N} 오늘 비가동` : `✔ ${N} 오늘 TBM 완료${T.tno ? ' · ' + esc(T.tno) : ''}`;
       $('tbmWhoDone').textContent = T.tno ? `기록번호 ${T.tno} (작업일보에 이 번호만 적기)` : '';
       foot.innerHTML = `<button class="go off" id="tbmBackT">← 팀 목록</button>`;
     } else {
-      guide.className = 'tguide'; guide.innerHTML = `<span class="ar">▶</span> ${N} · 쉬는 라인만 [쉼] → [팀 교육 시작]`;
+      guide.className = 'tguide'; guide.innerHTML = `<span class="ar">▶</span> ${N} · 가동 안 하는 라인만 [비가동] → [팀 교육 시작]`;
       const ok = savedSign && $('tbmLeader').value.trim();
       $('tbmWho').style.display = ok ? 'none' : '';
       $('tbmWhoDone').textContent = (ok ? `진행자 ${$('tbmLeader').value.trim()} (서명 저장됨)` : '') + (T.tno ? ` · 기록번호 ${T.tno}` : '');
@@ -1413,8 +1414,8 @@ function tbmRender() {
     }
   }
   document.querySelectorAll('[data-team]').forEach(b => b.onclick = () => tbmGo('team', +b.dataset.team));
-  document.querySelectorAll('[data-rest]').forEach(b => b.onclick = () => { if (!b.dataset.sure) { b.dataset.sure = 1; b.textContent = '한 번 더 누르면 쉼'; b.classList.add('sure'); setTimeout(() => { if (b.isConnected) { delete b.dataset.sure; b.textContent = '쉼'; b.classList.remove('sure'); } }, 3000); return; } tbmRest(b.dataset.rest); });
-  document.querySelectorAll('[data-unrest]').forEach(b => b.onclick = () => { if (!b.dataset.sure) { b.dataset.sure = 1; b.textContent = '한 번 더 누르면 취소'; setTimeout(() => { if (b.isConnected) { delete b.dataset.sure; b.textContent = '쉼 취소'; } }, 3000); return; } tbmUnrest(b.dataset.unrest); });
+  document.querySelectorAll('[data-rest]').forEach(b => b.onclick = () => { if (!b.dataset.sure) { b.dataset.sure = 1; b.textContent = '한 번 더 누르면 비가동'; b.classList.add('sure'); setTimeout(() => { if (b.isConnected) { delete b.dataset.sure; b.textContent = '비가동'; b.classList.remove('sure'); } }, 3000); return; } tbmRest(b.dataset.rest); });
+  document.querySelectorAll('[data-unrest]').forEach(b => b.onclick = () => { if (!b.dataset.sure) { b.dataset.sure = 1; b.textContent = '한 번 더 누르면 취소'; setTimeout(() => { if (b.isConnected) { delete b.dataset.sure; b.textContent = '비가동 취소'; } }, 3000); return; } tbmUnrest(b.dataset.unrest); });
   if ($('tbmBackT')) $('tbmBackT').onclick = () => tbmGo('teams');
   if ($('tbmStart')) $('tbmStart').onclick = tbmStartLine;
   if ($('tbmFin')) $('tbmFin').onclick = tbmFinish;
@@ -1462,14 +1463,14 @@ async function tbmFinish() {
 async function tbmUnrest(k) {   // v18-1: 같은 날 쉼 취소 (기록은 '비가동취소'로 남음)
   if (tbm.busy) return; tbm.busy = true;
   try { await post({ type: 'tbmoffcancel', team: tbm.team, line: k }); const T = curT(tbm.team); T.lines[k] = { st: 'wait' }; setT(tbm.team, T); tmsg(''); }
-  catch (e) { tmsg(`${TBM_LINE[k].name} 쉼 취소가 안 됐습니다. (${e.message})`); }
+  catch (e) { tmsg(`${TBM_LINE[k].name} 비가동 취소가 안 됐습니다. (${e.message})`); }
   tbm.busy = false; tbmRender();
 }
 async function tbmRest(k) {   // 쉬는 라인
   if (tbm.busy) return;
   tbm.busy = true;
   try {
-    await post({ type: 'tbmoff', team: tbm.team, line: k, reason: '쉼(비가동)', leader: $('tbmLeader').value.trim() || store.get('ms_tbm_leader') || '' });
+    await post({ type: 'tbmoff', team: tbm.team, line: k, reason: '비가동', leader: $('tbmLeader').value.trim() || store.get('ms_tbm_leader') || '' });
     const T = curT(tbm.team); T.lines[k] = { st: 'off' }; setT(tbm.team, T); tmsg('');
   } catch (e) { tmsg(`${TBM_LINE[k].name} 저장이 안 됐습니다. (${e.message})`); }
   tbm.busy = false; tbmRender();
@@ -1571,7 +1572,8 @@ function pubRender(st) {
   eduGraph(); tnThumbs();
   if (!st) return;
   const nL = teamLines().length, nOn = Math.max(0, nL - off.size), last = st.days[st.days.length - 1];
-  $('pubToday').innerHTML = `<span class="pill ${last.patrol ? 'ok' : ''}">순회점검 ${last.patrol ? '실시' : '전'}</span> <span class="pill ${last.fives ? 'ok' : ''}">3정5행 ${last.fives ? '실시' : '전'}</span> <span class="pill ${nOn && done.size >= nOn ? 'ok' : ''}">TBM ${done.size}/${nOn}라인${off.size ? ` (비가동 ${off.size})` : ''}</span>`;
+  const tOff = nL > 0 && off.size >= nL, ps = v => v ? ['ok', '실시'] : tOff ? ['offp', '비가동'] : ['', '전'];   // v21-2: 팀 전체 비가동이면 순회·3정5행도 '비가동'
+  $('pubToday').innerHTML = `<span class="pill ${ps(last.patrol)[0]}">순회점검 ${ps(last.patrol)[1]}</span> <span class="pill ${ps(last.fives)[0]}">3정5행 ${ps(last.fives)[1]}</span> ${tOff ? '<span class="pill offp">TBM 비가동</span>' : `<span class="pill ${nOn && done.size >= nOn ? 'ok' : ''}">TBM ${done.size}/${nOn}라인${off.size ? ` (비가동 ${off.size})` : ''}</span>`}`;
 }
 async function pubLoad() {
   pubRender(null);
@@ -2166,7 +2168,7 @@ function v19home() {
       ${F ? `<button class="h19row h19food" data-v="food"><span class="h19ic" style="background:#EAF5EE;color:#2E7A50">${v19svg(V19I.food)}</span><span class="h19x"><b>오늘 식단</b>
         <span class="h19meal">${lm ? `<em>점심</em> ${esc(lm)}` : ''}${lm && dm ? '<i></i>' : ''}${dm ? `<em>저녁</em> ${esc(dm)}` : ''}${!lm && !dm ? '오늘 식단이 아직 없습니다' : ''}</span></span>${v19svg(V19I.arrow, 16)}</button>` : ''}
       <button class="h19row" id="h19bot"><span class="h19ic" style="background:#F3EEF8;color:#6D4AA8">${v19svg(V19I.bot)}</span><span class="h19x"><b>엠봇</b><span>안전 도우미 · 6개 언어</span></span>${v19svg(V19I.arrow, 16)}</button>
-      <button class="h19row" data-v="status"><span class="h19ic" style="background:#F1F0EC;color:#22262B">${v19svg(V19I.stat)}</span><span class="h19x"><b>우리 팀 안전 현황</b><span>${st ? `TBM ${dn}/${Math.max(0, nL - off.size)}라인${last ? ` · 순회점검 ${last.patrol ? '실시' : '전'} · 3정5행 ${last.fives ? '실시' : '전'}` : ''}` : '불러오는 중…'}</span></span>${v19svg(V19I.arrow, 16)}</button>
+      <button class="h19row" data-v="status"><span class="h19ic" style="background:#F1F0EC;color:#22262B">${v19svg(V19I.stat)}</span><span class="h19x"><b>우리 팀 안전 현황</b><span>${st ? `TBM ${nL && off.size >= nL ? '비가동' : `${dn}/${Math.max(0, nL - off.size)}라인`}${last ? ` · 순회점검 ${last.patrol ? '실시' : nL && off.size >= nL ? '비가동' : '전'} · 3정5행 ${last.fives ? '실시' : nL && off.size >= nL ? '비가동' : '전'}` : ''}` : '불러오는 중…'}</span></span>${v19svg(V19I.arrow, 16)}</button>
     </div>
     <div class="h19sec">${mgr ? '점검 · 관리' : '더 보기'}</div>`;
   $('h19task').onclick = () => viaN ? v19view('notice') : v19view('topics', 'pubTopics');
