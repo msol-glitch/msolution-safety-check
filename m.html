@@ -448,6 +448,162 @@
   .fa-ln::before{content:'';position:absolute;left:10px;top:0;bottom:0;border-left:3px solid #EA580C;box-shadow:0 0 0 1px #fff}
   .fa-ln b{position:absolute;top:6px;left:14px;background:#EA580C;color:#fff;font-size:12px;font-style:normal;border-radius:6px;padding:1px 6px;white-space:nowrap}
   .fa-raw summary{cursor:pointer;font-size:12.5px;color:#64748B}.fa-raw textarea{font-size:12px}
+  /* ===== v21 PC 화면 리뉴얼 (2026-10-24 · 공공 포털식 '단정·명료' 디자인 — 특정 기관 상징·명칭·배색 모방 없음) ===== */
+  :root{--rail:#FFFFFF;--rail2:#EEF3FA;--rail-ink:#1F2A3C;--rail-sub:#6B7685;--bg:#F3F5F8;--line:#DCE2EA;--brand:#1B3A6B;--acc:#0B5BD3}
+  body{background:var(--bg);letter-spacing:-.1px}
+  .app{grid-template-columns:248px 1fr;background:linear-gradient(to right,#fff 248px,transparent 248px);padding-top:104px}
+  /* 상단 머리말 (새로 추가) */
+  #v21top{position:fixed;top:0;left:0;right:0;z-index:80;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 2px 10px rgba(15,23,42,.04)}
+  #v21top .ut{background:#0F1B2E;color:#C7D0DC;font-size:12px}
+  #v21top .ut .in{display:flex;justify-content:space-between;align-items:center;height:30px;padding:0 24px}
+  #v21top .ut b{color:#fff;font-weight:600}#v21top .ut a{color:#C7D0DC;text-decoration:none;margin-left:16px}#v21top .ut a:hover{color:#fff}
+  #v21top .hd{display:flex;align-items:center;gap:18px;height:73px;padding:0 24px}
+  #v21top .hd img{height:34px;display:block}
+  #v21top .hd .ttl{display:flex;flex-direction:column;border-left:1px solid var(--line);padding-left:18px}
+  #v21top .hd .ttl b{font-size:20px;font-weight:800;color:#0F1B2E;letter-spacing:-.4px}#v21top .hd .ttl small{font-size:12px;color:#6B7685;margin-top:1px}
+  #v21top .hd .sp{flex:1}
+  #v21top .hd .qs{display:flex;gap:6px}#v21top .hd .qs a{font-size:13.5px;font-weight:700;color:#1F2A3C;text-decoration:none;padding:9px 14px;border-radius:6px}
+  #v21top .hd .qs a:hover,#v21top .hd .qs a.on{background:#EEF3FA;color:var(--acc)}
+  /* 왼쪽 메뉴: 흰 바탕 · 진한 글씨 · 선택 시 파랑 */
+  .rail{background:#fff;color:var(--rail-ink);border-right:1px solid var(--line);top:104px;height:calc(100vh - 104px);padding:18px 12px}
+  .rail .brand,.rail .ceo{display:none}
+  .nav a{color:#1F2A3C;font-size:14px;font-weight:600;border-radius:6px;padding:10px 10px}
+  .nav a:hover{background:#F4F7FB}.nav a.on{background:#EAF1FD;color:var(--acc);box-shadow:inset 3px 0 0 var(--acc)}
+  .nav .grp{color:#8A94A3!important;font-weight:700;letter-spacing:.2px}
+  .bd.ok{background:#E3F4EA;color:#1C7A43}.bd.w{background:#FFF1DE;color:#A85A00}.bd.n{background:#EEF1F5;color:#6B7685}
+  .rail .tiny,.rail .tiny a{color:#6B7685}
+  main{padding:22px 28px 40px}
+  /* 페이지 제목: 경로 + 굵은 제목 + 밑줄 */
+  .topline{border-bottom:2px solid #0F1B2E;padding-bottom:12px;margin-bottom:18px}
+  .topline h1{font-size:24px;font-weight:800;color:#0F1B2E;letter-spacing:-.5px}
+  .topline h1::before{content:'홈  ›  ' attr(data-c);display:block;font-size:12px;font-weight:500;color:#8A94A3;letter-spacing:0;margin-bottom:6px;white-space:pre}
+  /* 카드: 둥근 모서리 줄이고 선 정리 */
+  .card{border-radius:8px;border:1px solid var(--line);box-shadow:none}
+  .card h2{font-size:15.5px;font-weight:800;color:#0F1B2E;padding-bottom:10px;border-bottom:1px solid #EDF0F4;margin-bottom:12px}
+  .card.ck{border-top:3px solid var(--acc)}.card.ck:nth-child(2){border-top-color:#E07A1F}.card.ck:nth-child(4){border-top-color:#1C7A43}
+  .card.ck .v{color:#0F1B2E}
+  .poscard{background:#0F1B2E!important;border-radius:8px}
+  .aicard{border-radius:8px}
+  /* 홈: 대표 메시지 띠 + 자주 쓰는 서비스 */
+  #v21hero{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px;align-items:center;background:linear-gradient(100deg,#0F1B2E 0%,#1B3A6B 70%,#25508F 100%);color:#fff;border-radius:8px;padding:22px 28px;margin-bottom:14px;position:relative;overflow:hidden}
+  #v21hero::after{content:'';position:absolute;right:-60px;top:-60px;width:260px;height:260px;border-radius:50%;border:40px solid rgba(255,255,255,.05)}
+  #v21hero .lb{font-size:11.5px;font-weight:700;letter-spacing:1.6px;color:#9FB6D9}
+  #v21hero h3{margin:6px 0 8px;font-size:22px;line-height:1.4;font-weight:800;letter-spacing:-.4px}
+  #v21hero ul{margin:0;padding-left:18px;color:#D5DFEE;font-size:13.5px;line-height:1.7}
+  #v21hero .sg{margin-top:8px;font-size:13px;color:#9FB6D9}#v21hero .sg b{color:#fff;letter-spacing:3px}
+  #v21hero .nd{position:relative;z-index:1;text-align:center;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:8px;padding:14px 26px}
+  #v21hero .nd small{display:block;font-size:12px;color:#9FB6D9}#v21hero .nd b{display:block;font-size:40px;font-weight:800;line-height:1.15;letter-spacing:-1px}#v21hero .nd span{font-size:12px;color:#C7D0DC}
+  #v21svc{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:10px;margin-bottom:14px}
+  #v21svc a{display:flex;flex-direction:column;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:16px 6px 14px;text-decoration:none;color:#1F2A3C;font-size:13.5px;font-weight:700;transition:.15s}
+  #v21svc a:hover{border-color:var(--acc);color:var(--acc);box-shadow:0 6px 16px rgba(11,91,211,.12);transform:translateY(-2px)}
+  #v21svc a i{width:44px;height:44px;border-radius:50%;background:#EEF3FA;display:flex;align-items:center;justify-content:center}
+  #v21svc a svg{width:22px;height:22px;stroke:var(--brand);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+  #v21svc a:hover i{background:var(--acc)}#v21svc a:hover svg{stroke:#fff}
+  #v21svc a em{font-style:normal;font-size:11px;font-weight:600;color:#8A94A3;margin-top:-4px}
+  @media(max-width:1200px){#v21svc{grid-template-columns:repeat(4,minmax(0,1fr))}#v21top .hd .qs{display:none}}
+  /* v21 보정: 머리말 높이 88 · 한 화면 모드(스크롤 없음) 유지 · 무재해 중복 제거 */
+  .app{padding-top:88px}#v21top .ut .in{height:28px}#v21top .hd{height:60px}#v21top .hd img{height:30px}#v21top .hd .ttl b{font-size:18px}
+  .rail{top:88px;height:calc(100vh - 88px)}
+  #v21hero h3{color:#fff!important}
+  .g4{grid-template-columns:repeat(3,1fr)}.g4 .card.ck:nth-child(4){display:none}
+  @media (min-width:1300px) and (min-height:700px){
+    body.dash .app{height:calc(100vh - 88px)}body.dash main{height:calc(100vh - 88px)}body.dash .rail{height:calc(100vh - 88px)}
+    body.dash .topline{padding-bottom:8px;margin-bottom:10px}body.dash .topline h1::before{display:none}
+    body.dash #v21hero{grid-template-columns:auto minmax(0,1fr) auto;gap:18px;padding:12px 22px;margin-bottom:10px;flex:none}
+    body.dash #v21hero ul,body.dash #v21hero .sg{display:none}
+    body.dash #v21hero h3{margin:0;font-size:17px}body.dash #v21hero h3 br{display:none}
+    body.dash #v21hero .lb{white-space:nowrap}
+    body.dash #v21hero .nd{display:flex;align-items:baseline;gap:8px;padding:8px 16px}body.dash #v21hero .nd b{font-size:26px}
+    body.dash #v21svc{margin-bottom:10px;flex:none;gap:8px}
+    body.dash #v21svc a{flex-direction:row;justify-content:center;padding:9px 6px;gap:8px;font-size:13px}
+    body.dash #v21svc a i{width:30px;height:30px}body.dash #v21svc a svg{width:17px;height:17px}body.dash #v21svc a em{display:none}
+  }
+  #v21hero{grid-template-columns:minmax(0,1fr) auto}#v21hero>.lb{grid-column:1;grid-row:1;margin-bottom:-14px}#v21hero>div:nth-child(2){grid-column:1;grid-row:2}#v21hero>.nd{grid-column:2;grid-row:1/3}
+  @media (min-width:1300px) and (min-height:700px){body.dash #v21hero>.lb,body.dash #v21hero>div:nth-child(2),body.dash #v21hero>.nd{grid-row:1;margin:0}body.dash #v21hero>div:nth-child(2){grid-column:2}body.dash #v21hero>.nd{grid-column:3}}
+  /* v21 안전 인텔리전스 — 대시보드 카드 */
+  .aicard{background:linear-gradient(160deg,#FFFFFF 0%,#F4F8FF 100%)!important;border:1px solid #CFDCF2!important;display:flex;flex-direction:column;min-height:0}
+  .aicard #learn{display:flex;flex-direction:column;gap:7px;flex:1 1 0;min-height:0}
+  .ai-stat{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .ai-stat div{background:#fff;border:1px solid #E1E8F3;border-radius:8px;padding:5px 8px;text-align:center}
+  .ai-stat b{display:block;font-size:20px;font-weight:800;color:#0B5BD3;font-variant-numeric:tabular-nums;letter-spacing:-.5px;line-height:1.2}.ai-stat small{font-size:11px;color:#6B7685}
+  .ai-rank{display:grid;gap:4px}
+  .ai-rank div{display:grid;grid-template-columns:52px 1fr 26px 14px;align-items:center;gap:6px;font-size:12px;color:#3A4556}
+  .ai-rank span{font-weight:700;white-space:nowrap}
+  .ai-rank i{height:8px;background:#E8EEF7;border-radius:4px;overflow:hidden}.ai-rank em{display:block;height:100%;background:linear-gradient(90deg,#5EA0FF,#0B5BD3);border-radius:4px;animation:aiGrow 1s ease-out both}
+  .ai-rank .hot em{background:linear-gradient(90deg,#F5B97A,#E0641F)}.ai-rank .hot span,.ai-rank .hot b{color:#C2410C}
+  .ai-rank b{text-align:right;font-variant-numeric:tabular-nums}.ai-rank u{text-decoration:none;font-size:10px;color:#94A3B8}.ai-rank u.up{color:#DC2626}.ai-rank u.dn{color:#16A34A}
+  @keyframes aiGrow{from{width:0}}
+  .ai-tip{display:flex;gap:8px;align-items:flex-start;background:#0F1B2E;color:#E8EEF8;border-radius:8px;padding:7px 10px;font-size:12px;line-height:1.45;flex:1 1 0;min-height:40px;overflow:hidden}
+  .ai-tip #aiTip{flex:1;min-width:0}
+  .ai-tag{flex:none;background:#0B5BD3;color:#fff;font-size:10.5px;font-weight:800;border-radius:4px;padding:2px 6px;margin-top:1px}
+  #aiTip::after,#aiTip2::after{content:'▍';color:#5EA0FF;animation:aiBlink 1s steps(1) infinite}@keyframes aiBlink{50%{opacity:0}}
+  .ai-open{flex:none;display:flex;justify-content:space-between;align-items:center;width:100%;border:0;border-radius:8px;padding:8px 12px;cursor:pointer;font:inherit;font-size:13px;font-weight:800;color:#fff;background:linear-gradient(90deg,#0B5BD3,#1B3A6B);box-shadow:0 2px 8px rgba(11,91,211,.25)}
+  .ai-open span{font-weight:600;opacity:.85;font-size:12px}.ai-open:hover{filter:brightness(1.1)}
+
+  /* 전체 화면 '안전 인텔리전스 센터' */
+  #aiCenter{position:fixed;inset:0;z-index:9000;display:none;background:rgba(0,0,0,.78);backdrop-filter:blur(4px);padding:18px}
+  #aiCenter.on{display:flex;animation:aiIn .25s ease-out}@keyframes aiIn{from{opacity:0}}
+  #aiCenter .cbox{flex:1;display:flex;flex-direction:column;gap:10px;min-height:0;overflow:auto;border-radius:16px;padding:20px 24px;color:#DCE6F5;
+    background:radial-gradient(900px 380px at 100% 110%,rgba(224,100,31,.10),transparent 60%),#050505;
+    border:1px solid rgba(255,255,255,.10);box-shadow:0 30px 80px rgba(0,0,0,.5);animation:aiUp .35s ease-out}
+  @keyframes aiUp{from{transform:translateY(14px);opacity:0}}
+  #aiCenter header{position:static;height:auto;background:none!important;border:0;box-shadow:none;padding:0;margin:0;display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+  #aiCenter .ck{font-size:11px;letter-spacing:.22em;color:#F2B27A;font-weight:800}
+  #aiCenter h1{margin:2px 0 2px;font-size:26px;color:#fff;font-weight:900;letter-spacing:-.5px}
+  #aiCenter header p{margin:0;font-size:13px;color:#8FA2C0}
+  #aiCenter .cr{display:flex;gap:10px;align-items:center}
+  #aiCenter .clv{white-space:nowrap;display:flex;align-items:center;gap:7px;font-size:12.5px;color:#7EE2B8;font-weight:700;border:1px solid rgba(126,226,184,.3);border-radius:20px;padding:5px 12px}
+  #aiCenter .clv i{width:8px;height:8px;border-radius:50%;background:#34D399;box-shadow:0 0 0 0 rgba(52,211,153,.7);animation:aiLive 1.6s infinite}
+  @keyframes aiLive{70%{box-shadow:0 0 0 9px rgba(52,211,153,0)}100%{box-shadow:0 0 0 0 rgba(52,211,153,0)}}
+  #aiClose{border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;border-radius:8px;padding:7px 14px;font:inherit;font-weight:700;cursor:pointer}
+  #aiClose small{opacity:.6;margin-left:4px;font-size:11px}#aiClose:hover{background:rgba(255,255,255,.16)}
+  #aiCenter .ckpi{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  #aiCenter .ckpi div{border-radius:12px;padding:9px 16px;background:#111113;border:1px solid rgba(255,255,255,.09)}
+  #aiCenter .ckpi small{display:block;font-size:12px;color:#8FA2C0}
+  #aiCenter .ckpi b{font-size:30px;font-weight:900;color:#fff;font-variant-numeric:tabular-nums;letter-spacing:-1px;margin-right:4px}
+  #aiCenter .ckpi span{font-size:13px;color:#8FA2C0}
+  #aiCenter .ckpi .hk{border-color:rgba(255,138,61,.45);background:linear-gradient(160deg,rgba(255,138,61,.18),rgba(255,138,61,.04))}
+  #aiCenter .ckpi .hk b.tx{font-size:28px;color:#FFB27A;display:block;line-height:1.25}
+  #aiCenter .cmid{display:grid;grid-template-columns:1.45fr 1fr;gap:12px;min-height:0}
+  #aiCenter .cbot{display:grid;grid-template-columns:1fr 1.45fr;gap:12px;min-height:0}
+  #aiCenter .cp{border-radius:12px;padding:12px 16px;background:#0E0E10;border:1px solid rgba(255,255,255,.08);min-width:0}
+  #aiCenter h3{margin:0 0 8px;font-size:15px;color:#fff;font-weight:800}#aiCenter h3 small{font-weight:500;color:#7F92B0;font-size:12px;margin-left:6px}
+  .cnet{width:100%;height:auto;display:block;max-height:calc(100vh - 470px);min-height:200px}
+  .cnet .ce{fill:none;stroke:#3B82F6;stroke-width:1.4}.cnet .ce.o{stroke:#FF8A3D}
+  .cnet .cd{fill:#9CC8FF;filter:drop-shadow(0 0 3px #5EA0FF)}.cnet .cd.o{fill:#FFC08F;filter:drop-shadow(0 0 3px #FF8A3D)}
+  .cnet .cn.in{fill:#2563EB;stroke:#93C5FD;stroke-width:1.5}
+  .cnet .cn.mid{fill:#132B55;stroke:#5EA0FF;stroke-width:1.5;animation:aiMid 2.6s ease-in-out infinite}@keyframes aiMid{50%{fill:#1D4688;stroke:#9CC8FF}}
+  .cnet .cn.out{fill:#7C4A2A;stroke:#FFB27A;stroke-width:1.5}.cnet .cn.out.hot{fill:#E0641F;stroke:#FFD2B0}
+  .cnet .glow{animation:aiGlow 1.8s ease-in-out infinite;transform-box:fill-box;transform-origin:center}@keyframes aiGlow{50%{opacity:.35;transform:scale(1.15)}}
+  .cnet .t1{fill:#E6EEFA;font-size:13px;font-weight:700}.cnet .t2{fill:#8FA2C0;font-size:11px}.cnet .tw{fill:#fff;font-size:12.5px;font-weight:700}.cnet .th{fill:#F2B27A;font-size:11.5px;font-weight:800;letter-spacing:.04em}
+  .cteam{display:grid;gap:6px}
+  .cteam>div{display:grid;grid-template-columns:56px 1fr 128px;gap:12px;align-items:center;border-radius:10px;padding:5px 10px;background:rgba(255,255,255,.035);border:1px solid rgba(140,175,235,.12)}
+  .cteam>div.hot{border-color:rgba(255,138,61,.55);background:linear-gradient(90deg,rgba(255,138,61,.16),rgba(255,138,61,.03))}
+  .rg{width:50px;height:50px}.rg .rb{fill:none;stroke:rgba(255,255,255,.1);stroke-width:6}
+  .rg .rf{fill:none;stroke:#5EA0FF;stroke-width:6;stroke-linecap:round;stroke-dasharray:var(--c);stroke-dashoffset:var(--o);animation:aiRing 1.2s ease-out both}
+  .hot .rg .rf{stroke:#FF8A3D}@keyframes aiRing{from{stroke-dashoffset:var(--c)}}
+  .rg text{fill:#fff;font-size:17px;font-weight:900}
+  .cteam .ti b{font-size:15px;color:#fff;margin-right:6px}.cteam .ti em{font-style:normal;font-size:11px;font-weight:800;border-radius:4px;padding:1px 6px}
+  .cteam .ti em.l1{background:rgba(52,211,153,.18);color:#6EE7B7}.cteam .ti em.l2{background:rgba(250,204,21,.18);color:#FDE68A}.cteam .ti em.l3{background:rgba(255,138,61,.25);color:#FFC08F}
+  .cteam .ti span{display:block;font-size:12px;color:#8FA2C0;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cteam .tt{text-align:right}.cteam .tt span{font-size:11.5px;color:#8FA2C0}.cteam .tt span.up{color:#FCA5A5}.cteam .tt span.dn{color:#86EFAC}
+  .spk{width:120px;height:32px;display:block;margin-left:auto}.spk .sa{fill:rgba(94,160,255,.15);stroke:none}.spk .sl{fill:none;stroke:#5EA0FF;stroke-width:1.8;stroke-linejoin:round}.spk .sd{fill:#fff}
+  .hot .spk .sa{fill:rgba(255,138,61,.18)}.hot .spk .sl{stroke:#FF8A3D}
+  .cheat{width:100%;border-collapse:separate;border-spacing:4px;font-size:12px;background:none!important;border:0!important}
+  .cheat th{background:none!important;color:#8FA2C0!important;font-weight:600;padding:2px!important;border:0!important}.cheat tr th:first-child{width:24px}
+  .cheat td{height:24px;padding:0!important;border-radius:6px;text-align:center;color:#fff;font-weight:700;background:rgba(255,138,61,calc(.06 + var(--a) * .85));border:1px solid rgba(255,255,255,.05)}
+  .cnow{display:flex;gap:8px;align-items:flex-start;background:rgba(11,91,211,.18);border:1px solid rgba(94,160,255,.35);border-radius:8px;padding:9px 12px;font-size:14px;color:#fff;line-height:1.5;min-height:44px;margin-bottom:8px}
+  .clist{margin:0;padding-left:20px;font-size:13px;line-height:1.6;color:#C4D2E8;max-height:132px;overflow:auto}
+  .clist li::marker{color:#F2B27A;font-weight:800}
+  #aiCenter footer{font-size:11.5px;color:#7F92B0;border-top:1px solid rgba(140,175,235,.14);padding-top:10px}#aiCenter footer b{color:#F2B27A}
+  @media (max-width:1100px){#aiCenter .cmid,#aiCenter .cbot{grid-template-columns:1fr}#aiCenter .ckpi{grid-template-columns:1fr 1fr}}
+  #aiCenter .cbox>*{flex:none}
+  @media (max-height:820px){#aiCenter{padding:10px}#aiCenter .cbox{padding:14px 18px;gap:8px}#aiCenter h1{font-size:22px}#aiCenter .ckpi b{font-size:24px}#aiCenter .ckpi .hk b.tx{font-size:22px}
+    .cnet{max-height:250px;min-height:0}.cheat td{height:19px;font-size:11px}.rg{width:42px;height:42px}.cteam>div{grid-template-columns:44px 1fr 120px;padding:3px 10px}.clist{max-height:96px;font-size:12.5px}.cnow{min-height:0;font-size:13px;padding:7px 10px}}
+  @media (prefers-reduced-motion:reduce){#aiCenter *,.ai-rank em{animation:none!important}.cnet .cd{display:none}}
+  /* 대시보드 우측 '업계 대비' 카드 넘침 방지 (출처 문구는 ⓘ 툴팁으로) */
+  body.dash .poscard .posnote,body.dash .poscard .clock{display:none}
+  body.dash .poscard{overflow:hidden}
 </style>
 </head>
 <body>
@@ -494,7 +650,7 @@
       </div>
      </div>
      <div class="card aicard">
-      <div class="aih"><span class="aitag">AI</span><h2>데이터 학습 현황</h2><span class="led" id="aiLed"></span><b id="aiState">대기</b></div>
+      <div class="aih"><span class="aitag">AI</span><h2>안전 인텔리전스 · 데이터 학습</h2><span class="led" id="aiLed"></span><b id="aiState">대기</b></div>
       <div class="cv" id="learn"><div class="wait">불러오는 중…</div></div>
      </div>
     </div>
@@ -1126,11 +1282,23 @@ function foodParse(text) {   // 글자 → 칸 목록 + 기본 배정(요일·�
   blocks.forEach(b => { if (b.slot && +b.slot.split('|')[0] > 5) b.slot = ''; });
   return { blocks: blocks.map(b => ({ items: b.items, slot: b.slot })), dups, mode: mode === 'row' ? '가로' : gap && gap <= 3 ? '요일별' : '세로' };
 }
+/* 고친 글자 기억(이 PC·폰): 저장 전에 고친 메뉴 이름을 다음 사진부터 자동으로 바꿔 줌 */
+function foodFixMap() { try { return JSON.parse(localStorage.getItem('ms_food_fix') || '{}') || {}; } catch (e) { return {}; } }
+function foodFixApply(t) { const m = foodFixMap(); return m[t] || t; }
+function foodFixLearn(bs) { const m = foodFixMap(); let n = 0;
+  bs.forEach(b => { if (!b.orig || b.orig.length !== b.items.length) return; b.orig.forEach((o, i) => { const v = b.items[i]; if (v && o !== v && o.length >= 2 && v.length <= 24) { m[o] = v; n++; } }); });
+  if (n) try { const ks = Object.keys(m); if (ks.length > 400) ks.slice(0, ks.length - 400).forEach(k => delete m[k]); localStorage.setItem('ms_food_fix', JSON.stringify(m)); } catch (e) {}
+  return n; }
 function foodColBlocks(text) {   // 요일 한 칸(세로 띠) 글자 → [점심, 저녁, 야식…] (밥에서 끊고, 앞 칸과 똑같은 칸=야식은 뺌)
   const toks = String(text || '').split(/\n/).flatMap(l => l.split(/\s{2,}|\t/)).map(s => s.replace(/[|｜_]/g, '').trim())
     .filter(s => s && !FOOD_SKIP.test(s) && /[가-힣]/.test(s) && s.length >= 2 && s.length <= 24 && !/^\d+(월|일)$/.test(s));
+  // 한 메뉴가 두 줄로 끊겨 읽힌 것 붙이기: 'A*' + '타르타르', '설렁탕&' + '소면사리', 'A' + '/초간장', '우불고기버섯' + '볶음'
+  const SUF = /^(볶음|무침|조림|구이|찜|국|탕|채|전|김치|샐러드|사리|소스|양념장|초간장|타르타르|튀김|냉채|장아찌|겉절이|나물)$/;
+  const tk = []; toks.forEach(t => { const p = tk[tk.length - 1];
+    if (p && !FOOD_RICE.test(t) && (/[*&/+(·,\-]$/.test(p) || /^[*&/+)·,\-]/.test(t) || (SUF.test(t) && t.length <= 4 && !/(김치|샐러드)$/.test(p) && p.length <= 10))) tk[tk.length - 1] = p + t;
+    else tk.push(t); });
   const out = []; let cur = null;
-  toks.forEach(s => { if (FOOD_RICE.test(s) || !cur) { cur = []; out.push(cur); } cur.push(s); });
+  tk.forEach(s => { if (FOOD_RICE.test(s) || !cur) { cur = []; out.push(cur); } cur.push(s); });
   const k = b => b.slice(1).join('|'), res = [];
   out.filter(b => b.length >= 2).forEach(b => { if (!res.some(r => k(r) === k(b))) res.push(b); });
   return res;
@@ -1212,7 +1380,7 @@ function foodAdminUI(box, auth, todayStr) {
       const raw = []; blocks = [];
       outs.forEach((o, i) => { raw.push(`[${['월', '화', '수', '목', '금', '토'][i]}]\n${o.text || '(못 읽음 ' + (o.why || '') + ')'}`);
         const d = /(\d{1,2})\s*월\s*(\d{1,2})\s*일/.exec(o.text || ''); if (i === 0 && d) { const y = new Date().getFullYear(), t = `${y}-${String(d[1]).padStart(2, '0')}-${String(d[2]).padStart(2, '0')}`; weekStart = foodYmd(foodMonday(t)); q('#faWeek').value = weekStart; }
-        foodColBlocks(o.text || '').forEach((b, j) => { if (j < 2) blocks.push({ items: b, slot: `${i}|${j ? '저녁' : '점심'}` }); }); });
+        foodColBlocks(o.text || '').forEach((b, j) => { if (j < 2) { const it = b.map(foodFixApply); blocks.push({ items: it, orig: it.slice(), slot: `${i}|${j ? '저녁' : '점심'}` }); } }); });
       q('#faRaw').value = raw.join('\n\n'); q('.fa-raw').hidden = false; q('#faText').value = blocks.map(b => b.items.join('\n')).join('\n\n');
       render();
       msg(blocks.length ? `요일별로 ${blocks.length}칸을 읽었어요 (야식은 자동 제외). 메뉴 글자를 확인하고 [확인하고 저장]을 누르세요.` : '글자를 읽지 못했습니다. 선 위치를 다시 맞추거나 "글자로 직접 넣기"를 써 주세요.');
@@ -1224,7 +1392,7 @@ function foodAdminUI(box, auth, todayStr) {
     const days = blocks.filter(b => b.slot && b.items.length).map(b => { const [i, m] = b.slot.split('|'); return { day: dayOf(+i), meal: m, items: b.items }; });
     if (!days.length) return msg('저장할 칸이 없습니다 (모두 "빼기"로 되어 있어요).');
     const dup = days.map(x => x.day + x.meal).filter((k, i, a) => a.indexOf(k) !== i); if (dup.length) return msg('같은 요일·식사에 두 칸이 배정됐어요. 한쪽을 바꿔 주세요.');
-    q('#faSave').disabled = true; msg('저장 중…');
+    foodFixLearn(blocks); q('#faSave').disabled = true; msg('저장 중…');
     try { const o = await post({ type: 'foodsave', days, by: auth.by || '' }); msg(`✔ ${o.n}칸 저장했어요. 그날 아침부터 직원 화면에 나옵니다.`); blocks = []; render(); list(); }
     catch (er) { msg('저장 안 됨: ' + er.message); q('#faSave').disabled = false; }
   };
@@ -2411,6 +2579,144 @@ function ppeDoPrint(kind, o) {
 
 window.onafterprint = () => { document.body.className = ''; };
 start();
+
+/* ===== v21 PC 화면 리뉴얼: 상단 머리말 · 홈 대표 메시지 띠 · 자주 쓰는 서비스 (기존 기능·주소는 그대로) ===== */
+(function v21init() {
+  const logo = document.querySelector('.rail .brand img'); if (!logo) return;
+  const top = document.createElement('div'); top.id = 'v21top';
+  top.innerHTML = `<div class="ut"><div class="in"><span><b>㈜엠솔루션</b> 사내 전용 · 관리자 화면</span><span><span id="v21date"></span><a href="guide.html#pc" target="_blank" rel="noopener">사용 설명서</a><a href="l.html" target="_blank" rel="noopener">QR 라벨</a></span></div></div>
+    <div class="hd"><a href="#" aria-label="처음 화면"><img src="${logo.src}" alt="㈜엠솔루션"></a><div class="ttl"><b>안전경영 통합관리시스템</b><small>Safety Management Integrated System</small></div><div class="sp"></div>
+      <nav class="qs"><a href="#">처음 화면</a><a href="#patrol">순회점검</a><a href="#tbm">TBM</a><a href="#notice">전달사항</a><a href="#stretch">건강증진</a><a href="#risk">위험성평가</a></nav></div>`;
+  document.body.insertBefore(top, document.body.firstChild);
+  const d = new Date(), WDK = ['일', '월', '화', '수', '목', '금', '토']; $('v21date').textContent = `${d.getFullYear()}. ${d.getMonth() + 1}. ${d.getDate()}. (${WDK[d.getDay()]})`;
+  const mark = () => { const k = location.hash.slice(1); top.querySelectorAll('.qs a').forEach(a => a.classList.toggle('on', a.getAttribute('href').slice(1) === k)); };
+  window.addEventListener('hashchange', mark); mark();
+  const SVC = [['5s', '3정5행 점검', '팀별'], ['patrol', '순회점검', '일일'], ['tbm', 'TBM', '라인별'], ['dust', '집진기 청소', '화재예방'], ['ppe', '보호구 지급', '대장'], ['notice', '전달사항', '안전참여'], ['stretch', '건강증진', '스트레칭'], ['risk', '위험성평가', '수시·정기']];
+  const icon = k => { const n = (typeof NAV !== 'undefined' ? NAV : []).find(x => x.key === k); return n && n.ic ? n.ic : '<path d="M4 12h16"/>'; };
+  const home = $('home'); if (!home) return;
+  const hero = document.createElement('div'); hero.id = 'v21hero';
+  const C = typeof CEO !== 'undefined' ? CEO : { title: '', points: [], name: '' };
+  const nad = typeof NO_ACCIDENT_SINCE !== 'undefined' ? Math.round((new Date(new Date().toDateString()) - new Date(NO_ACCIDENT_SINCE + 'T00:00:00')) / 864e5) + 1 : null;
+  hero.innerHTML = `<div class="lb" style="position:relative;z-index:1">CEO SAFETY MESSAGE</div><div style="position:relative;z-index:1"><h3>${String(C.title).replace(/<br\s*\/?>/g, ' ')}</h3><ul>${C.points.map(x => `<li>${esc(x)}</li>`).join('')}</ul><div class="sg">대표이사 <b>${esc(C.name)}</b></div></div>
+    <div class="nd"><small>무재해</small><b>${nad == null ? '-' : nad.toLocaleString('ko-KR')}</b><span>일째 · ${typeof NO_ACCIDENT_SINCE !== 'undefined' ? NO_ACCIDENT_SINCE.replace(/-/g, '.') + ' 부터' : ''}</span></div>`;
+  const svc = document.createElement('div'); svc.id = 'v21svc';
+  svc.innerHTML = SVC.map(([k, n, e]) => `<a href="#${k}"><i><svg viewBox="0 0 24 24">${icon(k)}</svg></i>${n}<em>${e}</em></a>`).join('');
+  home.insertBefore(svc, home.firstChild); home.insertBefore(hero, svc);
+})();
+(function v21crumb() { const h = $('pageTitle'); if (!h) return; const f = () => { const t = h.textContent.trim(); h.dataset.c = t === '오늘의 안전경영 현황' ? '처음 화면' : t; }; f(); new MutationObserver(f).observe(h, { childList: true, characterData: true, subtree: true }); })();
+
+
+/* ===== v21 '안전 인텔리전스' (AI 데이터 학습 현황 고도화) =====
+ * 대시보드 카드(요약) + 전체 화면 '안전 인텔리전스 센터'
+ * 쌓인 기록(순회·3정5행·TBM·조치)으로 팀별 위험 신호·반복 패턴·요일/시간대 집중을 계산해 움직이는 그림으로 보여 줌
+ * 규칙·통계 기반 분석(외부 AI 전송·비용 없음, 개인 이름·건강 정보 미사용). 최종 판단은 관리감독자
+ */
+function aiTeamSignal(today) {   // 팀별 위험 신호: 최근 14일 개선 필요(X)×2 + 그 전 14일×1, 7일 이상 미조치 +3/건
+  const t = new Date(today + 'T00:00:00'), d14 = new Date(t), d28 = new Date(t); d14.setDate(t.getDate() - 13); d28.setDate(t.getDate() - 27);
+  const s14 = dstr(d14), s28 = dstr(d28), S = {}, wk = {}, lab = {}, late = {}, w8 = {};
+  TEAMS.forEach(x => { S[x] = 0; wk[x] = [0, 0]; lab[x] = {}; late[x] = 0; w8[x] = [0, 0, 0, 0, 0, 0, 0, 0]; });
+  AN.recs.forEach(r => { const d = r.time.slice(0, 10); if (!(r.area in S)) return; const age = dayDiff(d, today);
+    const xs = (r.items || []).filter(it => it.r === 'X'); if (age >= 0 && age < 56) w8[r.area][7 - Math.floor(age / 7)] += xs.length;
+    if (d < s28) return;
+    xs.forEach(it => { S[r.area] += d >= s14 ? 2 : 1; lab[r.area][it.label] = (lab[r.area][it.label] || 0) + 1;
+      if (age < 7) wk[r.area][0]++; else if (age < 14) wk[r.area][1]++; }); });
+  (AN.acts || []).filter(a => a.status === '미조치' && dayDiff(a.found, today) >= 7 && a.area in S).forEach(a => { S[a.area] += 3; late[a.area]++; });
+  const mx = Math.max(1, ...Object.values(S));
+  return TEAMS.map(x => { const top = Object.entries(lab[x]).sort((a, b) => b[1] - a[1])[0];
+    return { team: x, score: S[x], pct: Math.round(S[x] / mx * 100), trend: wk[x][0] - wk[x][1], wk: wk[x][0], top: top ? top[0] : '', topN: top ? top[1] : 0, late: late[x], w8: w8[x] }; });
+}
+function aiModel() {             // 카드·센터 공용 분석 결과
+  const today = AN.to, recs = AN.recs, items = recs.reduce((a, r) => a + (r.items || []).length, 0), xs = recs.reduce((a, r) => a + (r.items || []).filter(i => i.r === 'X').length, 0);
+  const tbm = (AN.tbm || []).length, acts = (AN.acts || []).length, total = recs.length + tbm + acts;
+  const sig = aiTeamSignal(today), hot = [...sig].sort((a, b) => b.score - a.score)[0];
+  const d28 = new Date(today + 'T00:00:00'); d28.setDate(d28.getDate() - 27);
+  const rep = {}; recs.filter(r => r.time.slice(0, 10) >= dstr(d28)).forEach(r => (r.items || []).filter(i => i.r === 'X').forEach(i => { const k = r.area + '|' + i.label; rep[k] = (rep[k] || 0) + 1; }));
+  const tips = (typeof patterns === 'function' ? patterns(rep, dstr(d28)) : []).map(x => x[1]);
+  if (hot && hot.score > 0) tips.unshift(`다음 주 집중 권고: ${hot.team}${hot.top ? ` '${hot.top}'` : ''} — 위험 신호 ${hot.pct}점, ${hot.trend > 0 ? '지난주보다 늘어남 ▲' : hot.trend < 0 ? '지난주보다 줄어듦 ▼' : '지난주와 비슷'}`);
+  sig.filter(s => s.trend >= 2 && s !== hot).slice(0, 2).forEach(s => tips.push(`${s.team} 개선 필요 건이 이번 주 ${s.trend}건 늘었습니다 → 원인 공정 확인 권고`));
+  sig.filter(s => s.late).forEach(s => tips.push(`${s.team} 7일 넘게 미조치 ${s.late}건 — 조치 담당·기한 재지정 권고`));
+  // 요일(월~토) × 시간대 개선 신호 분포 (최근 8주)
+  const slots = ['~08시', '08~10', '10~12', '12~15', '15~18', '18시~'], days = ['월', '화', '수', '목', '금', '토'], heat = days.map(() => slots.map(() => 0));
+  const d56 = new Date(today + 'T00:00:00'); d56.setDate(d56.getDate() - 55);
+  recs.filter(r => r.time.slice(0, 10) >= dstr(d56)).forEach(r => { const n = (r.items || []).filter(i => i.r === 'X').length; if (!n) return;
+    const dt = new Date(r.time.slice(0, 10) + 'T00:00:00'), wd = dt.getDay() - 1, h = +(r.time.slice(11, 13) || 9); if (wd < 0) return;
+    const si = h < 8 ? 0 : h < 10 ? 1 : h < 12 ? 2 : h < 15 ? 3 : h < 18 ? 4 : 5; heat[wd][si] += n; });
+  let hm = [0, 0, 0]; heat.forEach((row, i) => row.forEach((v, j) => { if (v > hm[0]) hm = [v, i, j]; }));
+  if (hm[0] >= 3) tips.push(`개선 신호가 ${days[hm[1]]}요일 ${slots[hm[2]]} 시간대에 가장 많이 몰립니다 (8주 ${hm[0]}건) → 그 시간 순회 강화`);
+  if (!tips.length) tips.push(total ? '최근 4주 반복·지연 신호 없음 — 지금 관리 수준 유지' : '기록이 쌓이면 분석이 시작됩니다');
+  const src = [['순회점검', recs.filter(r => r.kind === 'patrol').length], ['3정5행', recs.filter(r => r.kind === '5s').length], ['TBM', tbm], ['조치', acts]];
+  return { today, total, items, xs, tbm, acts, sig, hot, tips, heat, slots, days, hmax: Math.max(1, hm[0]), src, from: dstr(d56) };
+}
+function aiCount(root) { root.querySelectorAll('[data-n]').forEach(b => { const n = +b.dataset.n, t0 = performance.now(); const f = t => { const k = Math.min(1, (t - t0) / 1100); b.textContent = Math.round(n * (1 - Math.pow(1 - k, 3))).toLocaleString('ko-KR'); if (k < 1) requestAnimationFrame(f); }; requestAnimationFrame(f); }); }
+function aiTicker(id, tips, key) {   // 한 글자씩 써지는 인사이트 (6.5초마다 다음)
+  let ti = 0; clearInterval(aiTicker[key]); clearInterval(aiTicker[key + 'y']);
+  const show = () => { const el = $(id); if (!el) { clearInterval(aiTicker[key]); return; } const s = tips[ti % tips.length]; ti++; el.textContent = ''; let c = 0;
+    clearInterval(aiTicker[key + 'y']); aiTicker[key + 'y'] = setInterval(() => { c += 2; el.textContent = s.slice(0, c); if (c >= s.length) clearInterval(aiTicker[key + 'y']); }, 26); };
+  show(); if (tips.length > 1) aiTicker[key] = setInterval(show, 6500);
+}
+/* ── 대시보드 카드 (요약) ── */
+function aiRender() {
+  const box = $('learn'); if (!box || !AN || AN.err || !AN.recs) return;
+  const M = aiModel(); aiRender.M = M;
+  box.innerHTML = `<div class="ai-stat"><div><b data-n="${M.total}">0</b><small>학습한 기록</small></div><div><b data-n="${M.items}">0</b><small>점검 항목</small></div><div><b data-n="${M.xs}">0</b><small>개선 신호</small></div></div>
+    <div class="ai-rank">${[...M.sig].sort((a, b) => b.score - a.score).map(s => `<div class="${s === M.hot && s.score ? 'hot' : ''}"><span>${esc(s.team)}</span><i><em style="width:${Math.max(3, s.pct)}%"></em></i><b>${s.pct}</b><u class="${s.trend > 0 ? 'up' : s.trend < 0 ? 'dn' : ''}">${s.trend > 0 ? '▲' : s.trend < 0 ? '▼' : '–'}</u></div>`).join('')}</div>
+    <div class="ai-tip"><span class="ai-tag">AI 인사이트</span><span id="aiTip"></span></div>
+    <button type="button" class="ai-open" id="aiOpen">분석 센터 열기 <span>전체 화면 ›</span></button>`;
+  aiCount(box); aiTicker('aiTip', M.tips, 'c');
+  $('aiOpen').onclick = aiCenter;
+  const st = $('aiState'); if (st) st.textContent = M.total ? `학습 중 · 기록 ${M.total.toLocaleString('ko-KR')}건` : '대기';
+}
+/* ── 전체 화면 '안전 인텔리전스 센터' ── */
+function aiCenter() {
+  const M = aiRender.M || aiModel(); let ov = $('aiCenter');
+  if (!ov) { ov = document.createElement('div'); ov.id = 'aiCenter'; document.body.appendChild(ov);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && $('aiCenter') && $('aiCenter').classList.contains('on')) aiClose(); }); }
+  const sorted = [...M.sig].sort((a, b) => b.score - a.score);
+  // 흐름 그림: 데이터 → 분석 엔진 → 팀별 위험 신호 (점이 실제로 흘러감)
+  const W = 760, H = 300, ys = [48, 116, 184, 252], ym = [70, 150, 230], smx = Math.max(1, ...M.src.map(x => x[1]));
+  const mid = ['반복 패턴 탐지', '요일·시간 분석', '조치 지연 추적'];
+  let defs = '', edges = '', dots = '', k = 0;
+  M.src.forEach((s, i) => ym.forEach((y, j) => { const id = `aiP${k++}`, d = `M150 ${ys[i]} C250 ${ys[i]} 250 ${y} 330 ${y}`;
+    defs += `<path id="${id}" d="${d}"/>`; edges += `<use href="#${id}" class="ce" style="opacity:${(0.18 + 0.6 * s[1] / smx).toFixed(2)}"/>`;
+    const n = s[1] ? 1 + Math.round(2 * s[1] / smx) : 0; for (let q = 0; q < n; q++) dots += `<circle r="2.6" class="cd"><animateMotion dur="${(2.6 + i * 0.3).toFixed(1)}s" begin="-${((q / n) * 2.6 + j * 0.4).toFixed(2)}s" repeatCount="indefinite"><mpath href="#${id}"/></animateMotion></circle>`; }));
+  ym.forEach((y, j) => M.sig.forEach((s, t) => { const id = `aiP${k++}`, d = `M470 ${y} C540 ${y} 540 ${ys[t]} 600 ${ys[t]}`;
+    defs += `<path id="${id}" d="${d}"/>`; edges += `<use href="#${id}" class="ce o" style="opacity:${(0.15 + 0.7 * s.pct / 100).toFixed(2)}"/>`;
+    const n = Math.round(3 * s.pct / 100); for (let q = 0; q < n; q++) dots += `<circle r="2.8" class="cd o"><animateMotion dur="2.2s" begin="-${((q / Math.max(1, n)) * 2.2 + j * 0.5 + 0.8).toFixed(2)}s" repeatCount="indefinite"><mpath href="#${id}"/></animateMotion></circle>`; }));
+  const net = `<svg viewBox="0 0 ${W} ${H}" class="cnet" role="img" aria-label="데이터 학습 흐름"><defs>${defs}
+      <radialGradient id="aiGlow"><stop offset="0" stop-color="#FF8A3D" stop-opacity=".55"/><stop offset="1" stop-color="#FF8A3D" stop-opacity="0"/></radialGradient></defs>${edges}${dots}
+    ${M.src.map((s, i) => `<g><circle cx="142" cy="${ys[i]}" r="${7 + 7 * s[1] / smx}" class="cn in"/><text x="124" y="${ys[i] - 2}" text-anchor="end" class="t1">${s[0]}</text><text x="124" y="${ys[i] + 14}" text-anchor="end" class="t2">${s[1].toLocaleString('ko-KR')}건</text></g>`).join('')}
+    ${mid.map((m, j) => `<g><rect x="330" y="${ym[j] - 20}" width="140" height="40" rx="20" class="cn mid" style="animation-delay:${j * 0.5}s"/><text x="400" y="${ym[j] + 5}" text-anchor="middle" class="tw">${m}</text></g>`).join('')}
+    ${M.sig.map((s, t) => { const r = 7 + 11 * s.pct / 100, h = s === M.hot && s.score; return `<g>${h ? `<circle cx="612" cy="${ys[t]}" r="${r + 22}" fill="url(#aiGlow)" class="glow"/>` : ''}<circle cx="612" cy="${ys[t]}" r="${r}" class="cn out${h ? ' hot' : ''}"/><text x="${634 + r - 7}" y="${ys[t] - 2}" class="t1">${esc(s.team)}</text><text x="${634 + r - 7}" y="${ys[t] + 14}" class="t2">위험 신호 ${s.pct}점</text></g>`; }).join('')}
+    <text x="142" y="18" text-anchor="middle" class="th">① 쌓인 기록</text><text x="400" y="18" text-anchor="middle" class="th">② 분석 엔진</text><text x="640" y="18" text-anchor="middle" class="th">③ 팀별 위험 신호</text></svg>`;
+  const spark = a => { const mx = Math.max(1, ...a), pts = a.map((v, i) => `${(i * 120 / 7).toFixed(1)},${(30 - v / mx * 26).toFixed(1)}`).join(' ');
+    return `<svg viewBox="-2 0 124 34" class="spk"><polyline points="0,34 ${pts} 120,34" class="sa"/><polyline points="${pts}" class="sl"/><circle cx="120" cy="${(30 - a[7] / mx * 26).toFixed(1)}" r="2.8" class="sd"/></svg>`; };
+  const ring = p => { const C = 2 * Math.PI * 26; return `<svg viewBox="0 0 64 64" class="rg"><circle cx="32" cy="32" r="26" class="rb"/><circle cx="32" cy="32" r="26" class="rf" style="--c:${C.toFixed(1)};--o:${(C * (1 - p / 100)).toFixed(1)}" transform="rotate(-90 32 32)"/><text x="32" y="38" text-anchor="middle">${p}</text></svg>`; };
+  const lvl = p => p >= 70 ? ['집중', 'l3'] : p >= 40 ? ['주의', 'l2'] : ['양호', 'l1'];
+  ov.innerHTML = `<div class="cbox">
+    <header><div><span class="ck">SAFETY INTELLIGENCE CENTER</span><h1>안전 인텔리전스 센터</h1><p>분석 기간 ${M.from.slice(5).replace('-', '/')} ~ ${M.today.slice(5).replace('-', '/')} · 순회점검 · 3정5행 · TBM · 조치 기록 전체</p></div>
+      <div class="cr"><span class="clv"><i></i>실시간 분석 중</span><button type="button" id="aiClose" aria-label="닫기">✕ 닫기 <small>ESC</small></button></div></header>
+    <section class="ckpi">
+      <div><small>학습한 기록</small><b data-n="${M.total}">0</b><span>건</span></div>
+      <div><small>분석한 점검 항목</small><b data-n="${M.items}">0</b><span>개</span></div>
+      <div><small>찾아낸 개선 신호</small><b data-n="${M.xs}">0</b><span>건</span></div>
+      <div class="hk"><small>다음 주 집중 대상</small><b class="tx">${M.hot && M.hot.score ? esc(M.hot.team) : '없음'}</b><span>${M.hot && M.hot.top ? esc(M.hot.top) : ''}</span></div></section>
+    <section class="cmid"><div class="cp"><h3>데이터 학습 흐름 <small>기록이 분석 엔진을 거쳐 팀별 위험 신호가 됩니다 · 점 하나 = 데이터 흐름</small></h3>${net}</div>
+      <div class="cp"><h3>팀별 위험 신호 <small>높을수록 먼저 살펴볼 팀</small></h3><div class="cteam">${sorted.map(s => { const L = lvl(s.pct); return `<div class="${s === M.hot && s.score ? 'hot' : ''}">${ring(s.pct)}
+        <div class="ti"><b>${esc(s.team)}</b><em class="${L[1]}">${L[0]}</em><span>${s.top ? `최다 '${esc(s.top)}' ${s.topN}건` : '반복 항목 없음'}${s.late ? ` · 지연 ${s.late}` : ''}</span></div>
+        <div class="tt">${spark(s.w8)}<span class="${s.trend > 0 ? 'up' : s.trend < 0 ? 'dn' : ''}">이번 주 ${s.wk}건 ${s.trend > 0 ? '▲' + s.trend : s.trend < 0 ? '▼' + (-s.trend) : '–'}</span></div></div>`; }).join('')}</div></div></section>
+    <section class="cbot"><div class="cp"><h3>요일 · 시간대 집중도 <small>최근 8주 개선 신호가 몰리는 때</small></h3>
+        <table class="cheat"><tr><th></th>${M.slots.map(s => `<th>${s}</th>`).join('')}</tr>${M.days.map((d, i) => `<tr><th>${d}</th>${M.heat[i].map(v => `<td style="--a:${(v / M.hmax).toFixed(2)}">${v || ''}</td>`).join('')}</tr>`).join('')}</table></div>
+      <div class="cp"><h3>AI 인사이트 <small>규칙·통계로 찾은 권고 ${M.tips.length}건</small></h3>
+        <div class="cnow"><span class="ai-tag">지금</span><span id="aiTip2"></span></div>
+        <ol class="clist">${M.tips.map(t => `<li>${esc(t)}</li>`).join('')}</ol></div></section>
+    <footer>분석 방식: 규칙·통계 — 최근 14일 개선 필요 ×2 · 이전 14일 ×1 · 7일 넘은 미조치 +3 (팀 최고점 = 100) · 외부 AI 전송·비용 없음 · 개인 이름·건강 정보 미사용 · 기록이 쌓일수록 정확해짐 · <b>최종 판단은 관리감독자</b></footer></div>`;
+  ov.classList.add('on'); document.body.style.overflow = 'hidden';
+  aiCount(ov); aiTicker('aiTip2', M.tips, 'o');
+  $('aiClose').onclick = aiClose; ov.onclick = e => { if (e.target === ov) aiClose(); };
+}
+function aiClose() { const ov = $('aiCenter'); if (!ov) return; ov.classList.remove('on'); document.body.style.overflow = ''; clearInterval(aiTicker.o); clearInterval(aiTicker.oy); ov.innerHTML = ''; }
+(function aiInit() { if (typeof renderCharts !== 'function') return; const _r = window.renderCharts; window.renderCharts = function () { const r = _r.apply(this, arguments); try { aiRender(); } catch (e) { console.log('AI 카드', e); } return r; }; })();
+
 </script>
 </body>
 </html>
