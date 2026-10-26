@@ -520,6 +520,66 @@
   }
   #v21hero{grid-template-columns:minmax(0,1fr) auto}#v21hero>.lb{grid-column:1;grid-row:1;margin-bottom:-14px}#v21hero>div:nth-child(2){grid-column:1;grid-row:2}#v21hero>.nd{grid-column:2;grid-row:1/3}
   @media (min-width:1300px) and (min-height:700px){body.dash #v21hero>.lb,body.dash #v21hero>div:nth-child(2),body.dash #v21hero>.nd{grid-row:1;margin:0}body.dash #v21hero>div:nth-child(2){grid-column:2}body.dash #v21hero>.nd{grid-column:3}}
+  /* v21-5 ④ 주간 점검 실시율 */
+  .wk21{display:flex;flex-direction:column;height:100%;min-height:0;gap:2px}
+  .wk21h{display:flex;align-items:baseline;gap:8px;flex:none}
+  .wk21h b{font-size:26px;font-weight:900;color:#0F172A;letter-spacing:-1px;line-height:1;font-variant-numeric:tabular-nums}.wk21h b small{font-size:13px;margin-left:1px;color:#64748B}
+  .wk21h span{font-size:11.5px;font-weight:800;color:#64748B}.wk21h span.up{color:#16A34A}.wk21h span.dn{color:#DC2626}.wk21h em{font-style:normal;font-weight:500;color:#94A3B8}
+  .wk21c{flex:1 1 0;min-height:90px;position:relative}
+  .wk21lg{display:flex;flex-wrap:wrap;gap:2px 10px;font-size:10.5px;color:#64748B;flex:none}
+  .wk21lg i{display:inline-block;width:12px;height:0;border-top:2px dashed;vertical-align:middle;margin-right:4px}.wk21lg i.m{border-top:3px solid #2563EB}
+  .wk21s{display:block;position:absolute;inset:0;overflow:visible}
+  .wk21g{stroke:#EEF1F5;stroke-width:1}.wk21g.b{stroke:#CBD5E1}
+  .wk21a{font-size:9.5px;fill:#94A3B8}.wk21a.cur{fill:#2563EB;font-weight:800}
+  .wk21pre{font-size:10px;fill:#94A3B8;font-weight:700;letter-spacing:.1em}
+  .wk21line{stroke-dasharray:1;stroke-dashoffset:1;animation:wk21draw 1.3s .1s ease-out forwards}@keyframes wk21draw{to{stroke-dashoffset:0}}
+  .wk21area{opacity:0;animation:wk21fade .8s .7s ease-out forwards}@keyframes wk21fade{to{opacity:1}}
+  .wk21p{fill:#fff;stroke:#2563EB;stroke-width:2}.wk21p.last{fill:#2563EB;stroke:#fff;stroke-width:2.5}
+  .wk21pulse{fill:none;stroke:#2563EB;stroke-width:2;transform-box:fill-box;transform-origin:center;animation:wk21pulse 2s ease-out infinite}
+  @keyframes wk21pulse{0%{opacity:.7;transform:scale(1)}100%{opacity:0;transform:scale(2.6)}}
+  .wk21tag{fill:#0F172A}.wk21tagt{fill:#fff;font-size:10.5px;font-weight:800}
+  .wk21hit{cursor:help}.wk21hit:hover{fill:rgba(37,99,235,.06)}
+  /* v21-5 SAFETY POSITION */
+  .ps21{display:flex;flex-direction:column;gap:6px;height:100%;min-height:0;color:#E2E8F0}
+  .ps21top{display:flex;justify-content:space-between;align-items:flex-end;gap:8px}
+  .ps21top small{display:block;font-size:11px;color:#9DABC4;letter-spacing:.02em}
+  .ps21top b{font-size:30px;font-weight:900;color:#fff;letter-spacing:-1.5px;line-height:1.05;font-variant-numeric:tabular-nums;text-shadow:0 0 22px rgba(52,211,153,.35)}.ps21top b em{font-style:normal;font-size:16px;color:#9DABC4;margin-left:2px}
+  .ps21nad{font-size:12px;color:#C7D2E4;background:rgba(52,211,153,.12);border:1px solid rgba(52,211,153,.35);border-radius:999px;padding:4px 11px;white-space:nowrap;display:flex;align-items:center;gap:6px}
+  .ps21nad strong{color:#6EE7B7;font-size:14px}.ps21nad i{width:7px;height:7px;border-radius:50%;background:#34D399;box-shadow:0 0 8px #34D399}
+  .ps21ruler{position:relative;padding:20px 8px 22px;cursor:help;flex:none}
+  .ps21trk{height:8px;border-radius:6px;background:linear-gradient(90deg,#34D399 0%,#FBBF24 55%,#F97316 80%,#EF4444 100%);opacity:.9;position:relative;overflow:hidden}
+  .ps21trk i{display:none}
+  .ps21m{position:absolute;top:20px;transform:translateX(-50%)}
+  .ps21m::before{content:'';position:absolute;left:50%;top:-4px;width:2px;height:16px;margin-left:-1px;background:#fff;border-radius:1px}
+  .ps21m span{position:absolute;left:50%;bottom:10px;transform:translateX(-50%);white-space:nowrap;font-size:10.5px;color:#C7D2E4;text-align:center;line-height:1.15}
+  .ps21m span b{display:block;font-size:11.5px;color:#fff}
+  .ps21m.us::before{width:14px;height:14px;top:-3px;margin-left:-7px;border-radius:50%;background:#34D399;border:2.5px solid #0F1B30;box-shadow:0 0 0 3px rgba(52,211,153,.35),0 0 14px #34D399;animation:ps21us 2s ease-in-out infinite}
+  @keyframes ps21us{50%{box-shadow:0 0 0 7px rgba(52,211,153,0),0 0 14px #34D399}}
+  .ps21m.us span{left:0;transform:none}.ps21m.us span b{color:#6EE7B7}
+  .ps21m.mf span{bottom:auto;top:14px}
+  .ps21vs{display:block;margin:1px 0 0;font-size:10.5px;color:#6EE7B7;font-weight:700}
+  .ps21sc{display:flex;justify-content:space-between;font-size:9.5px;color:#64748B;margin-top:4px}
+  .ps21cap{font-size:11.5px;font-weight:800;color:#F2B27A;letter-spacing:.04em;border-top:1px solid rgba(255,255,255,.1);padding-top:6px;flex:none}.ps21cap span{font-weight:500;color:#7F8DA6;margin-left:6px;letter-spacing:0}
+  .ps21rings{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;flex:1 1 0;min-height:0;align-items:center}
+  .ps21r{display:flex;flex-direction:column;align-items:center;gap:2px;min-height:0;height:100%}
+  .ps21r svg{width:auto;height:100%;max-height:70px;min-height:40px;aspect-ratio:1}.ps21r span{font-size:11px;color:#C7D2E4;white-space:nowrap}
+  .ps21r .b{fill:none;stroke:rgba(255,255,255,.1);stroke-width:5.5}
+  .ps21r .f{fill:none;stroke-width:5.5;stroke-linecap:round;stroke-dasharray:var(--c);stroke-dashoffset:var(--o);animation:ps21ring 1.3s ease-out both;filter:drop-shadow(0 0 4px currentColor)}
+  @keyframes ps21ring{from{stroke-dashoffset:var(--c)}}
+  .ps21r text{fill:#fff;font-size:15px;font-weight:900}.ps21r tspan{font-size:8px;fill:#9DABC4;font-weight:700}
+  body.dash .poscard #pos{flex:1 1 0;min-height:0}
+  @media (prefers-reduced-motion:reduce){.wk21line,.wk21area,.wk21pulse,.ps21r .f,.ps21m.us::before{animation:none!important;stroke-dashoffset:0;opacity:1}}
+  @media (max-height:820px){.ps21{gap:3px}.ps21top b{font-size:22px}.ps21top small .ps21vs{display:none}.ps21nad{padding:2px 9px;font-size:11px}.ps21nad strong{font-size:12.5px}
+    .ps21ruler{padding:15px 8px 17px}.ps21m{top:15px}.ps21m span{font-size:9.5px}.ps21m span b{font-size:10px}.ps21cap{padding-top:3px;font-size:10.5px}
+    .ps21r svg{min-height:30px}.ps21r span{font-size:10px}.wk21h b{font-size:20px}}
+  body.dash .poscard .ph{flex-wrap:nowrap;margin-bottom:4px;align-items:center}body.dash .poscard .ph h2{display:none}body.dash .poscard .pl{width:auto}
+  @media (max-height:820px){.ps21nad{display:none}.ps21r svg{min-height:44px}}
+  /* v21-4 ⑥ 라인별 TBM 누적: 대시보드에서 2열로 (9개 라인 넘침 방지) */
+  body.dash #tbmChart{display:flex;flex-direction:column;min-height:0;overflow:hidden}
+  body.dash #tbmChart .hbars{display:grid;grid-template-columns:1fr 1fr;gap:7px 14px;align-content:start;flex:none}
+  body.dash #tbmChart .hbt b{color:var(--ink)}
+  body.dash #tbmChart .hb{grid-template-columns:40px 1fr;gap:6px;font-size:12px}
+  body.dash #tbmChart .note{font-size:10.5px;line-height:1.4;margin-top:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   /* v21-2 비가동 표시 */
   .off21{color:#94A3B8!important;font-weight:700;background:repeating-linear-gradient(135deg,#F8FAFC 0 6px,#EEF2F7 6px 12px)}
   tr.off21r td:first-child{color:#64748B}.off21t{margin-left:4px;font-size:10.5px;font-weight:700;color:#64748B;background:#E2E8F0;border-radius:4px;padding:1px 5px}
@@ -1864,7 +1924,7 @@ function renderTbmChart() {
   const h = {}; AN.tbm.forEach(r => h[r.line] = (h[r.line] || 0) + Number(r.minutes || 0) / 60);
   el.innerHTML = `<div class="hbars">${Object.keys(TBM_LN).map(k => { const v = h[k] || 0;
     return `<div class="hb"><span>${k}</span><div class="hbt"><i style="width:${Math.max(2, Math.min(100, v / 12 * 100))}%;background:${v >= 12 ? 'var(--s3)' : 'var(--s1)'}"></i><b>${v.toFixed(1)}h</b></div></div>`; }).join('')}</div>
-    <div class="note">${AN.tbmFrom} 이후 라인 누적 · 12시간 = 반기 정기교육 기준 (결근자는 개인별로 차감 필요)</div>`;
+    <div class="note" title="${AN.tbmFrom} 이후 라인 누적 · 12시간 = 반기 정기교육 기준 (결근자는 개인별로 차감 필요)">${AN.tbmFrom.slice(5).replace('-', '/')} 이후 누적 · 12시간 = 반기 정기교육 기준</div>`;
 }
 function renderTbm() {
   const v = $('tbmView'); v.classList.remove('hide');
@@ -2736,6 +2796,79 @@ function aiCenter() {
 }
 function aiClose() { const ov = $('aiCenter'); if (!ov) return; ov.classList.remove('on'); document.body.style.overflow = ''; clearInterval(aiTicker.o); clearInterval(aiTicker.oy); ov.innerHTML = ''; }
 (function aiInit() { if (typeof renderCharts !== 'function') return; const _r = window.renderCharts; window.renderCharts = function () { const r = _r.apply(this, arguments); try { aiRender(); } catch (e) { console.log('AI 카드', e); } return r; }; })();
+/* ===== v21-5 (2026-10-24 대표 지시): ④ 주간 점검 실시율 · SAFETY POSITION 고급화 =====
+ * 계산 기준은 기존과 같음: 순회·3정5행 = 팀×평일, TBM = 라인×평일, 공휴일 제외. 운영 시작(OPS_START) 이전 주는 0%가 아니라 '운영 전'으로 표시
+ */
+function v21Smooth(p) {   // 점들을 부드러운 곡선으로 (Catmull-Rom → 베지어)
+  if (p.length < 2) return p.length ? `M${p[0][0]} ${p[0][1]}` : '';
+  let d = `M${p[0][0].toFixed(1)} ${p[0][1].toFixed(1)}`;
+  for (let i = 0; i < p.length - 1; i++) { const a = p[i - 1] || p[i], b = p[i], c = p[i + 1], e = p[i + 2] || c;
+    d += ` C${(b[0] + (c[0] - a[0]) / 6).toFixed(1)} ${(b[1] + (c[1] - a[1]) / 6).toFixed(1)} ${(c[0] - (e[0] - b[0]) / 6).toFixed(1)} ${(c[1] - (e[1] - b[1]) / 6).toFixed(1)} ${c[0].toFixed(1)} ${c[1].toFixed(1)}`; }
+  return d;
+}
+function v21Rates(days) {   // 기간 안 평일 목록 → {p:순회, f:3정5행, t:TBM, all:순회+3정5행}
+  if (!days.length) return null;
+  const set = new Set(AN.recs.map(r => r.kind + '|' + r.time.slice(0, 10) + '|' + r.area)), n = days.length * TEAMS.length;
+  let p = 0, f = 0; days.forEach(d => TEAMS.forEach(t => { if (set.has('patrol|' + d + '|' + t)) p++; if (set.has('5s|' + d + '|' + t)) f++; }));
+  const t = AN.tbm ? new Set(AN.tbm.filter(r => days.includes(r.time.slice(0, 10))).map(r => r.time.slice(0, 10) + '|' + r.line)).size : null;
+  return { p: Math.round(p / n * 100), f: Math.round(f / n * 100), t: t == null ? null : Math.round(t / (days.length * TBM_LINES_N) * 100), all: Math.round((p + f) / (n * 2) * 100) };
+}
+function v21Weekly() {
+  const el = $('weekly'); if (!el || !AN || AN.err) return;
+  const today = AN.to, W = [];
+  for (let i = 0; i < 8; i++) { const m = new Date(AN.w8 + 'T00:00:00'); m.setDate(m.getDate() + i * 7); const e = new Date(m); e.setDate(m.getDate() + 6);
+    const s = dstr(m) < OPS_START ? OPS_START : dstr(m), en = dstr(e) > today ? today : dstr(e);
+    const days = s > en ? [] : workdays(s, en); W.push({ lab: `${m.getMonth() + 1}/${m.getDate()}`, r: v21Rates(days), cur: dstr(e) >= today, pre: dstr(e) < OPS_START }); }
+  if (!W.some(w => w.r)) { el.innerHTML = emptyMsg('기록이 쌓이면 추이가 표시됩니다'); return; }
+  while (W.length > 2 && W[0].pre) W.shift();   // 운영 시작 전 주는 빼고 운영 기간만 꽉 차게 (최대 8주)
+  const N = W.length - 1 || 1;
+  const lines = [['p', '순회', '#1B3A6B'], ['f', '3정5행', '#0F9F8F'], ['t', 'TBM', '#EA580C']];
+  const lastOf = k => { for (let i = W.length - 1; i >= 0; i--) if (W[i].r && W[i].r[k] != null) return [W[i].r[k], i]; return null; };
+  const L = lastOf('all'), P = (() => { for (let i = L[1] - 1; i >= 0; i--) if (W[i].r) return W[i].r.all; return null; })(), dl = P == null ? null : L[0] - P;
+  el.innerHTML = `<div class="wk21"><div class="wk21h"><b>${L[0]}<small>%</small></b><span class="${dl == null ? '' : dl >= 0 ? 'up' : 'dn'}">${dl == null ? '이번 주 종합' : `${dl >= 0 ? '▲' : '▼'} ${Math.abs(dl)}%p <em>지난주 대비</em>`}</span></div>
+    <div class="wk21c" id="wk21c"></div>
+    <div class="wk21lg"><span><i class="m"></i>종합</span>${lines.map(([k, n, c]) => { const v = lastOf(k); return `<span><i style="border-color:${c}"></i>${n} ${v ? v[0] + '%' : '-'}</span>`; }).join('')}</div></div>`;
+  const box = $('wk21c'), Wd = Math.max(200, box.clientWidth || 300), Ht = Math.max(90, box.clientHeight || 140);
+  const X0 = 26, X1 = Wd - 14, Y0 = 16, Y1 = Ht - 18, x = i => X0 + i * (X1 - X0) / N, y = v => Y1 - v / 100 * (Y1 - Y0);
+  const ser = k => W.map((w, i) => w.r && w.r[k] != null ? [x(i), y(w.r[k]), w.r[k], i] : null).filter(Boolean);
+  const main = ser('all'), last = main[main.length - 1], firstOp = W.findIndex(w => !w.pre), step = (X1 - X0) / N, every = Wd / (N + 1) < 34 ? 2 : 1;
+  const preW = firstOp > 0 ? x(firstOp) - step / 2 : 0;
+  box.innerHTML = `<svg width="${Wd}" height="${Ht}" viewBox="0 0 ${Wd} ${Ht}" class="wk21s" role="img" aria-label="주간 점검 실시율 추이">
+      <defs><linearGradient id="wkG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2563EB" stop-opacity=".30"/><stop offset="1" stop-color="#2563EB" stop-opacity="0"/></linearGradient>
+        <pattern id="wkH" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#E5EAF1" stroke-width="2.5"/></pattern>
+        <filter id="wkS" x="-10%" y="-30%" width="120%" height="160%"><feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#2563EB" flood-opacity=".3"/></filter></defs>
+      ${[0, 50, 100].map(v => `<line x1="${X0}" x2="${X1}" y1="${y(v)}" y2="${y(v)}" class="wk21g${v ? '' : ' b'}"/><text x="${X0 - 6}" y="${y(v) + 3.5}" class="wk21a" text-anchor="end">${v}</text>`).join('')}
+      ${preW ? `<rect x="${X0}" y="${Y0 - 4}" width="${preW - X0}" height="${Y1 - Y0 + 4}" fill="url(#wkH)" rx="5"/><text x="${(X0 + preW) / 2}" y="${(Y0 + Y1) / 2 + 4}" text-anchor="middle" class="wk21pre">운영 전</text>` : ''}
+      ${W.map((w, i) => (i % every === (N % every) || w.cur) ? `<text x="${Math.min(x(i), X1 - 14)}" y="${Ht - 3}" text-anchor="middle" class="wk21a${w.cur ? ' cur' : ''}">${w.cur ? '이번 주' : w.lab}</text>` : '').join('')}
+      ${lines.map(([k, n, c]) => { const s = ser(k); return s.length > 1 ? `<path d="${v21Smooth(s)}" fill="none" stroke="${c}" stroke-width="1.5" stroke-dasharray="3 3" opacity=".7"/>` : ''; }).join('')}
+      ${main.length > 1 ? `<path d="${v21Smooth(main)} L${last[0]} ${Y1} L${main[0][0]} ${Y1}Z" fill="url(#wkG)" class="wk21area"/><path d="${v21Smooth(main)}" fill="none" stroke="#2563EB" stroke-width="3" stroke-linecap="round" filter="url(#wkS)" class="wk21line" pathLength="1"/>` : ''}
+      ${main.map((p, k) => `<circle cx="${p[0]}" cy="${p[1]}" r="${k === main.length - 1 ? 5.5 : 3.5}" class="wk21p${k === main.length - 1 ? ' last' : ''}"/>`).join('')}
+      <circle cx="${last[0]}" cy="${last[1]}" r="5.5" class="wk21pulse"/>
+      <g transform="translate(${Math.min(last[0], X1 - 20)} ${Math.max(Y0 + 4, last[1] - 13)})"><rect x="-20" y="-13" width="40" height="18" rx="9" class="wk21tag"/><text y="0" text-anchor="middle" class="wk21tagt">${last[2]}%</text></g>
+      ${W.map((w, i) => `<rect x="${x(i) - step / 2}" y="${Y0 - 6}" width="${step}" height="${Y1 - Y0 + 6}" fill="transparent" class="wk21hit"><title>${w.lab} 주${w.pre ? ' · 운영 전' : w.r ? ` · 종합 ${w.r.all}% · 순회 ${w.r.p}% · 3정5행 ${w.r.f}%${w.r.t == null ? '' : ` · TBM ${w.r.t}%`}${w.cur ? ' (진행 중)' : ''}` : ''}</title></rect>`).join('')}
+    </svg>`;
+}
+let v21RT = 0; window.addEventListener('resize', () => { clearTimeout(v21RT); v21RT = setTimeout(() => { try { if (AN && !$('home').classList.contains('hide')) v21Weekly(); } catch (e) {} }, 250); });
+function v21Pos() {
+  const el = $('pos'); if (!el || !AN || AN.err) return;
+  const today = AN.to, nad = NO_ACCIDENT_SINCE ? dayDiff(NO_ACCIDENT_SINCE, today) : null;
+  const r = today >= OPS_START ? v21Rates(workdays(OPS_START, today)) : null;
+  const MAX = 1.0, px = v => Math.min(100, v / MAX * 100);
+  const mk = [['우리', 0, 'us'], ['5~49인', IND.size, 'sz'], ['제조업', IND.mfg, 'mf']];
+  const ring = (v, n) => { const C = 2 * Math.PI * 24, c = v == null ? '#475569' : v >= 80 ? '#34D399' : v >= 50 ? '#FBBF24' : '#FB923C';
+    return `<div class="ps21r"><svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="24" class="b"/><circle cx="30" cy="30" r="24" class="f" stroke="${c}" style="--c:${C.toFixed(1)};--o:${(C * (1 - (v || 0) / 100)).toFixed(1)}" transform="rotate(-90 30 30)"/>
+      <text x="30" y="34" text-anchor="middle">${v == null ? '-' : v}<tspan dx="1" dy="-6">${v == null ? '' : '%'}</tspan></text></svg><span>${n}</span></div>`; };
+  el.innerHTML = `<div class="ps21">
+    <div class="ps21top"><div><small>우리 재해율 · 올해 <span class="ps21vs">업종 평균 ${IND.mfg.toFixed(2)}%보다 낮음</span></small><b>${nad == null ? '-' : '0.00'}<em>%</em></b></div>
+      <div class="ps21nad">${nad == null ? '산재 기준일 입력 필요' : `<i></i>무재해 <strong>${num(nad)}</strong>일`}</div></div>
+    <div class="ps21ruler" title="재해율 출처: ${esc(IND.src)} · 연 1회 갱신">
+      <div class="ps21trk"><i style="width:${px(IND.mfg)}%"></i></div>
+      ${mk.map(([n, v, c]) => `<div class="ps21m ${c}" style="left:${px(v)}%">${c === 'us' ? '' : `<span>${n} <b>${v.toFixed(2)}%</b></span>`}</div>`).join('')}</div>
+    <div class="ps21cap">점검 실시율 <span title="${OPS_START} 운영 시작부터 평일(공휴일 제외) 기준">${OPS_START.slice(5).replace('-', '/')}~ · 평일</span></div>
+    <div class="ps21rings">${ring(r && r.p, '순회점검')}${ring(r && r.f, '3정5행')}${ring(r && r.t, 'TBM')}</div></div>`;
+}
+(function v21ChartInit() { if (typeof renderCharts !== 'function') return; const _r = window.renderCharts;
+  window.renderCharts = function () { const o = _r.apply(this, arguments); try { v21Weekly(); v21Pos(); } catch (e) { console.log('v21 그래프', e); } return o; }; })();
 
 </script>
 </body>
