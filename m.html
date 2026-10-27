@@ -668,6 +668,11 @@
   /* 대시보드 우측 '업계 대비' 카드 넘침 방지 (출처 문구는 ⓘ 툴팁으로) */
   body.dash .poscard .posnote,body.dash .poscard .clock{display:none}
   body.dash .poscard{overflow:hidden}
+  .np-pick{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-top:10px;padding:10px;border:1px dashed var(--line2);border-radius:10px}
+  .np-pick label.btn{cursor:pointer}.np-tip{font-size:12px;color:var(--sub)}.np-prev{display:flex;flex-wrap:wrap;gap:8px;width:100%}.np-prev:empty{display:none}
+  .np-th{display:inline-flex;align-items:center;gap:4px}.np-th img{width:56px;height:56px;object-fit:cover;border-radius:6px;border:1px solid var(--line)}
+  .np-row{margin-top:6px;font-size:12.5px}.np-row:empty{display:none}.np-n{color:#C2410C;font-weight:700}.np-msg{color:var(--sub)}
+  @media print{.np-row button,.np-row input{display:none!important}}
 </style>
 </head>
 <body>
@@ -1719,6 +1724,8 @@ async function renderNotice() {
         <span>작성 규칙: <b>1.</b> 소제목 · <b>-</b> 항목 · 빈 줄로 단락 구분 → 휴대폰·번역문에 그대로 정리돼 보입니다</span>
         <span style="white-space:nowrap;margin-left:auto"><button type="button" class="btn ghost sm" id="nTpl">기본 양식 넣기</button> <span id="nCnt">0/1000</span></span></div>
       <label style="display:block;margin-top:8px;font-size:13px;color:var(--sub)">게시 종료일 (비우면 내릴 때까지) <input type="date" id="nUntil" style="font:inherit;padding:6px;border:1px solid var(--line2);border-radius:8px"></label>
+      <div class="np-pick"><label class="btn ghost sm" for="nFile">📷 사진 붙이기</label><input type="file" id="nFile" accept="image/*" multiple hidden>
+        <span class="np-tip">4장까지 · 자동으로 줄여 저장 · 직원 화면에서 누르면 크게 보임</span><div id="nPrev" class="np-prev"></div></div>
       <button class="btn" id="nSave" style="margin-top:10px">등록</button> <span class="err" id="nMsg"></span>
       <p class="note">직원이 [확인했습니다]를 누르면 팀별 확인 수가 쌓입니다(이름 없이 기기 단위). 안전보건 전달 증빙으로 출력할 수 있습니다.</p></div>
     <div class="card"><h2>👣 전 직원 안전참여 기록 <small>최근 14일 · 팀별 참여 기기 수 (QR 확인)</small></h2><div id="vTbl"><div class="wait">불러오는 중…</div></div></div></div>
@@ -1726,8 +1733,14 @@ async function renderNotice() {
   tnPcCard(v); foodPcCard(v);
   $('nSave').onclick = async () => {
     const m = $('nMsg'); m.textContent = '등록 중…';
-    try { const o = await (await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ key: API_KEY, type: 'notice', pin: PIN, title: $('nTitle').value.trim(), body: $('nBody').value.trim(), until: $('nUntil').value }) })).json();
-      if (!o.ok) throw new Error(o.error); m.textContent = '등록됨'; renderNotice(); } catch (e) { m.textContent = e.message; } };
+    const title = $('nTitle').value.trim(), b = $('nSave'); b.disabled = true;
+    try { const o = await (await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ key: API_KEY, type: 'notice', pin: PIN, title, body: $('nBody').value.trim(), until: $('nUntil').value }) })).json();
+      if (!o.ok) throw new Error(o.error);
+      let done = '등록됨';
+      if (NPP.length) { const id = o.id || await npFindId(title); const r = await npUpload(id, NPP, t => { m.textContent = t; });
+        done = r.fail ? `등록됨 · 사진 ${r.ok}장 저장, ${r.fail}장 실패 (${r.err})` : `✔ 등록됨 · 사진 ${r.ok}장`; NPP = []; }
+      renderNotice(); $('nMsg').textContent = done; } catch (e) { m.textContent = e.message; b.disabled = false; } };
+  npPicker($('nFile'), () => npPrev($('nPrev')));
   $('nPrint').onclick = () => { document.body.className = 'p-notice'; print(); };
   // 2026-10-10 대표 지시: 공지 작성 규칙 안내 + 기본 양식 넣기 + 글자 수
   const nb = $('nBody'), cnt = () => { $('nCnt').textContent = nb.value.length + '/1000'; };
@@ -1748,15 +1761,62 @@ async function renderNotice() {
         return `<tr><td class="c">${x.d.slice(5)}${x.d === to ? ' (오늘)' : ''}</td>${TEAMS.map(t => `<td class="c" style="${x.teams[t] ? 'color:var(--ok);font-weight:700' : 'color:var(--sub)'}">${x.teams[t] ? '👣 ' + x.teams[t] : '-'}</td>`).join('')}<td class="c">${tot}</td></tr>`; }).join('')}</tbody></table>`
       : emptyMsg('아직 QR 방문 기록이 없습니다');
     $('nList').innerHTML = d.notices.length ? `<table><thead><tr><th style="width:10%">등록</th><th>제목 · 내용</th><th style="width:9%">게시</th>${TEAMS.map(t => `<th style="width:8%">${t}</th>`).join('')}<th style="width:7%"></th></tr></thead><tbody>
-      ${d.notices.map(n => `<tr><td class="c nmeta" data-l="등록">${esc(n.time.slice(5, 16))}</td><td class="nb"><b class="ntitle">${esc(n.title)}</b>${fmtNotice(n.body)}</td>
+      ${d.notices.map(n => `<tr><td class="c nmeta" data-l="등록">${esc(n.time.slice(5, 16))}</td><td class="nb"><b class="ntitle">${esc(n.title)}</b>${fmtNotice(n.body)}<div class="np-row" data-npid="${esc(n.id)}" data-npon="${n.on ? 1 : ''}"></div></td>
         <td class="c nmeta" data-l="게시">${n.on ? (n.until ? '~' + n.until.slice(5) : '게시 중') : '내림'}</td>${TEAMS.map(t => `<td class="c nack" data-l="${esc(t)}">${n.acks[t] || 0}</td>`).join('')}
         <td class="c noff">${n.on ? `<button class="btn ghost sm" data-off="${esc(n.id)}">내리기</button>` : ''}</td></tr>`).join('')}</tbody></table>
       <div class="foot" style="font-size:11px;color:var(--sub);margin-top:6px">확인 수 = 직원이 QR 화면에서 [확인했습니다]를 누른 기기 수(팀별) · 출력일시 ${new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })}</div>`
       : emptyMsg('등록된 전달사항이 없습니다');
     document.querySelectorAll('[data-off]').forEach(b => b.onclick = async () => { b.disabled = true;
       const o = await (await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ key: API_KEY, type: 'notice', pin: PIN, off: b.dataset.off }) })).json();
-      if (o.ok) renderNotice(); else { b.disabled = false; b.textContent = o.error; } });
+      if (o.ok) { try { await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ key: API_KEY, type: 'noticephotooff', pin: PIN, id: b.dataset.off }) }); } catch (e2) {} renderNotice(); }
+      else { b.disabled = false; b.textContent = o.error; } });
+    npRows();
   } catch (e) { $('vTbl').innerHTML = emptyMsg('서버 연결 전: ' + esc(e.message)); $('nList').innerHTML = ''; }
+}
+
+/* ===== 2026-10-27 대표 직권: 전달사항 사진 첨부 (PC) =====
+ * 공지 저장 → 사진을 1장씩 서버로(작은 360px·큰 1600px) → 직원 QR 화면에서 작은 사진, 누르면 큰 사진
+ * 목록에서 이미 올린 공지에도 사진 붙이기·바꾸기 가능. 공지를 내리면 사진도 내림
+ */
+const NP_MAX = 4;
+let NPP = [];
+function npPrev(box) {
+  box.innerHTML = NPP.map((p, i) => `<span class="np-th"><img src="${p.s}" alt=""><button type="button" class="btn ghost sm" data-npx="${i}">빼기</button></span>`).join('');
+  box.querySelectorAll('[data-npx]').forEach(b => b.onclick = () => { NPP.splice(+b.dataset.npx, 1); npPrev(box); });
+}
+function npPicker(inp, done) {
+  inp.onchange = async e => { const msg = $('nMsg');
+    for (const f of [...e.target.files]) { if (NPP.length >= NP_MAX) { msg.textContent = `사진은 ${NP_MAX}장까지입니다`; break; }
+      try { NPP.push({ s: await tnShrinkPc(f, 360, 0.6), b: await tnShrinkPc(f, 1600, 0.8) }); } catch (er) { msg.textContent = er.message; } }
+    e.target.value = ''; done(); };
+}
+async function npFindId(title) {   // 서버가 번호를 안 돌려줄 때: 같은 제목 중 가장 최근 공지
+  const d = await api('action=visits&from=' + dstr(kstNow()) + '&to=' + dstr(kstNow()));
+  const n = (d.notices || []).filter(x => x.title === title && x.on).sort((a, b) => a.time < b.time ? 1 : -1)[0];
+  if (!n) throw new Error('공지는 등록됐지만 사진을 붙일 공지를 찾지 못했습니다. 목록에서 [사진 붙이기]를 눌러 주세요');
+  return n.id;
+}
+async function npUpload(id, list, tick) {
+  let ok = 0, fail = 0, err = '';
+  for (let i = 0; i < list.length; i++) { tick && tick(`사진 올리는 중… ${i + 1}/${list.length}`);
+    try { const o = await (await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ key: API_KEY, type: 'noticephoto', pin: PIN, id, s: list[i].s, b: list[i].b }) })).json();
+      if (!o.ok) throw new Error(o.error); ok++; } catch (e) { fail++; err = e.message; } }
+  return { ok, fail, err };
+}
+async function npRows() {
+  const rows = [...document.querySelectorAll('.np-row')]; if (!rows.length) return;
+  let cnt = {}; try { cnt = (await (await fetch(`${ENDPOINT}?action=noticephotos`)).json()).photos || {}; } catch (e) { return; }
+  rows.forEach(r => { const id = r.dataset.npid, n = cnt[id] || 0, on = !!r.dataset.npon;
+    r.innerHTML = (n ? `<span class="np-n">📷 사진 ${n}장</span>` : '') + (on ? ` <button class="btn ghost sm" data-npadd="${esc(id)}">${n ? '사진 바꾸기' : '📷 사진 붙이기'}</button><input type="file" accept="image/*" multiple hidden data-npf="${esc(id)}"> <span class="np-msg"></span>` : ''); });
+  document.querySelectorAll('[data-npadd]').forEach(b => b.onclick = () => b.parentNode.querySelector('[data-npf]').click());
+  document.querySelectorAll('[data-npf]').forEach(inp => inp.onchange = async e => {
+    const id = inp.dataset.npf, msg = inp.parentNode.querySelector('.np-msg'), files = [...e.target.files].slice(0, NP_MAX), list = [];
+    if (!files.length) return;
+    try { for (const f of files) list.push({ s: await tnShrinkPc(f, 360, 0.6), b: await tnShrinkPc(f, 1600, 0.8) }); } catch (er) { msg.textContent = er.message; return; }
+    msg.textContent = '기존 사진 내리는 중…';
+    try { await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ key: API_KEY, type: 'noticephotooff', pin: PIN, id }) }); } catch (er) {}
+    const r = await npUpload(id, list, t => { msg.textContent = t; });
+    msg.textContent = r.fail ? `사진 ${r.ok}장 저장, ${r.fail}장 실패 (${r.err})` : `✔ 사진 ${r.ok}장 저장`; setTimeout(npRows, 1200); });
 }
 
 
