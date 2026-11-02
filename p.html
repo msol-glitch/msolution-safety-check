@@ -264,7 +264,15 @@
   #eduPop .epmeta{margin-top:10px;font-size:13px;line-height:1.6;color:#475569;word-break:keep-all}
   #eduPop button{margin-top:14px;width:100%;padding:13px;border:0;border-radius:12px;background:var(--navy);color:#fff;font:inherit;font-weight:800;font-size:16px}
   #evWin .erbox{position:relative;overflow:hidden;background:#FFF7E6;border:3px solid #F59E0B;border-radius:22px;padding:26px 20px 18px;max-width:360px;width:100%;text-align:center}
-  #evWin .ercf{position:absolute;inset:0;pointer-events:none}
+  #evWin .erfw{position:absolute;inset:0;pointer-events:none}
+#evWin .erfb{position:absolute;width:0;height:0}
+#evWin .erfb b{position:absolute;left:-3px;top:-3px;width:7px;height:7px;border-radius:50%;opacity:0;animation:erburst 1.7s ease-out infinite}
+@keyframes erburst{0%{transform:rotate(var(--a)) translateY(0) scale(1.2);opacity:1}70%{opacity:1}100%{transform:rotate(var(--a)) translateY(-78px) scale(.4);opacity:0}}
+#evWin .ersub{position:relative;font-size:14px;font-weight:700;color:#9A3412;margin-top:6px;word-break:keep-all}
+@media (prefers-reduced-motion:reduce){#evWin .erfw{display:none}}
+#evWin{z-index:1000!important}#evWin .erbox>*:not(.erfw):not(.ercf){position:relative;z-index:1}
+#evWin .erfw{z-index:0}
+#evWin .ercf{position:absolute;inset:0;pointer-events:none}
   #evWin .ercf i{position:absolute;top:-14px;width:8px;height:13px;border-radius:2px;opacity:.9;animation:edfall 2.6s linear infinite}
   @keyframes edfall{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(420px) rotate(320deg);opacity:0}}
   @media (prefers-reduced-motion:reduce){#evWin .ercf{display:none}}
@@ -1690,17 +1698,17 @@ let EV = null, EVP = null, evOpenAt = {}, evTimer = null;
 function evDone() { return store.get(evKey()); }   // 번호 | 'p'(전송 중) | 'mgr'(예전 값)
 const EDU_TX = {
   ko: { done: '오늘 교육 확인 완료', myno: '오늘 내 번호', wait: '번호 받는 중…', note: '교육참여 보상은 무작위 날 발표돼요', ok: '확인',
-    rw: '교육참여 보상', rw2: '교육을 잘 받으셨어요', rwno: '오늘의 보상 번호', prize: '보상', how: '이 화면을 캡처해서 이성희 과장에게 보여주고,\n오늘 교육 내용 1가지를 말해 주세요', ack: '읽었습니다 · 오늘 확인', reading: '읽는 중…', sec: '초' },
+    rw: '교육참여 보상', rw2: '축! TBM 참여 우수 직원', rwno: '오늘의 보상 번호', prize: '보상', how: '이 화면을 캡처해서 이성희 과장에게 보여주고,\n오늘 교육 내용 1가지를 말해 주세요', ack: '읽었습니다 · 오늘 확인', reading: '읽는 중…', sec: '초' },
   zh: { done: '今日教育确认完成', myno: '今天我的号码', wait: '正在获取号码…', note: '教育参与奖励将在随机日子公布', ok: '确认',
-    rw: '教育参与奖励', rw2: '您认真接受了教育', rwno: '今日奖励号码', prize: '奖励', how: '请截图此画面给李成熙科长看，\n并说出今天教育内容中的一项', ack: '已阅读 · 今日确认', reading: '阅读中…', sec: '秒' },
+    rw: '教育参与奖励', rw2: '恭喜！TBM 参与优秀员工', rwno: '今日奖励号码', prize: '奖励', how: '请截图此画面给李成熙科长看，\n并说出今天教育内容中的一项', ack: '已阅读 · 今日确认', reading: '阅读中…', sec: '秒' },
   vi: { done: 'Đã xác nhận đào tạo hôm nay', myno: 'Số của tôi hôm nay', wait: 'Đang lấy số…', note: 'Phần thưởng tham gia đào tạo được công bố vào ngày ngẫu nhiên', ok: 'OK',
-    rw: 'Phần thưởng tham gia đào tạo', rw2: 'Bạn đã học rất tốt', rwno: 'Số nhận thưởng hôm nay', prize: 'Phần thưởng', how: 'Chụp màn hình này cho trưởng phòng Lee Seong-hee xem\nvà nói 1 nội dung đào tạo hôm nay', ack: 'Đã đọc · Xác nhận hôm nay', reading: 'Đang đọc…', sec: 'giây' },
+    rw: 'Phần thưởng tham gia đào tạo', rw2: 'Chúc mừng! Nhân viên tham gia TBM xuất sắc', rwno: 'Số nhận thưởng hôm nay', prize: 'Phần thưởng', how: 'Chụp màn hình này cho trưởng phòng Lee Seong-hee xem\nvà nói 1 nội dung đào tạo hôm nay', ack: 'Đã đọc · Xác nhận hôm nay', reading: 'Đang đọc…', sec: 'giây' },
   km: { done: 'បានបញ្ជាក់ការបណ្តុះបណ្តាលថ្ងៃនេះ', myno: 'លេខរបស់ខ្ញុំថ្ងៃនេះ', wait: 'កំពុងទទួលលេខ…', note: 'រង្វាន់ចូលរួមការបណ្តុះបណ្តាល ប្រកាសនៅថ្ងៃចៃដន្យ', ok: 'យល់ព្រម',
-    rw: 'រង្វាន់ចូលរួមការបណ្តុះបណ្តាល', rw2: 'អ្នកបានរៀនបានល្អ', rwno: 'លេខរង្វាន់ថ្ងៃនេះ', prize: 'រង្វាន់', how: 'សូមថតអេក្រង់នេះ បង្ហាញលោកប្រធាន លី សុងហ៊ី\nហើយប្រាប់ខ្លឹមសារមេរៀនថ្ងៃនេះ ១ចំណុច', ack: 'បានអាន · បញ្ជាក់ថ្ងៃនេះ', reading: 'កំពុងអាន…', sec: 'វិនាទី' },
+    rw: 'រង្វាន់ចូលរួមការបណ្តុះបណ្តាល', rw2: 'អបអរសាទរ! បុគ្គលិកចូលរួម TBM ឆ្នើម', rwno: 'លេខរង្វាន់ថ្ងៃនេះ', prize: 'រង្វាន់', how: 'សូមថតអេក្រង់នេះ បង្ហាញលោកប្រធាន លី សុងហ៊ី\nហើយប្រាប់ខ្លឹមសារមេរៀនថ្ងៃនេះ ១ចំណុច', ack: 'បានអាន · បញ្ជាក់ថ្ងៃនេះ', reading: 'កំពុងអាន…', sec: 'វិនាទី' },
   in: { done: 'Pelatihan hari ini sudah dikonfirmasi', myno: 'Nomor saya hari ini', wait: 'Mengambil nomor…', note: 'Hadiah partisipasi pelatihan diumumkan pada hari acak', ok: 'OK',
-    rw: 'Hadiah Partisipasi Pelatihan', rw2: 'Anda mengikuti pelatihan dengan baik', rwno: 'Nomor hadiah hari ini', prize: 'Hadiah', how: 'Tangkap layar ini, tunjukkan ke Manajer Lee Seong-hee,\nlalu sebutkan 1 isi pelatihan hari ini', ack: 'Sudah dibaca · Konfirmasi hari ini', reading: 'Membaca…', sec: 'detik' },
+    rw: 'Hadiah Partisipasi Pelatihan', rw2: 'Selamat! Karyawan Teladan Partisipasi TBM', rwno: 'Nomor hadiah hari ini', prize: 'Hadiah', how: 'Tangkap layar ini, tunjukkan ke Manajer Lee Seong-hee,\nlalu sebutkan 1 isi pelatihan hari ini', ack: 'Sudah dibaca · Konfirmasi hari ini', reading: 'Membaca…', sec: 'detik' },
   ru: { done: 'Обучение сегодня подтверждено', myno: 'Мой номер сегодня', wait: 'Получаем номер…', note: 'Награда за участие в обучении объявляется в случайный день', ok: 'OK',
-    rw: 'Награда за участие в обучении', rw2: 'Вы хорошо прошли обучение', rwno: 'Номер награды сегодня', prize: 'Награда', how: 'Сделайте скриншот, покажите начальнику Ли Сон Хи\nи назовите 1 пункт сегодняшнего обучения', ack: 'Прочитал(а) · Подтвердить сегодня', reading: 'Читаю…', sec: 'сек' }
+    rw: 'Награда за участие в обучении', rw2: 'Поздравляем! Лучший участник TBM', rwno: 'Номер награды сегодня', prize: 'Награда', how: 'Сделайте скриншот, покажите начальнику Ли Сон Хи\nи назовите 1 пункт сегодняшнего обучения', ack: 'Прочитал(а) · Подтвердить сегодня', reading: 'Читаю…', sec: 'сек' }
 };
 function pubLang() { const l = store.get('ms_pub_lang') || 'ko'; return team && tLangs().indexOf(l) >= 0 ? l : 'ko'; }
 function etx(k) { const l = pubLang(); return (EDU_TX[l] || EDU_TX.ko)[k] || EDU_TX.ko[k]; }
@@ -1782,13 +1790,20 @@ function eduPop() {
 function eduPopNo(n) { if (FIELD_PIN) return; const e = $('epNo'); if (e && $('eduPop').className === 'on') e.innerHTML = eduNoHtml(n || ''); }
 
 /* ----- 교육참여 보상 결과 화면 ----- */
+const ER_SUB = { ko: '안전교육(TBM)에 적극 참여해 주셔서 감사합니다', zh: '感谢您积极参与安全教育（TBM）', vi: 'Cảm ơn bạn đã tích cực tham gia đào tạo an toàn (TBM)',
+  km: 'សូមអរគុណដែលបានចូលរួមការបណ្តុះបណ្តាលសុវត្ថិភាព (TBM) យ៉ាងសកម្ម', in: 'Terima kasih telah aktif mengikuti pelatihan keselamatan (TBM)', ru: 'Спасибо за активное участие в обучении по безопасности (TBM)' };
+function erFireworks() {   // 폭죽 3군데 × 14갈래, 번갈아 터짐
+  const C = ['#F97316', '#FACC15', '#EF4444', '#22C55E', '#3B82F6', '#EC4899', '#A855F7'];
+  return [[22, 18, 0], [78, 14, 0.55], [50, 30, 1.1]].map(([x, y, d], k) => `<span class="erfb" style="left:${x}%;top:${y}%;animation-delay:${d}s">${
+    Array.from({ length: 14 }, (_, i) => `<b style="--a:${i * 360 / 14}deg;background:${C[(i + k * 2) % C.length]};animation-delay:${d}s"></b>`).join('')}</span>`).join('');
+}
 function eduRewardShow(w) {
   let ov = $('evWin');
   if (!ov) { ov = document.createElement('div'); ov.id = 'evWin'; document.body.appendChild(ov); }
   const cf = Array.from({ length: 26 }, (_, i) => `<i style="left:${(i * 37) % 100}%;background:${['#F97316', '#2563EB', '#16A34A', '#DB2777', '#EAB308', '#7C3AED'][i % 6]};animation-delay:${(i % 9) * 0.22}s;animation-duration:${2.2 + (i % 5) * 0.35}s"></i>`).join('');
-  ov.innerHTML = `<div class="erbox"><div class="ercf" aria-hidden="true">${cf}</div>
+  ov.innerHTML = `<div class="erbox"><div class="ercf" aria-hidden="true">${cf}</div><div class="erfw" aria-hidden="true">${erFireworks()}</div>
     <div class="erdate">${esc(w.date)} · ${esc(etx('rw'))}${w.special ? ' ⭐' : ''}</div>
-    <div class="ert">${esc(etx('rw2'))}</div>${etxKo('rw2') ? `<div class="erko">${esc(etxKo('rw2'))}</div>` : ''}
+    <div class="ert">🎉 ${esc(etx('rw2'))}</div>${etxKo('rw2') ? `<div class="erko">${esc(etxKo('rw2'))}</div>` : ''}<div class="ersub">${esc(ER_SUB[pubLang()] || ER_SUB.ko)}</div>
     <div class="ermed" aria-hidden="true">🏅</div>
     <div class="erlb">${esc(etx('rwno'))}</div><div class="erno">${eduNoHtml(w.no)}</div>
     <div class="erprize">${esc(etx('prize'))}: ${esc(w.prize)}</div>

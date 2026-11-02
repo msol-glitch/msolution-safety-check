@@ -673,6 +673,11 @@
   .np-th{display:inline-flex;align-items:center;gap:4px}.np-th img{width:56px;height:56px;object-fit:cover;border-radius:6px;border:1px solid var(--line)}
   .np-row{margin-top:6px;font-size:12.5px}.np-row:empty{display:none}.np-n{color:#C2410C;font-weight:700}.np-msg{color:var(--sub)}
   @media print{.np-row button,.np-row input{display:none!important}}
+  .pp23 img.pp23t{width:46px;height:46px;object-fit:cover;border-radius:6px;border:1px solid var(--line2);margin:2px;cursor:zoom-in;vertical-align:middle}
+  .pp23 .pp23add{cursor:pointer;margin:2px;vertical-align:middle}.pp23 .pp23no{font-size:11px;color:var(--bad)}
+  #pp23ov{position:fixed;inset:0;background:rgba(15,23,42,.75);display:none;align-items:center;justify-content:center;z-index:2000;padding:20px}
+  #pp23ov .pp23box{background:#fff;border-radius:14px;padding:12px;max-width:min(92vw,1100px);max-height:92vh;overflow:auto}
+  #pp23ov img{display:block;max-width:100%;max-height:78vh;margin:0 auto;border-radius:8px}#pp23ov .pp23bar{margin-top:8px;text-align:right;font-size:13px}
 </style>
 </head>
 <body>
@@ -1232,6 +1237,47 @@ function fmtNotice(raw) {
 
 /* ===== v12 안전 칭찬 승인 · 행운/칭찬/우수사원 지급 (관리자 PIN, 실명은 이 화면에만) ===== */
 const PAY = { praise: 10000, ev: 10000, best: 50000 };
+
+/* ===== v23 지급 사진 (지급 근거 · 대표 PC 전용) ===== */
+function pp23Img(file, max, q, limit) {
+  return new Promise((ok, no) => { const fr = new FileReader(); fr.onerror = no; fr.onload = () => { const im = new Image(); im.onerror = no; im.onload = () => {
+    let w = im.width, h = im.height, r = Math.min(1, max / Math.max(w, h)); w = Math.round(w * r); h = Math.round(h * r);
+    const c = document.createElement('canvas'); c.width = w; c.height = h; c.getContext('2d').drawImage(im, 0, 0, w, h);
+    let qq = q, u = c.toDataURL('image/jpeg', qq); while (u.length * 0.75 > limit && qq > 0.35) { qq -= 0.1; u = c.toDataURL('image/jpeg', qq); }
+    ok(u); }; im.src = fr.result; }; fr.readAsDataURL(file); });
+}
+async function pp23Load(v) {
+  const cells = v.querySelectorAll('.pp23'); if (!cells.length) return;
+  let P = { ev: {}, praise: {} };
+  try { P = (await api('action=payphotos')).photos || P; } catch (e) { cells.forEach(c => c.innerHTML = '<span style="color:var(--sub);font-size:12px">서버 반영 전</span>'); return; }
+  let tot = 0;
+  cells.forEach(c => {
+    const list = (P[c.dataset.pk] || {})[c.dataset.pid] || []; tot += list.length ? 1 : 0;
+    c.innerHTML = list.map(x => `<img class="pp23t" src="${x.s}" alt="지급 사진" title="${esc(x.time)}${x.memo ? ' · ' + esc(x.memo) : ''}" data-k="${x.k}">`).join('')
+      + (list.length < 3 ? `<label class="btn ghost sm pp23add">📷 ${list.length ? '추가' : '사진 올리기'}<input type="file" accept="image/*" hidden></label>` : '')
+      + (list.length ? '' : '<div class="pp23no">사진 없음</div>');
+    c.querySelectorAll('.pp23t').forEach(im => im.onclick = () => pp23View(c.dataset.pk, c.dataset.pid, im.dataset.k));
+    const inp = c.querySelector('input[type=file]');
+    if (inp) inp.onchange = async () => { const f = inp.files[0]; if (!f) return; const lab = c.querySelector('.pp23add'); lab.textContent = '올리는 중…';
+      try { const b = await pp23Img(f, 1600, 0.82, 880 * 1024), s = await pp23Img(f, 320, 0.7, 75 * 1024);
+        const o = await (await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ key: API_KEY, type: 'payphoto', pin: PIN, kind: c.dataset.pk, id: c.dataset.pid, b, s, by: ($('payer') || {}).value || '대표 PC' }) })).json();
+        if (!o.ok) throw new Error(o.error); pp23Load(v);
+      } catch (e) { lab.textContent = '실패: ' + (e.message || '다시 시도'); } };
+  });
+  if ($('pp23sum')) $('pp23sum').textContent = `사진 있음 ${tot} / ${cells.length}건`;
+}
+async function pp23View(kind, id, k) {
+  let o = $('pp23ov'); if (!o) { o = document.createElement('div'); o.id = 'pp23ov'; document.body.appendChild(o); }
+  o.innerHTML = '<div class="pp23box"><div class="wait">불러오는 중…</div></div>'; o.style.display = 'flex'; o.onclick = e => { if (e.target === o) o.style.display = 'none'; };
+  try { const d = await api(`action=payphoto&kind=${kind}&id=${encodeURIComponent(id)}&k=${k}`);
+    o.innerHTML = `<div class="pp23box"><img src="${d.data}" alt="지급 사진"><div class="pp23bar"><b>${esc(id)}</b> · 지급 사진 ${Number(k) + 1}
+      <button class="btn ghost sm" id="pp23off">이 사진 내리기</button> <button class="btn sm" id="pp23close">닫기</button></div></div>`;
+    $('pp23close').onclick = () => o.style.display = 'none';
+    $('pp23off').onclick = async () => { const b = $('pp23off'); if (!b.dataset.sure) { b.dataset.sure = 1; b.textContent = '한 번 더 누르면 내림'; return; }
+      const r = await (await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ key: API_KEY, type: 'payphotooff', pin: PIN, kind, id, k }) })).json();
+      if (r.ok) { o.style.display = 'none'; renderPraise(); } else b.textContent = r.error; };
+  } catch (e) { o.innerHTML = `<div class="pp23box"><p>${esc(e.message)}</p></div>`; }
+}
 async function renderPraise() {
   const v = $('praiseView'); v.classList.remove('hide'); v.innerHTML = '<div class="wait">불러오는 중…</div>';
   let d; try { d = await api('action=praiselist'); } catch (e) { v.innerHTML = emptyMsg('서버 연결 전: ' + esc(e.message)); return; }
@@ -1239,8 +1285,8 @@ async function renderPraise() {
   const gift = w => String(w.how || '').indexOf('(특별)') > 0, gname = w => String(w.how || '').split('· ')[1] || '', isEdu = w => String(w.how || '').indexOf('교육참여 보상') === 0;
   const ym = dstr(kstNow()).slice(0, 7);
   const wait = d.list.filter(x => x.st === '대기'), toPay = d.list.filter(x => x.st === '승인' && !x.paid), evPay = d.wins.filter(w => !w.paid), evAmt = w => gift(w) ? 0 : PAY.ev;
-  const paid = d.list.filter(x => x.paid).map(x => ({ k: '칭찬', d: x.paid, who: `${x.name} (${x.team})`, what: x.cat, amt: PAY.praise, by: x.payer }))
-    .concat(d.wins.filter(w => w.paid).map(w => ({ k: isEdu(w) ? '교육보상' : '행운', d: w.paid, who: `${w.code} (${w.team})`, what: w.how, amt: evAmt(w), by: w.payer })))
+  const paid = d.list.filter(x => x.paid).map(x => ({ k: '칭찬', d: x.paid, who: `${x.name} (${x.team})`, what: x.cat, amt: PAY.praise, by: x.payer, pk: 'praise', pid: x.id }))
+    .concat(d.wins.filter(w => w.paid).map(w => ({ k: isEdu(w) ? '교육보상' : '행운', d: w.paid, who: `${w.code} (${w.team})`, what: w.how, amt: evAmt(w), by: w.payer, pk: 'ev', pid: w.code })))
     .sort((a, b) => b.d < a.d ? -1 : 1);
   const kpi = (t, n, u, c) => `<div class="card" style="text-align:center"><div style="font-size:12px;color:var(--sub)">${t}</div><div style="font-size:26px;font-weight:800;color:${c || 'var(--ink)'}">${num(n)}<small style="font-size:13px"> ${u}</small></div></div>`;
   v.innerHTML = `<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px">
@@ -1265,9 +1311,10 @@ async function renderPraise() {
       ${d.ranking.map((x, i) => `<tr><td class="c">${i + 1}</td><td class="c"><b>${esc(x.name)}</b></td><td class="c">${esc(x.team)}</td><td class="c">${x.n}건</td><td class="c">${x.kinds}종</td>
         <td class="c">${d.best.some(b => b.half === d.half) ? '' : `<button class="btn ghost sm" data-best="${esc(x.name)}">선정</button>`}</td></tr>`).join('')}</tbody></table>` : emptyMsg('이번 반기 승인된 칭찬이 아직 없습니다')}</div>
     <div class="card" style="margin-top:12px"><h2>④ 지급 내역 <small>실명 기록은 이 화면(관리자 PIN)에만 · 직원·외부 화면에는 이름 없이 표시</small></h2>
-      ${paid.length ? `<table><thead><tr><th style="width:12%">지급일</th><th style="width:8%">구분</th><th>대상</th><th style="width:16%">내용</th><th style="width:11%">금액</th><th style="width:10%">지급자</th></tr></thead><tbody>
-      ${paid.map(x => `<tr><td class="c">${esc(x.d)}</td><td class="c">${x.k}</td><td class="c">${esc(x.who)}</td><td class="c">${esc(x.what)}</td><td class="c">${x.amt ? num(x.amt) + '원' : '현물'}</td><td class="c">${esc(x.by || '')}</td></tr>`).join('')}</tbody>
-      <tfoot><tr><td colspan="4" class="c">합계 ${num(paid.length)}건</td><td class="c">${num(paid.reduce((a, x) => a + x.amt, 0))}원</td><td></td></tr></tfoot></table>` : emptyMsg('지급 내역이 없습니다')}
+      ${paid.length ? `<table><thead><tr><th style="width:12%">지급일</th><th style="width:8%">구분</th><th>대상</th><th style="width:16%">내용</th><th style="width:11%">금액</th><th style="width:10%">지급자</th><th style="width:20%">지급 사진 <small style="font-weight:400">(근거)</small></th></tr></thead><tbody>
+      ${paid.map(x => `<tr><td class="c">${esc(x.d)}</td><td class="c">${x.k}</td><td class="c">${esc(x.who)}</td><td class="c">${esc(x.what)}</td><td class="c">${x.amt ? num(x.amt) + '원' : '현물'}</td><td class="c">${esc(x.by || '')}</td><td class="c pp23" data-pk="${x.pk}" data-pid="${esc(x.pid)}"><span class="pp23w">…</span></td></tr>`).join('')}</tbody>
+      <tfoot><tr><td colspan="4" class="c">합계 ${num(paid.length)}건</td><td class="c">${num(paid.reduce((a, x) => a + x.amt, 0))}원</td><td></td><td class="c" id="pp23sum"></td></tr></tfoot></table>
+      <p class="note">지급 사진: 상품권·상품을 건네는 장면이나 수령 확인 사진을 올려 두면 지급 근거가 됩니다 (한 건 3장까지 · 대표 PC에서만 보임). 얼굴이 나오면 본인 동의를 받아 주세요.</p>` : emptyMsg('지급 내역이 없습니다')}
       <p class="note">상품권·현물 지급의 세무 처리(근로소득 해당 여부)는 경리 확인 필요.</p></div>
     ${ea ? `<div class="card" style="margin-top:12px"><h2>⑤ 교육참여 보상 일정 <small>대표 전용 · 직원 화면에는 날짜가 나오지 않습니다</small></h2>
       <p style="margin:0 0 8px">다음 정기 추첨일 <b>${esc(ea.next)}</b> · ${esc(ea.cutoff)}까지 확인한 직원 대상 · ${esc(ea.drawAt)}부터 발표 · 평소 보상 상품권 10,000원 · 기준 인원 ${num(ea.base)}명</p>
@@ -1285,6 +1332,7 @@ async function renderPraise() {
   v.querySelectorAll('[data-pa]').forEach(b => b.onclick = () => { const [act, id] = b.dataset.pa.split('|'); post({ id, act }, b); });
   v.querySelectorAll('[data-pay]').forEach(b => b.onclick = () => { const [k, id] = b.dataset.pay.split('|'); post(k === 'ev' ? { kind: 'ev', id } : { id, act: 'paid' }, b); });
   v.querySelectorAll('[data-best]').forEach(b => b.onclick = () => { if (!b.dataset.sure) { b.dataset.sure = 1; b.textContent = '한 번 더 누르면 선정'; return; } post({ kind: 'best', name: b.dataset.best }, b); });
+  pp23Load(v);
 }
 
 
