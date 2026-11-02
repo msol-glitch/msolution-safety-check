@@ -786,8 +786,8 @@ const ICON = {
 };
 const FOLDERS = [
   { key: 'dust', name: '집진기 청소 점검', no: 'MS-SF-04', open: '' },
-  { key: 'patrol', name: '중대재해예방 순회점검', no: 'MS-SF-05' },
-  { key: '5s', name: '3정5행 점검', no: 'MS-SF-08' },
+  { key: 'patrol', name: '관리감독자 순회점검', no: 'MS-SF-05' },
+  { key: '5s', name: '현장 3정5행 점검', no: 'MS-SF-08' },
   { key: 'ppe', name: '보호구 지급 (PDCA)', no: 'MS-SF-06', off: true },
   { key: 'plt', name: 'PLT(납입대차) 관리대장', no: '준비 중', off: true }
 ];
@@ -814,8 +814,8 @@ const DUST_CYCLE = 30;          // 집진기 청소 주기(일) — 2026-10-07 �
 const HEADCOUNT = '직접인원 27명 · 4개 팀 9개 라인';
 const NAV = [
   { grp: '자주 쓰는 점검' },
-  { key: '5s', name: '3정5행 점검', ic: ICON['5s'] },
-  { key: 'patrol', name: '순회점검', ic: ICON.patrol },
+  { key: '5s', name: '현장 3정5행 점검', ic: ICON['5s'] },
+  { key: 'patrol', name: '관리감독자 순회점검', ic: ICON.patrol },
   { key: 'tbm', name: 'TBM', ic: '<circle cx="8" cy="9" r="3"/><circle cx="16" cy="9" r="3"/><path d="M3 20c0-3 2.5-5 5-5s5 2 5 5M11 20c0-3 2.5-5 5-5s5 2 5 5"/>' },
   { key: 'dust', name: '집진기 청소', ic: ICON.dust },
   { key: 'ppe', name: '보호구 지급', ic: ICON.ppe },
@@ -823,7 +823,7 @@ const NAV = [
   { key: 'stretch', name: '건강증진 스트레칭', ic: '<circle cx="12" cy="5" r="2.5"/><path d="M12 8v6M7 10l5 2 5-2M9 21l3-7 3 7"/>' },
   { key: 'praise', name: '칭찬·행운 지급', ic: '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>' },
   { key: 'actions', name: '조치관리', ic: '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 0 0 5.4-5.4l-2.4 2.4-2.6-.4-.4-2.6z"/>' },
-  { key: 'risk', name: '위험성평가', ic: '<path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17v.5"/>' },
+  { key: 'risk', name: '참여형 위험성평가', ic: '<path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17v.5"/>' },
   { grp: '대표자 전용 · 별도 PIN' },
   { key: 'ceo1', name: '안전보건 관리 현황', ic: '<path d="M5 4h14v16H5z"/><path d="M9 8h6M9 12h6M9 16h3"/>', lock: 1, soon: 'v7' },
   { key: 'ceo2', name: '증빙 자동매핑', ic: '<path d="M3 7h6l2 2h10v10H3z"/><path d="M12 12v5M9.5 14.5 12 12l2.5 2.5"/>', lock: 1, soon: 'v7' },
@@ -877,7 +877,7 @@ function route() {
   if (key === 'notice') { $('pageTitle').textContent = '전달사항·안전참여'; return renderNotice(); }
   if (key === 'ppe') { $('pageTitle').textContent = '보호구(안전용품) 지급·관리 대장'; return renderPpe(); }
   if (key === 'praise') { $('pageTitle').textContent = '안전 칭찬 · 행운 이벤트 지급'; return renderPraise(); }
-  if (key === 'risk') { $('pageTitle').textContent = '위험성평가'; return renderRisk(); }
+  if (key === 'risk') { $('pageTitle').textContent = '참여형 위험성평가'; return renderRisk(); }
   if (key === 'tbm') { $('pageTitle').textContent = 'TBM (작업 전 안전회의)'; return renderTbm(); }
   if (key === 'actions') { $('pageTitle').textContent = '조치관리'; return renderActions(); }
   const n = NAV.find(x => x.key === key && (x.soon || x.off));
@@ -2727,12 +2727,12 @@ start();
   const top = document.createElement('div'); top.id = 'v21top';
   top.innerHTML = `<div class="ut"><div class="in"><span><b>㈜엠솔루션</b> 사내 전용 · 관리자 화면</span><span><span id="v21date"></span><a href="guide.html#pc" target="_blank" rel="noopener">사용 설명서</a><a href="l.html" target="_blank" rel="noopener">QR 라벨</a></span></div></div>
     <div class="hd"><a href="#" aria-label="처음 화면"><img src="${logo.src}" alt="㈜엠솔루션"></a><div class="ttl"><b>안전경영 통합관리시스템</b><small>Safety Management Integrated System</small></div><div class="sp"></div>
-      <nav class="qs"><a href="#">처음 화면</a><a href="#patrol">순회점검</a><a href="#tbm">TBM</a><a href="#notice">전달사항</a><a href="#stretch">건강증진</a><a href="#risk">위험성평가</a></nav></div>`;
+      <nav class="qs"><a href="#">처음 화면</a><a href="#patrol">관리감독자 순회점검</a><a href="#tbm">TBM</a><a href="#notice">전달사항</a><a href="#stretch">건강증진</a><a href="#risk">참여형 위험성평가</a></nav></div>`;
   document.body.insertBefore(top, document.body.firstChild);
   const d = new Date(), WDK = ['일', '월', '화', '수', '목', '금', '토']; $('v21date').textContent = `${d.getFullYear()}. ${d.getMonth() + 1}. ${d.getDate()}. (${WDK[d.getDay()]})`;
   const mark = () => { const k = location.hash.slice(1); top.querySelectorAll('.qs a').forEach(a => a.classList.toggle('on', a.getAttribute('href').slice(1) === k)); };
   window.addEventListener('hashchange', mark); mark();
-  const SVC = [['5s', '3정5행 점검', '팀별'], ['patrol', '순회점검', '일일'], ['tbm', 'TBM', '라인별'], ['dust', '집진기 청소', '화재예방'], ['ppe', '보호구 지급', '대장'], ['notice', '전달사항', '안전참여'], ['stretch', '건강증진', '스트레칭'], ['risk', '위험성평가', '수시·정기']];
+  const SVC = [['5s', '현장 3정5행 점검', '팀별'], ['patrol', '관리감독자 순회점검', '일일'], ['tbm', 'TBM', '라인별'], ['dust', '집진기 청소', '화재예방'], ['ppe', '보호구 지급', '대장'], ['notice', '전달사항', '안전참여'], ['stretch', '건강증진', '스트레칭'], ['risk', '참여형 위험성평가', '수시·정기']];
   const icon = k => { const n = (typeof NAV !== 'undefined' ? NAV : []).find(x => x.key === k); return n && n.ic ? n.ic : '<path d="M4 12h16"/>'; };
   const home = $('home'); if (!home) return;
   const hero = document.createElement('div'); hero.id = 'v21hero';

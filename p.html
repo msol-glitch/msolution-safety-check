@@ -328,6 +328,16 @@
   .menu .h19task .h19lab{display:block;font-size:12px;color:var(--amber)}.menu .h19task b{display:block;font-size:21px;color:#fff;font-weight:600;margin-top:4px}
   .menu .h19task .h19tp{display:block;font-size:13px;color:#C9CDD2;line-height:1.6;margin-top:10px}
   .h19go{position:absolute;right:18px;bottom:16px;width:52px;height:52px;border-radius:50%;background:var(--amber);color:var(--graph);display:flex;align-items:center;justify-content:center}
+  /* 11/02 TBM 강조: 확인 전엔 테두리 빛 번짐 + 화살표 움직임 + '지금 확인하세요' 깜빡임 */
+  .menu .h19task b{word-break:keep-all}
+  .menu .h19task .h19tbm{font-style:normal;display:inline-block;background:var(--amber);color:var(--graph);font-weight:800;border-radius:6px;padding:1px 7px;margin-right:4px;font-size:12.5px}
+  .menu .h19task .h19now{display:inline-block;margin-bottom:8px;font-size:13px;font-weight:800;color:var(--graph);background:#FFD166;border-radius:999px;padding:3px 10px;animation:h19blink 1.1s ease-in-out infinite}
+  .menu .h19task.todo{outline:3px solid var(--amber);outline-offset:-3px;animation:h19glow 1.6s ease-out infinite}
+  .h19task.todo .h19go{animation:h19nudge 1.1s ease-in-out infinite}
+  @keyframes h19glow{0%{box-shadow:0 0 0 0 rgba(245,166,35,.75)}70%{box-shadow:0 0 0 16px rgba(245,166,35,0)}100%{box-shadow:0 0 0 0 rgba(245,166,35,0)}}
+  @keyframes h19blink{0%,100%{opacity:1}50%{opacity:.25}}
+  @keyframes h19nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(6px)}}
+  @media (prefers-reduced-motion:reduce){.menu .h19task.todo,.h19task.todo .h19go,.menu .h19task .h19now{animation:none}}
   .h19task.ok .h19go{background:#2E9A63;color:#fff}.menu .h19task.ok .h19lab{color:#7FD3A6}
   .menu .h19win{width:100%;margin-top:10px;border:1px solid #F2C46D;background:#FFF7E6;border-radius:14px;padding:11px 14px;font-size:14px;color:#633806;text-align:left}.menu .h19win b{display:inline;font-size:16px;color:#412402}.h19win em{font-style:normal;font-weight:700;color:#B45309}
   .h19strip{display:flex;margin-top:12px;background:#fff;border-radius:18px;padding:11px 4px}
@@ -649,9 +659,9 @@
       <input type="password" id="mgrPin" inputmode="numeric" maxlength="8" placeholder="관리자 번호" autocomplete="off"><div style="height:8px"></div>
       <button class="submit" id="mgrBtn">이 휴대폰을 관리자 폰으로 등록</button><p class="msg" id="mgrMsg" style="margin-top:6px"></p></div>
 
-    <button data-type="patrol"><b>중대재해예방 순회점검</b><span>안전관리자 · 안전보건관리책임자 일일 순회 · 법적 근거 포함</span></button>
+    <button data-type="patrol"><b>관리감독자 순회점검</b><span>안전관리자 · 안전보건관리책임자 일일 순회 · 법적 근거 포함</span></button>
     <button data-type="tbm" style="border-color:#EA580C;background:#FFF7ED"><b>TBM (작업 전 안전회의)</b><span>시작 누르고 → 끝나면 마치기 · 오늘의 안전 주제 3개 · 외국어 지원</span></button>
-    <button data-type="5s"><b>3정5행 점검</b><span>자재·제품 관리, 작업장 정리정돈, 품질, 안전</span></button>
+    <button data-type="5s"><b>현장 3정5행 점검</b><span>자재·제품 관리, 작업장 정리정돈, 품질, 안전</span></button>
     <button id="prBtn" style="border-color:#1D4ED8;background:#EFF6FF;display:none"><b>⭐ 안전 칭찬 등록</b><span>잘한 직원 추천 → 대표 승인 → 상품권 · 사유는 이름 없이 한 줄</span></button>
     <button id="tnBtn" style="border-color:#2563EB;background:#EFF6FF;display:none"><b>📌 TBM 전달사항 등록</b><span>다음 근무일 전 팀 TBM 주제 맨 위에 표시 · 사진 2장까지</span></button>
     <button id="actBtn" style="border-color:#16A34A;background:#F0FDF4;display:none"><b>🛠 조치 입력</b><span>우리 팀 개선 필요 건 → 조치 내용·사진 → 완료 (상시평가 자동 반영)</span></button>
@@ -828,7 +838,7 @@ function reset() {
 function open(t) {
   type = t; answers = {};
   $('menu').style.display = 'none'; $('form').style.display = ''; $('bar').style.display = ''; $('backBtn').style.display = '';
-  $('title').textContent = t === 'patrol' ? '중대재해예방 순회점검' : '3정5행 점검';
+  $('title').textContent = t === 'patrol' ? '관리감독자 순회점검' : '현장 3정5행 점검';
   $('docno').textContent = DOCNO[t];
   // 점검자
   if (t === 'patrol') {
@@ -2137,8 +2147,9 @@ function foodAdminUI(box, auth, todayStr) {
  */
 const V19_CEO = '오늘도 다치지 않고, 웃으며 퇴근합시다.';
 const V19_SINCE = '2015-01-02';   // 무재해 기준일 (s.html과 같음)
+const V19_NOW = { ko: '지금 확인하세요', zh: '请现在确认', vi: 'Hãy xác nhận ngay', km: 'សូមបញ្ជាក់ឥឡូវនេះ', in: 'Konfirmasi sekarang', ru: 'Подтвердите сейчас' };
 const V19_TX = {
-  ko: { morning: '좋은 아침입니다.', noon: '좋은 오후입니다.', eve: '좋은 저녁입니다.', night: '오늘도 수고 많으십니다.', slide: '밀어서 입장하기', tap: '밀기 어려우면 여기를 누르세요', welcome: '오늘도 안전하게', go: '메인 화면으로 이동합니다', task: '오늘 할 일', taskT: '안전 주제 3개 확인하기', taskDone: '오늘 교육 확인 완료', meal: '맛있는 식사 하세요' },
+  ko: { morning: '좋은 아침입니다.', noon: '좋은 오후입니다.', eve: '좋은 저녁입니다.', night: '오늘도 수고 많으십니다.', slide: '밀어서 입장하기', tap: '밀기 어려우면 여기를 누르세요', welcome: '오늘도 안전하게', go: '메인 화면으로 이동합니다', task: '오늘 할 일', taskT: 'TBM 안전 주제 3개 확인하기', taskDone: '오늘 교육 확인 완료', meal: '맛있는 식사 하세요' },
   zh: { morning: '早上好。', noon: '下午好。', eve: '晚上好。', night: '今天辛苦了。', slide: '滑动进入', tap: '滑动困难请点这里', welcome: '今天也要安全', go: '正在进入主页', task: '今天要做的事', taskT: '确认 3 个安全主题', taskDone: '今日教育已确认', meal: '祝您用餐愉快' },
   vi: { morning: 'Chào buổi sáng.', noon: 'Chào buổi chiều.', eve: 'Chào buổi tối.', night: 'Hôm nay vất vả rồi.', slide: 'Trượt để vào', tap: 'Khó trượt thì bấm vào đây', welcome: 'Hôm nay cũng an toàn nhé', go: 'Đang vào màn hình chính', task: 'Việc hôm nay', taskT: 'Xác nhận 3 chủ đề an toàn', taskDone: 'Đã xác nhận đào tạo hôm nay', meal: 'Chúc bữa ăn ngon miệng' },
   km: { morning: 'អរុណសួស្តី។', noon: 'ទិវាសួស្តី។', eve: 'សាយ័ណ្ហសួស្តី។', night: 'ថ្ងៃនេះនឿយហត់ហើយ។', slide: 'អូសដើម្បីចូល', tap: 'បើពិបាកអូស សូមចុចទីនេះ', welcome: 'ថ្ងៃនេះក៏សុវត្ថិភាពដែរ', go: 'កំពុងចូលទំព័រដើម', task: 'ការងារថ្ងៃនេះ', taskT: 'បញ្ជាក់ប្រធានបទសុវត្ថិភាព ៣', taskDone: 'បានបញ្ជាក់ការបណ្តុះបណ្តាលថ្ងៃនេះ', meal: 'សូមរីករាយជាមួយអាហារ' },
@@ -2226,7 +2237,7 @@ function v19home() {
   h.innerHTML = `<div class="h19top"><button class="h19logo" id="h19logo" aria-label="㈜엠솔루션"><img src="${v19logo()}" alt=""></button>
       <div class="h19who"><b>${esc(TEAMS[team][0])}</b><span>${esc(v19date())}</span></div>
       ${tLangs().length > 1 ? `<button class="h19lang" id="h19lang">${esc(LANG[l])}</button>` : ''}</div>
-    <button class="h19task ${done ? 'ok' : ''}" id="h19task"><span class="h19lab">${esc(v19t('task'))}</span>
+    <button class="h19task ${done ? 'ok' : 'todo'}" id="h19task">${done ? '' : `<span class="h19now">👆 ${esc((V19_NOW[pubLang()] || V19_NOW.ko))}</span>`}<span class="h19lab"><em class="h19tbm">TBM</em> Tool Box Meeting · ${esc(v19t('task'))}</span>
       <b>${esc(done ? v19t('taskDone') : viaN ? '전달사항 읽고 확인하기' : v19t('taskT'))}</b>
       <span class="h19tp">${done ? (mgr ? '관리자 폰 · 보상 추첨 제외' : d === 'p' ? '번호 받는 중…' : d !== 'mgr' ? `오늘 내 번호 ${esc(d)}번` : '') : viaN ? LAST_NOTICES.slice(0, 3).map(n => esc(n.title)).join('<br>') : ts.map(t => esc((t[l] || t.ko)[0])).join('<br>')}</span>
       <span class="h19go">${v19svg(done ? '<path d="M5 12l5 5 9-10"/>' : V19I.arrow, 22)}</span></button>
