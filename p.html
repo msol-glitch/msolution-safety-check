@@ -292,6 +292,19 @@
   .tl18.on{background:#1B3A6B;color:#fff}.tl18.fin{background:#F1F5F9;color:#94A3B8;border:1px solid #E2E8F0;padding-bottom:10px}
   .rest18{position:absolute;right:8px;bottom:7px;font:inherit;font-size:12.5px;border:1px solid rgba(255,255,255,.7);background:rgba(255,255,255,.15);color:#fff;border-radius:999px;padding:3px 12px}
   /* v18 TBM 전달사항 */
+
+  /* v24 작업중지권 안내 (주 1회) */
+  .wsc{border:3px solid #DC2626;background:#FEF2F2;border-radius:14px;padding:12px 13px;margin-bottom:10px;animation:wsPulse 2s ease-in-out 3}
+  .wsc .wsh{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:800;color:#991B1B}
+  .wsc .wsh span{background:#DC2626;color:#fff;border-radius:99px;padding:2px 9px}
+  .wsc .wst{font-size:18px;font-weight:900;color:#B91C1C;margin:6px 0 6px;word-break:keep-all}
+  .wsc ol{margin:0;padding-left:20px}.wsc li{font-size:15px;font-weight:700;color:#1F2937;margin:3px 0;word-break:keep-all;line-height:1.45}
+  .wsc .wsko{font-size:12px;color:#6B7280;margin-top:4px}
+  .wsc details{margin-top:8px;background:#fff;border:1px dashed #FCA5A5;border-radius:10px;padding:8px 10px}
+  .wsc summary{font-weight:900;color:#B91C1C;cursor:pointer}
+  .wsc details p{font-size:15.5px;line-height:1.6;margin:6px 0 0;word-break:keep-all;color:#111827}
+  .wsc.big .wst{font-size:22px}.wsc.big li{font-size:18px}
+  @keyframes wsPulse{0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,0)}50%{box-shadow:0 0 0 6px rgba(220,38,38,.25)}}
   .tnc{border:2px solid #2563EB;background:#EFF6FF;border-radius:14px;padding:11px 12px;margin-bottom:10px}
   .tnc .tnh{font-size:12.5px;font-weight:800;color:#1D4ED8;display:flex;justify-content:space-between}.tnc .tnh span{color:#64748B;font-weight:400}
   .tnc .tnt{font-size:17.5px;font-weight:900;margin-top:4px;line-height:1.35;word-break:keep-all;color:#0F172A}
@@ -1397,7 +1410,7 @@ function tbmCard(t, i, l) {
 function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
 function tbmBig() {
   const langs = tbm.langs || ['ko'];
-  $('bigBody').innerHTML = `<div class="blang">${langs.map(l => `<button data-big="${l}" class="${l === tbm.lang ? 'on' : ''}">${LANG[l]}</button>`).join('')}</div>` +
+  $('bigBody').innerHTML = `<div class="blang">${langs.map(l => `<button data-big="${l}" class="${l === tbm.lang ? 'on' : ''}">${LANG[l]}</button>`).join('')}</div>` + wsHtml(tbm.lang, true) +
     tbm.topics.map((t, i) => tbmCard(t, i, tbm.lang)).join('');
   document.querySelectorAll('[data-big]').forEach(b => b.onclick = () => { tbm.lang = b.dataset.big; tbmBig(); if (type === 'tbm') tbmRender(); });
   if (!$('bigDlg').open) $('bigDlg').showModal();
@@ -1674,7 +1687,7 @@ function mgrRender() {
   $('mgrLock').style.display = on || !MGR_OPEN ? 'none' : '';
   document.querySelectorAll('#menu [data-type]').forEach(b => b.style.display = on ? '' : 'none');
   $('mgrOff').style.display = on ? '' : 'none';
-  $('prBtn').style.display = on ? '' : 'none'; if ($('actBtn')) $('actBtn').style.display = on ? '' : 'none'; if ($('tnBtn')) $('tnBtn').style.display = on ? '' : 'none'; evCardRender();
+  $('prBtn').style.display = 'none';   /* v24: 안전 칭찬 미운영 (2026-11-03 대표 결정) */ if ($('actBtn')) $('actBtn').style.display = on ? '' : 'none'; if ($('tnBtn')) $('tnBtn').style.display = on ? '' : 'none'; evCardRender();
 }
 $('mgrBtn').onclick = async () => {
   const pin = $('mgrPin').value.trim(), m = $('mgrMsg'); m.textContent = '확인 중…';
@@ -1698,17 +1711,17 @@ let EV = null, EVP = null, evOpenAt = {}, evTimer = null;
 function evDone() { return store.get(evKey()); }   // 번호 | 'p'(전송 중) | 'mgr'(예전 값)
 const EDU_TX = {
   ko: { done: '오늘 교육 확인 완료', myno: '오늘 내 번호', wait: '번호 받는 중…', note: '교육참여 보상은 무작위 날 발표돼요', ok: '확인',
-    rw: '교육참여 보상', rw2: '축! TBM 참여 우수 직원', rwno: '오늘의 보상 번호', prize: '보상', how: '이 화면을 캡처해서 이성희 과장에게 보여주고,\n오늘 교육 내용 1가지를 말해 주세요', ack: '읽었습니다 · 오늘 확인', reading: '읽는 중…', sec: '초' },
+    rw: '교육참여 보상', rw2: '축! TBM 참여 감사', rwno: '오늘의 보상 번호', prize: '보상', how: '이 화면을 캡처해서 이성희 과장에게 보여주고,\n오늘 교육 내용 1가지를 말해 주세요', ack: '읽었습니다 · 오늘 확인', reading: '읽는 중…', sec: '초' },
   zh: { done: '今日教育确认完成', myno: '今天我的号码', wait: '正在获取号码…', note: '教育参与奖励将在随机日子公布', ok: '确认',
-    rw: '教育参与奖励', rw2: '恭喜！TBM 参与优秀员工', rwno: '今日奖励号码', prize: '奖励', how: '请截图此画面给李成熙科长看，\n并说出今天教育内容中的一项', ack: '已阅读 · 今日确认', reading: '阅读中…', sec: '秒' },
+    rw: '教育参与奖励', rw2: '恭喜！感谢参与TBM', rwno: '今日奖励号码', prize: '奖励', how: '请截图此画面给李成熙科长看，\n并说出今天教育内容中的一项', ack: '已阅读 · 今日确认', reading: '阅读中…', sec: '秒' },
   vi: { done: 'Đã xác nhận đào tạo hôm nay', myno: 'Số của tôi hôm nay', wait: 'Đang lấy số…', note: 'Phần thưởng tham gia đào tạo được công bố vào ngày ngẫu nhiên', ok: 'OK',
-    rw: 'Phần thưởng tham gia đào tạo', rw2: 'Chúc mừng! Nhân viên tham gia TBM xuất sắc', rwno: 'Số nhận thưởng hôm nay', prize: 'Phần thưởng', how: 'Chụp màn hình này cho trưởng phòng Lee Seong-hee xem\nvà nói 1 nội dung đào tạo hôm nay', ack: 'Đã đọc · Xác nhận hôm nay', reading: 'Đang đọc…', sec: 'giây' },
+    rw: 'Phần thưởng tham gia đào tạo', rw2: 'Chúc mừng! Cảm ơn bạn đã tham gia TBM', rwno: 'Số nhận thưởng hôm nay', prize: 'Phần thưởng', how: 'Chụp màn hình này cho trưởng phòng Lee Seong-hee xem\nvà nói 1 nội dung đào tạo hôm nay', ack: 'Đã đọc · Xác nhận hôm nay', reading: 'Đang đọc…', sec: 'giây' },
   km: { done: 'បានបញ្ជាក់ការបណ្តុះបណ្តាលថ្ងៃនេះ', myno: 'លេខរបស់ខ្ញុំថ្ងៃនេះ', wait: 'កំពុងទទួលលេខ…', note: 'រង្វាន់ចូលរួមការបណ្តុះបណ្តាល ប្រកាសនៅថ្ងៃចៃដន្យ', ok: 'យល់ព្រម',
-    rw: 'រង្វាន់ចូលរួមការបណ្តុះបណ្តាល', rw2: 'អបអរសាទរ! បុគ្គលិកចូលរួម TBM ឆ្នើម', rwno: 'លេខរង្វាន់ថ្ងៃនេះ', prize: 'រង្វាន់', how: 'សូមថតអេក្រង់នេះ បង្ហាញលោកប្រធាន លី សុងហ៊ី\nហើយប្រាប់ខ្លឹមសារមេរៀនថ្ងៃនេះ ១ចំណុច', ack: 'បានអាន · បញ្ជាក់ថ្ងៃនេះ', reading: 'កំពុងអាន…', sec: 'វិនាទី' },
+    rw: 'រង្វាន់ចូលរួមការបណ្តុះបណ្តាល', rw2: 'អបអរសាទរ! សូមអរគុណចំពោះការចូលរួម TBM', rwno: 'លេខរង្វាន់ថ្ងៃនេះ', prize: 'រង្វាន់', how: 'សូមថតអេក្រង់នេះ បង្ហាញលោកប្រធាន លី សុងហ៊ី\nហើយប្រាប់ខ្លឹមសារមេរៀនថ្ងៃនេះ ១ចំណុច', ack: 'បានអាន · បញ្ជាក់ថ្ងៃនេះ', reading: 'កំពុងអាន…', sec: 'វិនាទី' },
   in: { done: 'Pelatihan hari ini sudah dikonfirmasi', myno: 'Nomor saya hari ini', wait: 'Mengambil nomor…', note: 'Hadiah partisipasi pelatihan diumumkan pada hari acak', ok: 'OK',
-    rw: 'Hadiah Partisipasi Pelatihan', rw2: 'Selamat! Karyawan Teladan Partisipasi TBM', rwno: 'Nomor hadiah hari ini', prize: 'Hadiah', how: 'Tangkap layar ini, tunjukkan ke Manajer Lee Seong-hee,\nlalu sebutkan 1 isi pelatihan hari ini', ack: 'Sudah dibaca · Konfirmasi hari ini', reading: 'Membaca…', sec: 'detik' },
+    rw: 'Hadiah Partisipasi Pelatihan', rw2: 'Selamat! Terima kasih atas partisipasi TBM', rwno: 'Nomor hadiah hari ini', prize: 'Hadiah', how: 'Tangkap layar ini, tunjukkan ke Manajer Lee Seong-hee,\nlalu sebutkan 1 isi pelatihan hari ini', ack: 'Sudah dibaca · Konfirmasi hari ini', reading: 'Membaca…', sec: 'detik' },
   ru: { done: 'Обучение сегодня подтверждено', myno: 'Мой номер сегодня', wait: 'Получаем номер…', note: 'Награда за участие в обучении объявляется в случайный день', ok: 'OK',
-    rw: 'Награда за участие в обучении', rw2: 'Поздравляем! Лучший участник TBM', rwno: 'Номер награды сегодня', prize: 'Награда', how: 'Сделайте скриншот, покажите начальнику Ли Сон Хи\nи назовите 1 пункт сегодняшнего обучения', ack: 'Прочитал(а) · Подтвердить сегодня', reading: 'Читаю…', sec: 'сек' }
+    rw: 'Награда за участие в обучении', rw2: 'Поздравляем! Спасибо за участие в TBM', rwno: 'Номер награды сегодня', prize: 'Награда', how: 'Сделайте скриншот, покажите начальнику Ли Сон Хи\nи назовите 1 пункт сегодняшнего обучения', ack: 'Прочитал(а) · Подтвердить сегодня', reading: 'Читаю…', sec: 'сек' }
 };
 function pubLang() { const l = store.get('ms_pub_lang') || 'ko'; return team && tLangs().indexOf(l) >= 0 ? l : 'ko'; }
 function etx(k) { const l = pubLang(); return (EDU_TX[l] || EDU_TX.ko)[k] || EDU_TX.ko[k]; }
@@ -1934,6 +1947,43 @@ async function tnBig(id, k) {
     if (o.ok && $('tnoImg')) { $('tnoImg').src = o.data; $('tnoW').textContent = ''; } else if ($('tnoW')) $('tnoW').textContent = '큰 사진을 받지 못했습니다'; } catch (e) { if ($('tnoW')) $('tnoW').textContent = '연결이 약합니다'; }
 }
 function tnWhat() { return TN.length ? '[전달] ' + TN.map(n => n.title).join(' / ') + ' · ' : ''; }
+
+/* ===== v24 작업중지권 안내 — 주 1회 TBM 교육내용 (2026-11-03 대표 지시 · 감사 승인) =====
+ * 이번 주에 이 폰에서 작업중지권이 들어간 TBM·확인을 보내기 전까지 카드 표시 → 보낸 날은 그날 하루 더 표시
+ * (월요일 휴무면 그 주 첫 근무일에 자연히 표시) · 일요일 제외 · 기록: 주제 앞 '[작업중지권] ' → PC 인쇄에 빨간 표시
+ */
+const WS_TX = {
+  ko: ['🛑 위험하면 멈추세요 — 작업중지권', ['위험하거나 다칠 것 같으면 즉시 작업 중지 → 안전한 곳으로 대피', '바로 반장·관리자에게 알리기', '멈춘 것으로 절대 불이익 없음 — 회사가 고친 뒤 다시 작업']],
+  zh: ['🛑 有危险就停下 — 停止作业权', ['感到危险或可能受伤时，立即停止作业 → 撤离到安全的地方', '马上告诉班长或管理人员', '因停止作业绝不会受到任何不利对待 — 公司处理好后再作业']],
+  vi: ['🛑 Nguy hiểm thì dừng lại — Quyền dừng công việc', ['Thấy nguy hiểm hoặc có thể bị thương: dừng việc ngay → đến nơi an toàn', 'Báo ngay cho tổ trưởng hoặc quản lý', 'Dừng việc vì an toàn sẽ không bị bất lợi — công ty sửa xong mới làm tiếp']],
+  km: ['🛑 បើមានគ្រោះថ្នាក់ សូមឈប់ — សិទ្ធិបញ្ឈប់ការងារ', ['បើមានគ្រោះថ្នាក់ ឬអាចរងរបួស ត្រូវឈប់ការងារភ្លាម → ទៅកន្លែងសុវត្ថិភាព', 'ប្រាប់ប្រធានក្រុម ឬអ្នកគ្រប់គ្រងភ្លាមៗ', 'ការឈប់ការងារដោយសារសុវត្ថិភាព មិនមានផលអាក្រក់ឡើយ — ក្រុមហ៊ុនជួសជុលរួច ទើបធ្វើការវិញ']],
+  in: ['🛑 Berbahaya? Berhenti — Hak menghentikan pekerjaan', ['Jika berbahaya atau bisa cedera, segera hentikan pekerjaan → pindah ke tempat aman', 'Segera beri tahu ketua tim atau manajer', 'Tidak ada sanksi karena berhenti — bekerja lagi setelah perusahaan memperbaiki']],
+  ru: ['🛑 Опасно — остановитесь! Право остановить работу', ['Если опасно или можно пострадать — сразу остановите работу и уйдите в безопасное место', 'Сразу сообщите бригадиру или руководителю', 'За остановку работы никаких наказаний — продолжаем после устранения опасности']]
+};
+const WS_READ = '여러분, 오늘은 꼭 한 가지만 기억해 주세요. 우리 엠솔루션은 여러분의 생명을 무엇보다 소중히 여깁니다. 제품보다, 생산량보다 여러분이 먼저입니다. 일하다가 "이거 위험하다", "다칠 것 같다"는 생각이 들면 망설이지 말고 바로 작업을 멈추고 안전한 곳으로 피하세요. 그리고 바로 반장이나 관리자에게 알려 주세요. 회사가 즉시 확인하고 고치겠습니다. 고칠 때까지 그 작업은 하지 않습니다. 위험해서 멈춘 것 때문에 회사는 절대로 불이익을 주지 않습니다. 오히려 멈춰 주셔서 고맙습니다. 오늘도 모두 다치지 말고, 건강하게 퇴근합시다.';
+function wsWeek(d) { const t = new Date(d + 'T12:00:00+09:00'), w = (t.getUTCDay() + 6) % 7; return new Date(t.getTime() - w * 864e5).toISOString().slice(0, 10); }
+function wsOn() {
+  const d = today(); if (new Date(d + 'T12:00:00+09:00').getUTCDay() === 0) return false;
+  const r = String(store.get('ms_ws') || '').split('|');
+  return r[0] !== wsWeek(d) || r[1] === d;
+}
+function wsHtml(l, big) {
+  if (!wsOn()) return '';
+  const x = WS_TX[l] || WS_TX.ko;
+  return `<div class="wsc${big ? ' big' : ''}"><div class="wsh">이번 주 꼭 알아 두기 <span>주 1회</span></div>
+    <div class="wst">${esc(x[0])}</div>${l !== 'ko' ? `<div class="wsko">${esc(WS_TX.ko[0])}</div>` : ''}
+    <ol>${x[1].map(t => `<li>${esc(t)}</li>`).join('')}</ol>
+    ${big || FIELD_PIN ? `<details${big ? ' open' : ''}><summary>📢 관리자 낭독용 (약 30초)</summary><p>${esc(WS_READ)}</p></details>` : ''}
+    ${l !== 'ko' ? '<div class="wsko">자동 번역 초안입니다. 정확한 내용은 한국어 원문 기준.</div>' : ''}</div>`;
+}
+const tnHtml_v23 = tnHtml, tnWhat_v23 = tnWhat;
+tnHtml = function (l, big) { return wsHtml(l, big) + tnHtml_v23(l, big); };
+tnWhat = function () {
+  const base = tnWhat_v23();
+  if (!wsOn()) return base;
+  const d = today(); store.set('ms_ws', wsWeek(d) + '|' + d);   // 보낸 날은 그날 하루 계속 표시
+  return '[작업중지권] ' + base;
+};
 
 /* ----- 관리자 폰: 등록 ----- */
 function tnShrink(file, max, q) {

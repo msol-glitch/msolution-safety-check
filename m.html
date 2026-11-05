@@ -313,6 +313,10 @@
   @media screen and (max-width:900px){#noticeView .g2{grid-template-columns:1fr!important}}
   @media print{.nt{font-size:11px;line-height:1.55;color:#000}.ntitle{font-size:12px}}
   @media print{body.p-notice main>*:not(#noticeView),body.p-notice .rail,body.p-notice #noticeView .g2,body.p-notice #nPrint{display:none!important}body.p-notice .app,body.p-notice main{display:block;padding:0;background:none}}
+
+  /* v24 작업중지권 표시 */
+  .ws24{display:inline-block;background:#DC2626;color:#fff;font-weight:800;border-radius:4px;padding:1px 6px;margin-right:4px;font-size:11px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  tr.ws24r td{background:#FEF2F2;-webkit-print-color-adjust:exact;print-color-adjust:exact}
   @media print{body.p-tbm main>*:not(#tbmView),body.p-tbm #tbmView>*:not(#tbmDocs),body.p-tbm .rail{display:none!important}body.p-tbm .app,body.p-tbm main{display:block;padding:0;background:none}
     .tbmdoc{page-break-after:always}}
   @media print{body.p-month main>*:not(#folder),body.p-month #folder>*:not(#monthly),body.p-month .rail{display:none!important}body.p-month main,body.p-month .app{padding:0;margin:0;display:block}body:not(.p-month) #monthly{display:none}
@@ -826,7 +830,7 @@ const NAV = [
   { key: 'ppe', name: '보호구 지급', ic: ICON.ppe },
   { key: 'notice', name: '전달사항·안전참여', ic: '<path d="M4 10v4h3l5 4V6L7 10z"/><path d="M16 9a4 4 0 010 6M18.5 6.5a8 8 0 010 11"/>' },
   { key: 'stretch', name: '건강증진 스트레칭', ic: '<circle cx="12" cy="5" r="2.5"/><path d="M12 8v6M7 10l5 2 5-2M9 21l3-7 3 7"/>' },
-  { key: 'praise', name: '칭찬·행운 지급', ic: '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>' },
+  { key: 'praise', name: '보상 지급', ic: '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>' },
   { key: 'actions', name: '조치관리', ic: '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 0 0 5.4-5.4l-2.4 2.4-2.6-.4-.4-2.6z"/>' },
   { key: 'risk', name: '참여형 위험성평가', ic: '<path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17v.5"/>' },
   { grp: '대표자 전용 · 별도 PIN' },
@@ -881,7 +885,7 @@ function route() {
   if (key === 'stretch') { $('pageTitle').textContent = '건강증진 스트레칭'; return renderStretch(); }
   if (key === 'notice') { $('pageTitle').textContent = '전달사항·안전참여'; return renderNotice(); }
   if (key === 'ppe') { $('pageTitle').textContent = '보호구(안전용품) 지급·관리 대장'; return renderPpe(); }
-  if (key === 'praise') { $('pageTitle').textContent = '안전 칭찬 · 행운 이벤트 지급'; return renderPraise(); }
+  if (key === 'praise') { $('pageTitle').textContent = 'TBM 참여 감사 · 보상 지급'; return renderPraise(); }
   if (key === 'risk') { $('pageTitle').textContent = '참여형 위험성평가'; return renderRisk(); }
   if (key === 'tbm') { $('pageTitle').textContent = 'TBM (작업 전 안전회의)'; return renderTbm(); }
   if (key === 'actions') { $('pageTitle').textContent = '조치관리'; return renderActions(); }
@@ -1290,13 +1294,13 @@ async function renderPraise() {
     .sort((a, b) => b.d < a.d ? -1 : 1);
   const kpi = (t, n, u, c) => `<div class="card" style="text-align:center"><div style="font-size:12px;color:var(--sub)">${t}</div><div style="font-size:26px;font-weight:800;color:${c || 'var(--ink)'}">${num(n)}<small style="font-size:13px"> ${u}</small></div></div>`;
   v.innerHTML = `<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px">
-      ${kpi('이번 달 칭찬 등록', d.list.filter(x => x.time.slice(0, 7) === ym).length, '건')}${kpi('승인 대기', wait.length, '건', wait.length ? 'var(--bad)' : '')}
+      ${kpi('이번 달 보상 당첨', (ea ? ea.list.filter(x => String(x.day).slice(0, 7) === ym).length : 0), '건')}${kpi('특별 추첨 예정', ea ? ea.specials.length : 0, '건')}
       ${kpi('지급 대기', toPay.length + evPay.length, '건', toPay.length + evPay.length ? 'var(--bad)' : '')}${kpi('지급 누계', paid.reduce((a, x) => a + x.amt, 0), '원', 'var(--ok)')}</div>
-    <div class="card"><h2>① 승인 대기 칭찬 <small>관리자 폰 등록 → 대표 승인 → 상품권 1만 원</small></h2>
+    ${wait.length ? `<div class="card"><h2>① 이전 칭찬 승인 대기 <small>안전 칭찬은 2026-11-03부터 운영하지 않음 · 남은 건만 정리</small></h2>
       ${wait.length ? `<table><thead><tr><th style="width:11%">등록</th><th style="width:10%">직원</th><th style="width:9%">팀</th><th style="width:12%">항목</th><th>사유</th><th style="width:8%">등록자</th><th style="width:15%"></th></tr></thead><tbody>
       ${wait.map(x => `<tr><td class="c">${esc(x.time.slice(5))}</td><td class="c"><b>${esc(x.name)}</b></td><td class="c">${esc(x.team)}</td><td class="c">${esc(x.cat)}</td><td>${esc(x.why)}</td><td class="c">${esc(x.by)}</td>
-        <td class="c"><button class="btn sm" data-pa="ok|${esc(x.id)}">승인</button> <button class="btn ghost sm" data-pa="no|${esc(x.id)}">반려</button></td></tr>`).join('')}</tbody></table>` : emptyMsg('승인 대기 칭찬이 없습니다')}</div>
-    <div class="card" style="margin-top:12px"><h2>② 지급할 것 <small>행운 당첨은 캡처 확인 + <b>그날 읽은 내용</b>을 물어본 뒤 지급</small></h2>
+        <td class="c"><button class="btn sm" data-pa="ok|${esc(x.id)}">승인</button> <button class="btn ghost sm" data-pa="no|${esc(x.id)}">반려</button></td></tr>`).join('')}</tbody></table>` : emptyMsg('')}</div>` : ''}
+    <div class="card" style="margin-top:12px"><h2>지급할 것 <small>행운 당첨은 캡처 확인 + <b>그날 읽은 내용</b>을 물어본 뒤 지급</small></h2>
       ${toPay.length + evPay.length ? `<table><thead><tr><th style="width:8%">구분</th><th style="width:16%">대상</th><th>확인할 것</th><th style="width:10%">금액</th><th style="width:12%"></th></tr></thead><tbody>
       ${evPay.map(w => `<tr><td class="c"><span class="pill open">${isEdu(w) ? '교육보상' : '행운'}</span></td><td class="c"><b>${esc(w.code)}</b><div style="font-size:11.5px;color:var(--sub)">${esc(w.team)} · ${esc(w.how)}</div></td>
         <td>① 이성희 과장이 직원 폰 캡처의 당첨번호가 <b>${esc(w.code)}</b>와 같은지<br>② 질문: "그날 무엇을 읽고 확인했나요?" → 정답 <span style="background:#FFF7ED;padding:1px 6px;border-radius:6px">${esc(w.what || '(기록 없음)')}</span><br>③ 직원 본인인지 (관리자 제외)</td>
@@ -1305,18 +1309,13 @@ async function renderPraise() {
         <td>${esc(x.cat)} — ${esc(x.why)}</td><td class="c">${num(PAY.praise)}원</td><td class="c"><button class="btn sm" data-pay="praise|${esc(x.id)}">지급 완료</button></td></tr>`).join('')}</tbody>
       <tfoot><tr><td colspan="3" class="c">합계</td><td class="c">${num(evPay.reduce((a, w) => a + evAmt(w), 0) + toPay.length * PAY.praise)}원${evPay.some(gift) ? ' + 현물' : ''}</td><td></td></tr></tfoot></table>` : emptyMsg('지급할 것이 없습니다')}
       <div style="margin-top:8px;font-size:13px">지급자 <input id="payer" value="이성희" style="font:inherit;width:90px;padding:4px 6px;border:1px solid var(--line2);border-radius:6px"></div></div>
-    <div class="card" style="margin-top:12px"><h2>③ ${esc(d.half.replace('-', ' '))} 안전 우수사원 후보 <small>승인된 칭찬 많은 순 · 대표 최종 선정 · 상품권 5만 원</small></h2>
-      ${d.best.length ? `<p style="margin:0 0 8px">🏆 선정: ${d.best.map(b => `<b>${esc(b.half)} ${esc(b.name)}</b> (${esc(b.team)}, 칭찬 ${b.n}건)`).join(' · ')}</p>` : ''}
-      ${d.ranking.length ? `<table><thead><tr><th style="width:8%">순위</th><th>이름</th><th style="width:14%">팀</th><th style="width:12%">칭찬 수</th><th style="width:12%">항목 종류</th><th style="width:12%"></th></tr></thead><tbody>
-      ${d.ranking.map((x, i) => `<tr><td class="c">${i + 1}</td><td class="c"><b>${esc(x.name)}</b></td><td class="c">${esc(x.team)}</td><td class="c">${x.n}건</td><td class="c">${x.kinds}종</td>
-        <td class="c">${d.best.some(b => b.half === d.half) ? '' : `<button class="btn ghost sm" data-best="${esc(x.name)}">선정</button>`}</td></tr>`).join('')}</tbody></table>` : emptyMsg('이번 반기 승인된 칭찬이 아직 없습니다')}</div>
-    <div class="card" style="margin-top:12px"><h2>④ 지급 내역 <small>실명 기록은 이 화면(관리자 PIN)에만 · 직원·외부 화면에는 이름 없이 표시</small></h2>
+    <div class="card" style="margin-top:12px"><h2>지급 내역 <small>실명 기록은 이 화면(관리자 PIN)에만 · 직원·외부 화면에는 이름 없이 표시</small></h2>
       ${paid.length ? `<table><thead><tr><th style="width:12%">지급일</th><th style="width:8%">구분</th><th>대상</th><th style="width:16%">내용</th><th style="width:11%">금액</th><th style="width:10%">지급자</th><th style="width:20%">지급 사진 <small style="font-weight:400">(근거)</small></th></tr></thead><tbody>
       ${paid.map(x => `<tr><td class="c">${esc(x.d)}</td><td class="c">${x.k}</td><td class="c">${esc(x.who)}</td><td class="c">${esc(x.what)}</td><td class="c">${x.amt ? num(x.amt) + '원' : '현물'}</td><td class="c">${esc(x.by || '')}</td><td class="c pp23" data-pk="${x.pk}" data-pid="${esc(x.pid)}"><span class="pp23w">…</span></td></tr>`).join('')}</tbody>
       <tfoot><tr><td colspan="4" class="c">합계 ${num(paid.length)}건</td><td class="c">${num(paid.reduce((a, x) => a + x.amt, 0))}원</td><td></td><td class="c" id="pp23sum"></td></tr></tfoot></table>
       <p class="note">지급 사진: 상품권·상품을 건네는 장면이나 수령 확인 사진을 올려 두면 지급 근거가 됩니다 (한 건 3장까지 · 대표 PC에서만 보임). 얼굴이 나오면 본인 동의를 받아 주세요.</p>` : emptyMsg('지급 내역이 없습니다')}
       <p class="note">상품권·현물 지급의 세무 처리(근로소득 해당 여부)는 경리 확인 필요.</p></div>
-    ${ea ? `<div class="card" style="margin-top:12px"><h2>⑤ 교육참여 보상 일정 <small>대표 전용 · 직원 화면에는 날짜가 나오지 않습니다</small></h2>
+    ${ea ? `<div class="card" style="margin-top:12px"><h2>TBM 참여 감사 추첨 일정 <small>대표 전용 · 직원 화면에는 날짜가 나오지 않습니다</small></h2>
       <p style="margin:0 0 8px">다음 정기 추첨일 <b>${esc(ea.next)}</b> · ${esc(ea.cutoff)}까지 확인한 직원 대상 · ${esc(ea.drawAt)}부터 발표 · 평소 보상 상품권 10,000원 · 기준 인원 ${num(ea.base)}명</p>
       <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px"><b>특별 추첨 추가</b>
         <input type="date" id="spDay" style="font:inherit;padding:4px 6px;border:1px solid var(--line2);border-radius:6px">
@@ -2035,6 +2034,13 @@ function renderTbmChart() {
     return `<div class="hb"><span>${k}</span><div class="hbt"><i style="width:${Math.max(2, Math.min(100, v / 12 * 100))}%;background:${v >= 12 ? 'var(--s3)' : 'var(--s1)'}"></i><b>${v.toFixed(1)}h</b></div></div>`; }).join('')}</div>
     <div class="note" title="${AN.tbmFrom} 이후 라인 누적 · 12시간 = 반기 정기교육 기준 (결근자는 개인별로 차감 필요)">${AN.tbmFrom.slice(5).replace('-', '/')} 이후 누적 · 12시간 = 반기 정기교육 기준</div>`;
 }
+
+/* ===== v24 작업중지권 안내 표시 (주 1회) — 주제 앞 '[작업중지권]' 기록을 빨간 표시로 ===== */
+const WS_TAG = '[작업중지권]';
+const wsHas = r => String(r.topicText || '').indexOf(WS_TAG) === 0;
+const wsTxt = r => wsHas(r) ? `<span class="ws24">★ 작업중지권 안내</span>${esc(String(r.topicText).slice(WS_TAG.length).trim())}` : esc(r.topicText);
+function wsWeekOf(d) { const t = new Date(d.slice(0, 10) + 'T12:00:00+09:00'), w = (t.getUTCDay() + 6) % 7; return new Date(t.getTime() - w * 864e5).toISOString().slice(0, 10); }
+function wsCount(rs) { const wk = new Set(rs.map(r => wsWeekOf(r.time))), ok = new Set(rs.filter(wsHas).map(r => wsWeekOf(r.time))); return { n: ok.size, w: wk.size }; }
 function renderTbm() {
   const v = $('tbmView'); v.classList.remove('hide');
   if (!AN) { v.innerHTML = emptyMsg('불러오는 중…'); return; }
@@ -2045,9 +2051,9 @@ function renderTbm() {
   const tot = rs.reduce((a, r) => a + Number(r.minutes || 0), 0);
   v.innerHTML = `<div class="tool"><label>월 <select id="tbmYm">${months.map(m => `<option ${m === ym ? 'selected' : ''}>${m}</option>`).join('')}</select></label><span class="sp"></span>
     <button class="btn" id="tbmPrint" style="background:#0F9F8F">월간 TBM 일지 인쇄 (라인별)</button></div>
-    <div class="sum"><div>TBM 실시<strong>${num(rs.length)}회</strong></div><div>총 진행 시간<strong>${num(tot)}분</strong></div><div>평균<strong>${rs.length ? (tot / rs.length).toFixed(1) : 0}분</strong></div><div>라인<strong>${new Set(rs.map(r => r.line)).size} / 9</strong></div></div>
+    <div class="sum"><div>TBM 실시<strong>${num(rs.length)}회</strong></div><div>총 진행 시간<strong>${num(tot)}분</strong></div><div>평균<strong>${rs.length ? (tot / rs.length).toFixed(1) : 0}분</strong></div><div>라인<strong>${new Set(rs.map(r => r.line)).size} / 9</strong></div><div>작업중지권 안내<strong style="color:#DC2626">${wsCount(rs).n} / ${wsCount(rs).w}주</strong></div></div>
     ${rs.length ? `<table><thead><tr><th style="width:12%">기록번호</th><th style="width:12%">일시</th><th style="width:10%">라인</th><th>주제</th><th style="width:7%">시간</th><th style="width:8%">참석/결근</th><th style="width:9%">진행자</th><th>의견</th></tr></thead>
-    <tbody>${rs.map(r => `<tr><td class="c">${esc(r.recNo)}</td><td class="c">${esc(r.time)}</td><td class="c">${esc((TBM_LN[r.line] || [, r.line])[1])}</td><td>${esc(r.topicText)}</td><td class="c">${num(r.minutes)}분</td><td class="c">${num(r.attend)} / ${num(r.absent)}</td><td class="c">${esc(r.leader)}</td><td>${esc(r.opinion)}</td></tr>`).join('')}</tbody>
+    <tbody>${rs.map(r => `<tr class="${wsHas(r) ? 'ws24r' : ''}"><td class="c">${esc(r.recNo)}</td><td class="c">${esc(r.time)}</td><td class="c">${esc((TBM_LN[r.line] || [, r.line])[1])}</td><td>${wsTxt(r)}</td><td class="c">${num(r.minutes)}분</td><td class="c">${num(r.attend)} / ${num(r.absent)}</td><td class="c">${esc(r.leader)}</td><td>${esc(r.opinion)}</td></tr>`).join('')}</tbody>
     <tfoot><tr><td colspan="4" class="c">합계 ${num(rs.length)}회</td><td class="c">${num(tot)}분</td><td colspan="3"></td></tr></tfoot></table>` : '<div class="doc"><p class="empty">이 달 TBM 기록이 없습니다.</p></div>'}
     <div id="tbmDocs"></div>`;
   $('tbmYm').onchange = e => { v.dataset.ym = e.target.value; renderTbm(); };
@@ -2057,9 +2063,9 @@ function tbmDoc(k, ym, rs) {
   const tot = rs.reduce((a, r) => a + Number(r.minutes || 0), 0);
   return `<div class="doc tbmdoc">${`<div class="hd"><img src="${LOGO}" alt="㈜엠솔루션"><div class="r">안전보건팀<br>문서번호 MS-SF-09</div></div>`}
     <h2>TBM(작업 전 안전회의) 일지 · ${esc(TBM_LN[k][0])} ${esc(TBM_LN[k][1])} · ${ym.replace('-', '년 ')}월</h2>
-    <table class="meta"><tr><th>사업장명</th><td>㈜엠솔루션</td><th>구분</th><td>위험성평가 결과 공유 (작업 전 안전교육)</td></tr></table><div style="height:6px"></div>
+    <table class="meta"><tr><th>사업장명</th><td>㈜엠솔루션</td><th>구분</th><td>위험성평가 결과 공유 (작업 전 안전교육)</td></tr><tr><th>작업중지권 안내</th><td colspan="3"><b style="color:#DC2626">${wsCount(rs).n}회 / ${wsCount(rs).w}주</b> (주 1회 기준 · 산업안전보건법 제52조) — 일지의 <span class="ws24">★ 작업중지권 안내</span> 표시 행</td></tr></table><div style="height:6px"></div>
     <table><thead><tr><th style="width:9%">일자</th><th style="width:11%">시간</th><th>오늘의 안전 주제 (위험성평가 자동 3개)</th><th style="width:9%">참석/결근</th><th style="width:12%">결근자</th><th style="width:11%">진행자</th><th style="width:11%">서명</th></tr></thead>
-    <tbody>${rs.map(r => `<tr><td class="c">${r.time.slice(5, 10)}</td><td class="c">${esc(r.start)}~${esc(r.end)}<br>${num(r.minutes)}분</td><td>${esc(r.topicText)}<div style="font-size:10px;color:var(--sub)">${esc(r.recNo)}</div></td><td class="c">${num(r.attend)} / ${num(r.absent)}</td><td class="c">${esc(r.absentNames)}</td><td class="c">${esc(r.leader)}</td><td class="c sign">${r.sign ? `<img src="${r.sign}" alt="서명" style="height:30px">` : ''}</td></tr>`).join('')}</tbody>
+    <tbody>${rs.map(r => `<tr class="${wsHas(r) ? 'ws24r' : ''}"><td class="c">${r.time.slice(5, 10)}</td><td class="c">${esc(r.start)}~${esc(r.end)}<br>${num(r.minutes)}분</td><td>${wsTxt(r)}<div style="font-size:10px;color:var(--sub)">${esc(r.recNo)}</div></td><td class="c">${num(r.attend)} / ${num(r.absent)}</td><td class="c">${esc(r.absentNames)}</td><td class="c">${esc(r.leader)}</td><td class="c sign">${r.sign ? `<img src="${r.sign}" alt="서명" style="height:30px">` : ''}</td></tr>`).join('')}</tbody>
     <tfoot><tr><td colspan="2" class="c">합계 ${num(rs.length)}회</td><td>총 ${num(tot)}분 (${(tot / 60).toFixed(1)}시간)</td><td colspan="4"></td></tr></tfoot></table>
     <h3 style="font-size:13px;margin:10px 0 4px">근로자 확인 (월 1회 · 친필)</h3>
     <table><thead><tr><th style="width:22%">이름</th><th>확인 문구</th><th style="width:20%">서명</th></tr></thead><tbody>
