@@ -682,6 +682,102 @@
   #pp23ov{position:fixed;inset:0;background:rgba(15,23,42,.75);display:none;align-items:center;justify-content:center;z-index:2000;padding:20px}
   #pp23ov .pp23box{background:#fff;border-radius:14px;padding:12px;max-width:min(92vw,1100px);max-height:92vh;overflow:auto}
   #pp23ov img{display:block;max-width:100%;max-height:78vh;margin:0 auto;border-radius:8px}#pp23ov .pp23bar{margin-top:8px;text-align:right;font-size:13px}
+  /* ===== v25 기업 홈페이지형 테마 (2026-11-06 대표 확정·감사 승인) — body.corp 일 때만 적용, 끄면 v24 그대로 ===== */
+  body.corp{background:#F4F5F7;letter-spacing:-.01em}
+  body.corp #v21top{box-shadow:none;border-bottom:1px solid #E3E6EB}
+  body.corp #v21top .hd .ttl b{font-weight:700;letter-spacing:-.3px}
+  body.corp #v21top .hd .qs{gap:2px}
+  body.corp #v21top .hd .qs a{border-radius:0;padding:20px 14px;font-weight:600;color:#374151;background:none!important}
+  body.corp #v21top .hd .qs a:hover{color:#0B1220}
+  body.corp #v21top .hd .qs a.on{color:#0B1220;box-shadow:inset 0 -2px 0 #0B1220}
+  body.corp .rail{background:#fff}
+  body.corp .nav a{border-radius:0;font-weight:500}
+  body.corp .nav a:hover{background:#F6F7F9}
+  body.corp .nav a.on{background:none;color:#0B1220;font-weight:700;box-shadow:inset 2px 0 0 #0B1220}
+  body.corp .topline{border-bottom:1px solid #0B1220}
+  body.corp .topline h1{font-weight:700;letter-spacing:-.6px}
+  body.corp .card{border-radius:2px!important;border:1px solid #E3E6EB!important;box-shadow:none!important}
+  body.corp main[data-k] .card{border-top:1px solid #E3E6EB!important}
+  body.corp .card h2{font-weight:700;border-bottom:1px solid #EEF0F3}
+  body.corp .card.ck{border-top:1px solid #E3E6EB!important}
+  body.corp .ck .k{font-size:12px;letter-spacing:.02em;color:#6B7280}
+  body.corp .ck .v{font-weight:300!important;letter-spacing:-.03em;color:#0B1220}
+  body.corp .ck .v small{font-weight:500}
+  body.corp #v21hero{border-radius:2px;background:linear-gradient(115deg,#0B1A33 0%,#13284D 55%,#1B3A6B 100%);padding:26px 32px}
+  body.corp #v21hero::after{border:1px solid rgba(255,255,255,.08);width:420px;height:420px;right:-120px;top:-180px}
+  body.corp #v21hero .lb{letter-spacing:.28em;font-weight:600;color:#93A4C3}
+  body.corp #v21hero h3{font-weight:700}
+  body.corp #v21hero .nd{background:none;border:0;border-left:1px solid rgba(255,255,255,.18);border-radius:0;text-align:left;padding:6px 0 6px 28px}
+  body.corp #v21hero .nd b{font-weight:300;letter-spacing:-.03em}
+  body.corp #v21svc{gap:0;border:1px solid #E3E6EB;background:#fff}
+  body.corp #v21svc a{border:0;border-radius:0;border-right:1px solid #EEF0F3;font-weight:600;background:#fff}
+  body.corp #v21svc a:last-child{border-right:0}
+  body.corp #v21svc a:hover{transform:none;box-shadow:inset 0 -2px 0 #0B1220;color:#0B1220}
+  body.corp #v21svc a i{background:none;width:30px;height:30px}
+  body.corp #v21svc a:hover i{background:none}body.corp #v21svc a:hover svg{stroke:#0B1220}
+  body.corp .poscard,body.corp .aicard{border-radius:2px!important}
+  body.corp .btn{border-radius:2px}
+  body.corp .pill{border-radius:2px}
+  body.corp table th{font-weight:600;letter-spacing:.01em}
+  /* 조치 필요 표시: 글자 위로 빛이 좌→우 (화면 기준 위치 공유 → 여러 곳이 동시에 흐름) */
+  body.corp .sh25{background:linear-gradient(100deg,#7A1E1E 0%,#B91C1C 40%,#FFD9D9 50%,#B91C1C 60%,#7A1E1E 100%);background-size:200vw 100%;background-attachment:fixed;
+    -webkit-background-clip:text;background-clip:text;color:transparent!important;animation:sh25 3.6s ease-in-out infinite;font-weight:700}
+  body.corp .sh25 *{color:transparent!important}
+  @keyframes sh25{0%{background-position:100vw 0}70%,100%{background-position:-100vw 0}}
+  @media print{body.corp .sh25{background:none;color:#B91C1C!important;-webkit-text-fill-color:#B91C1C}}
+  /* v25-2 (2026-11-07 대표 지시): 아이콘 없애고 움직임 효과로 */
+  body.corp .nav a>svg,body.corp #v21svc a>i{display:none!important}
+  body.corp .nav a{position:relative;grid-template-columns:1fr auto!important;padding-left:16px;transition:padding .25s ease,color .25s}
+  body.corp .nav a::before{content:'';position:absolute;left:0;top:50%;width:2px;height:0;background:#0B1220;transition:height .25s ease,top .25s ease}
+  body.corp .nav a:hover{padding-left:20px;background:none}
+  body.corp .nav a:hover::before,body.corp .nav a.on::before{height:60%;top:20%}
+  body.corp .nav a.on{box-shadow:none}
+  body.corp .nav a.on,body.corp #v21top .hd .qs a.on{background:linear-gradient(100deg,#0B1220 0%,#1B3A6B 42%,#9DB4DA 50%,#1B3A6B 58%,#0B1220 100%)!important;background-size:250% 100%!important;
+    -webkit-background-clip:text!important;background-clip:text!important;color:transparent!important;animation:shNavy 4.5s ease-in-out infinite}
+  body.corp .nav a.on .bd{-webkit-text-fill-color:initial}
+  @keyframes shNavy{0%{background-position:120% 0}55%,100%{background-position:-20% 0}}
+  body.corp #v21top .hd .qs a{position:relative}
+  body.corp #v21top .hd .qs a::after{content:'';position:absolute;left:50%;right:50%;bottom:0;height:2px;background:#0B1220;transition:left .25s ease,right .25s ease}
+  body.corp #v21top .hd .qs a:hover::after,body.corp #v21top .hd .qs a.on::after{left:14px;right:14px}
+  body.corp #v21top .hd .qs a.on{box-shadow:none}
+  body.corp #v21svc a{position:relative;padding:18px 6px 16px;flex-direction:column;justify-content:center}
+  body.corp #v21svc a::after{content:'';position:absolute;left:0;right:100%;bottom:0;height:2px;background:#0B1220;transition:right .35s ease}
+  body.corp #v21svc a:hover::after{right:0}
+  body.corp #v21svc a:hover{box-shadow:none}
+  body.corp #v21svc a em{margin-top:2px}
+  /* ===== v25 안전보건 활동 화면 ===== */
+  .act-pick{margin-top:10px;border:1px solid #E3E6EB;padding:10px 12px;background:#FAFBFC}.act-pick>b{font-size:13.5px}.act-tip{font-size:12px;color:var(--sub);margin-left:6px}
+  .act-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.act-chip{font:inherit;font-size:13px;font-weight:600;border:1px solid #CBD5E1;background:#fff;color:#374151;padding:6px 12px;cursor:pointer;border-radius:2px}
+  .act-chip.on{background:#0B1220;border-color:#0B1220;color:#fff}.act-law{font-size:12px;color:#166534;margin-top:6px}
+  .act-hero{background:linear-gradient(115deg,#0B1A33 0%,#13284D 55%,#1B3A6B 100%);color:#fff;padding:30px 34px 26px;position:relative;overflow:hidden;margin-bottom:14px}
+  .act-hero::after{content:'';position:absolute;right:-120px;top:-180px;width:460px;height:460px;border-radius:50%;border:1px solid rgba(255,255,255,.08)}
+  .act-hero .eb{font-size:11.5px;letter-spacing:.28em;color:#93A4C3;font-weight:600}.act-hero h2{font-size:30px;font-weight:700;margin:8px 0 6px;letter-spacing:-.6px}.act-hero p{color:#C7D2E5;font-size:14px}
+  .act-st{display:grid;grid-template-columns:repeat(4,1fr);margin-top:24px;border-top:1px solid rgba(255,255,255,.14)}.act-st div{padding:16px 0 0}.act-st div+div{padding-left:24px;border-left:1px solid rgba(255,255,255,.14)}
+  .act-st span{font-size:12px;color:#93A4C3}.act-st b{display:block;font-size:36px;font-weight:300;letter-spacing:-.03em;margin-top:4px}.act-st b small{font-size:14px;font-weight:500;color:#C7D2E5;margin-left:3px}.act-st b.warn{color:#FCA5A5}
+  .act-tool{display:flex;align-items:center;gap:12px;margin-bottom:12px}.act-tool .sp{flex:1}.act-tool select{font:inherit;padding:5px 8px;border:1px solid var(--line2)}
+  .act-unc{font-size:12.5px;color:#B45309;font-weight:600}
+  .act-mid{display:grid;grid-template-columns:1.6fr 1fr;gap:12px;margin-bottom:12px}
+  .act-bars{display:flex;align-items:flex-end;gap:18px;height:150px;padding:6px 10px 0;border-bottom:1px solid #E3E6EB}
+  .act-bars div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}.act-bars b{font-size:12.5px;font-weight:700;margin-bottom:4px}
+  .act-bars i{display:block;width:60%;min-height:2px;background:#94A3B8}.act-bars i.cur{background:#0B1220}.act-bars span{font-size:12px;color:var(--sub);margin:6px 0 -22px}
+  .act-bars{margin-bottom:24px}.act-lg{width:100%}.act-lg td{border:0;border-bottom:1px solid #EEF0F3;padding:6px 2px}.act-lg td:last-child{text-align:right;font-weight:600}
+  .act-list{padding:0!important}.act-list h2{padding:14px 18px 10px;margin:0}
+  .act-row{display:grid;grid-template-columns:70px minmax(0,1fr) 150px 110px 170px 230px;column-gap:20px;align-items:center;padding:14px 18px;border-top:1px solid #EEF0F3;font-size:14px}
+  .act-row.h{background:#FAFBFC;font-size:12px;color:var(--sub);font-weight:600;padding:10px 18px}
+  .act-row .d{color:#6B7280;font-variant-numeric:tabular-nums}.act-row .t{font-weight:600;min-width:0}.act-row .t small{display:block;font-weight:400;font-size:12px;color:#9CA3AF;margin-top:2px}
+  .act-row .cat{font-weight:600}.act-sel{font:inherit;font-size:13.5px;font-weight:600;padding:4px 6px;border:1px solid #E3E6EB;background:#fff;max-width:100%}
+  .act-row .rate{display:flex;align-items:center;gap:10px}.act-row .rate i{flex:1;height:3px;background:#E5E7EB;position:relative}.act-row .rate i em{position:absolute;left:0;top:0;bottom:0;background:#0B1220}
+  .act-row .rate b{min-width:44px;text-align:right;font-weight:600}.act-row .fl{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:12.5px}.act-row .fl .ok{color:#166534;font-weight:600}
+  .act-row.alert{background:#FFF8F8;box-shadow:inset 3px 0 0 #B91C1C}.act-row.alert .rate i em{background:#B91C1C}
+  .act-row.alert .sx{background:linear-gradient(100deg,#7A1E1E 0%,#B91C1C 40%,#FFD9D9 50%,#B91C1C 60%,#7A1E1E 100%);background-size:200vw 100%;background-attachment:fixed;-webkit-background-clip:text;background-clip:text;color:transparent;animation:sh25 3.6s ease-in-out infinite;font-weight:700}
+  .act-row.alert select.sx{-webkit-text-fill-color:#B91C1C;color:#B91C1C;background:#fff;animation:none}
+  .act-form{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:flex-end;padding:12px 18px 14px 108px;background:#F8FAFC;border-top:1px dashed #CBD5E1}
+  .act-form label{display:flex;flex-direction:column;font-size:12px;color:var(--sub);gap:4px}.act-form input{font:inherit;padding:5px 7px;border:1px solid var(--line2);min-width:110px}.act-fb{flex-basis:100%;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  #actDoc{display:none}
+  @media print{body.p-act main>*:not(#actView),body.p-act #actView>*:not(#actDoc),body.p-act .rail,body.p-act #v21top{display:none!important}body.p-act .app,body.p-act main{display:block;padding:0;background:none}
+    body.p-act #actDoc{display:block}.actdoc .kp{margin:8px 0}.actdoc .kp th{background:#F1F5F9!important;color:#0F172A!important;border:1px solid #94A3B8;font-weight:700}.actdoc .kp td{border:1px solid #94A3B8;text-align:center;font-size:15px;font-weight:800;padding:6px}
+    .actdoc .dm{display:grid;grid-template-columns:1.6fr 1fr;gap:10px;margin:8px 0}.actdoc .dm>div{border:1px solid #94A3B8;padding:6px 8px}.actdoc .act-bars{height:90px}.actdoc .act-bars i{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .actdoc h3{font-size:12.5px;margin:10px 0 4px}.actdoc .sg{margin-top:10px}.actdoc .sg th{background:#F1F5F9!important;color:#0F172A!important;border:1px solid #94A3B8}.actdoc .sg td{height:16mm;border:1px solid #94A3B8}}
 </style>
 </head>
 <body>
@@ -739,6 +835,7 @@
   <div id="tbmView" class="hide"></div>
   <div id="noticeView" class="hide"></div>
   <div id="praiseView" class="hide"></div>
+  <div id="actView" class="hide"></div>
   <div id="ppeView" class="hide"></div>
   <div id="riskView" class="hide"></div>
   <div id="soonView" class="hide"></div>
@@ -825,10 +922,11 @@ const NAV = [
   { grp: '자주 쓰는 점검' },
   { key: '5s', name: '현장 3정5행 점검', ic: ICON['5s'] },
   { key: 'patrol', name: '관리감독자 순회점검', ic: ICON.patrol },
-  { key: 'tbm', name: 'TBM', ic: '<circle cx="8" cy="9" r="3"/><circle cx="16" cy="9" r="3"/><path d="M3 20c0-3 2.5-5 5-5s5 2 5 5M11 20c0-3 2.5-5 5-5s5 2 5 5"/>' },
+  { key: 'tbm', name: 'TBM(Tool Box Meeting)', ic: '<circle cx="8" cy="9" r="3"/><circle cx="16" cy="9" r="3"/><path d="M3 20c0-3 2.5-5 5-5s5 2 5 5M11 20c0-3 2.5-5 5-5s5 2 5 5"/>' },
   { key: 'dust', name: '집진기 청소', ic: ICON.dust },
   { key: 'ppe', name: '보호구 지급', ic: ICON.ppe },
   { key: 'notice', name: '전달사항·안전참여', ic: '<path d="M4 10v4h3l5 4V6L7 10z"/><path d="M16 9a4 4 0 010 6M18.5 6.5a8 8 0 010 11"/>' },
+  { key: 'act', name: '안전보건 활동', ic: '<path d="M5 4h14v16H5z"/><path d="M8 9l2 2 4-4M8 15h8"/>' },
   { key: 'stretch', name: '건강증진 스트레칭', ic: '<circle cx="12" cy="5" r="2.5"/><path d="M12 8v6M7 10l5 2 5-2M9 21l3-7 3 7"/>' },
   { key: 'praise', name: '보상 지급', ic: '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>' },
   { key: 'actions', name: '조치관리', ic: '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 0 0 5.4-5.4l-2.4 2.4-2.6-.4-.4-2.6z"/>' },
@@ -868,7 +966,7 @@ async function start() {
   lastAna = Date.now(); loadAnalytics();
 }
 function showLock(msg) {
-  ['home', 'folder', 'actionsView', 'soonView', 'tbmView', 'noticeView', 'riskView', 'praiseView', 'ppeView'].forEach(id => $(id).classList.add('hide'));
+  ['home', 'folder', 'actionsView', 'soonView', 'tbmView', 'noticeView', 'riskView', 'praiseView', 'ppeView', 'actView'].forEach(id => $(id).classList.add('hide'));
   $('lock').classList.remove('hide'); $('lockErr').textContent = msg || ''; $('pin').focus();
 }
 $('enter').onclick = () => { PIN = $('pin').value.trim(); start(); };
@@ -879,12 +977,13 @@ function route() {
   const key = location.hash.slice(1);
   const mk = document.querySelector('main'); if (['risk', 'patrol', '5s', 'tbm', 'dust', 'actions', 'notice', 'ppe'].indexOf(key) >= 0) mk.dataset.k = key; else delete mk.dataset.k;
   document.body.classList.remove('dash');
-  ['home', 'folder', 'actionsView', 'soonView', 'tbmView', 'noticeView', 'riskView', 'praiseView', 'ppeView'].forEach(id => $(id).classList.add('hide'));
+  ['home', 'folder', 'actionsView', 'soonView', 'tbmView', 'noticeView', 'riskView', 'praiseView', 'ppeView', 'actView'].forEach(id => $(id).classList.add('hide'));
   renderNav(key);
   if (['dust', 'patrol', '5s'].indexOf(key) >= 0) { $('pageTitle').textContent = (FOLDERS.find(f => f.key === key) || {}).name; return openFolder(key); }
   if (key === 'stretch') { $('pageTitle').textContent = '건강증진 스트레칭'; return renderStretch(); }
   if (key === 'notice') { $('pageTitle').textContent = '전달사항·안전참여'; return renderNotice(); }
   if (key === 'ppe') { $('pageTitle').textContent = '보호구(안전용품) 지급·관리 대장'; return renderPpe(); }
+  if (key === 'act') { $('pageTitle').textContent = '안전보건 활동'; return renderAct(); }
   if (key === 'praise') { $('pageTitle').textContent = 'TBM 참여 감사 · 보상 지급'; return renderPraise(); }
   if (key === 'risk') { $('pageTitle').textContent = '참여형 위험성평가'; return renderRisk(); }
   if (key === 'tbm') { $('pageTitle').textContent = 'TBM (작업 전 안전회의)'; return renderTbm(); }
@@ -2781,12 +2880,12 @@ start();
   const top = document.createElement('div'); top.id = 'v21top';
   top.innerHTML = `<div class="ut"><div class="in"><span><b>㈜엠솔루션</b> 사내 전용 · 관리자 화면</span><span><span id="v21date"></span><a href="guide.html#pc" target="_blank" rel="noopener">사용 설명서</a><a href="l.html" target="_blank" rel="noopener">QR 라벨</a></span></div></div>
     <div class="hd"><a href="#" aria-label="처음 화면"><img src="${logo.src}" alt="㈜엠솔루션"></a><div class="ttl"><b>안전경영 통합관리시스템</b><small>Safety Management Integrated System</small></div><div class="sp"></div>
-      <nav class="qs"><a href="#">처음 화면</a><a href="#patrol">관리감독자 순회점검</a><a href="#tbm">TBM</a><a href="#notice">전달사항</a><a href="#stretch">건강증진</a><a href="#risk">참여형 위험성평가</a></nav></div>`;
+      <nav class="qs"><a href="#">처음 화면</a><a href="#patrol">관리감독자 순회점검</a><a href="#tbm">TBM(Tool Box Meeting)</a><a href="#notice">전달사항</a><a href="#act">안전보건 활동</a><a href="#stretch">건강증진</a><a href="#risk">참여형 위험성평가</a></nav></div>`;
   document.body.insertBefore(top, document.body.firstChild);
   const d = new Date(), WDK = ['일', '월', '화', '수', '목', '금', '토']; $('v21date').textContent = `${d.getFullYear()}. ${d.getMonth() + 1}. ${d.getDate()}. (${WDK[d.getDay()]})`;
   const mark = () => { const k = location.hash.slice(1); top.querySelectorAll('.qs a').forEach(a => a.classList.toggle('on', a.getAttribute('href').slice(1) === k)); };
   window.addEventListener('hashchange', mark); mark();
-  const SVC = [['5s', '현장 3정5행 점검', '팀별'], ['patrol', '관리감독자 순회점검', '일일'], ['tbm', 'TBM', '라인별'], ['dust', '집진기 청소', '화재예방'], ['ppe', '보호구 지급', '대장'], ['notice', '전달사항', '안전참여'], ['stretch', '건강증진', '스트레칭'], ['risk', '참여형 위험성평가', '수시·정기']];
+  const SVC = [['5s', '현장 3정5행 점검', '팀별'], ['patrol', '관리감독자 순회점검', '일일'], ['tbm', 'TBM(Tool Box Meeting)', '라인별'], ['dust', '집진기 청소', '화재예방'], ['ppe', '보호구 지급', '대장'], ['notice', '전달사항', '안전참여'], ['stretch', '건강증진', '스트레칭'], ['risk', '참여형 위험성평가', '수시·정기']];
   const icon = k => { const n = (typeof NAV !== 'undefined' ? NAV : []).find(x => x.key === k); return n && n.ic ? n.ic : '<path d="M4 12h16"/>'; };
   const home = $('home'); if (!home) return;
   const hero = document.createElement('div'); hero.id = 'v21hero';
@@ -2985,6 +3084,139 @@ function v21Pos() {
 (function v21ChartInit() { if (typeof renderCharts !== 'function') return; const _r = window.renderCharts;
   window.renderCharts = function () { const o = _r.apply(this, arguments); try { v21Weekly(); v21Pos(); } catch (e) { console.log('v21 그래프', e); } return o; }; })();
 
+
+/* ===== v25 안전보건 활동 (2026-11-06 대표 확정·감사 승인) =====
+ * 공지 분류(8개) · 공지별 확인 인원/확인율(기준 34명) · 70% 미만 재안내(게시 2일 지난 뒤 판정)
+ * 행사형 실시 기록(실시일·대상·실시 인원·기관·확인서) · 작업중지권 TBM(주 1회) 자동 포함 · MS-SF-10 활동 대장 인쇄
+ */
+const ACT_CATS = ['안전교육', '건강관리', '비상·화재', '보호구', '위험성평가 공유', '작업중지권', '외부점검', '일반'];
+const ACT_BASE = 34, ACT_RE = 70, ACT_WAIT = 2;
+const ACT_LAW = { '안전교육': '산업안전보건법 제29조(근로자 안전보건교육)', '건강관리': '산업안전보건법 제129조(일반건강진단)', '비상·화재': '중대재해처벌법 시행령 제4조 제8호(급박한 위험 대비 매뉴얼)',
+  '보호구': '안전보건규칙 제32조(보호구 지급)', '위험성평가 공유': '사업장 위험성평가에 관한 지침(결과 공유)', '작업중지권': '산업안전보건법 제52조(근로자의 작업중지)', '외부점검': '중대재해처벌법 시행령 제4조(안전보건 관계 법령 이행 점검)', '일반': '' };
+const ACT_MAP = [['안전보건 관계 법령 의무 이행 (교육·건강진단·보호구)', ['안전교육', '건강관리', '보호구', '외부점검']],
+  ['급박한 위험 대비 작업중지·대피 매뉴얼', ['작업중지권', '비상·화재']], ['유해·위험요인 확인·개선 (위험성평가 공유)', ['위험성평가 공유']]];
+let ACT = { items: {} }, ACT_TBM = [];
+async function actLoad() { try { const d = await api('action=shalist'); ACT = d; } catch (e) { ACT = { items: {}, err: e.message }; } return ACT; }
+const actPost = async body => { const o = await (await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ key: API_KEY, type: 'shaset', pin: PIN, ...body }) })).json(); if (!o.ok) throw new Error(o.error || '저장 실패'); return o; };
+const actCatOf = n => (ACT.items[n.id] || {}).cat || '';
+const actAck = n => TEAMS.reduce((a, t) => a + (Number((n.acks || {})[t]) || 0), 0);
+function actRows(notices, ym) {
+  const rows = notices.filter(n => String(n.time).slice(0, 7) === ym).map(n => { const ack = actAck(n), it = ACT.items[n.id] || {}, d = String(n.time).slice(0, 10);
+    const age = dayDiff(d, dstr(kstNow())), rate = Math.round(ack / ACT_BASE * 100);
+    return { id: n.id, d, title: n.title, cat: it.cat || '', ack, rate, run: it.day ? it : null, re: age >= ACT_WAIT && rate < ACT_RE, wait: age < ACT_WAIT, on: n.on }; });
+  if (ACT_TBM.length && typeof wsHas === 'function') {   // 작업중지권 TBM 안내 — 주마다 1줄
+    const wk = {}; ACT_TBM.filter(r => r.time.slice(0, 7) === ym && wsHas(r)).forEach(r => { const w = wsWeekOf(r.time); (wk[w] = wk[w] || { d: r.time.slice(0, 10), lines: new Set() }).lines.add(r.line); });
+    Object.keys(wk).forEach(w => rows.push({ id: 'ws-' + w, d: wk[w].d, title: '작업중지권 안내 (TBM 주 1회)', cat: '작업중지권', tbm: wk[w].lines.size, rate: null, auto: 1 }));
+  }
+  return rows.sort((a, b) => b.d.localeCompare(a.d));
+}
+function actChipsHtml(sel) { return `<div class="act-chips">${ACT_CATS.map(c => `<button type="button" class="act-chip${c === sel ? ' on' : ''}" data-cat="${c}">${c}</button>`).join('')}</div>`; }
+/* 전달사항 등록 폼에 분류 칸 끼우기 (renderNotice 다음 실행) */
+const renderNotice_v24 = renderNotice;
+renderNotice = async function () {
+  const p = renderNotice_v24(); actLoad();
+  const nb = $('nUntil'); if (nb && !$('actPick')) {
+    const box = document.createElement('div'); box.id = 'actPick'; box.className = 'act-pick';
+    box.innerHTML = `<b>활동 분류</b> <span class="act-tip">하나 고르면 안전보건 활동 대장에 자동으로 쌓입니다</span>${actChipsHtml('')}<div class="act-law" id="actLaw"></div>`;
+    nb.closest('label').after(box);
+    box.querySelectorAll('[data-cat]').forEach(b => b.onclick = () => { box.querySelectorAll('[data-cat]').forEach(x => x.classList.toggle('on', x === b)); box.dataset.cat = b.dataset.cat; $('actLaw').textContent = ACT_LAW[b.dataset.cat] ? '근거: ' + ACT_LAW[b.dataset.cat] : ''; });
+    const save = $('nSave'), orig = save.onclick;
+    save.onclick = async () => { const cat = box.dataset.cat || '일반', title = $('nTitle').value.trim(); await orig();
+      if (!/등록됨/.test($('nMsg').textContent)) return;
+      try { const id = await npFindId(title); if (id) await actPost({ id, cat }); $('nMsg').textContent += ` · 분류 ${cat}`; } catch (e) { $('nMsg').textContent += ' · 분류 저장 실패: ' + e.message; } };
+  }
+  return p;
+};
+async function renderAct() {
+  const v = $('actView'); v.classList.remove('hide');
+  v.innerHTML = '<div class="wait">불러오는 중…</div>';
+  const to = dstr(kstNow()), f = new Date(kstNow()); f.setMonth(f.getMonth() - 6);
+  let d; try { [d] = await Promise.all([api(`action=visits&from=${dstr(f)}&to=${to}`), actLoad(), api(`action=tbm&from=${dstr(f)}&to=${to}`).then(x => { ACT_TBM = x.records || []; }).catch(() => { ACT_TBM = (AN && AN.tbm) || []; })]); } catch (e) { v.innerHTML = emptyMsg('서버 연결 전: ' + esc(e.message)); return; }
+  const ym = v.dataset.ym || to.slice(0, 7), notices = d.notices || [], rows = actRows(notices, ym);
+  const months = []; for (let i = 5; i >= 0; i--) { const x = new Date(kstNow()); x.setDate(1); x.setMonth(x.getMonth() - i); months.push(dstr(x).slice(0, 7)); }
+  const mc = months.map(m => actRows(notices, m).length), mx = Math.max(1, ...mc);
+  const rated = rows.filter(r => r.rate != null && !r.wait), avg = rated.length ? Math.round(rated.reduce((a, r) => a + r.rate, 0) / rated.length) : 0;
+  const nRe = rows.filter(r => r.re).length, ws = typeof wsCount === 'function' ? wsCount(ACT_TBM.filter(r => r.time.slice(0, 7) === ym)) : { n: 0, w: 0 };
+  const unc = rows.filter(r => !r.auto && !r.cat).length;
+  const catCnt = ACT_CATS.map(c => [c, rows.filter(r => (r.cat || '일반') === c).length]).filter(x => x[1]);
+  const mOpts = [...new Set(months.concat(notices.map(n => String(n.time).slice(0, 7))))].sort().reverse();
+  const hot = c => c === '작업중지권' ? 'sh25' : '';
+  v.innerHTML = `<section class="act-hero"><div class="eb">SAFETY &amp; HEALTH ACTIVITY</div><h2>안전보건 활동 현황</h2><p>알리고, 확인하고, 다시 챙깁니다. 모든 활동은 기록으로 남습니다.</p>
+      <div class="act-st"><div><span>${esc(ym.replace('-', '년 '))}월 활동</span><b>${num(rows.length)}<small>건</small></b></div><div><span>평균 확인율</span><b>${avg}<small>%</small></b></div>
+      <div><span>재안내 필요</span><b class="${nRe ? 'warn' : ''}">${num(nRe)}<small>건</small></b></div><div><span>작업중지권 안내</span><b>${ws.n}<small>회 / ${ws.w}주</small></b></div></div></section>
+    <div class="act-tool"><label>월 <select id="actYm">${mOpts.map(m => `<option ${m === ym ? 'selected' : ''}>${m}</option>`).join('')}</select></label>
+      ${unc ? `<span class="act-unc">분류 안 된 공지 ${unc}건 — 아래 표에서 분류를 골라 주세요</span>` : ''}<span class="sp"></span><button class="btn" id="actPrint">활동 대장 인쇄 (MS-SF-10)</button></div>
+    <div class="act-mid"><div class="card"><h2>월별 활동 건수 <small>최근 6개월</small></h2><div class="act-bars">${months.map((m, i) => `<div><b>${mc[i]}</b><i style="height:${Math.round(mc[i] / mx * 100)}%" class="${m === ym ? 'cur' : ''}"></i><span>${Number(m.slice(5))}월</span></div>`).join('')}</div></div>
+      <div class="card"><h2>분야별 <small>${esc(ym)}</small></h2>${catCnt.length ? `<table class="act-lg">${catCnt.map(x => `<tr><td>${x[0]}</td><td>${x[1]}건</td></tr>`).join('')}</table>` : emptyMsg('이 달 활동이 없습니다')}</div></div>
+    <div class="card act-list"><h2>활동 기록 <small>확인 인원 = [확인]을 누른 기기 수(기준 ${ACT_BASE}명) · 게시 ${ACT_WAIT}일 뒤 ${ACT_RE}% 미만이면 재안내</small></h2>
+      ${rows.length ? `<div class="act-row h"><span>게시일</span><span>활동 내용</span><span>분류</span><span>확인 인원</span><span>확인율</span><span>실시·후속</span></div>
+      ${rows.map(r => `<div class="act-row${r.re ? ' alert' : ''}" data-aid="${esc(r.id)}"><span class="d sx">${esc(r.d.slice(5).replace('-', '.'))}</span>
+        <span class="t"><span class="sx">${esc(r.title)}</span>${r.re ? '<small class="sx">확인율 70% 미만 · 다음 TBM에서 다시 안내</small>' : r.auto ? '<small>TBM 기록에서 자동</small>' : ''}</span>
+        <span>${r.auto ? `<span class="cat ${hot(r.cat)}">${r.cat}</span>` : `<select class="act-sel sx" data-acat="${esc(r.id)}"><option value="">분류 선택</option>${ACT_CATS.map(c => `<option ${c === r.cat ? 'selected' : ''}>${c}</option>`).join('')}</select>`}</span>
+        <span class="d sx">${r.auto ? `TBM ${r.tbm}라인` : `${num(r.ack)} / ${ACT_BASE}명`}</span>
+        <span class="rate">${r.rate == null ? '<b>—</b>' : `<i><em style="width:${Math.min(100, r.rate)}%"></em></i><b class="sx">${r.wait ? '집계 중' : r.rate + '%'}</b>`}</span>
+        <span class="fl">${r.run ? `<span class="ok">실시 ${num(r.run.done)}/${num(r.run.target)}명${r.run.file ? ` · <a href="https://drive.google.com/file/d/${esc(r.run.file)}/view" target="_blank" rel="noopener">확인서</a>` : ''}</span>` : ''}${r.re ? '<span class="sx">다음 TBM 재안내</span>' : ''}
+          ${r.auto ? '' : `<button class="btn ghost sm" data-arun="${esc(r.id)}">${r.run ? '실시 수정' : '실시 기록'}</button>`}</span></div>`).join('')}` : emptyMsg('이 달 등록된 활동이 없습니다')}</div>
+    <div class="card" style="margin-top:12px"><h2>반기 이행점검 연결 <small>중대재해처벌법 시행령 제4조 · 검토 중 — 원문 확인 후 확정</small></h2>
+      <table><thead><tr><th style="width:40%">점검 항목</th><th>이 달 근거 활동</th></tr></thead><tbody>${ACT_MAP.map(m => { const xs = rows.filter(r => m[1].indexOf(r.cat) >= 0);
+        return `<tr><td>${m[0]}</td><td>${xs.length ? xs.map(r => esc(r.title) + (r.run ? ` (실시 ${r.run.done}/${r.run.target}명)` : '')).join(' · ') : '<span style="color:var(--sub)">이 달 기록 없음</span>'}</td></tr>`; }).join('')}</tbody></table>
+      <p class="note">공지 확인은 '알림' 증빙이며 법정교육 이수 시간과는 별개입니다. 건강진단 개인 결과는 기록하지 않습니다(실시 사실·인원·확인서만).</p></div>
+    <div id="actDoc"></div>`;
+  $('actYm').onchange = e => { v.dataset.ym = e.target.value; renderAct(); };
+  v.querySelectorAll('[data-acat]').forEach(s => s.onchange = async () => { s.disabled = true; try { await actPost({ id: s.dataset.acat, cat: s.value }); renderAct(); } catch (e) { s.disabled = false; alertBox(e.message); } });
+  v.querySelectorAll('[data-arun]').forEach(b => b.onclick = () => actRunForm(b.dataset.arun, rows.find(r => r.id === b.dataset.arun)));
+  $('actPrint').onclick = () => { $('actDoc').innerHTML = actDoc(ym, rows, { avg, nRe, ws, catCnt, months, mc }); document.body.classList.add('p-act'); print(); setTimeout(() => document.body.classList.remove('p-act'), 500); };
+}
+function alertBox(m) { const e = document.querySelector('.act-tool'); if (e) { let s = $('actErr'); if (!s) { s = document.createElement('span'); s.id = 'actErr'; s.className = 'err'; e.appendChild(s); } s.textContent = m; } }
+function actRunForm(id, r) {
+  const row = document.querySelector(`[data-aid="${CSS.escape(id)}"]`); if (!row || row.nextElementSibling && row.nextElementSibling.classList.contains('act-form')) return;
+  const x = (r && r.run) || {}, f = document.createElement('div'); f.className = 'act-form';
+  f.innerHTML = `<label>실시일<input type="date" id="arDay" value="${esc(x.day || '')}"></label><label>대상 인원<input type="number" id="arT" min="0" value="${x.target || ACT_BASE}"></label>
+    <label>실시 인원<input type="number" id="arD" min="0" value="${x.done || ''}"></label><label>기관·장소<input id="arOrg" maxlength="40" value="${esc(x.org || '')}"></label>
+    <label>실시 확인서 (PDF·사진)<input type="file" id="arFile" accept="application/pdf,image/jpeg,image/png"></label>
+    <div class="act-fb"><button class="btn sm" id="arSave">저장</button> <button class="btn ghost sm" id="arX">닫기</button> <span class="err" id="arMsg"></span>
+    <span class="act-tip">개인 검진 결과는 올리지 마세요 · 실시 사실과 확인서만 · 저장하면 고치지 않고 새 줄로 남습니다</span></div>`;
+  row.after(f);
+  $('arX').onclick = () => f.remove();
+  $('arSave').onclick = async () => { const m = $('arMsg'), b = $('arSave'); b.disabled = true; m.textContent = '저장 중…';
+    try { let file = '', fname = ''; const fi = $('arFile').files[0];
+      if (fi) { if (fi.size > 8 * 1024 * 1024) throw new Error('파일이 8MB를 넘습니다'); file = await new Promise((ok, no) => { const rd = new FileReader(); rd.onload = () => ok(rd.result); rd.onerror = no; rd.readAsDataURL(fi); }); fname = fi.name; }
+      await actPost({ id, run: { day: $('arDay').value, target: $('arT').value, done: $('arD').value, org: $('arOrg').value.trim() }, file, fname }); renderAct();
+    } catch (e) { m.textContent = e.message; b.disabled = false; } };
+}
+function actDoc(ym, rows, k) {
+  const tot = rows.filter(r => r.rate != null), sa = tot.reduce((a, r) => a + r.ack, 0);
+  return `<div class="doc actdoc"><div class="hd"><img src="${LOGO}" alt="㈜엠솔루션"><div class="r">안전보건팀<br>문서번호 MS-SF-10</div></div>
+    <h2>안전보건 활동 대장 · ${esc(ym.replace('-', '년 '))}월</h2>
+    <table class="meta"><tr><th>사업장</th><td>㈜엠솔루션 (충남 당진시 순성면)</td><th>조회 기간</th><td>${esc(ym)}-01 ~ 말일</td></tr>
+      <tr><th>작성</th><td>시스템 자동 집계 · 확인 이민희(대표)</td><th>기준 인원</th><td>${ACT_BASE}명</td></tr></table>
+    <table class="kp"><tr><th>안전보건 활동</th><th>평균 확인율</th><th>재안내 필요</th><th>작업중지권 안내</th></tr><tr><td>${num(rows.length)}건</td><td>${k.avg}%</td><td>${num(k.nRe)}건</td><td>${k.ws.n}회 / ${k.ws.w}주</td></tr></table>
+    <div class="dm"><div><b>월별 활동 건수 (최근 6개월)</b><div class="act-bars p">${k.months.map((m, i) => `<div><b>${k.mc[i]}</b><i style="height:${Math.round(k.mc[i] / Math.max(1, ...k.mc) * 100)}%" class="${m === ym ? 'cur' : ''}"></i><span>${Number(m.slice(5))}월</span></div>`).join('')}</div></div>
+      <div><b>분야별</b><table class="act-lg">${k.catCnt.map(x => `<tr><td>${x[0]}</td><td>${x[1]}건</td></tr>`).join('')}</table></div></div>
+    <h3>■ 세부 활동 기록</h3>
+    <table><thead><tr><th style="width:9%">게시일</th><th>활동 내용</th><th style="width:14%">분류</th><th style="width:12%">확인 인원</th><th style="width:9%">확인율</th><th style="width:20%">실시·후속</th></tr></thead><tbody>
+    ${rows.slice().reverse().map(r => `<tr><td class="c">${esc(r.d.slice(5))}</td><td>${esc(r.title)}</td><td class="c">${esc(r.cat || '미분류')}</td><td class="c">${r.auto ? `TBM ${r.tbm}라인` : `${num(r.ack)} / ${ACT_BASE}명`}</td>
+      <td class="c" style="${r.re ? 'color:#B91C1C;font-weight:700' : ''}">${r.rate == null ? '—' : r.wait ? '집계 중' : r.rate + '%'}</td><td class="c">${r.run ? `실시 ${r.run.done}/${r.run.target}명${r.run.file ? ' · 확인서 보관' : ''}` : ''}${r.re ? ' 다음 TBM 재안내' : ''}</td></tr>`).join('')}</tbody>
+    <tfoot><tr><td colspan="3" class="c">합계 ${num(rows.length)}건</td><td class="c">${num(sa)} / ${num(ACT_BASE * tot.length)}명</td><td class="c">평균 ${k.avg}%</td><td class="c">재안내 ${num(k.nRe)}건</td></tr></tfoot></table>
+    <h3>■ 반기 이행점검 연결 (중대재해처벌법 시행령 제4조 · 검토 중)</h3>
+    <table><thead><tr><th style="width:40%">점검 항목</th><th>근거 활동</th></tr></thead><tbody>${ACT_MAP.map(m => { const xs = rows.filter(r => m[1].indexOf(r.cat) >= 0); return `<tr><td>${m[0]}</td><td>${xs.length ? xs.map(r => esc(r.title)).join(' · ') : '기록 없음'}</td></tr>`; }).join('')}</tbody></table>
+    <table class="sg"><tr><th>작성 (안전보건팀)</th><th>확인 (관리감독자)</th><th>승인 (대표)</th></tr><tr><td></td><td></td><td></td></tr></table>
+    <div class="foot">※ 확인 인원 = 직원 폰에서 공지를 읽고 [확인]을 누른 기기 수(팀별 합계). 공지 확인은 '알림' 증빙이며 법정교육 이수 시간과는 별개입니다. 건강진단 개인 결과는 기록하지 않습니다. 출력일시 ${new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })}</div></div>`;
+}
+
+/* ===== v25 기업형 테마 켜기 + 조치 필요 글자 빛 효과 (글자·구조는 바꾸지 않고 class만 붙임) ===== */
+document.body.classList.add('corp');
+(function () {
+  const HOT = /^(조치 진행|진행 ?\d+|재안내|.*TBM 재안내|작업중지권)$/;
+  let t = 0;
+  const mark = () => { t = 0; document.querySelectorAll('main .pill, main td, main .bd, .rail .bd').forEach(e => {
+    const s = (e.textContent || '').trim(); if (s.length <= 14 && HOT.test(s) && !e.querySelector('button,input,select')) e.classList.add('sh25'); });
+    document.querySelectorAll('.nav .bd').forEach(b => { if (b.textContent.trim() === '🔒') b.textContent = '전용'; }); };
+  new MutationObserver(() => { if (!t) t = setTimeout(mark, 150); }).observe(document.body, { childList: true, subtree: true });
+  mark();
+})();
+/* 인쇄 때 다른 코드가 body class를 통째로 바꿔도 테마 유지 */
+new MutationObserver(() => { if (!document.body.classList.contains('corp')) document.body.classList.add('corp'); }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
 </script>
 </body>
 </html>
